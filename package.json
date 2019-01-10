@@ -23,7 +23,7 @@
     "@angular/router": "~7.0.0",
     "@donmahallem/flowapi": "^1.0.3",
     "chart.js": "^2.7.3",
-    "core-js": "^2.5.4",
+    "core-js": "^2.6.2",
     "googleapis": "^34.0.0",
     "moment": "^2.22.2",
     "ng-cli-pug-loader": "^0.1.7",
