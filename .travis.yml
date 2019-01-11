@@ -12,6 +12,7 @@ before_install:
 script:
 #- npm test
 - ng build --prod --aot --base-href /ngHeartFit/
+- cp ./dist/index.html ./dist/404.html
 deploy:
   provider: pages
   skip_cleanup: true
