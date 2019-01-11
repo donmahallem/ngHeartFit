@@ -1,14 +1,7 @@
 import {
     Component,
-    OnInit,
-    NgZone,
-    AfterViewInit,
-    ElementRef,
-    ViewChild
+    OnInit
 } from '@angular/core';
-import { FromEventTarget } from 'rxjs/internal/observable/fromEvent';
-import { content } from 'googleapis/build/src/apis/content';
-import { loadData } from '@donmahallem/flowapi';
 @Component({
     selector: 'upload-cmp',
     templateUrl: './upload.component.html',
