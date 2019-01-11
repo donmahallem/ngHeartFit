@@ -11,7 +11,7 @@ before_install:
 - cp ./src/environments/environment.example.ts ./src/environments/environment.ts
 script:
 #- npm test
-- ng build --prod --aot
+- ng build --prod --aot --base-href /ngHeartFit/
 deploy:
   provider: pages
   skip_cleanup: true
