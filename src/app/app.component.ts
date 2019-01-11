@@ -14,6 +14,11 @@ function updateSigninStatus(isSignedIn) {
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+    private _title: string = "app title";
+
+    public get title(): string {
+        return this._title;
+    }
     constructor(private gapiService: GapiService) { }
     public ngOnInit(): void {
         this.gapiService.getSigninStatus()

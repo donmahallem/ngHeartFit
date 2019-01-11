@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 @Component({
     selector: 'upload-cmp',
-    templateUrl: './upload.component.html',
+    templateUrl: './upload.component.pug',
     styleUrls: ['./upload.component.scss']
 })
 export class UploadComponent implements OnInit {
@@ -25,5 +25,9 @@ export class UploadComponent implements OnInit {
             console.log(loadEvent.target.result, e);
         };
         reader.readAsText(file);
+    }
+
+    public onClickMe(event: MouseEvent): void {
+        console.log("yes");
     }
 }
