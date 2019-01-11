@@ -7,8 +7,8 @@ cache:
   directories:
   - node_modules
 before_install:
-  openssl aes-256-cbc -K $encrypted_7f62a7100786_key -iv $encrypted_7f62a7100786_iv -in environment.prod.ts.enc -out ./src/environments/environment.prod.ts -d
-  cp ./src/environments/environment.example.ts ./src/environments/environment.ts
+- openssl aes-256-cbc -K $encrypted_7f62a7100786_key -iv $encrypted_7f62a7100786_iv -in environment.prod.ts.enc -out ./src/environments/environment.prod.ts -d
+- cp ./src/environments/environment.example.ts ./src/environments/environment.ts
 script:
 #- npm test
 - ng build --prod --aot
