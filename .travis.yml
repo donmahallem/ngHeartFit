@@ -6,9 +6,11 @@ node_js:
 cache:
   directories:
   - node_modules
+before_install:
+  openssl aes-256-cbc -K $encrypted_7f62a7100786_key -iv $encrypted_7f62a7100786_iv -in environment.prod.ts.enc -out ./src/environments/environment.prod.ts -d
 script:
 #- npm test
-- ng build
+- ng build --prod --aot
 deploy:
   provider: pages
   skip_cleanup: true
