@@ -6,6 +6,13 @@ const routes: Routes = [
     {
         path: "analyze/upload",
         component: UploadComponent
+    },
+    {
+        path: 'profile',
+        data: {
+            requiresLogin: false
+        },
+        loadChildren: "./profile/profile.module#ProfileModule"
     }
 ];
 
