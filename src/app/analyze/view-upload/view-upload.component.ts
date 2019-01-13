@@ -1,13 +1,14 @@
 import {
     Component,
     AfterViewInit,
-    OnDestroy
+    OnDestroy,
+    Input
 } from '@angular/core';
 import { UploadDataService } from '../services/upload-data.service';
 import { from, Observable, Observer, Subscription } from 'rxjs';
 import { filter, flatMap, map } from 'rxjs/operators';
 import { DaySummary, DayData } from "@donmahallem/flowapi";
-import { Router, Route, ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
+import { Router, Route, ActivatedRouteSnapshot, ActivatedRoute, Params } from '@angular/router';
 @Component({
     selector: 'view-upload-cmp',
     templateUrl: './view-upload.component.pug',
@@ -20,10 +21,14 @@ export class ViewUploadComponent implements
     public chartData: any[];
     private idSubscription: Subscription;
     constructor(private uploadDataService: UploadDataService,
-        private route: ActivatedRoute) {/*
-        this.route.params.subscribe((routeId: string) => {
-
-        });*/
+        private route: ActivatedRoute) {
+        this.route.params.subscribe((params: Params) => {
+            if (params.id) {
+                console.log(uploadDataService.getData(params.id));
+            } else {
+                console.log("error");
+            }
+        });
     }
     public ngAfterViewInit(): void {
         //this.idSubscription = this.router.

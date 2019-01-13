@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, NgZone, ElementRef, AfterViewInit, ViewChild, Input } from '@angular/core';
 import { Chart } from 'chart.js';
 import { from } from 'rxjs';
 import { mergeMap, filter, merge, map, toArray, take } from 'rxjs/operators';
@@ -77,6 +77,15 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
                 console.log(res);
             }, (err) => console.error, () => { console.log("Complete loaded"); });*/
     }
+    @Input("chartData")
+    public set chartData(data: any[]) {
+        this._chartData = data;
+    }
+
+    public get chartData(): any[] {
+        return this._chartData;
+    }
+    private _chartData: any[];
     public ngOnInit(): void {
         /*
         */
