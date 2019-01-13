@@ -4,13 +4,16 @@ import { UploadComponent } from './analyze/upload/upload.component';
 
 const routes: Routes = [
     {
-        path: "analyze/upload",
-        component: UploadComponent
+        path: "analyze",
+        data: {
+            requiresLogin: true
+        },
+        loadChildren: "./analyze/analyze.module#AnalyzeModule"
     },
     {
         path: 'profile',
         data: {
-            requiresLogin: false
+            requiresLogin: true
         },
         loadChildren: "./profile/profile.module#ProfileModule"
     }

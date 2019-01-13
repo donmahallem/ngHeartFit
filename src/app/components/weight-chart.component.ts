@@ -1,5 +1,4 @@
 import { Component, OnInit, NgZone, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
-import { GapiService } from '../service/gapi.service';
 import { Chart } from 'chart.js';
 import { from } from 'rxjs';
 import { mergeMap, filter, merge, map, toArray, take } from 'rxjs/operators';
@@ -14,7 +13,7 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
     public user: any;
     private chart: Chart;
     @ViewChild('chart') mySpan: ElementRef;
-    constructor(private gapiService: GapiService) { }
+    constructor() { }
 
     public ngAfterViewInit(): void {
         this.chart = new Chart(this.mySpan.nativeElement, {
@@ -42,7 +41,7 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
                     }]
                 }
             }
-        });
+        });/*
         this.gapiService.getAggregateWeights()
             .pipe(mergeMap((resp) => {
                 return from(resp.bucket);
@@ -76,7 +75,7 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
                 this.chart.data.datasets[0].data = res;
                 this.chart.update();
                 console.log(res);
-            }, (err) => console.error, () => { console.log("Complete loaded"); });
+            }, (err) => console.error, () => { console.log("Complete loaded"); });*/
     }
     public ngOnInit(): void {
         /*

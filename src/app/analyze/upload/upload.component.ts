@@ -2,6 +2,7 @@ import {
     Component,
     OnInit
 } from '@angular/core';
+import { UploadDataService } from '../services/upload-data.service';
 @Component({
     selector: 'upload-cmp',
     templateUrl: './upload.component.pug',
@@ -9,7 +10,7 @@ import {
 })
 export class UploadComponent implements OnInit {
     public user: any;
-    constructor() { }
+    constructor(private uploadDataService: UploadDataService) { }
     public ngOnInit(): void {
     }
 
@@ -29,5 +30,6 @@ export class UploadComponent implements OnInit {
 
     public onClickMe(event: MouseEvent): void {
         console.log("yes");
+        this.uploadDataService.setData("asdf", "asdfasdfas");
     }
 }

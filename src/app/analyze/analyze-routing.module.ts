@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ProfileComponent } from './components';
+import { UploadComponent } from './upload/upload.component';
 import { RouteGuardService } from '../service/route-guard.service';
 
 const routes: Routes = [
     {
-        path: "",
-        component: ProfileComponent,
+        path: "**",
+        component: UploadComponent,
         canActivate: [RouteGuardService]
     }
 ];
@@ -18,4 +18,4 @@ const routes: Routes = [
         RouteGuardService
     ]
 })
-export class ProfileRoutingModule { }
+export class AnalyzeRoutingModule { }

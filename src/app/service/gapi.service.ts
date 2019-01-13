@@ -5,12 +5,7 @@ import { timer, Observable, Subscription, of, combineLatest, BehaviorSubject } f
 import { catchError, map, tap, mergeMapTo, filter, mergeMap } from 'rxjs/operators';
 import * as moment from 'moment';
 import { fitness_v1 } from 'googleapis';
-
-enum ClientStatus {
-    LOADING = 1,
-    LOADED = 2,
-    ERROR = 3
-}
+/*
 @Injectable({
     providedIn: 'root',
 })
@@ -376,5 +371,5 @@ export class GapiService {
                 return res.result;
             }));
     }
-    //       
-}
+    //
+}*/
