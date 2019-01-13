@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
+import { DaySummary } from '@donmahallem/flowapi';
 
 @Injectable()
 export class UploadDataService {
 
 
-    public getData(key: string): string {
-        return sessionStorage.getItem(key);
+    public getData(key: string): DaySummary {
+        return JSON.parse(sessionStorage.getItem(key));
     }
 
     public generateId(): string {
@@ -17,8 +18,14 @@ export class UploadDataService {
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
     }
 
-    public setData(key: string, data: string): void {
-        sessionStorage.setItem(key, data);
+    public setData(key: string, data: DaySummary): void {
+        sessionStorage.setItem(key, JSON.stringify(data));
+    }
+
+    public insert(data: DaySummary): string {
+        const id: string = this.generateId();
+        this.setData(id, data);
+        return id;
     }
 
 }

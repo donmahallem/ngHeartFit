@@ -5,7 +5,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProfileComponent } from './components/profile.component';
-import { WeightChartComponent } from './components/weight-chart.component';
 import {
     GoogleApiModule,
     GoogleApiService,
@@ -30,8 +29,7 @@ const gapiClientConfig: NgGapiClientConfig = {
 @NgModule({
     declarations: [
         AppComponent,
-        ProfileComponent,
-        WeightChartComponent
+        ProfileComponent
     ],
     imports: [
         BrowserModule,

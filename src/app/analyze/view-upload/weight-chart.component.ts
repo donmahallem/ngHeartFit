@@ -6,7 +6,7 @@ import { fitness_v1 } from 'googleapis';
 import * as moment from 'moment';
 @Component({
     selector: 'weight-chart',
-    templateUrl: './weight-chart.component.html',
+    templateUrl: './weight-chart.component.pug',
     styleUrls: ['./weight-chart.component.scss']
 })
 export class WeightChartComponent implements OnInit, AfterViewInit {
