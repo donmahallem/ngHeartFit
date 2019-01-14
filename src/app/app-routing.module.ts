@@ -4,13 +4,24 @@ import { UploadComponent } from './analyze/upload/upload.component';
 
 const routes: Routes = [
     {
-        path: "analyze/upload",
-        component: UploadComponent
+        path: "analyze",
+        data: {
+            requiresLogin: true
+        },
+        loadChildren: "./analyze/analyze.module#AnalyzeModule"
+    },
+    {
+        path: 'profile',
+        data: {
+            requiresLogin: true
+        },
+        loadChildren: "./profile/profile.module#ProfileModule"
     }
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
+    imports: [RouterModule.forRoot(routes,
+        { enableTracing: false })],
     exports: [RouterModule]
 })
 export class AppRoutingModule { }

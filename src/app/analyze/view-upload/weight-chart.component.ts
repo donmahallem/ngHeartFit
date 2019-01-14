@@ -1,22 +1,23 @@
-import { Component, OnInit, NgZone, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
-import { GapiService } from '../service/gapi.service';
+import { Component, OnInit, NgZone, ElementRef, AfterViewInit, ViewChild, Input } from '@angular/core';
 import { Chart } from 'chart.js';
-import { from } from 'rxjs';
+import { from, BehaviorSubject } from 'rxjs';
 import { mergeMap, filter, merge, map, toArray, take } from 'rxjs/operators';
 import { fitness_v1 } from 'googleapis';
 import * as moment from 'moment';
+import { DataPoint } from './data-point';
 @Component({
     selector: 'weight-chart',
-    templateUrl: './weight-chart.component.html',
+    templateUrl: './weight-chart.component.pug',
     styleUrls: ['./weight-chart.component.scss']
 })
 export class WeightChartComponent implements OnInit, AfterViewInit {
     public user: any;
     private chart: Chart;
     @ViewChild('chart') mySpan: ElementRef;
-    constructor(private gapiService: GapiService) { }
+    constructor() { }
 
     public ngAfterViewInit(): void {
+        console.log("INIT");
         this.chart = new Chart(this.mySpan.nativeElement, {
             type: 'line',
             data: {
@@ -43,6 +44,15 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
                 }
             }
         });
+        console.log("Observe");
+        this.chartDataSubject.asObservable().subscribe((data) => {
+            if (data) {
+                console.log(data);
+                this.chart.data.datasets[0].data = data;
+                this.chart.update();
+            }
+        });
+        /*
         this.gapiService.getAggregateWeights()
             .pipe(mergeMap((resp) => {
                 return from(resp.bucket);
@@ -76,8 +86,20 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
                 this.chart.data.datasets[0].data = res;
                 this.chart.update();
                 console.log(res);
-            }, (err) => console.error, () => { console.log("Complete loaded"); });
+            }, (err) => console.error, () => { console.log("Complete loaded"); });*/
     }
+
+    private chartDataSubject: BehaviorSubject<DataPoint[]> = new BehaviorSubject<DataPoint[]>(null);
+    @Input("chartData")
+    public set chartData(data: DataPoint[]) {
+        console.log("set data", data.length);
+        this.chartDataSubject.next(data);
+    }
+
+    public get chartData(): DataPoint[] {
+        return this.chartDataSubject.getValue();
+    }
+    private _chartData: DataPoint[];
     public ngOnInit(): void {
         /*
         */

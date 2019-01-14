@@ -1,28 +1,52 @@
 import {
     Component,
     OnInit,
-    NgZone,
+    ViewChild,
     AfterViewInit,
-    ElementRef,
-    ViewChild
+    OnDestroy,
+    ChangeDetectorRef
 } from '@angular/core';
-import { GapiService } from '../service/gapi.service';
+import { GapiUserService } from '../service/gapi-user.service';
+import { MatButton } from '@angular/material';
+import { Subscription } from 'rxjs';
 @Component({
     selector: 'profile-view',
-    templateUrl: './profile.component.html',
+    templateUrl: './profile.component.pug',
     styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements AfterViewInit, OnDestroy {
     public user: any;
-    constructor(private gapiService: GapiService) { }
-    public ngOnInit(): void {
-        this.gapiService.getSigninStatus()
+    @ViewChild("btnSignin")
+    public btnSignIn: MatButton;
+    private _isSignedIn: boolean = false;
+    private signinSubscription: Subscription;
+    constructor(private gapiService: GapiUserService, private cd: ChangeDetectorRef) { }
+    public ngAfterViewInit(): void {
+        this.signinSubscription = this.gapiService.getUserObservable()
             .subscribe((res) => {
-                if (res == true) {
-                    const profile: gapi.auth2.BasicProfile = this.gapiService.getCurrentUser().getBasicProfile();
-                    this.user = profile.getName();
-                    console.log(this.gapiService.getCurrentUser().getGrantedScopes());
-                }
-            }, (err) => console.error);
+                const profile: gapi.auth2.BasicProfile = res.getBasicProfile();
+                this.user = profile.getName();
+                console.log(res.getGrantedScopes(), res, res.getBasicProfile().getGivenName(), res.getBasicProfile().getName());
+                this._isSignedIn = true;
+            }, (err) => {
+                console.error(err);
+                this._isSignedIn = false;
+                this.user = "errro";
+            }, () => {
+                this.cd.detectChanges();
+            });
+    }
+
+    public ngOnDestroy(): void {
+        if (this.signinSubscription)
+            this.signinSubscription.unsubscribe();
+    }
+
+    public get isSignedIn(): boolean {
+        return this._isSignedIn;
+    }
+
+    public signin(event: MouseEvent): void {
+        this.gapiService.signIn();
     }
 }
