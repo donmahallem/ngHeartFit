@@ -18,7 +18,6 @@ export class TaskListResource {
         return <any>this.httpService.get(this.ENDPOINT_URL, { headers: this.authHeader });
     }
 
-
     findById(id: string): Observable<Tasklist> {
         return this.httpService.get(this.ENDPOINT_URL + "/" + id, { headers: this.authHeader })
     }

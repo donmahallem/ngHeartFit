@@ -49,7 +49,9 @@ export class UploadToFitComponent implements
     }
 
     public uploadData(): void {
-
+        this.gapiService.onLoad().pipe(map((a:any)=>{
+            
+        }))
         let req = {
             path: "https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate",
             method: "post",
