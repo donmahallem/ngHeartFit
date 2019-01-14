@@ -14,7 +14,7 @@ import {
     GoogleApiConfig
 } from "ng-gapi";
 import { environment } from "src/environments/environment";
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule, MatSidenavModule, MatToolbarModule } from '@angular/material';
 const gapiClientConfig: NgGapiClientConfig = {
     client_id: environment.gapi.client_id,
     redirect_uri: environment.gapi.redirect_uri,
@@ -36,6 +36,8 @@ const gapiClientConfig: NgGapiClientConfig = {
         AppRoutingModule,
         BrowserAnimationsModule,
         MatButtonModule,
+        MatSidenavModule,
+        MatToolbarModule,
         GoogleApiModule.forRoot({
             provide: NG_GAPI_CONFIG,
             useValue: gapiClientConfig

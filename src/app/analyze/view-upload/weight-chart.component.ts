@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone, ElementRef, AfterViewInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, NgZone, ElementRef, AfterViewInit, ViewChild, Input, DoCheck } from '@angular/core';
 import { Chart } from 'chart.js';
 import { from, BehaviorSubject } from 'rxjs';
 import { mergeMap, filter, merge, map, toArray, take } from 'rxjs/operators';
@@ -15,6 +15,7 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
     private chart: Chart;
     @ViewChild('chart') mySpan: ElementRef;
     constructor() { }
+
 
     public ngAfterViewInit(): void {
         console.log("INIT");
@@ -41,7 +42,7 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
                             unit: 'month'
                         }
                     }]
-                }
+                }, responsive: true
             }
         });
         console.log("Observe");
@@ -52,48 +53,24 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
                 this.chart.update();
             }
         });
-        /*
-        this.gapiService.getAggregateWeights()
-            .pipe(mergeMap((resp) => {
-                return from(resp.bucket);
-            }), filter((bucket: fitness_v1.Schema$AggregateBucket) => {
-                if (bucket.dataset && bucket.dataset.length >= 1) {
-                    return true;
-                }
-                return false;
-            }), mergeMap((bucket: fitness_v1.Schema$AggregateBucket) => {
-                return from(bucket.dataset);
-            }), filter((dataset: fitness_v1.Schema$Dataset) => {
-                if (dataset.point && dataset.point.length >= 1) {
-                    return true;
-                }
-                return false;
-            }), map((dataset: fitness_v1.Schema$Dataset) => {
-                const convertTime = (min: string, max: string) => {
-                    return (parseInt(min.substr(0, min.length - 3)) + parseInt(max.substr(0, max.length - 3))) / 2
-                };
-                return {
-                    timestamp: new Date(convertTime(dataset.point[0].startTimeNanos, dataset.point[0].endTimeNanos) / 1000),
-                    min: dataset.point[0].value[2].fpVal,
-                    avg: dataset.point[0].value[0].fpVal,
-                    max: dataset.point[0].value[1].fpVal
-                };
-            }), map((dat) => {
-                console.log(dat);
-                return { x: dat.timestamp, y: dat.avg };
-            }), take(10), toArray())
-            .subscribe((res) => {
-                this.chart.data.datasets[0].data = res;
-                this.chart.update();
-                console.log(res);
-            }, (err) => console.error, () => { console.log("Complete loaded"); });*/
     }
 
     private chartDataSubject: BehaviorSubject<DataPoint[]> = new BehaviorSubject<DataPoint[]>(null);
     @Input("chartData")
     public set chartData(data: DataPoint[]) {
         console.log("set data", data.length);
-        this.chartDataSubject.next(data);
+        let map: Map<string, number> = new Map<string, number>();;
+        for (let point of data) {
+            const key: string = new Date(point.x.getTime() / 1000).toUTCString();
+            if (map[key])
+                continue;
+            map[key] = point;
+        }
+        let lst: DataPoint[] = [];
+        for (let key of Object.keys(map)) {
+            lst.push(map[key]);
+        }
+        this.chartDataSubject.next(lst);
     }
 
     public get chartData(): DataPoint[] {
