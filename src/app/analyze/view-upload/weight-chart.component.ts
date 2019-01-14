@@ -1,9 +1,10 @@
 import { Component, OnInit, NgZone, ElementRef, AfterViewInit, ViewChild, Input } from '@angular/core';
 import { Chart } from 'chart.js';
-import { from } from 'rxjs';
+import { from, BehaviorSubject } from 'rxjs';
 import { mergeMap, filter, merge, map, toArray, take } from 'rxjs/operators';
 import { fitness_v1 } from 'googleapis';
 import * as moment from 'moment';
+import { DataPoint } from './data-point';
 @Component({
     selector: 'weight-chart',
     templateUrl: './weight-chart.component.pug',
@@ -16,6 +17,7 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
     constructor() { }
 
     public ngAfterViewInit(): void {
+        console.log("INIT");
         this.chart = new Chart(this.mySpan.nativeElement, {
             type: 'line',
             data: {
@@ -41,7 +43,16 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
                     }]
                 }
             }
-        });/*
+        });
+        console.log("Observe");
+        this.chartDataSubject.asObservable().subscribe((data) => {
+            if (data) {
+                console.log(data);
+                this.chart.data.datasets[0].data = data;
+                this.chart.update();
+            }
+        });
+        /*
         this.gapiService.getAggregateWeights()
             .pipe(mergeMap((resp) => {
                 return from(resp.bucket);
@@ -77,17 +88,18 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
                 console.log(res);
             }, (err) => console.error, () => { console.log("Complete loaded"); });*/
     }
+
+    private chartDataSubject: BehaviorSubject<DataPoint[]> = new BehaviorSubject<DataPoint[]>(null);
     @Input("chartData")
-    public set chartData(data: any[]) {
-        this._chartData = data;
-        this.chart.data.datasets[0].data = data;
-        this.chart.update();
+    public set chartData(data: DataPoint[]) {
+        console.log("set data", data.length);
+        this.chartDataSubject.next(data);
     }
 
-    public get chartData(): any[] {
-        return this._chartData;
+    public get chartData(): DataPoint[] {
+        return this.chartDataSubject.getValue();
     }
-    private _chartData: any[];
+    private _chartData: DataPoint[];
     public ngOnInit(): void {
         /*
         */
