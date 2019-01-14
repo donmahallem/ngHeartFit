@@ -1,4 +1,4 @@
-import { GoogleAuthService } from "ng-gapi";
+import { GoogleAuthService, GoogleApiService } from "ng-gapi";
 import { Injectable } from "@angular/core";
 import {
     timer,
