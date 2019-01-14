@@ -3,10 +3,25 @@ import {
     OnInit
 } from '@angular/core';
 import { UploadDataService } from '../services/upload-data.service';
-import { from, Observable, Observer } from 'rxjs';
-import { filter, flatMap, map } from 'rxjs/operators';
-import { DaySummary, DayData } from "@donmahallem/flowapi";
+import { from, Observable, Observer, PartialObserver } from 'rxjs';
+import { filter, flatMap, map, toArray } from 'rxjs/operators';
+import { DaySummary, DayData, SummaryMerger } from "@donmahallem/flowapi";
 import { Router } from '@angular/router';
+
+class TestResult implements Observer<DaySummary>{
+    private merger: SummaryMerger = new SummaryMerger();
+    constructor(private router: Router, private uploadDataService: UploadDataService) { }
+    public next(value: DaySummary): void {
+        this.merger.addSummary(value);
+    }
+    public error(err: Error): void {
+        console.error(err);
+    }
+    public complete(): void {
+        this.router.navigate(["analyze", "upload", this.uploadDataService.insert(this.merger.get())]);
+    }
+}
+
 @Component({
     selector: 'upload-cmp',
     templateUrl: './upload.component.pug',
@@ -31,10 +46,7 @@ export class UploadComponent implements OnInit {
             console.log(loadEvent.target.result, e);
         };
         reader.readAsText(file);*/
-        this.upd(target).subscribe((data) => {
-
-            this.router.navigate(["analyze", "upload", this.uploadDataService.insert(data)]);
-        }, console.error);
+        this.upd(target).subscribe(new TestResult(this.router, this.uploadDataService));
     }
 
     public ads(file: File): Observable<string> {

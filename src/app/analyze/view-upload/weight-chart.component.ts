@@ -80,6 +80,8 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
     @Input("chartData")
     public set chartData(data: any[]) {
         this._chartData = data;
+        this.chart.data.datasets[0].data = data;
+        this.chart.update();
     }
 
     public get chartData(): any[] {

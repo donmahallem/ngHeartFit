@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { UploadComponent } from './upload/upload.component';
 import { RouteGuardService } from '../service/route-guard.service';
 import { ViewUploadComponent } from './view-upload/view-upload.component';
+import { UploadResolver } from './services/upload.resolver';
 
 const routes: Routes = [
     {
@@ -13,7 +14,8 @@ const routes: Routes = [
     {
         path: "upload/:id",
         component: ViewUploadComponent,
-        canActivate: [RouteGuardService]
+        resolve: { uploadData: UploadResolver }
+
     },
     {
         path: "**",
@@ -25,7 +27,8 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
     providers: [
-        RouteGuardService
+        RouteGuardService,
+        UploadResolver
     ]
 })
 export class AnalyzeRoutingModule { }
