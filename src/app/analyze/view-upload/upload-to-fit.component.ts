@@ -11,6 +11,7 @@ import { DaySummary, DayData } from "@donmahallem/flowapi";
 import { Router, Route, ActivatedRouteSnapshot, ActivatedRoute, Params } from '@angular/router';
 import { DataPoint } from './data-point';
 import { GoogleApiService } from 'ng-gapi';
+import { FitApiService } from 'src/app/service/fit-api.service';
 
 
 @Component({
@@ -30,7 +31,7 @@ export class UploadToFitComponent implements
     }
 
 
-    constructor(private gapiService: GoogleApiService) {
+    constructor(private fitApi: FitApiService) {
     }
 
     @Input("dataPoints")
@@ -49,27 +50,8 @@ export class UploadToFitComponent implements
     }
 
     public uploadData(): void {
-        this.gapiService.onLoad().pipe(map((a:any)=>{
-            
-        }))
-        let req = {
-            path: "https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate",
-            method: "post",
-            body: {
-                "aggregateBy": [{
-                    "dataSourceId":
-                        "derived:com.google.weight:com.google.android.gms:merge_weight"
-                }/*,{
-                    "dataSourceId":
-                        "derived:com.google.body.fat.percentage:com.google.android.gms:merge_weight"
-                }*/],
-                "bucketByTime": { "durationMillis": 86400000 },
-                "startTimeMillis": Date.now() - (10 * 86400000),
-                "endTimeMillis": Date.now()
-            }
-        };
-        console.log("MERGE MAP");
-        return from(gapi.client.request(req));
+        this.fitApi.getAllDataSources()
+            .subscribe(console.log, console.error);
     }
 
     public ngOnDestroy(): void {

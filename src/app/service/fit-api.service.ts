@@ -2,16 +2,34 @@ import { GapiUserService } from "./gapi-user.service";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { FitDatasource } from "./fit-datasource.modal";
+import { map, flatMap } from "rxjs/operators";
 
 @Injectable()
-export class TaskListResource {
+export class FitApiService {
+    private readonly BASE_URL: string = "https://www.googleapis.com/fitness/v1/";
     private readonly ENDPOINT_URL: string = '/users/@me/lists';
     private authHeader: HttpHeaders = new HttpHeaders();
 
     constructor(private httpService: HttpClient,
         private userService: GapiUserService) {
 
-        this.authHeader.append('Authorization', 'Bearer ' + userService.getToken())
+    }
+
+    public getAllDataSources(): Observable<FitDatasource> {
+        return this.createHeader()
+            .pipe(flatMap((headers) => {
+                return this.httpService.get(this.BASE_URL + "users/me/dataSources", { headers: headers })
+            }));
+    }
+
+    private createHeader(): Observable<HttpHeaders> {
+        return this.userService.getToken2()
+            .pipe(map((token: string) => {
+                const header: HttpHeaders = new HttpHeaders();
+                header.append('Authorization', 'Bearer ' + token);
+                return header;
+            }))
     }
 
     findAll(): Observable<TasklistListResponse> {

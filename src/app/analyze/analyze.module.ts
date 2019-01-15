@@ -8,6 +8,8 @@ import { UploadDataService } from './services/upload-data.service';
 import { ViewUploadComponent } from './view-upload/view-upload.component';
 import { WeightChartComponent } from './view-upload/weight-chart.component';
 import { UploadToFitComponent } from './view-upload/upload-to-fit.component';
+import { FitApiService } from '../service/fit-api.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     declarations: [
@@ -19,8 +21,10 @@ import { UploadToFitComponent } from './view-upload/upload-to-fit.component';
     imports: [
         CommonModule,
         AnalyzeRoutingModule,
-        MatButtonModule
+        MatButtonModule,
+        HttpClientModule
     ],
-    providers: [UploadDataService]
+    providers: [UploadDataService,
+        FitApiService]
 })
 export class AnalyzeModule { }

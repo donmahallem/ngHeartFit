@@ -15,7 +15,8 @@ import {
     mergeMapTo,
     filter,
     mergeMap,
-    single
+    single,
+    flatMap
 } from 'rxjs/operators';
 export enum ClientStatus {
     LOADING = 1,
@@ -32,6 +33,13 @@ export class GapiUserService {
     private clientStatusSubject: BehaviorSubject<ClientStatus> = new BehaviorSubject(ClientStatus.LOADING);
 
     constructor(private googleAuthService: GoogleAuthService) {
+    }
+
+    public getToken2(): Observable<string> {
+        return this.googleAuthService.getAuth()
+            .pipe(map((auth) => {
+                return auth.currentUser.get().getAuthResponse().access_token;
+            }));
     }
 
     public getToken(): string {
