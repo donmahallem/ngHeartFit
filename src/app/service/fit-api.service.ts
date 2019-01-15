@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { FitDatasource } from "./fit-datasource.modal";
 import { map, flatMap } from "rxjs/operators";
+import { DataPoint } from "../analyze/view-upload/data-point";
 
 @Injectable()
 export class FitApiService {
@@ -24,6 +25,45 @@ export class FitApiService {
             }));
     }
 
+    public insertDataPoints(dataPoints: DataPoint[]): Observable<any> {
+        return this.createHeader()
+            .pipe(flatMap((headers: HttpHeaders) => {
+                const sourceId: string = "derived:com.google.heart_rate.bpm:265564637760:Example Browser:Browser:1000001:PolarImport";
+                let startTimeMillis: any = -1;
+                let endTimeMillis: any = -1;
+                let submitPoints: any[] = [];
+                for (let dpoint of dataPoints) {
+                    if (startTimeMillis < 0 || startTimeMillis > dpoint.x.getTime()) {
+                        startTimeMillis = dpoint.x.getTime();
+                    }
+                    if (endTimeMillis < 0 || endTimeMillis < dpoint.x.getTime()) {
+                        endTimeMillis = dpoint.x.getTime();
+                    }
+                    if (dpoint.y)
+                        submitPoints.push(
+                            {
+                                "dataTypeName": "com.google.heart_rate.bpm",
+                                "endTimeNanos": dpoint.x.getTime() * 1000000,
+                                "originDataSourceId": "",
+                                "startTimeNanos": dpoint.x.getTime() * 1000000,
+                                "value": [
+                                    {
+                                        "fpVal": dpoint.y
+                                    }
+                                ]
+                            })
+                }
+                const requestBody: any = {
+                    "dataSourceId": sourceId,
+                    "maxEndTimeNs": (endTimeMillis * 1000000),
+                    "minStartTimeNs": (startTimeMillis * 1000000),
+                    "point": submitPoints
+                };
+
+                return this.httpService.patch(this.BASE_URL + "users/me/dataSources/" + sourceId + "/datasets/" + (startTimeMillis * 1000000) + "-" + (endTimeMillis * 1000000), requestBody, { headers: headers });
+            }));
+    }
+
     public createDatasource(): Observable<any> {
         return this.createHeader()
             .pipe(flatMap((headers: HttpHeaders) => {
@@ -31,7 +71,7 @@ export class FitApiService {
                     "dataStreamName": "PolarImport",
                     "type": "derived",
                     "application": {
-                        "packageName": "com.github.donmahallem.heartfit",
+                        //"packageName": "com.github.donmahallem.heartfit",
                         "detailsUrl": "https://donmahallem.github.io/ngHeartFit",
                         "name": "HeartFit",
                         "version": "1"
