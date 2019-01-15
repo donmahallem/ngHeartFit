@@ -53,6 +53,10 @@ export class UploadToFitComponent implements
         this.fitApi.getAllDataSources()
             .subscribe(console.log, console.error);
     }
+    public createDatasource(): void {
+        this.fitApi.createDatasource()
+            .subscribe(console.log, console.error);
+    }
 
     public ngOnDestroy(): void {
         for (let sub of this.subscriptions) {

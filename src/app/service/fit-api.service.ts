@@ -19,15 +19,49 @@ export class FitApiService {
     public getAllDataSources(): Observable<FitDatasource> {
         return this.createHeader()
             .pipe(flatMap((headers: HttpHeaders): Observable<any> => {
+                console.log("test header", headers);
                 return this.httpService.get(this.BASE_URL + "users/me/dataSources", { headers: headers })
             }));
+    }
+
+    public createDatasource(): Observable<any> {
+        return this.createHeader()
+            .pipe(flatMap((headers: HttpHeaders) => {
+                const requestBody: any = {
+                    "dataStreamName": "PolarImport",
+                    "type": "derived",
+                    "application": {
+                        "packageName": "com.github.donmahallem.heartfit",
+                        "detailsUrl": "https://donmahallem.github.io/ngHeartFit",
+                        "name": "HeartFit",
+                        "version": "1"
+                    },
+                    "dataType": {
+                        "field": [
+                            {
+                                "name": "bpm",
+                                "format": "floatPoint"
+                            }
+                        ],
+                        "name": "com.google.heart_rate.bpm"
+                    },
+                    "device": {
+                        "manufacturer": "Example Browser",
+                        "model": "Browser",
+                        "type": "unknown",
+                        "uid": "1000001",
+                        "version": "1.0"
+                    }
+                };
+                return this.httpService.post(this.BASE_URL + "users/me/dataSources", requestBody, { headers: headers });
+            }))
     }
 
     private createHeader(): Observable<HttpHeaders> {
         return this.userService.getToken2()
             .pipe(map((token: string): HttpHeaders => {
-                const header: HttpHeaders = new HttpHeaders();
-                header.append('Authorization', 'Bearer ' + token);
+                const header: HttpHeaders = new HttpHeaders()
+                    .set('Authorization', 'Bearer ' + token);
                 return header;
             }))
     }
