@@ -1,7 +1,7 @@
-a([routerLink]="['/profile']") link to user component
-br
-a([routerLink]="['/analyze/upload']") Upload Data
-br
-a([routerLink]="['/analyze']") Upload Data2
+mat-toolbar
+    button(mat-button,label="First",[routerLink]="['/profile']") Content 1
+    button(mat-button,label="First",[routerLink]="['/analyze/upload']") Content 2
+    button(mat-button,label="First",[routerLink]="['/analyze']") Content 3
 profile-view
-router-outlet
+div.router-container 
+    router-outlet
