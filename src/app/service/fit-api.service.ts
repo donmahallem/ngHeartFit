@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { FitDatasource } from "./fit-datasource.modal";
 import { map, flatMap } from "rxjs/operators";
 import { DataPoint } from "../analyze/view-upload/data-point";
+import { SubmitValue, SubmitToDatasetBody, SubmitToDatasetResponse } from "./fit-api-modals";
 
 @Injectable()
 export class FitApiService {
@@ -25,13 +26,13 @@ export class FitApiService {
             }));
     }
 
-    public insertDataPoints(dataPoints: DataPoint[]): Observable<any> {
+    public insertDataPoints(dataPoints: DataPoint[]): Observable<SubmitToDatasetResponse> {
         return this.createHeader()
             .pipe(flatMap((headers: HttpHeaders) => {
                 const sourceId: string = "raw:com.google.heart_rate.bpm:265564637760:Example Browser:Browser:1000001:PolarImport";
                 let startTimeMillis: any = -1;
                 let endTimeMillis: any = -1;
-                let submitPoints: any[] = [];
+                let submitPoints: SubmitValue[] = [];
                 for (let dpoint of dataPoints) {
                     if (startTimeMillis < 0 || startTimeMillis > dpoint.x.getTime()) {
                         startTimeMillis = dpoint.x.getTime();
@@ -53,7 +54,7 @@ export class FitApiService {
                                 ]
                             })
                 }
-                const requestBody: any = {
+                const requestBody: SubmitToDatasetBody = {
                     "dataSourceId": sourceId,
                     "maxEndTimeNs": (endTimeMillis * 1000000),
                     "minStartTimeNs": (startTimeMillis * 1000000),
@@ -61,6 +62,8 @@ export class FitApiService {
                 };
 
                 return this.httpService.patch(this.BASE_URL + "users/me/dataSources/" + sourceId + "/datasets/" + (startTimeMillis * 1000000) + "-" + (endTimeMillis * 1000000), requestBody, { headers: headers });
+            }), map((value: Object) => {
+                return <SubmitToDatasetResponse>value;
             }));
     }
 
