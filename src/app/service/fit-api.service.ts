@@ -18,14 +18,14 @@ export class FitApiService {
 
     public getAllDataSources(): Observable<FitDatasource> {
         return this.createHeader()
-            .pipe(flatMap((headers) => {
+            .pipe(flatMap((headers: HttpHeaders): Observable<any> => {
                 return this.httpService.get(this.BASE_URL + "users/me/dataSources", { headers: headers })
             }));
     }
 
     private createHeader(): Observable<HttpHeaders> {
         return this.userService.getToken2()
-            .pipe(map((token: string) => {
+            .pipe(map((token: string): HttpHeaders => {
                 const header: HttpHeaders = new HttpHeaders();
                 header.append('Authorization', 'Bearer ' + token);
                 return header;
