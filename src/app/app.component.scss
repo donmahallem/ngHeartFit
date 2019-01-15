@@ -14,23 +14,10 @@
     display: flex;*/
 }
 
-mat-sidenav-container.main-container {
-    flex: 1 1 auto;
-    display: flex;
-}
-
-.main-nav {
-    min-width: 250px;
-}
-
-div.pageheader {
-    flex: 0 1 auto;
-}
-
-mat-sidenav-content.main-content {
-    top: 0px;
-    left: 0px;
-    bottom: 0px;
-    right: 0px;
-    position: absolute;
+div.router-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #FFFFFF;
+    padding: 32px;
 }
