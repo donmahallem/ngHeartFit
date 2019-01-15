@@ -28,7 +28,7 @@ export class FitApiService {
     public insertDataPoints(dataPoints: DataPoint[]): Observable<any> {
         return this.createHeader()
             .pipe(flatMap((headers: HttpHeaders) => {
-                const sourceId: string = "derived:com.google.heart_rate.bpm:265564637760:Example Browser:Browser:1000001:PolarImport";
+                const sourceId: string = "raw:com.google.heart_rate.bpm:265564637760:Example Browser:Browser:1000001:PolarImport";
                 let startTimeMillis: any = -1;
                 let endTimeMillis: any = -1;
                 let submitPoints: any[] = [];
@@ -69,7 +69,7 @@ export class FitApiService {
             .pipe(flatMap((headers: HttpHeaders) => {
                 const requestBody: any = {
                     "dataStreamName": "PolarImport",
-                    "type": "derived",
+                    "type": "raw",
                     "application": {
                         //"packageName": "com.github.donmahallem.heartfit",
                         "detailsUrl": "https://donmahallem.github.io/ngHeartFit",
