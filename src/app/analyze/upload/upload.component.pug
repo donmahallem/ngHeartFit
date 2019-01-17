@@ -1,4 +1,6 @@
-button( (click)="onClickMe($event)") Click me!
-input(type="file",id="file-input",(change)="onUpload($event)",multiple)
+input(type="file",id="file-input",(change)="onUpload($event)",multiple,accept=".json")
 h3 Contents of the file:
-pre#file-content
+
+button( (click)="onClickMe($event)") Click me!
+
+file-preview-cmp(*ngFor="let uploadFile of uploadFiles",[uploadFile]="uploadFile")

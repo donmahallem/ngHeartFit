@@ -4,12 +4,20 @@ import { Resolve, ActivatedRoute, ActivatedRouteSnapshot, RouterStateSnapshot } 
 import { delay } from "rxjs/operators";
 import { UploadDataService } from "./upload-data.service";
 import { DaySummary } from "@donmahallem/flowapi";
+import { UploadFile } from "./upload-file.modal";
 
 @Injectable()
-export class UploadResolver implements Resolve<DaySummary> {
+export class UploadResolver implements Resolve<UploadFile[]> {
     constructor(private uploadService: UploadDataService) { }
 
-    public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): DaySummary {
-        return this.uploadService.getData(route.params["id"]);
+    public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): UploadFile[] {
+        const ids: string[] = (<string>route.params["id"]).split(",");
+        const uploads: UploadFile[] = [];
+        for (let id of ids) {
+            const upFile: UploadFile = this.uploadService.getData(id);
+            if (upFile && upFile != null)
+                uploads.push(upFile);
+        }
+        return uploads;
     }
 }

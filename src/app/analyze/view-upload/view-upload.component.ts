@@ -31,7 +31,7 @@ export class ViewUploadComponent implements
     public updateData(summary: { uploadData: DaySummary }): void {
         console.log(summary);
         let lst: DataPoint[] = [];
-        for (let key of Object.keys(summary.uploadData)) {
+        for (let key of Object.keys(summary.uploadData[0])) {
             for (let pair of summary.uploadData[key].activityGraphData.heartRateTimelineSamples) {
                 lst.push({
                     x: new Date(pair.time),
