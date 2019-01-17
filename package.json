@@ -32,7 +32,7 @@
         "ng-cli-pug-loader": "^0.1.7",
         "ng-gapi": "0.0.7",
         "rxjs": "^6.3.3",
-        "zone.js": "^0.8.27"
+        "zone.js": "^0.8.28"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "^0.12.1",
