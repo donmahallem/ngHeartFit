@@ -10,13 +10,15 @@ import { WeightChartComponent } from './view-upload/weight-chart.component';
 import { UploadToFitComponent } from './view-upload/upload-to-fit.component';
 import { FitApiService } from '../service/fit-api.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { FilePreviewComponent } from './upload/file-preview.component';
 
 @NgModule({
     declarations: [
         UploadComponent,
         ViewUploadComponent,
         WeightChartComponent,
-        UploadToFitComponent
+        UploadToFitComponent,
+        FilePreviewComponent
     ],
     imports: [
         CommonModule,

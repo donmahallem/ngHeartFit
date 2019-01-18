@@ -8,7 +8,8 @@
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
-        "postinstall": "node ./ng-add-pug-loader.js"
+        "postinstall": "node ./ng-add-pug-loader.js",
+        "test-headless": "ng test --watch=false --browsers=ChromeHeadless"
     },
     "private": true,
     "dependencies": {
@@ -32,13 +33,13 @@
         "ng-cli-pug-loader": "^0.1.7",
         "ng-gapi": "0.0.7",
         "rxjs": "^6.3.3",
-        "zone.js": "^0.8.27"
+        "zone.js": "^0.8.28"
     },
     "devDependencies": {
-        "@angular-devkit/build-angular": "^0.12.1",
-        "@angular/cli": "^7.2.1",
+        "@angular-devkit/build-angular": "^0.12.2",
+        "@angular/cli": "^7.2.2",
         "@angular/compiler-cli": "^7.2.0",
-        "@angular/language-service": "^7.2.0",
+        "@angular/language-service": "^7.2.1",
         "@types/chart.js": "^2.7.42",
         "@types/gapi": "0.0.36",
         "@types/gapi.auth2": "0.0.48",
@@ -59,6 +60,6 @@
         "pug-loader": "^2.4.0",
         "ts-node": "^7.0.0",
         "tslint": "^5.12.1",
-        "typescript": "^3.1.1"
+        "typescript": "^3.2.4"
     }
 }

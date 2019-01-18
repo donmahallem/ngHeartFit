@@ -14,7 +14,7 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
     public user: any;
     private chart: Chart;
     @ViewChild('chart') mySpan: ElementRef;
-    constructor() { }
+    constructor(private zone: NgZone) { }
 
 
     public ngAfterViewInit(): void {
@@ -45,12 +45,12 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
                 }, responsive: true
             }
         });
-        console.log("Observe");
         this.chartDataSubject.asObservable().subscribe((data) => {
             if (data) {
-                console.log(data);
                 this.chart.data.datasets[0].data = data;
-                this.chart.update();
+                this.zone.run(() => {
+                    this.chart.update();
+                });
             }
         });
     }
@@ -58,7 +58,6 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
     private chartDataSubject: BehaviorSubject<DataPoint[]> = new BehaviorSubject<DataPoint[]>(null);
     @Input("chartData")
     public set chartData(data: DataPoint[]) {
-        console.log("set data", data.length);
         let map: Map<string, number> = new Map<string, number>();;
         for (let point of data) {
             const key: string = new Date(point.x.getTime() / 1000).toUTCString();
