@@ -1,16 +1,35 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { MatButtonModule, MatToolbarModule } from '@angular/material';
+import { ProfileComponent } from './components/profile.component';
+import { GoogleAuthService } from 'ng-gapi';
+import { GapiUserService } from './service/gapi-user.service';
+import { Observable, from } from 'rxjs';
+import { Injectable } from '@angular/core';
+
+@Injectable()
+class gUserService {
+  public isSignedInObservable(): Observable<boolean> {
+    return from([true, false, true]);
+  }
+}
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        RouterTestingModule,
+        MatButtonModule,
+        MatToolbarModule
       ],
       declarations: [
-        AppComponent
+        AppComponent,
+        ProfileComponent
       ],
+      providers: [
+        { provide: GapiUserService, useValue: gUserService }
+      ]
     }).compileComponents();
   }));
 
@@ -20,16 +39,4 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'fitclient'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('fitclient');
-  });
-
-  it('should render title in a h1 tag', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to fitclient!');
-  });
 });
