@@ -16,6 +16,7 @@ script:
 after_success:
 - ng build --prod --aot --base-href /ngHeartFit/
 - cp ./dist/fitclient/index.html ./dist/fitclient/404.html
+- npm install coveralls && cat ./coverage/lcov.info | coveralls
 deploy:
   provider: pages
   skip_cleanup: true
