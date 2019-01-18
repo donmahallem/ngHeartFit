@@ -11,6 +11,7 @@ before_install:
 - cp ./src/environments/environment.example.ts ./src/environments/environment.ts
 script:
 - npm run test-headless
+after_success:
 - ng build --prod --aot --base-href /ngHeartFit/
 - cp ./dist/fitclient/index.html ./dist/fitclient/404.html
 deploy:
