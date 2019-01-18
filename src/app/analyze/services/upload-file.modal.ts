@@ -3,4 +3,5 @@ export interface UploadFile {
     valid: boolean;
     data: any;
     filename: string;
+    selected?: boolean;
 }

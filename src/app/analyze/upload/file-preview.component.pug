@@ -2,4 +2,4 @@ h3.filename {{filename}}
 p Filesize:
     |
     span.filesize {{filesize}}b
-mat-checkbox([checked]="isValidFile",[disabled]="!isValidFile") Import this File
+mat-checkbox([checked]="isValidFile",[disabled]="!isValidFile",labelPosition="after",(change)="onChangeSelection($event)") Import this File

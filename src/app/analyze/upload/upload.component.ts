@@ -30,16 +30,19 @@ class TestResult implements Observer<UploadFile>{
     styleUrls: ['./upload.component.scss']
 })
 export class UploadComponent implements OnInit {
-    public uploadFiles: UploadFile[] = [];
     constructor(private uploadDataService: UploadDataService,
         private router: Router, private zone: NgZone) { }
     public ngOnInit(): void {
     }
 
+    public get uploadFiles(): UploadFile[] {
+        return this.uploadDataService.uploadedFiles;
+    }
+
     public get validFiles(): boolean {
         if (this.uploadFiles.length > 0) {
             for (let upFile of this.uploadFiles) {
-                if (upFile.valid)
+                if (upFile.valid && (upFile.selected === true || upFile.selected === undefined))
                     return true;
             }
         }
@@ -48,20 +51,9 @@ export class UploadComponent implements OnInit {
 
     public onUpload(e: Event): void {
         const target: HTMLInputElement = <HTMLInputElement>e.target;
-        const file: File = target.files[0];
-        /*if (!file) {
-            return;
-        }
-        const reader: FileReader = new FileReader();
-        reader.onload = function (loadEvent: any) {
-            var contents = e.returnValue;
-            console.log(loadEvent.target.result, e);
-        };
-        reader.readAsText(file);*/
-        //this.upd(target).subscribe(new TestResult(this.router, this.uploadDataService));
         this.upd(target).subscribe((res: UploadFile) => {
             this.zone.run(() => {
-                this.uploadFiles.push(res);
+                this.uploadDataService.addUploadFile(res);
             });
         }, (err: any) => {
             console.error(err);
@@ -87,7 +79,12 @@ export class UploadComponent implements OnInit {
         });
     }
 
+    public importFiles(event: MouseEvent): void {
+        console.log(this.uploadFiles[0]);
+    }
+
     public upd(e: HTMLInputElement): Observable<UploadFile> {
+        this.uploadDataService.clear();
         return from(e.files)
             .pipe(filter((file: File) => {
                 if (file)
@@ -103,9 +100,6 @@ export class UploadComponent implements OnInit {
                 } catch (err) {
                     data.valid = false;
                 }
-                return data;
-            }), map((data: UploadFile): UploadFile => {
-                data.key = this.uploadDataService.insert(data);
                 return data;
             }));
     }
