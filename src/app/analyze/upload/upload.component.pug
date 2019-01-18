@@ -1,6 +1,5 @@
 input(type="file",id="file-input",(change)="onUpload($event)",multiple,accept=".json")
 h3 Contents of the file:
-
-button( (click)="onClickMe($event)") Click me!
-
-file-preview-cmp(*ngFor="let uploadFile of uploadFiles",[uploadFile]="uploadFile")
+mat-grid-list(cols="4",rowHeight="100px")
+    mat-grid-tile(*ngFor="let uploadFile of uploadFiles",[colspan]="1",[rowspan]="1",style.background="#FF0000")
+        file-preview-cmp([uploadFile]="uploadFile")
