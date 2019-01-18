@@ -1,4 +1,20 @@
 :host {
     display: block;
     border: 1px black solid;
+    width: 100%;
+    margin: 5px;
+    padding: 6px;
+    background: #ff8a65;
+}
+
+span.filesize {
+    font-family: monospace;
+}
+
+h3.filename {
+    font-size: 16px;
+}
+
+:host(.validFile) {
+    background: #aed581;
 }

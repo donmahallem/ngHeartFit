@@ -1,7 +1,8 @@
 import {
     Component,
     OnInit,
-    Input
+    Input,
+    HostBinding
 } from '@angular/core';
 import { UploadDataService } from '../services/upload-data.service';
 import { from, Observable, Observer, PartialObserver } from 'rxjs';
@@ -22,6 +23,7 @@ export class FilePreviewComponent {
 
     private mUploadFile: UploadFile;
 
+    @HostBinding('class.validFile')
     public get isValidFile(): boolean {
         if (this.mUploadFile)
             return this.mUploadFile.valid;
@@ -38,7 +40,6 @@ export class FilePreviewComponent {
             return this.mUploadFile.data.length;
         return 0;
     }
-
     @Input("uploadFile")
     public set uploadFile(upload: UploadFile) {
         this.mUploadFile = upload;

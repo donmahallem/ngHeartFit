@@ -1,5 +1,11 @@
-input(type="file",id="file-input",(change)="onUpload($event)",multiple,accept=".json")
-h3 Contents of the file:
-mat-grid-list(cols="4",rowHeight="100px")
-    mat-grid-tile(*ngFor="let uploadFile of uploadFiles",[colspan]="1",[rowspan]="1",style.background="#FF0000")
-        file-preview-cmp([uploadFile]="uploadFile")
+ng-container(*ngIf="uploadFiles.length==0")
+    h3 Select the Files you want to import
+    input(type="file",id="file-input",(change)="onUpload($event)",multiple,accept=".json")
+ng-container(*ngIf="uploadFiles.length>0")
+    h3 Contents of the file:
+    mat-grid-list(cols="4",rowHeight="16:9")
+        mat-grid-tile(*ngFor="let uploadFile of uploadFiles",[colspan]="1",[rowspan]="1",style.background="#FF0000")
+            file-preview-cmp([uploadFile]="uploadFile")
+    h3 Import Files
+    p(*ngIf="!validFiles") No valid files provided and import is disabled
+    button(mat-flat-button,color="primary",(click)="importFiles($event)",[disabled]="!validFiles") Import

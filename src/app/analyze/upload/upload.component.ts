@@ -36,6 +36,16 @@ export class UploadComponent implements OnInit {
     public ngOnInit(): void {
     }
 
+    public get validFiles(): boolean {
+        if (this.uploadFiles.length > 0) {
+            for (let upFile of this.uploadFiles) {
+                if (upFile.valid)
+                    return true;
+            }
+        }
+        return false;
+    }
+
     public onUpload(e: Event): void {
         const target: HTMLInputElement = <HTMLInputElement>e.target;
         const file: File = target.files[0];
