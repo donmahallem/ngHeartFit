@@ -4,9 +4,12 @@ import { MatButtonModule, MatToolbarModule, MatCheckboxChange, MatCheckboxModule
 import { Observable, from } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { UploadComponent } from './upload.component';
+import { FilePreviewComponent } from './file-preview.component';
+import { UploadDataService } from '../services';
+
 
 @Injectable()
-class gUserService {
+class testUploadDataService {
     public isSignedInObservable(): Observable<boolean> {
         return from([true, false, true]);
     }
@@ -22,10 +25,11 @@ describe('UploadComponent', () => {
                 MatGridListModule
             ],
             declarations: [
-                UploadComponent
+                UploadComponent,
+                FilePreviewComponent
             ],
             providers: [
-                // { provide: GapiUserService, useValue: gUserService }
+                { provide: UploadDataService, useValue: testUploadDataService }
             ]
         }).compileComponents();
     }));
