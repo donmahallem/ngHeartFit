@@ -42,15 +42,33 @@ describe('FilePreviewComponent', () => {
         const fixture = TestBed.createComponent(FilePreviewComponent);
         const app: FilePreviewComponent = fixture.debugElement.componentInstance;
         expect(app).toBeTruthy();
-        const testData: UploadFile = {
+        const testData: UploadFile[] = [{
             filename: "testname",
             valid: true,
             selected: false,
             data: "testdata",
             key: "923"
-        };
-        app.uploadFile = testData;
-        expect(app.filesize).toEqual(8);
+        }, {
+            filename: "testname2",
+            valid: false,
+            selected: true,
+            data: "testdata2",
+            key: "923asdf"
+        }];
+        for (let tdata of testData) {
+            app.uploadFile = tdata;
+            expect(app.filesize).toEqual(tdata.data.length);
+            expect(app.filename).toEqual(tdata.filename);
+            expect(app.isValidFile).toEqual(tdata.valid);
+        }
+    });
+    it('file upload is not set', () => {
+        const fixture = TestBed.createComponent(FilePreviewComponent);
+        const app: FilePreviewComponent = fixture.debugElement.componentInstance;
+        expect(app).toBeTruthy();
+        expect(app.filesize).toEqual(0);
+        expect(app.filename).toEqual("Unknown");
+        expect(app.isValidFile).toEqual(false);
     });
 
 });
