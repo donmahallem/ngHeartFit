@@ -5,7 +5,7 @@ import { GoogleAuthService } from 'ng-gapi';
 import { Observable, from } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { FilePreviewComponent } from './file-preview.component';
-import { UploadDataService } from '../services';
+import { UploadDataService, UploadFile } from '../services';
 
 @Injectable()
 class testUploadDataService {
@@ -36,6 +36,21 @@ describe('FilePreviewComponent', () => {
         const fixture = TestBed.createComponent(FilePreviewComponent);
         const app = fixture.debugElement.componentInstance;
         expect(app).toBeTruthy();
+    });
+
+    it('file upload is set', () => {
+        const fixture = TestBed.createComponent(FilePreviewComponent);
+        const app: FilePreviewComponent = fixture.debugElement.componentInstance;
+        expect(app).toBeTruthy();
+        const testData: UploadFile = {
+            filename: "testname",
+            valid: true,
+            selected: false,
+            data: "testdata",
+            key: "923"
+        };
+        app.uploadFile = testData;
+        expect(app.filesize).toEqual(8);
     });
 
 });
