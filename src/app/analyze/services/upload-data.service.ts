@@ -1,31 +1,45 @@
 import { Injectable } from '@angular/core';
 import { UploadFile } from './upload-file.modal';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
 export class UploadDataService {
-    private readonly KEY_PREFIX: string = "uploadfile_";
-
-    public getData(key: string): UploadFile {
-        return JSON.parse(sessionStorage.getItem(this.KEY_PREFIX + key));
-    }
-    public generateId(): string {
-        return "" + sessionStorage.length;
-    }
-    public setData(key: string, data: UploadFile): void {
-        sessionStorage.setItem(this.KEY_PREFIX + key, JSON.stringify(data));
-    }
-
-    public insert(data: UploadFile): string {
-        const id: string = this.generateId();
-        data.key = id;
-        this.setData(id, data);
-        return id;
+    private uploadFilesSubject: BehaviorSubject<UploadFile[]> = new BehaviorSubject([]);
+    private hasUploadableFiles: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    public update(): void {
+        for (let upFile of this.uploadedFiles) {
+            if (upFile.valid && upFile.selected) {
+                this.hasUploadableFiles.next(true);
+                return;
+            }
+        }
+        this.hasUploadableFiles.next(false);
     }
 
-    public getFile(key: string): UploadFile {
-        if (sessionStorage.getItem(key) == null)
-            return null;
-        return JSON.parse(sessionStorage.getItem(this.KEY_PREFIX + key));
+    public set uploadedFiles(files: UploadFile[]) {
+        this.uploadFilesSubject.next(files);
+    }
+
+    public get uploadedFiles(): UploadFile[] {
+        return this.uploadFilesSubject.value;
+    }
+
+    public get uploadedFilesObservable(): Observable<UploadFile[]> {
+        return this.uploadFilesSubject.asObservable();
+    }
+
+    public get uploadableFilesObservable(): Observable<boolean> {
+        return this.hasUploadableFiles.asObservable();
+    }
+
+    public addUploadFile(f: UploadFile): void {
+        const lst: UploadFile[] = this.uploadFilesSubject.value;
+        lst.push(f);
+        this.uploadFilesSubject.next(lst);
+    }
+
+    public clear(): void {
+        this.uploadFilesSubject.next([]);
     }
 
 }

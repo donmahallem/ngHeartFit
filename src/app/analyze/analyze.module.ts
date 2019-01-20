@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatButtonModule, MatCheckboxModule } from '@angular/material';
+import { MatButtonModule, MatCheckboxModule, MatGridListModule, MatIconModule } from '@angular/material';
 
 import { AnalyzeRoutingModule } from './analyze-routing.module';
 import { UploadComponent } from './upload/upload.component';
@@ -24,7 +24,10 @@ import { FilePreviewComponent } from './upload/file-preview.component';
         CommonModule,
         AnalyzeRoutingModule,
         MatButtonModule,
-        HttpClientModule
+        HttpClientModule,
+        MatGridListModule,
+        MatIconModule,
+        MatCheckboxModule
     ],
     providers: [UploadDataService,
         FitApiService]

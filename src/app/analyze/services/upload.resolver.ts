@@ -14,9 +14,6 @@ export class UploadResolver implements Resolve<UploadFile[]> {
         const ids: string[] = (<string>route.params["id"]).split(",");
         const uploads: UploadFile[] = [];
         for (let id of ids) {
-            const upFile: UploadFile = this.uploadService.getData(id);
-            if (upFile && upFile != null)
-                uploads.push(upFile);
         }
         return uploads;
     }
