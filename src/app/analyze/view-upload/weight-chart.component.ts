@@ -38,9 +38,6 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
 
                     xAxes: [{
                         type: 'time',
-                        time: {
-                            unit: 'month'
-                        }
                     }]
                 }, responsive: true
             }

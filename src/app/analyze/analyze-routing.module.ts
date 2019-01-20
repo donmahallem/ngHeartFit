@@ -12,10 +12,9 @@ const routes: Routes = [
         canActivate: [RouteGuardService]
     },
     {
-        path: "upload/:id",
+        path: "view",
         component: ViewUploadComponent,
-        resolve: { uploadData: UploadResolver }
-
+        //resolve: { uploadData: UploadResolver }
     },
     {
         path: "**",

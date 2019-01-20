@@ -31,6 +31,10 @@ export class AnalyzeDataService {
         return from(this.database.heartrate.bulkAdd(lst));
     }
 
+    public getHeartRate(): Observable<Pair[]> {
+        return from(this.database.heartrate.toArray());
+    }
+
     /**
      * Clears all entries from the database
      */

@@ -9,6 +9,7 @@ import { filter, flatMap, map } from 'rxjs/operators';
 import { FlowApiValidator, DaySummary, DayData } from "@donmahallem/flowapi";
 import { UploadFile } from '../services';
 import { AnalyzeDataService } from '../services/analyze-data.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'upload-cmp',
@@ -18,7 +19,8 @@ import { AnalyzeDataService } from '../services/analyze-data.service';
 export class UploadComponent implements OnInit {
     constructor(private uploadDataService: UploadDataService,
         private zone: NgZone,
-        private analyzeDataService: AnalyzeDataService) { }
+        private analyzeDataService: AnalyzeDataService,
+        private router: Router) { }
     public ngOnInit(): void {
     }
 
@@ -90,6 +92,7 @@ export class UploadComponent implements OnInit {
                 console.error(err);
             }, () => {
                 console.log("Complete");
+                this.router.navigate(["analyze", "view"]);
             })
     }
 
