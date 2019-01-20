@@ -4,10 +4,11 @@ import {
     NgZone
 } from '@angular/core';
 import { UploadDataService } from '../services/upload-data.service';
-import { from, Observable, Observer } from 'rxjs';
+import { from, Observable, Observer, of } from 'rxjs';
 import { filter, flatMap, map } from 'rxjs/operators';
-import { FlowApiValidator } from "@donmahallem/flowapi";
+import { FlowApiValidator, DaySummary, DayData } from "@donmahallem/flowapi";
 import { UploadFile } from '../services';
+import { AnalyzeDataService } from '../services/analyze-data.service';
 
 @Component({
     selector: 'upload-cmp',
@@ -15,7 +16,9 @@ import { UploadFile } from '../services';
     styleUrls: ['./upload.component.scss']
 })
 export class UploadComponent implements OnInit {
-    constructor(private uploadDataService: UploadDataService, private zone: NgZone) { }
+    constructor(private uploadDataService: UploadDataService,
+        private zone: NgZone,
+        private analyzeDataService: AnalyzeDataService) { }
     public ngOnInit(): void {
     }
 
@@ -65,6 +68,29 @@ export class UploadComponent implements OnInit {
 
     public importFiles(event: MouseEvent): void {
         console.log(this.uploadFiles[0]);
+        this.analyzeDataService.clear()
+            .pipe(flatMap((result) => {
+                return from(this.uploadFiles);
+            }), filter((upload: UploadFile) => {
+                return upload.valid && (upload.selected || upload.selected == undefined);
+            }), map((upload: UploadFile): DaySummary => {
+                return JSON.parse(upload.data);
+            }), flatMap((summary: DaySummary) => {
+                const summaries: DayData[] = [];
+                for (let key of Object.keys(summary)) {
+                    summaries.push(summary[key]);
+                }
+                return from(summaries);
+            }), flatMap((data: DayData) => {
+                return this.analyzeDataService.insert(data.activityGraphData);
+            }))
+            .subscribe((result) => {
+                console.log("res", result);
+            }, (err: Error) => {
+                console.error(err);
+            }, () => {
+                console.log("Complete");
+            })
     }
 
     public upd(e: HTMLInputElement): Observable<UploadFile> {
@@ -88,7 +114,4 @@ export class UploadComponent implements OnInit {
             }));
     }
 
-    public onClickMe(event: MouseEvent): void {
-        console.log("yes");
-    }
 }
