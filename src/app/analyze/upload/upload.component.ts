@@ -4,25 +4,10 @@ import {
     NgZone
 } from '@angular/core';
 import { UploadDataService } from '../services/upload-data.service';
-import { from, Observable, Observer, PartialObserver } from 'rxjs';
-import { filter, flatMap, map, toArray } from 'rxjs/operators';
-import { DaySummary, DayData, SummaryMerger, FlowApiValidator } from "@donmahallem/flowapi";
-import { Router } from '@angular/router';
+import { from, Observable, Observer } from 'rxjs';
+import { filter, flatMap, map } from 'rxjs/operators';
+import { FlowApiValidator } from "@donmahallem/flowapi";
 import { UploadFile } from '../services';
-
-class TestResult implements Observer<UploadFile>{
-    private ids: string[] = [];
-    constructor(private router: Router, private uploadDataService: UploadDataService) { }
-    public next(value: UploadFile): void {
-        this.ids.push(value.key);
-    }
-    public error(err: Error): void {
-        console.error(err);
-    }
-    public complete(): void {
-        this.router.navigate(["analyze", "upload", this.ids.join(",")]);
-    }
-}
 
 @Component({
     selector: 'upload-cmp',
@@ -30,8 +15,7 @@ class TestResult implements Observer<UploadFile>{
     styleUrls: ['./upload.component.scss']
 })
 export class UploadComponent implements OnInit {
-    constructor(private uploadDataService: UploadDataService,
-        private router: Router, private zone: NgZone) { }
+    constructor(private uploadDataService: UploadDataService, private zone: NgZone) { }
     public ngOnInit(): void {
     }
 
