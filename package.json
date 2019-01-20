@@ -28,6 +28,7 @@
         "@donmahallem/flowapi": "^1.2.2",
         "chart.js": "^2.7.3",
         "core-js": "^2.6.2",
+        "dexie": "^2.0.4",
         "googleapis": "^36.0.0",
         "moment": "^2.23.0",
         "ng-cli-pug-loader": "^0.1.7",
