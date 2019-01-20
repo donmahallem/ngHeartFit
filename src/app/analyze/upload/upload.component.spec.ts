@@ -1,6 +1,6 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MatButtonModule, MatToolbarModule, MatCheckboxChange, MatCheckboxModule, MatGridListModule } from '@angular/material';
+import { MatButtonModule, MatCheckboxModule, MatGridListModule } from '@angular/material';
 import { Observable, from } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { UploadComponent } from './upload.component';
@@ -8,9 +8,10 @@ import { FilePreviewComponent } from './file-preview.component';
 import { UploadDataService, UploadFile } from '../services';
 
 import * as sinon from "sinon";
+import { AnalyzeDataService } from '../services/analyze-data.service';
 
 @Injectable()
-class testUploadDataService2 {
+class testUploadDataService {
 
     public get uploadedFiles(): UploadFile[] {
         return [];
@@ -35,6 +36,10 @@ class testUploadDataService2 {
     public clear(): void {
     }
 }
+@Injectable()
+class testAnalyzeDataService {
+
+}
 let sandbox;
 describe('UploadComponent', () => {
     beforeEach(async(() => {
@@ -50,7 +55,8 @@ describe('UploadComponent', () => {
                 FilePreviewComponent
             ],
             providers: [
-                { provide: UploadDataService, useValue: new testUploadDataService2() }
+                { provide: UploadDataService, useValue: new testUploadDataService() },
+                { provide: AnalyzeDataService, useValue: new testAnalyzeDataService() }
             ]
         }).compileComponents();
     }));
