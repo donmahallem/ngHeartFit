@@ -1,7 +1,7 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatButtonModule, MatCheckboxModule, MatGridListModule } from '@angular/material';
-import { Observable, from, of } from 'rxjs';
+import { Observable, from, of, throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { UploadComponent } from './upload.component';
 import { FilePreviewComponent } from './file-preview.component';
@@ -10,6 +10,7 @@ import { UploadDataService, UploadFile } from '../services';
 import * as sinon from "sinon";
 import { AnalyzeDataService } from '../services/analyze-data.service';
 import { Router } from '@angular/router';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 class testUploadDataService {
@@ -46,7 +47,9 @@ class testAnalyzeDataService {
 }
 @Injectable()
 class testRouter {
+    public navigate(): void {
 
+    }
 }
 let sandbox;
 describe('UploadComponent', () => {
@@ -167,7 +170,7 @@ describe('UploadComponent', () => {
                 selected: false
             }];
             stub.get(() => { return testData });
-            app.importFiles(null);
+            expect(app.validFiles).toBeFalsy();
             stub.restore();
         });
         it('should return true for no valid files and true checked state', () => {
@@ -199,9 +202,9 @@ describe('UploadComponent', () => {
         let uploadDataServiceInstance: UploadDataService;
         let stubUploadedFiles: sinon.SinonStub;
         let stubDbClear: sinon.SinonStub;
-        beforeAll(() => {
-            clearDbStub = sandbox.stub()
-        });
+        let nextSpy: sinon.SinonSpy;
+        let errorSpy: sinon.SinonSpy;
+        let completeSpy: sinon.SinonSpy;
 
         beforeEach(() => {
             fixture = TestBed.createComponent(UploadComponent);
@@ -211,17 +214,50 @@ describe('UploadComponent', () => {
             analyzeDataServiceInstance = fixture.debugElement.injector.get(AnalyzeDataService);
             stubUploadedFiles = sandbox.stub(uploadDataServiceInstance, 'uploadedFiles');
             stubDbClear = sandbox.stub(analyzeDataServiceInstance, "clear");
+            nextSpy = sinon.spy();
+            completeSpy = sinon.spy();
+            errorSpy = sinon.spy();
         });
 
         afterEach(() => {
             sandbox.restore();
+            nextSpy.resetHistory();
+            completeSpy.resetHistory();
+            errorSpy.resetHistory();
         })
-        it('should return false for no files', () => {
-            const stubUploadedFiles: sinon.SinonStub = sandbox.stub(analyzeDataServiceInstance, 'uploadedFiles');
+        it('it should pass with an empty array of files', (done) => {
             const testData: any[] = []
             stubUploadedFiles.get(() => { return testData });
             stubDbClear.returns(of({}));
-            expect(component.validFiles).toBeFalsy();
+            const cb = () => {
+                expect(stubDbClear.callCount).toEqual(1);
+                expect(errorSpy.callCount).toEqual(0);
+                expect(completeSpy.callCount).toEqual(1);
+                expect(nextSpy.callCount).toEqual(0);
+                done();
+            }
+
+            component.importFiles()
+                .pipe(tap(nextSpy, errorSpy, completeSpy))
+                .subscribe(() => { }, cb, cb);
+        });
+        it('it should fail if clearing the database fails', (done) => {
+            const testData: any[] = []
+            const testError: Error = new Error("test error");
+            stubUploadedFiles.get(() => { return testData });
+            stubDbClear.returns(throwError(testError));
+            const cb = () => {
+                expect(stubDbClear.callCount).toEqual(1);
+                expect(errorSpy.callCount).toEqual(1);
+                expect(completeSpy.callCount).toEqual(0);
+                expect(nextSpy.callCount).toEqual(0);
+                expect(errorSpy.getCall(0).args).toEqual([testError]);
+                done();
+            }
+
+            component.importFiles()
+                .pipe(tap(nextSpy, errorSpy, completeSpy))
+                .subscribe(() => { }, cb, cb);
         });
     });
 });

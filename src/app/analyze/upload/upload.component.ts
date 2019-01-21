@@ -68,9 +68,20 @@ export class UploadComponent implements OnInit {
         });
     }
 
-    public importFiles(event: MouseEvent): void {
-        console.log(this.uploadFiles[0]);
-        this.analyzeDataService.clear()
+    public clickImport(event: MouseEvent): void {
+        this.importFiles().subscribe((result) => {
+            console.log("res", result);
+        }, (err: Error) => {
+            console.error(err);
+        }, () => {
+            console.log("Complete");
+            this.router.navigate(["analyze", "view"]);
+        })
+
+    }
+
+    public importFiles(): Observable<number> {
+        return this.analyzeDataService.clear()
             .pipe(flatMap((result) => {
                 return from(this.uploadFiles);
             }), filter((upload: UploadFile) => {
@@ -85,15 +96,7 @@ export class UploadComponent implements OnInit {
                 return from(summaries);
             }), flatMap((data: DayData) => {
                 return this.analyzeDataService.insert(data.activityGraphData);
-            }))
-            .subscribe((result) => {
-                console.log("res", result);
-            }, (err: Error) => {
-                console.error(err);
-            }, () => {
-                console.log("Complete");
-                this.router.navigate(["analyze", "view"]);
-            })
+            }));
     }
 
     public upd(e: HTMLInputElement): Observable<UploadFile> {
