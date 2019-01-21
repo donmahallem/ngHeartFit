@@ -1,7 +1,7 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatButtonModule, MatCheckboxModule, MatGridListModule } from '@angular/material';
-import { Observable, from } from 'rxjs';
+import { Observable, from, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { UploadComponent } from './upload.component';
 import { FilePreviewComponent } from './file-preview.component';
@@ -9,6 +9,7 @@ import { UploadDataService, UploadFile } from '../services';
 
 import * as sinon from "sinon";
 import { AnalyzeDataService } from '../services/analyze-data.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 class testUploadDataService {
@@ -38,6 +39,13 @@ class testUploadDataService {
 }
 @Injectable()
 class testAnalyzeDataService {
+    clear(): Observable<void> {
+        return null;
+    }
+
+}
+@Injectable()
+class testRouter {
 
 }
 let sandbox;
@@ -56,7 +64,8 @@ describe('UploadComponent', () => {
             ],
             providers: [
                 { provide: UploadDataService, useValue: new testUploadDataService() },
-                { provide: AnalyzeDataService, useValue: new testAnalyzeDataService() }
+                { provide: AnalyzeDataService, useValue: new testAnalyzeDataService() },
+                { provide: Router, useValue: new testRouter() }
             ]
         }).compileComponents();
     }));
@@ -158,7 +167,7 @@ describe('UploadComponent', () => {
                 selected: false
             }];
             stub.get(() => { return testData });
-            expect(app.validFiles).toBeFalsy();
+            app.importFiles(null);
             stub.restore();
         });
         it('should return true for no valid files and true checked state', () => {
@@ -180,6 +189,39 @@ describe('UploadComponent', () => {
             stub.get(() => { return testData });
             expect(app.validFiles).toBeTruthy();
             stub.restore();
+        });
+    });
+    describe('importFiles - get', () => {
+        let clearDbStub: sinon.SinonStub;
+        let fixture;
+        let component: UploadComponent;
+        let analyzeDataServiceInstance: AnalyzeDataService;
+        let uploadDataServiceInstance: UploadDataService;
+        let stubUploadedFiles: sinon.SinonStub;
+        let stubDbClear: sinon.SinonStub;
+        beforeAll(() => {
+            clearDbStub = sandbox.stub()
+        });
+
+        beforeEach(() => {
+            fixture = TestBed.createComponent(UploadComponent);
+            component = fixture.debugElement.componentInstance;
+            expect(component).toBeTruthy();
+            uploadDataServiceInstance = fixture.debugElement.injector.get(UploadDataService);
+            analyzeDataServiceInstance = fixture.debugElement.injector.get(AnalyzeDataService);
+            stubUploadedFiles = sandbox.stub(uploadDataServiceInstance, 'uploadedFiles');
+            stubDbClear = sandbox.stub(analyzeDataServiceInstance, "clear");
+        });
+
+        afterEach(() => {
+            sandbox.restore();
+        })
+        it('should return false for no files', () => {
+            const stubUploadedFiles: sinon.SinonStub = sandbox.stub(analyzeDataServiceInstance, 'uploadedFiles');
+            const testData: any[] = []
+            stubUploadedFiles.get(() => { return testData });
+            stubDbClear.returns(of({}));
+            expect(component.validFiles).toBeFalsy();
         });
     });
 });
