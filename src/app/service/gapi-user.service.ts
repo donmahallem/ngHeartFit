@@ -1,4 +1,3 @@
-import { GoogleAuthService, GoogleApiService } from "ng-gapi";
 import { Injectable } from "@angular/core";
 import {
     timer,
@@ -18,6 +17,16 @@ import {
     single,
     flatMap
 } from 'rxjs/operators';
+import {
+    oauth2_v2
+} from 'googleapis';
+import {
+    Credentials, OAuth2Client, GenerateAuthUrlOpts
+} from 'google-auth-library';
+import {
+
+} from 'googleapis';
+import { environment } from "src/environments/environment.prod";
 export enum ClientStatus {
     LOADING = 1,
     LOADED = 2,
@@ -31,15 +40,18 @@ export class GapiUserService {
     private user: gapi.auth2.GoogleUser;
     private signinStatusSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
     private clientStatusSubject: BehaviorSubject<ClientStatus> = new BehaviorSubject(ClientStatus.LOADING);
+    private mOAuth2Client: OAuth2Client;
 
-    constructor(private googleAuthService: GoogleAuthService) {
+    constructor() {
+
+        this.mOAuth2Client = new OAuth2Client(environment.gapi.client_id,
+            environment.gapi.client_secret,
+            environment.gapi.redirect_uri
+        );
     }
 
     public getToken2(): Observable<string> {
-        return this.googleAuthService.getAuth()
-            .pipe(map((auth) => {
-                return auth.currentUser.get().getAuthResponse().access_token;
-            }));
+        return of("JJ");
     }
 
     public getToken(): string {
@@ -50,30 +62,30 @@ export class GapiUserService {
         return sessionStorage.getItem(GapiUserService.SESSION_STORAGE_KEY);
     }
 
-    public getUserObservable(): Observable<gapi.auth2.GoogleUser> {
-        return this.googleAuthService.getAuth()
-            .pipe(map((auth: gapi.auth2.GoogleAuth) => {
-                if (auth.isSignedIn.get()) {
-                    return auth.currentUser.get();
-                } else {
-                    throw new Error("not signed in");
-                }
-            }));
+    public getUserObservable(): Observable<oauth2_v2.Schema$Userinfoplus> {
+        const a: oauth2_v2.Oauth2 = new oauth2_v2.Oauth2({
+            auth: ""
+        });
+        return of(null);
     }
 
     public isSignedInObservable(): Observable<boolean> {
-        return this.googleAuthService
-            .getAuth()
-            .pipe(map((value: gapi.auth2.GoogleAuth) => {
-                return value.isSignedIn.get();
-            }), single());
+        return of(false);
     }
 
     public signIn(): void {
-        this.googleAuthService.getAuth()
-            .subscribe((auth) => {
-                auth.signIn().then(res => this.signInSuccessHandler(res));
-            });
+        const options: GenerateAuthUrlOpts = {
+            access_type: 'offline',
+            scope: [
+                'https://www.googleapis.com/auth/fitness.body.read',
+                'https://www.googleapis.com/auth/fitness.body.write'
+            ],
+            include_granted_scopes: true,
+            redirect_uri: environment.gapi.redirect_uri
+            //code_challenge: this.createCodeChallenge(this.createCodeVerifier()),
+            //code_challenge_method: CodeChallengeMethod.S256
+        };
+        this.mOAuth2Client.generateAuthUrl(options);
     }
 
     private signInSuccessHandler(res: gapi.auth2.GoogleUser) {

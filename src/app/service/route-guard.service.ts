@@ -8,7 +8,6 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { GoogleApiService } from 'ng-gapi';
 import { GapiUserService } from './gapi-user.service';
 
 @Injectable()

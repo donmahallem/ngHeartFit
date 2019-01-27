@@ -24,9 +24,9 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     public ngAfterViewInit(): void {
         this.signinSubscription = this.gapiService.getUserObservable()
             .subscribe((res) => {
-                const profile: gapi.auth2.BasicProfile = res.getBasicProfile();
-                this.user = profile.getName();
-                console.log(res.getGrantedScopes(), res, res.getBasicProfile().getGivenName(), res.getBasicProfile().getName());
+                //const profile: gapi.auth2.BasicProfile = res.getBasicProfile();
+                this.user = "profile.getName()";
+                //console.log(res.getGrantedScopes(), res, res.getBasicProfile().getGivenName(), res.getBasicProfile().getName());
                 this._isSignedIn = true;
             }, (err) => {
                 console.error(err);

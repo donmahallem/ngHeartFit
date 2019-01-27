@@ -8,7 +8,8 @@ export const environment: BaseEnvironment = {
     production: false,
     gapi: {
         client_id: "",
-        redirect_uri: ""
+        redirect_uri: "",
+        client_secret: ""
     }
 }
 
