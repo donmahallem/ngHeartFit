@@ -6,9 +6,9 @@ import {
     OnDestroy,
     ChangeDetectorRef
 } from '@angular/core';
-import { GapiUserService } from '../service/gapi-user.service';
 import { MatButton } from '@angular/material';
 import { Subscription } from 'rxjs';
+import { GapiAuthService } from '../service/gapi-auth.service';
 @Component({
     selector: 'profile-view',
     templateUrl: './profile.component.pug',
@@ -20,9 +20,9 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     public btnSignIn: MatButton;
     private _isSignedIn: boolean = false;
     private signinSubscription: Subscription;
-    constructor(private gapiService: GapiUserService, private cd: ChangeDetectorRef) { }
+    constructor(private gapiService: GapiAuthService, private cd: ChangeDetectorRef) { }
     public ngAfterViewInit(): void {
-        this.signinSubscription = this.gapiService.getUserObservable()
+        /*this.signinSubscription = this.gapiService.getUserObservable()
             .subscribe((res) => {
                 const profile: gapi.auth2.BasicProfile = res.getBasicProfile();
                 this.user = profile.getName();
@@ -34,7 +34,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
                 this.user = "errro";
             }, () => {
                 this.cd.detectChanges();
-            });
+            });*/
     }
 
     public ngOnDestroy(): void {
@@ -47,6 +47,6 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     }
 
     public signin(event: MouseEvent): void {
-        this.gapiService.signIn();
+        //this.gapiService.
     }
 }

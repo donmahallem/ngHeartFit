@@ -4,13 +4,8 @@ import {
     OnDestroy,
     Input
 } from '@angular/core';
-import { UploadDataService } from '../services/upload-data.service';
 import { from, Observable, Observer, Subscription, BehaviorSubject } from 'rxjs';
-import { filter, flatMap, map } from 'rxjs/operators';
-import { DaySummary, DayData } from "@donmahallem/flowapi";
-import { Router, Route, ActivatedRouteSnapshot, ActivatedRoute, Params } from '@angular/router';
 import { DataPoint } from './data-point';
-import { GoogleApiService } from 'ng-gapi';
 import { FitApiService } from 'src/app/service/fit-api.service';
 
 
