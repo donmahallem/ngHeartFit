@@ -4,7 +4,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { timer, Observable, Subscription, of, combineLatest, BehaviorSubject } from "rxjs";
 import { catchError, map, tap, mergeMapTo, filter, mergeMap } from 'rxjs/operators';
 import * as moment from 'moment';
-import { GapiAuthService } from './gapi-auth.service';
 
 export interface SignInUrlResponse {
     url: string;
@@ -20,9 +19,9 @@ export interface User {
 @Injectable({
     providedIn: 'root',
 })
-export class GapiService {
+export class GapiAuthService {
 
-    constructor(private http: HttpClient, private gapiAuth: GapiAuthService) {
+    constructor(private http: HttpClient) {
     }
 
     public getMe(): Observable<User> {
@@ -30,7 +29,15 @@ export class GapiService {
             .get<User>("/api/google/user/me");
     }
 
-    public getDataSources(): Observable<any> {
-        return this.http.get<any>("/api/google/fit/datasources");
+    public getSigninUrl(): Observable<SignInUrlResponse> {
+        return this.http
+            .get<SignInUrlResponse>("/api/google/auth/url");
+    }
+
+    public exchangeCode(code: string): Observable<ExchangeCodeResponse> {
+        const body: any = {
+            code: code
+        };
+        return this.http.post<ExchangeCodeResponse>("/api/google/auth/code", body);
     }
 }
