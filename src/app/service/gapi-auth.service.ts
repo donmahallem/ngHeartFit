@@ -1,7 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { timer, Observable, Subscription, of, combineLatest, BehaviorSubject } from "rxjs";
+import { timer, Observable, Subscription, of, combineLatest, BehaviorSubject, throwError } from "rxjs";
 import { catchError, map, tap, mergeMapTo, filter, mergeMap } from 'rxjs/operators';
 import * as moment from 'moment';
 
@@ -39,5 +39,14 @@ export class GapiAuthService {
             code: code
         };
         return this.http.post<ExchangeCodeResponse>("/api/google/auth/code", body);
+    }
+    a:number=0;
+    public refreshToken():Observable<boolean>{
+        this.a++;
+        if(this.a%3==0){
+            return throwError(new Error("asdf"));
+        }else{
+            return of(true);
+        }
     }
 }

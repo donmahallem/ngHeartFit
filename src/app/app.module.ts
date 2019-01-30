@@ -9,6 +9,7 @@ import { environment } from "src/environments/environment";
 import { MatButtonModule, MatSidenavModule, MatToolbarModule, MatTabsModule } from '@angular/material';
 import { GapiAuthService } from './service/gapi-auth.service';
 import { GapiService } from './service/gapi.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     declarations: [
@@ -22,7 +23,8 @@ import { GapiService } from './service/gapi.service';
         MatButtonModule,
         MatSidenavModule,
         MatToolbarModule,
-        MatTabsModule
+        MatTabsModule,
+        HttpClientModule
     ],
     providers: [,
         GapiAuthService,
