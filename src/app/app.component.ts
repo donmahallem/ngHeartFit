@@ -16,7 +16,7 @@ function updateSigninStatus(isSignedIn) {
 export class AppComponent {
     private _title: string = "app title";
 
-    constructor(private a:GapiService) {
-        a.authRequest(a.getDataSources()).subscribe(console.log,console.error);
-     }
+    constructor(private a: GapiService) {
+        a.getDataSources().subscribe(console.log, console.error);
+    }
 }
