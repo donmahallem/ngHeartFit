@@ -10,7 +10,7 @@ export interface SignInUrlResponse {
 }
 
 export interface ExchangeCodeResponse {
-
+    url: string
 }
 export interface User {
 

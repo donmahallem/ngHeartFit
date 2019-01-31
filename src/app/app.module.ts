@@ -10,11 +10,13 @@ import { MatButtonModule, MatSidenavModule, MatToolbarModule, MatTabsModule } fr
 import { GapiAuthService } from './service/gapi-auth.service';
 import { GapiService } from './service/gapi.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { LoginGoogleComponent } from './components/login-google/login-google.component';
 
 @NgModule({
     declarations: [
         AppComponent,
-        ProfileComponent
+        ProfileComponent,
+        LoginGoogleComponent
     ],
     imports: [
         BrowserModule,
