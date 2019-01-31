@@ -31,18 +31,7 @@ export class GapiService {
     }
 
     public getDataSources(): Observable<any> {
-        return this.http.get<any>("/api/google/fit/datasources");
+        return this.gapiAuth.authRequest(this.http.get<any>("/api/google/fit/datasources"));
     }
 
-    public  authRequest<T>(obs:Observable<T>):Observable<T>{
-        return obs
-            .pipe(retryWhen((errors:Observable<any|HttpErrorResponse>)=>{
-                return errors.pipe(flatMap((err:any|HttpErrorResponse)=>{
-                    if(err.status==401){
-                        return this.gapiAuth.refreshToken();
-                    }
-                    throw err;
-                }));
-            }));
-    }
 }

@@ -1,11 +1,7 @@
 import {
     Component,
     Input,
-    HostBinding,
-    Output,
-    ViewChild,
-    AfterViewInit,
-    OnDestroy
+    HostBinding
 } from '@angular/core';
 import { UploadFile, UploadDataService } from '../services';
 import { MatCheckboxChange } from '@angular/material';

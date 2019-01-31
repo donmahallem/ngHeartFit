@@ -1,8 +1,8 @@
 import { Injectable, NgZone } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { timer, Observable, Subscription, of, combineLatest, BehaviorSubject, throwError } from "rxjs";
-import { catchError, map, tap, mergeMapTo, filter, mergeMap } from 'rxjs/operators';
+import { catchError, map, tap, mergeMapTo, filter, mergeMap, retryWhen, flatMap, delay } from 'rxjs/operators';
 import * as moment from 'moment';
 
 export interface SignInUrlResponse {
@@ -40,13 +40,34 @@ export class GapiAuthService {
         };
         return this.http.post<ExchangeCodeResponse>("/api/google/auth/code", body);
     }
-    a:number=0;
-    public refreshToken():Observable<boolean>{
+    a: number = 0;
+    public refreshToken(): Observable<boolean> {
         this.a++;
-        if(this.a%3==0){
+        if (this.a % 3 == 0) {
             return throwError(new Error("asdf"));
-        }else{
+        } else {
             return of(true);
         }
+    }
+    public authRequest<T>(obs: Observable<T>): Observable<T> {
+        return obs
+            .pipe(retryWhen((errors: Observable<any | HttpErrorResponse>) => {
+                let retries: number = 0;
+                return errors.pipe(flatMap((err: any | HttpErrorResponse) => {
+                    if (err.status) {
+                        if (err.status == 401) {
+                            return this.refreshToken();
+                        } else {
+                            throw err;
+                        }
+                    }
+                    if (retries < 3) {
+                        retries++;
+                        return delay(1000 * retries);
+                    } else {
+                        throw err;
+                    }
+                }));
+            }));
     }
 }
