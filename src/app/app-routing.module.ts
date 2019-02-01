@@ -18,6 +18,12 @@ const routes: Routes = [
         },
         loadChildren: "./profile/profile.module#ProfileModule"
     }, {
+        path: 'bodymetrics',
+        data: {
+            requiresLogin: true
+        },
+        loadChildren: "./bodymetrics/bodymetrics.module#BodyMetricsModule"
+    }, {
         path: 'login',
         children: [
             {
