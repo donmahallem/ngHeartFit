@@ -3,6 +3,8 @@ import {
     OnInit
 } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatDatepickerInputEvent } from '@angular/material';
+import * as moment from 'moment';
 
 @Component({
     selector: 'bodymetrics-form-cmp',
@@ -15,12 +17,13 @@ export class BodyMetricsFormComponent {
         bodyfat: new FormControl('', Validators.compose([Validators.min(0), Validators.max(100)])),
         bodyheight: new FormControl('', Validators.compose([Validators.min(0)])),
         bodyweightunit: new FormControl('kilogram'),
-        bodyheightunit: new FormControl('meter')
+        bodyheightunit: new FormControl('meter'),
+        date: new FormControl(moment.utc().local(), Validators.required),
+        time: new FormControl(moment.utc().local().format("HH:mm"), Validators.pattern(/^(([0-1][0-9])|(2[0-3]))\:([0-5][0-9])/))
     });
     constructor() { }
 
     public onSubmit(): void {
-        console.log("Submit", this.metricsForm.valid);
         if (this.metricsForm.valid) {
             const bodyWeightUnit: string = this.metricsForm.get('bodyweightunit').value;
             const bodyHeightUnit: string = this.metricsForm.get('bodyheightunit').value;
@@ -38,8 +41,16 @@ export class BodyMetricsFormComponent {
             }
             const bodyWeight: number = this.metricsForm.get('bodyweight').value * bodyWeightMultiplicator;
             const bodyHeight: number = this.metricsForm.get('bodyheight').value * bodyHeightMultiplicator;
-            console.log(bodyHeight, bodyWeight);
+            const date: moment.Moment = this.metricsForm.get('date').value;
+            const time: string = this.metricsForm.get('time').value;
+            const timeSplit: string[] = time.split(":");
+            date.hours(parseInt(timeSplit[0]));
+            date.minutes(parseInt(timeSplit[1]));
+            console.log(bodyHeight, bodyWeight, date.toLocaleString());
         }
+    }
+    addEvent(type: string, event: MatDatepickerInputEvent<moment.Moment>) {
+        console.log(event.value.utc());
     }
 
 }

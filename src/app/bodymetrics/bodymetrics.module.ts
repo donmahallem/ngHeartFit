@@ -9,7 +9,9 @@ import {
     MatInputModule,
     MatSelectModule
 } from '@angular/material';
-
+import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FitApiService } from '../service/fit-api.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { BodyMetricsRoutingModule } from './bodymetrics-routing.module';
@@ -31,10 +33,13 @@ import { BodyMetricsFormComponent } from './components/bodymetrics-form.componen
         ReactiveFormsModule,
         MatFormFieldModule,
         MatInputModule,
-        MatSelectModule
+        MatSelectModule,
+        MatDatepickerModule
     ],
     providers: [
-        FitApiService
+        FitApiService,
+        { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+        { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS }
     ]
 })
 export class BodyMetricsModule { }
