@@ -34,4 +34,13 @@ export class GapiService {
         return this.gapiAuth.authRequest(this.http.get<any>("/api/google/fit/datasources"));
     }
 
+    public submitBodyMetrics(data: {
+        timestamp: number,
+        bodyweight: number,
+        bodyfat: number,
+        bodyheight: number
+    }): Observable<any> {
+        return this.gapiAuth.authRequest(this.http.post<any>("/api/google/fit/bodymetrics", data));
+    }
+
 }

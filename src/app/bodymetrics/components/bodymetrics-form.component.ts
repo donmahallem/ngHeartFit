@@ -5,6 +5,7 @@ import {
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material';
 import * as moment from 'moment';
+import { GapiService } from 'src/app/service/gapi.service';
 
 @Component({
     selector: 'bodymetrics-form-cmp',
@@ -21,7 +22,7 @@ export class BodyMetricsFormComponent {
         date: new FormControl(moment.utc().local(), Validators.required),
         time: new FormControl(moment.utc().local().format("HH:mm"), Validators.pattern(/^(([0-1][0-9])|(2[0-3]))\:([0-5][0-9])/))
     });
-    constructor() { }
+    constructor(private gapi: GapiService) { }
 
     public onSubmit(): void {
         if (this.metricsForm.valid) {
@@ -41,16 +42,21 @@ export class BodyMetricsFormComponent {
             }
             const bodyWeight: number = this.metricsForm.get('bodyweight').value * bodyWeightMultiplicator;
             const bodyHeight: number = this.metricsForm.get('bodyheight').value * bodyHeightMultiplicator;
+            const bodyFat: number = this.metricsForm.get('bodyfat').value * 1;
             const date: moment.Moment = this.metricsForm.get('date').value;
             const time: string = this.metricsForm.get('time').value;
             const timeSplit: string[] = time.split(":");
             date.hours(parseInt(timeSplit[0]));
             date.minutes(parseInt(timeSplit[1]));
             console.log(bodyHeight, bodyWeight, date.toLocaleString());
+            this.gapi.submitBodyMetrics({
+                timestamp: date.unix(),
+                bodyfat: bodyFat,
+                bodyheight: bodyHeight,
+                bodyweight: bodyWeight
+            })
+                .subscribe(console.log, console.error);
         }
-    }
-    addEvent(type: string, event: MatDatepickerInputEvent<moment.Moment>) {
-        console.log(event.value.utc());
     }
 
 }
