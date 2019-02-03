@@ -5,31 +5,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProfileComponent } from './components/profile.component';
-import {
-    GoogleApiModule,
-    GoogleApiService,
-    GoogleAuthService,
-    NgGapiClientConfig,
-    NG_GAPI_CONFIG,
-    GoogleApiConfig
-} from "ng-gapi";
 import { environment } from "src/environments/environment";
 import { MatButtonModule, MatSidenavModule, MatToolbarModule, MatTabsModule } from '@angular/material';
-const gapiClientConfig: NgGapiClientConfig = {
-    client_id: environment.gapi.client_id,
-    redirect_uri: environment.gapi.redirect_uri,
-    discoveryDocs: ["https://analyticsreporting.googleapis.com/$discovery/rest?version=v4"],
-    scope: [
-        "https://www.googleapis.com/auth/fitness.body.read",
-        "https://www.googleapis.com/auth/fitness.body.write",
-        "https://www.googleapis.com/auth/fitness.nutrition.read",
-        "https://www.googleapis.com/auth/fitness.nutrition.write"
-    ].join(" ")
-};
+import { GapiAuthService } from './service/gapi-auth.service';
+import { GapiService } from './service/gapi.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { LoginGoogleComponent } from './components/login-google/login-google.component';
+
 @NgModule({
     declarations: [
         AppComponent,
-        ProfileComponent
+        ProfileComponent,
+        LoginGoogleComponent
     ],
     imports: [
         BrowserModule,
@@ -38,13 +25,13 @@ const gapiClientConfig: NgGapiClientConfig = {
         MatButtonModule,
         MatSidenavModule,
         MatToolbarModule,
-        GoogleApiModule.forRoot({
-            provide: NG_GAPI_CONFIG,
-            useValue: gapiClientConfig
-        }),
-        MatTabsModule
+        MatTabsModule,
+        HttpClientModule
     ],
-    providers: [],
+    providers: [
+        GapiAuthService,
+        GapiService
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

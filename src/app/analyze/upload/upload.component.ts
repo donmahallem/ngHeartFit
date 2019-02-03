@@ -4,25 +4,12 @@ import {
     NgZone
 } from '@angular/core';
 import { UploadDataService } from '../services/upload-data.service';
-import { from, Observable, Observer, PartialObserver } from 'rxjs';
-import { filter, flatMap, map, toArray } from 'rxjs/operators';
-import { DaySummary, DayData, SummaryMerger, FlowApiValidator } from "@donmahallem/flowapi";
-import { Router } from '@angular/router';
+import { from, Observable, Observer, of } from 'rxjs';
+import { filter, flatMap, map } from 'rxjs/operators';
+import { FlowApiValidator, DaySummary, DayData } from "@donmahallem/flowapi";
 import { UploadFile } from '../services';
-
-class TestResult implements Observer<UploadFile>{
-    private ids: string[] = [];
-    constructor(private router: Router, private uploadDataService: UploadDataService) { }
-    public next(value: UploadFile): void {
-        this.ids.push(value.key);
-    }
-    public error(err: Error): void {
-        console.error(err);
-    }
-    public complete(): void {
-        this.router.navigate(["analyze", "upload", this.ids.join(",")]);
-    }
-}
+import { AnalyzeDataService } from '../services/analyze-data.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'upload-cmp',
@@ -31,7 +18,9 @@ class TestResult implements Observer<UploadFile>{
 })
 export class UploadComponent implements OnInit {
     constructor(private uploadDataService: UploadDataService,
-        private router: Router, private zone: NgZone) { }
+        private zone: NgZone,
+        private analyzeDataService: AnalyzeDataService,
+        private router: Router) { }
     public ngOnInit(): void {
     }
 
@@ -79,8 +68,35 @@ export class UploadComponent implements OnInit {
         });
     }
 
-    public importFiles(event: MouseEvent): void {
-        console.log(this.uploadFiles[0]);
+    public clickImport(event: MouseEvent): void {
+        this.importFiles().subscribe((result) => {
+            console.log("res", result);
+        }, (err: Error) => {
+            console.error(err);
+        }, () => {
+            console.log("Complete");
+            this.router.navigate(["analyze", "view"]);
+        })
+
+    }
+
+    public importFiles(): Observable<number> {
+        return this.analyzeDataService.clear()
+            .pipe(flatMap((result) => {
+                return from(this.uploadFiles);
+            }), filter((upload: UploadFile) => {
+                return upload.valid && (upload.selected || upload.selected == undefined);
+            }), map((upload: UploadFile): DaySummary => {
+                return JSON.parse(upload.data);
+            }), flatMap((summary: DaySummary) => {
+                const summaries: DayData[] = [];
+                for (let key of Object.keys(summary)) {
+                    summaries.push(summary[key]);
+                }
+                return from(summaries);
+            }), flatMap((data: DayData) => {
+                return this.analyzeDataService.insert(data.activityGraphData);
+            }));
     }
 
     public upd(e: HTMLInputElement): Observable<UploadFile> {
@@ -104,7 +120,4 @@ export class UploadComponent implements OnInit {
             }));
     }
 
-    public onClickMe(event: MouseEvent): void {
-        console.log("yes");
-    }
 }

@@ -11,6 +11,7 @@ import { UploadToFitComponent } from './view-upload/upload-to-fit.component';
 import { FitApiService } from '../service/fit-api.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FilePreviewComponent } from './upload/file-preview.component';
+import { AnalyzeDataService } from './services/analyze-data.service';
 
 @NgModule({
     declarations: [
@@ -29,7 +30,10 @@ import { FilePreviewComponent } from './upload/file-preview.component';
         MatIconModule,
         MatCheckboxModule
     ],
-    providers: [UploadDataService,
-        FitApiService]
+    providers: [
+        UploadDataService,
+        FitApiService,
+        AnalyzeDataService
+    ]
 })
 export class AnalyzeModule { }

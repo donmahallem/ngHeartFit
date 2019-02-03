@@ -10,6 +10,7 @@ import { filter, flatMap, map } from 'rxjs/operators';
 import { DaySummary, DayData } from "@donmahallem/flowapi";
 import { Router, Route, ActivatedRouteSnapshot, ActivatedRoute, Params } from '@angular/router';
 import { DataPoint } from './data-point';
+import { AnalyzeDataService, Pair } from '../services/analyze-data.service';
 
 
 @Component({
@@ -23,26 +24,25 @@ export class ViewUploadComponent implements
     public user: any;
     public chartData: DataPoint[];
     private idSubscription: Subscription;
-    constructor(private uploadDataService: UploadDataService,
-        private route: ActivatedRoute) {
-        this.route.data.subscribe(this.updateData.bind(this));
+    constructor(private analyzeDataService: AnalyzeDataService) {
     }
 
-    public updateData(summary: { uploadData: DaySummary }): void {
+    public updateData(summary: Pair[]): void {
         console.log(summary);
         let lst: DataPoint[] = [];
-        for (let key of Object.keys(summary.uploadData[0])) {
-            for (let pair of summary.uploadData[key].activityGraphData.heartRateTimelineSamples) {
-                lst.push({
-                    x: new Date(pair.time),
-                    y: pair.value
-                });
-            }
+        for (let p of summary) {
+            lst.push({
+                x: new Date(p.timestamp),
+                y: p.bpm
+            });
         }
         this.chartData = lst;
     }
     public ngAfterViewInit(): void {
         //this.idSubscription = this.router.
+        this.analyzeDataService
+            .getHeartRate()
+            .subscribe(this.updateData.bind(this));
     }
 
     public ngOnDestroy(): void {

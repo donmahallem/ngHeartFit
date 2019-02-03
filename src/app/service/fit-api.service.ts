@@ -1,6 +1,6 @@
-import { GapiUserService } from "./gapi-user.service";
+
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { FitDatasource } from "./fit-datasource.modal";
 import { map, flatMap } from "rxjs/operators";
@@ -13,8 +13,7 @@ export class FitApiService {
     private readonly ENDPOINT_URL: string = '/users/@me/lists';
     private authHeader: HttpHeaders = new HttpHeaders();
 
-    constructor(private httpService: HttpClient,
-        private userService: GapiUserService) {
+    constructor(private httpService: HttpClient) {
 
     }
 
@@ -101,12 +100,9 @@ export class FitApiService {
     }
 
     private createHeader(): Observable<HttpHeaders> {
-        return this.userService.getToken2()
-            .pipe(map((token: string): HttpHeaders => {
-                const header: HttpHeaders = new HttpHeaders()
-                    .set('Authorization', 'Bearer ' + token);
-                return header;
-            }))
+        const header: HttpHeaders = new HttpHeaders()
+            .set('Authorization', 'Bearer ');
+        return of(header);
     }
 
     findAll(): Observable<TasklistListResponse> {
