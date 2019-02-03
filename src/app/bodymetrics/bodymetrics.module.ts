@@ -17,10 +17,14 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { BodyMetricsRoutingModule } from './bodymetrics-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BodyMetricsFormComponent } from './components/bodymetrics-form.component';
+import { WeightChartComponent } from './components/weight-chart.component';
+import { ChartComponent } from '../common-components/chart.component';
 
 @NgModule({
     declarations: [
-        BodyMetricsFormComponent
+        BodyMetricsFormComponent,
+        WeightChartComponent,
+        ChartComponent
     ],
     imports: [
         CommonModule,
