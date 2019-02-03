@@ -1,9 +1,9 @@
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatButtonModule, MatCheckboxModule, MatGridListModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatIconModule } from '@angular/material';
 import { Observable, from, of, throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { BodyMetricsFormComponent } from './bodymetrics-form.component';
+import { BodyMetricsFormComponent, BodyMetricsFormData } from './bodymetrics-form.component';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
@@ -14,6 +14,12 @@ import { GapiService, SubmitBodyMetricsRequest } from 'src/app/service/gapi.serv
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import * as moment from 'moment';
+
+export function newEvent(eventName: string, bubbles = false, cancelable = false) {
+    let evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
+    evt.initCustomEvent(eventName, bubbles, cancelable, null);
+    return evt;
+}
 
 @Injectable()
 class testGapiService {
@@ -84,31 +90,63 @@ describe('BodyMetricsComponent', () => {
             });
         });
         describe('form is valid', () => {
-            let inputBodyHeight, inputDate, inputTime: HTMLInputElement;
-            let inputBodyHeightUnit: HTMLSelectElement;
+            let inputBodyWeight,
+                inputBodyFat,
+                inputBodyHeight,
+                inputDate,
+                inputTime: HTMLInputElement;
+            let inputBodyHeightUnit,
+                inputBodyWeightUnit: HTMLSelectElement;
             const testTimestamp: number = 1549193178;
             beforeEach(() => {
                 validStub.value(true);
                 inputBodyHeight = fixture.nativeElement.querySelector('.inputbodyheight');
+                inputBodyFat = fixture.nativeElement.querySelector('.inputbodyfat');
+                inputBodyWeight = fixture.nativeElement.querySelector('.inputbodyweight');
                 inputBodyHeightUnit = fixture.nativeElement.querySelector('.inputbodyheightunit');
+                inputBodyWeightUnit = fixture.nativeElement.querySelector('.inputbodyweightunit');
                 inputDate = fixture.nativeElement.querySelector('.inputdate');
                 inputTime = fixture.nativeElement.querySelector('.inputtime');
-                component.metricsForm.get('date').setValue(moment.unix(testTimestamp).local());
-                component.metricsForm.get('time').setValue(moment.unix(testTimestamp).local().format("HH:mm"));
             });
-            it('should call submitBodyMetrics', () => {
-                inputBodyHeight.value = "23";
-                inputBodyHeightUnit.value = "feet";
-                component.metricsForm.get('bodyweight').setValue(23);
+            it('should connect inputs to form', () => {
+                const testData: BodyMetricsFormData = {
+                    bodyfat: 29.2,
+                    bodyheight: 92,
+                    bodyweight: 78,
+                    bodyheightunit: 'inch',
+                    bodyweightunit: 'kilogram',
+                    date: moment.unix(testTimestamp).local(),
+                    time: moment.unix(testTimestamp).local().format("HH:mm")
+                };
+                component.metricsForm.patchValue(testData);
                 fixture.detectChanges();
+                expect(inputBodyHeight.value).toEqual('78');
+                expect(inputBodyWeight.value).toEqual('92');
+                expect(inputBodyFat.value).toEqual('29.2');
+                //expect(inputBodyHeightUnit.options[inputBodyHeightUnit.selectedIndex].value).toEqual('inch');
+                //expect(inputBodyWeightUnit.options[inputBodyWeightUnit.selectedIndex].value).toEqual('kg');
+            });
+
+            it('should call submitBodyMetrics', () => {
+                const testData: BodyMetricsFormData = {
+                    bodyfat: 29.2,
+                    bodyheight: 92,
+                    bodyweight: 78,
+                    bodyheightunit: 'inch',
+                    bodyweightunit: 'pound',
+                    date: moment.unix(testTimestamp).local(),
+                    time: moment.unix(testTimestamp).local().format("HH:mm")
+                };
+                component.metricsForm.patchValue(testData);
+                fixture.detectChanges();
+                component.metricsForm.updateValueAndValidity();
                 component.onSubmit();
                 expect(submitBodyMetricsStub.callCount).toEqual(1);
-                console.log(submitBodyMetricsStub.getCall(0).args);
                 expect(submitBodyMetricsStub.getCall(0).args[0]).toEqual({
-                    bodyweight: 23,
+                    bodyweight: testData.bodyweight*0.453592,
                     timestamp: testTimestamp,
-                    bodyfat: 0,
-                    bodyheight: 0
+                    bodyfat: testData.bodyfat,
+                    bodyheight: testData.bodyheight * 0.0254
                 });
             });
         });

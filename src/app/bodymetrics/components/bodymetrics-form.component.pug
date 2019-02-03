@@ -11,17 +11,17 @@ form([formGroup]="metricsForm",(ngSubmit)="onSubmit()")
     br
     mat-form-field(appearance="outline")
         mat-label Height
-        input(matInput,placeholder="Height",type="number",formControlName="bodyheight")
+        input.inputbodyweight(matInput,placeholder="Height",type="number",formControlName="bodyheight")
         mat-hint Hint
     mat-form-field
-        select(matNativeControl,required,formControlName="bodyheightunit")
+        select.inputbodyweightunit(matNativeControl,required,formControlName="bodyheightunit")
             option(value="meter") Meter
             option(value="inch") Inch
             option(value="feet") Feet
     br
     mat-form-field(appearance="outline")
         mat-label Body Fat Percentage
-        input(matInput,placeholder="Body Fat",type="number", formControlName="bodyfat")
+        input.inputbodyfat(matInput,placeholder="Body Fat",type="number", formControlName="bodyfat")
         mat-icon(matSuffix) sentiment_very_satisfied
         mat-hint Hint
     br
