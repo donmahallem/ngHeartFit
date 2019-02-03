@@ -28,7 +28,7 @@ import { LoginGoogleComponent } from './components/login-google/login-google.com
         MatTabsModule,
         HttpClientModule
     ],
-    providers: [,
+    providers: [
         GapiAuthService,
         GapiService
     ],

@@ -5,7 +5,7 @@ import {
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material';
 import * as moment from 'moment';
-import { GapiService } from 'src/app/service/gapi.service';
+import { GapiService, SubmitBodyMetricsRequest } from 'src/app/service/gapi.service';
 
 @Component({
     selector: 'bodymetrics-form-cmp',
@@ -13,10 +13,10 @@ import { GapiService } from 'src/app/service/gapi.service';
     styleUrls: ['./bodymetrics-form.component.scss']
 })
 export class BodyMetricsFormComponent {
-    private metricsForm: FormGroup = new FormGroup({
-        bodyweight: new FormControl('', Validators.compose([Validators.min(0)])),
-        bodyfat: new FormControl('', Validators.compose([Validators.min(0), Validators.max(100)])),
-        bodyheight: new FormControl('', Validators.compose([Validators.min(0)])),
+    public metricsForm: FormGroup = new FormGroup({
+        bodyweight: new FormControl(0, Validators.compose([Validators.min(0)])),
+        bodyfat: new FormControl(0, Validators.compose([Validators.min(0), Validators.max(100)])),
+        bodyheight: new FormControl(0, Validators.compose([Validators.min(0)])),
         bodyweightunit: new FormControl('kilogram'),
         bodyheightunit: new FormControl('meter'),
         date: new FormControl(moment.utc().local(), Validators.required),
@@ -25,7 +25,7 @@ export class BodyMetricsFormComponent {
     constructor(private gapi: GapiService) { }
 
     public onSubmit(): void {
-        if (this.metricsForm.valid) {
+        if (this.metricsForm.valid === true) {
             const bodyWeightUnit: string = this.metricsForm.get('bodyweightunit').value;
             const bodyHeightUnit: string = this.metricsForm.get('bodyheightunit').value;
             let bodyWeightMultiplicator: number = 1;
@@ -40,21 +40,19 @@ export class BodyMetricsFormComponent {
             } else if (bodyHeightUnit === "feet") {
                 bodyHeightMultiplicator = 0.3048;
             }
-            const bodyWeight: number = this.metricsForm.get('bodyweight').value * bodyWeightMultiplicator;
-            const bodyHeight: number = this.metricsForm.get('bodyheight').value * bodyHeightMultiplicator;
-            const bodyFat: number = this.metricsForm.get('bodyfat').value * 1;
             const date: moment.Moment = this.metricsForm.get('date').value;
             const time: string = this.metricsForm.get('time').value;
             const timeSplit: string[] = time.split(":");
             date.hours(parseInt(timeSplit[0]));
             date.minutes(parseInt(timeSplit[1]));
-            console.log(bodyHeight, bodyWeight, date.toLocaleString());
-            this.gapi.submitBodyMetrics({
-                timestamp: date.unix(),
-                bodyfat: bodyFat,
-                bodyheight: bodyHeight,
-                bodyweight: bodyWeight
-            })
+            let submitObject: SubmitBodyMetricsRequest = {
+                timestamp: date.unix()
+            };
+            submitObject.bodyweight = this.metricsForm.get('bodyweight').value * bodyWeightMultiplicator;
+            submitObject.bodyheight = this.metricsForm.get('bodyheight').value * bodyHeightMultiplicator;
+            submitObject.bodyfat = this.metricsForm.get('bodyfat').value * 1;
+
+            this.gapi.submitBodyMetrics(submitObject)
                 .subscribe(console.log, console.error);
         }
     }

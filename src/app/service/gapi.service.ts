@@ -17,6 +17,12 @@ export interface User {
 
 }
 
+export interface SubmitBodyMetricsRequest {
+    timestamp: number,
+    bodyweight?: number,
+    bodyfat?: number,
+    bodyheight?: number
+}
 @Injectable({
     providedIn: 'root',
 })
@@ -34,12 +40,7 @@ export class GapiService {
         return this.gapiAuth.authRequest(this.http.get<any>("/api/google/fit/datasources"));
     }
 
-    public submitBodyMetrics(data: {
-        timestamp: number,
-        bodyweight: number,
-        bodyfat: number,
-        bodyheight: number
-    }): Observable<any> {
+    public submitBodyMetrics(data: SubmitBodyMetricsRequest): Observable<any> {
         return this.gapiAuth.authRequest(this.http.post<any>("/api/google/fit/bodymetrics", data));
     }
 
