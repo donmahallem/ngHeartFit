@@ -1,25 +1,26 @@
-import { Component, OnInit, NgZone, ElementRef, AfterViewInit, ViewChild, Input, DoCheck } from '@angular/core';
-import { Chart } from 'chart.js';
-import { BehaviorSubject } from 'rxjs';
+import {
+    Component,
+    NgZone,
+    AfterViewInit,
+    ViewChild
+} from '@angular/core';
 import { ChartComponent } from 'src/app/common-components/chart.component';
 @Component({
     selector: 'weight-chart',
     templateUrl: './weight-chart.component.pug',
     styleUrls: ['./weight-chart.component.scss']
 })
-export class WeightChartComponent {
+export class WeightChartComponent implements AfterViewInit {
     @ViewChild(ChartComponent)
     chart: ChartComponent;
     constructor(private zone: NgZone) { }
 
 
     public ngAfterViewInit(): void {
-        this.chart.chart.config.options = {
-        };
         this.chart.chart.data = {
-            labels: ["asdf"],
+            labels: ["Weight in kg"],
             datasets: [{
-                label: 'damnit',
+                label: 'Weight',
                 data: [
                     {
                         x: 19,
@@ -30,6 +31,9 @@ export class WeightChartComponent {
                     }, {
                         x: 39,
                         y: 19
+                    }, {
+                        x: 61,
+                        y: 98
                     }
                 ]
             }]
