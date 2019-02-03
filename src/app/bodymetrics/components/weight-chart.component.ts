@@ -5,6 +5,25 @@ import {
     ViewChild
 } from '@angular/core';
 import { ChartComponent } from 'src/app/common-components/chart.component';
+import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+import * as moment from 'moment';
+
+
+export function createCompareDateValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+        const group: FormGroup = <any>control;
+        const values: {
+            startdate: moment.Moment,
+            enddate: moment.Moment
+        } = group.value;
+        if (values.startdate.isBefore(values.enddate)) {
+            return null;
+        }
+        return {
+            oneValueRequired: "Atleast one value is required"
+        }
+    };
+}
 @Component({
     selector: 'weight-chart',
     templateUrl: './weight-chart.component.pug',
@@ -13,6 +32,10 @@ import { ChartComponent } from 'src/app/common-components/chart.component';
 export class WeightChartComponent implements AfterViewInit {
     @ViewChild(ChartComponent)
     chart: ChartComponent;
+    public metricsForm: FormGroup = new FormGroup({
+        enddate: new FormControl(moment.utc().local(), Validators.required),
+        startdate: new FormControl(moment.utc().subtract(7, "days").local(), Validators.required)
+    }, createCompareDateValidator());
     constructor(private zone: NgZone) { }
 
 
