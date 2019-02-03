@@ -127,7 +127,7 @@ describe('BodyMetricsComponent', () => {
                 //expect(inputBodyWeightUnit.options[inputBodyWeightUnit.selectedIndex].value).toEqual('kg');
             });
 
-            it('should call submitBodyMetrics', () => {
+            it('should call submitBodyMetrics with inch and pound', () => {
                 const testData: BodyMetricsFormData = {
                     bodyfat: 29.2,
                     bodyheight: 92,
@@ -143,10 +143,54 @@ describe('BodyMetricsComponent', () => {
                 component.onSubmit();
                 expect(submitBodyMetricsStub.callCount).toEqual(1);
                 expect(submitBodyMetricsStub.getCall(0).args[0]).toEqual({
-                    bodyweight: testData.bodyweight*0.453592,
+                    bodyweight: testData.bodyweight * BodyMetricsFormComponent.POUND_TO_KILOGRAM,
                     timestamp: testTimestamp,
                     bodyfat: testData.bodyfat,
-                    bodyheight: testData.bodyheight * 0.0254
+                    bodyheight: testData.bodyheight * BodyMetricsFormComponent.INCH_TO_METER
+                });
+            });
+            it('should call submitBodyMetrics with foot and stone', () => {
+                const testData: BodyMetricsFormData = {
+                    bodyfat: 29.2,
+                    bodyheight: 92,
+                    bodyweight: 78,
+                    bodyheightunit: 'foot',
+                    bodyweightunit: 'stone',
+                    date: moment.unix(testTimestamp).local(),
+                    time: moment.unix(testTimestamp).local().format("HH:mm")
+                };
+                component.metricsForm.patchValue(testData);
+                fixture.detectChanges();
+                component.metricsForm.updateValueAndValidity();
+                component.onSubmit();
+                expect(submitBodyMetricsStub.callCount).toEqual(1);
+                expect(submitBodyMetricsStub.getCall(0).args[0]).toEqual({
+                    bodyweight: testData.bodyweight * BodyMetricsFormComponent.STONE_TO_KILOGRAM,
+                    timestamp: testTimestamp,
+                    bodyfat: testData.bodyfat,
+                    bodyheight: testData.bodyheight * BodyMetricsFormComponent.FOOT_TO_METER
+                });
+            });
+            it('should call submitBodyMetrics with kilogram and meter', () => {
+                const testData: BodyMetricsFormData = {
+                    bodyfat: 29.2,
+                    bodyheight: 92,
+                    bodyweight: 78,
+                    bodyheightunit: 'meter',
+                    bodyweightunit: 'kilogram',
+                    date: moment.unix(testTimestamp).local(),
+                    time: moment.unix(testTimestamp).local().format("HH:mm")
+                };
+                component.metricsForm.patchValue(testData);
+                fixture.detectChanges();
+                component.metricsForm.updateValueAndValidity();
+                component.onSubmit();
+                expect(submitBodyMetricsStub.callCount).toEqual(1);
+                expect(submitBodyMetricsStub.getCall(0).args[0]).toEqual({
+                    bodyweight: testData.bodyweight,
+                    timestamp: testTimestamp,
+                    bodyfat: testData.bodyfat,
+                    bodyheight: testData.bodyheight
                 });
             });
         });

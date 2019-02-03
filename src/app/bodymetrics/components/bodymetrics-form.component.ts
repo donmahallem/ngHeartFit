@@ -52,21 +52,26 @@ export class BodyMetricsFormComponent {
     }, forbiddenNameValidator(/.*/));
     constructor(private gapi: GapiService) { }
 
+    public static readonly FOOT_TO_METER: number = 0.3048;
+    public static readonly INCH_TO_METER: number = 0.0254;
+    public static readonly POUND_TO_KILOGRAM: number = 0.453592;
+    public static readonly STONE_TO_KILOGRAM: number = 6.35029;
+
     public onSubmit(): void {
         if (this.metricsForm.valid === true) {
             const bodyWeightUnit: string = this.metricsForm.get('bodyweightunit').value;
             const bodyHeightUnit: string = this.metricsForm.get('bodyheightunit').value;
             let bodyWeightMultiplicator: number = 1;
             if (bodyWeightUnit === "pound") {
-                bodyWeightMultiplicator = 0.453592;
+                bodyWeightMultiplicator = BodyMetricsFormComponent.POUND_TO_KILOGRAM;
             } else if (bodyWeightUnit === "stone") {
-                bodyWeightMultiplicator = 6.35029;
+                bodyWeightMultiplicator = BodyMetricsFormComponent.STONE_TO_KILOGRAM;
             }
             let bodyHeightMultiplicator: number = 1;
             if (bodyHeightUnit === "inch") {
-                bodyHeightMultiplicator = 0.0254;
-            } else if (bodyHeightUnit === "feet") {
-                bodyHeightMultiplicator = 0.3048;
+                bodyHeightMultiplicator = BodyMetricsFormComponent.INCH_TO_METER;
+            } else if (bodyHeightUnit === "foot") {
+                bodyHeightMultiplicator = BodyMetricsFormComponent.FOOT_TO_METER;
             }
             const date: moment.Moment = this.metricsForm.get('date').value;
             const time: string = this.metricsForm.get('time').value;
