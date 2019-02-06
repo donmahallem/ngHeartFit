@@ -11,6 +11,7 @@ import { GapiAuthService } from './service/gapi-auth.service';
 import { GapiService } from './service/gapi.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { LoginGoogleComponent } from './components/login-google/login-google.component';
+import { NgGapiConfigModule } from './nggapi-config.module';
 
 @NgModule({
     declarations: [
@@ -26,7 +27,8 @@ import { LoginGoogleComponent } from './components/login-google/login-google.com
         MatSidenavModule,
         MatToolbarModule,
         MatTabsModule,
-        HttpClientModule
+        HttpClientModule,
+        NgGapiConfigModule
     ],
     providers: [
         GapiAuthService,

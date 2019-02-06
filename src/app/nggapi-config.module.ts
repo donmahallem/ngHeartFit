@@ -25,4 +25,4 @@ const gapiClientConfig: NgGapiClientConfig = {
     })],
     exports: [GoogleApiModule]
 })
-export class NgGapiModule { }
+export class NgGapiConfigModule { }
