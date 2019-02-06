@@ -5,7 +5,11 @@ import { BaseEnvironment } from "./environment.base";
 // The list of file replacements can be found in `angular.json`.
 
 export const environment: BaseEnvironment = {
-    production: false
+    production: false,
+    gapi: {
+        client_id: "test_id",
+        redirect_url: "your redirect url"
+    }
 }
 
 
