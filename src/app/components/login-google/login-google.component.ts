@@ -25,5 +25,6 @@ export class LoginGoogleComponent {
         private cd: ChangeDetectorRef,
         private activatedRoute: ActivatedRoute) {
         console.log(activatedRoute.snapshot.data);
+        this.signin_url = activatedRoute.snapshot.data.signin_url;
     }
 }
