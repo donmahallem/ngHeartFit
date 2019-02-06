@@ -1,5 +1,4 @@
 *
 !environment.base.ts
 !environment.example.ts
-!environment.prod.ts
 !.gitignore
