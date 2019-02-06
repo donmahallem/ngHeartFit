@@ -16,17 +16,33 @@ import { GapiUserService } from 'src/app/service/gapi-user.service';
     templateUrl: './login-google.component.pug',
     styleUrls: ['./login-google.component.scss']
 })
-export class LoginGoogleComponent {
+export class LoginGoogleComponent implements OnDestroy, OnInit {
     private mIsButtonDisabled: boolean = true;
+    private subs: Subscription[] = [];
     constructor(private gapi: GapiUserService) {
 
     }
 
     public onClickSignin(event: MouseEvent) {
-        this.gapi.signIn();
+        this.mIsButtonDisabled = true;
+        this.subs.push(this.gapi.signIn()
+            .subscribe((res: gapi.auth2.GoogleUser) => {
+                this.mIsButtonDisabled = false;
+            }, console.error));
     }
 
     public get isButtonDisabled(): boolean {
         return this.mIsButtonDisabled;
+    }
+
+    public ngOnInit() {
+        this.mIsButtonDisabled = false;
+    }
+
+    public ngOnDestroy() {
+        for (let sub of this.subs) {
+            sub.unsubscribe();
+        }
+        this.subs = [];
     }
 }
