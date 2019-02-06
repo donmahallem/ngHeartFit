@@ -34,6 +34,7 @@
         "material-design-icons": "^3.0.1",
         "moment": "^2.24.0",
         "ng-cli-pug-loader": "^0.1.7",
+        "ng-gapi": "0.0.7",
         "rxjs": "^6.4.0",
         "zone.js": "^0.8.29"
     },
