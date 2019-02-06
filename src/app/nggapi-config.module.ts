@@ -8,6 +8,7 @@ import {
 } from "ng-gapi";
 import { RouterModule } from "@angular/router";
 import { NgModule } from "@angular/core";
+import { GapiUserService } from "./service/gapi-user.service";
 
 const gapiClientConfig: NgGapiClientConfig = {
     client_id: "CLIENT_ID",
@@ -23,6 +24,7 @@ const gapiClientConfig: NgGapiClientConfig = {
         provide: NG_GAPI_CONFIG,
         useValue: gapiClientConfig
     })],
-    exports: [GoogleApiModule]
+    exports: [GoogleApiModule],
+    providers: [GapiUserService]
 })
 export class NgGapiConfigModule { }
