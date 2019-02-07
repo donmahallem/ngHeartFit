@@ -13,7 +13,6 @@ export enum GapiStatus {
 export class ngGapiService {
     private statusSubject: BehaviorSubject<GapiStatus> = new BehaviorSubject(GapiStatus.LOADING);
     constructor(gapiService: GoogleApiService) {
-        console.log("Constructor called");
         gapiService.onLoad().subscribe((loadStatus) => {
             this.statusSubject.next(GapiStatus.LOADED);
         }, (err) => {

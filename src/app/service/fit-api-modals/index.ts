@@ -10,8 +10,8 @@ export interface IntVal {
 export interface SubmitValue {
     dataTypeName: string;
     endTimeNanos: number;
-    originDataSourceId: string;
     startTimeNanos: number;
+    originDataSourceId: string;
     value: IntVal[] | FpVal[];
 }
 

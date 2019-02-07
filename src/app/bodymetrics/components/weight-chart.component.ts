@@ -37,11 +37,37 @@ export class WeightChartComponent implements AfterViewInit {
         enddate: new FormControl(moment.utc().local(), Validators.required),
         startdate: new FormControl(moment.utc().subtract(7, "days").local(), Validators.required)
     }, createCompareDateValidator());
-    constructor(private zone: NgZone, private fitApi: FitApiService) { console.log("JJGJGJ") }
+    constructor(private zone: NgZone, private fitApi: FitApiService) {
+        console.log("JJGJGJ")
+    }
+
+    public createDatasource() {
+        this.fitApi.createWeightDatasource()
+            .subscribe(console.log, console.error);
+    }
+
+    public insertRandomWeights() {
+        let list: { weight: number, timestamp: moment.Moment }[] = [];
+        const start: number = moment().subtract(30, 'day').unix();
+        const now: number = moment().unix();
+        const windowSize: number = now - start;
+        console.log("windowsize", windowSize, moment.unix(start), moment.unix(now));
+        for (let i = 0; i < 100; i++) {
+            let item: { weight: number, timestamp: moment.Moment } = {
+                weight: Math.random() * 20 + 60,
+                timestamp: moment.unix(start + Math.round(windowSize * Math.random()))
+            };
+            list.push(item);
+        }
+        console.log("createde items", list.length);
+        this.fitApi.insertWeightDataPoints('raw:com.google.weight:265564637760:Example Browser:Browser:1000001:PolarImport',
+            list)
+            .subscribe(console.log, console.error);
+    }
 
 
     public ngAfterViewInit(): void {
-        console.log("Initiated");
+        console.log("ngAfterViewInit called");
         this.chart.chart.data = {
             labels: ["Weight in kg"],
             datasets: [{
@@ -63,8 +89,10 @@ export class WeightChartComponent implements AfterViewInit {
                 ]
             }]
         };
-        this.chart.chart.update();
-        console.log("start");
-        this.fitApi.getAllDataSources().subscribe(console.log, console.error);
+        this.zone.run(() => {
+            console.log("JJJ");
+            this.chart.chart.update();
+            this.fitApi.getMergedWeights().subscribe(console.log, console.error);
+        })
     }
 }

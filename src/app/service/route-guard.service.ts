@@ -22,13 +22,10 @@ export class RouteGuardService implements CanActivate, CanActivateChild {
         }
         return this.gapiUserService
             .isSignedInObservable
-            .pipe(catchError((err: any): Observable<boolean> => {
-                return of(false)
-            }), single(), tap((signedIn) => {
+            .pipe(tap((signedIn) => {
                 if (!signedIn) {
                     this.router.navigate(['google', 'login']);
                 }
-                console.log("TBABAB", signedIn);
             }))
     }
 

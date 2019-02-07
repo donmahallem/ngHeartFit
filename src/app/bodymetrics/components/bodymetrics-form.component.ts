@@ -5,7 +5,6 @@ import {
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material';
 import * as moment from 'moment';
-import { GapiService, SubmitBodyMetricsRequest } from 'src/app/service/gapi.service';
 
 
 export function forbiddenNameValidator(nameRe: RegExp): ValidatorFn {
@@ -50,7 +49,7 @@ export class BodyMetricsFormComponent {
         date: new FormControl(moment.utc().local(), Validators.required),
         time: new FormControl(moment.utc().local().format("HH:mm"), Validators.pattern(/^(([0-1][0-9])|(2[0-3]))\:([0-5][0-9])/))
     }, forbiddenNameValidator(/.*/));
-    constructor(private gapi: GapiService) { }
+    constructor() { }
 
     public static readonly FOOT_TO_METER: number = 0.3048;
     public static readonly INCH_TO_METER: number = 0.0254;
@@ -78,6 +77,7 @@ export class BodyMetricsFormComponent {
             const timeSplit: string[] = time.split(":");
             date.hours(parseInt(timeSplit[0]));
             date.minutes(parseInt(timeSplit[1]));
+            /*
             let submitObject: SubmitBodyMetricsRequest = {
                 timestamp: date.unix()
             };
@@ -86,7 +86,7 @@ export class BodyMetricsFormComponent {
             submitObject.bodyfat = this.metricsForm.get('bodyfat').value * 1;
 
             this.gapi.submitBodyMetrics(submitObject)
-                .subscribe(console.log, console.error);
+                .subscribe(console.log, console.error);*/
         }
     }
 

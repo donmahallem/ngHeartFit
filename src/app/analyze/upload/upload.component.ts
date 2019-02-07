@@ -45,7 +45,6 @@ export class UploadComponent implements OnInit {
                 this.uploadDataService.addUploadFile(res);
             });
         }, (err: any) => {
-            console.error(err);
         });
     }
 
@@ -70,11 +69,8 @@ export class UploadComponent implements OnInit {
 
     public clickImport(event: MouseEvent): void {
         this.importFiles().subscribe((result) => {
-            console.log("res", result);
         }, (err: Error) => {
-            console.error(err);
         }, () => {
-            console.log("Complete");
             this.router.navigate(["analyze", "view"]);
         })
 

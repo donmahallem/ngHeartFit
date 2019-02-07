@@ -6,12 +6,10 @@ import {
     OnDestroy,
     ChangeDetectorRef
 } from '@angular/core';
-import { MatButton } from '@angular/material';
 import { Subscription } from 'rxjs';
-import { GapiAuthService } from '../../service/gapi-auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import { GapiUserService } from 'src/app/service/gapi-user.service';
 import { FitApiService } from 'src/app/service/fit-api.service';
+import { Router } from '@angular/router';
 @Component({
     selector: 'login-google-cmp',
     templateUrl: './login-google.component.pug',
@@ -20,22 +18,21 @@ import { FitApiService } from 'src/app/service/fit-api.service';
 export class LoginGoogleComponent implements OnDestroy, OnInit {
     private mIsButtonDisabled: boolean = true;
     private subs: Subscription[] = [];
-    constructor(private gapi: GapiUserService,
-        private router: Router, nggapi: FitApiService) {
-        nggapi.getAllDataSources().subscribe(console.log, console.error);
-
+    constructor(private gapiUserService: GapiUserService,
+        private router: Router, private nggapi: FitApiService) {
     }
 
     public onClickSignin(event: MouseEvent) {
         this.mIsButtonDisabled = true;
-        this.subs.push(this.gapi.signIn()
+        this.subs.push(this.gapiUserService.signIn()
             .subscribe((res: gapi.auth2.GoogleUser) => {
-                console.log(res);
                 this.mIsButtonDisabled = false;
                 this.router.navigate(['/']);
             }, console.error));
     }
 
+    public testLoad() {
+    }
     public get isButtonDisabled(): boolean {
         return this.mIsButtonDisabled;
     }
