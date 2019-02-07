@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { GapiAuthService } from '../../service/gapi-auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GapiUserService } from 'src/app/service/gapi-user.service';
+import { FitApiService } from 'src/app/service/fit-api.service';
 @Component({
     selector: 'login-google-cmp',
     templateUrl: './login-google.component.pug',
@@ -20,7 +21,8 @@ export class LoginGoogleComponent implements OnDestroy, OnInit {
     private mIsButtonDisabled: boolean = true;
     private subs: Subscription[] = [];
     constructor(private gapi: GapiUserService,
-        private router: Router) {
+        private router: Router, nggapi: FitApiService) {
+        nggapi.getAllDataSources().subscribe(console.log, console.error);
 
     }
 

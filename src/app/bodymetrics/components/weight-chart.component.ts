@@ -7,6 +7,7 @@ import {
 import { ChartComponent } from 'src/app/common-components/chart.component';
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import * as moment from 'moment';
+import { FitApiService } from 'src/app/service/fit-api.service';
 
 
 export function createCompareDateValidator(): ValidatorFn {
@@ -36,10 +37,11 @@ export class WeightChartComponent implements AfterViewInit {
         enddate: new FormControl(moment.utc().local(), Validators.required),
         startdate: new FormControl(moment.utc().subtract(7, "days").local(), Validators.required)
     }, createCompareDateValidator());
-    constructor(private zone: NgZone) { }
+    constructor(private zone: NgZone, private fitApi: FitApiService) { console.log("JJGJGJ") }
 
 
     public ngAfterViewInit(): void {
+        console.log("Initiated");
         this.chart.chart.data = {
             labels: ["Weight in kg"],
             datasets: [{
@@ -62,5 +64,7 @@ export class WeightChartComponent implements AfterViewInit {
             }]
         };
         this.chart.chart.update();
+        console.log("start");
+        this.fitApi.getAllDataSources().subscribe(console.log, console.error);
     }
 }

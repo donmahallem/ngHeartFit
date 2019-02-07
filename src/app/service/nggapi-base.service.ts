@@ -9,13 +9,12 @@ export enum GapiStatus {
     FAILED = 3
 }
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class ngGapiService {
     private statusSubject: BehaviorSubject<GapiStatus> = new BehaviorSubject(GapiStatus.LOADING);
     constructor(gapiService: GoogleApiService) {
-        gapiService.onLoad().subscribe(() => {
+        console.log("Constructor called");
+        gapiService.onLoad().subscribe((loadStatus) => {
             this.statusSubject.next(GapiStatus.LOADED);
         }, (err) => {
             this.statusSubject.next(GapiStatus.FAILED);

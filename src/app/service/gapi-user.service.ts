@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { GoogleAuthService } from "ng-gapi";
+import { GoogleAuthService, GoogleApiService } from "ng-gapi";
 import { ngGapiService } from "./nggapi-base.service";
 import { Observable, Observer } from "rxjs";
 import { flatMap, map, tap } from "rxjs/operators";
@@ -41,6 +41,7 @@ export class GapiUserService {
         return this.googleAuth.getAuth()
             .pipe(flatMap((val: gapi.auth2.GoogleAuth): Observable<boolean> => {
                 return Observable.create((observer: Observer<boolean>) => {
+                    observer.next(val.isSignedIn.get());
                     val.isSignedIn.listen((signedin: boolean) => {
                         observer.next(signedin);
                     });

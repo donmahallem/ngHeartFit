@@ -19,6 +19,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BodyMetricsFormComponent } from './components/bodymetrics-form.component';
 import { WeightChartComponent } from './components/weight-chart.component';
 import { ChartComponent } from '../common-components/chart.component';
+import { NgGapiConfigModule } from '../nggapi-config.module';
 
 @NgModule({
     declarations: [
@@ -38,7 +39,8 @@ import { ChartComponent } from '../common-components/chart.component';
         MatFormFieldModule,
         MatInputModule,
         MatSelectModule,
-        MatDatepickerModule
+        MatDatepickerModule,
+        NgGapiConfigModule
     ],
     providers: [
         FitApiService,
