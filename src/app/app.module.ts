@@ -12,6 +12,7 @@ import { GapiService } from './service/gapi.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { LoginGoogleComponent } from './components/login-google/login-google.component';
 import { NgGapiConfigModule } from './nggapi-config.module';
+import { RouteGuardService } from './service/route-guard.service';
 
 @NgModule({
     declarations: [
@@ -32,7 +33,8 @@ import { NgGapiConfigModule } from './nggapi-config.module';
     ],
     providers: [
         GapiAuthService,
-        GapiService
+        GapiService,
+        RouteGuardService
     ],
     bootstrap: [AppComponent]
 })

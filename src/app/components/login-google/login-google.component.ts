@@ -9,7 +9,7 @@ import {
 import { MatButton } from '@angular/material';
 import { Subscription } from 'rxjs';
 import { GapiAuthService } from '../../service/gapi-auth.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GapiUserService } from 'src/app/service/gapi-user.service';
 @Component({
     selector: 'login-google-cmp',
@@ -19,7 +19,8 @@ import { GapiUserService } from 'src/app/service/gapi-user.service';
 export class LoginGoogleComponent implements OnDestroy, OnInit {
     private mIsButtonDisabled: boolean = true;
     private subs: Subscription[] = [];
-    constructor(private gapi: GapiUserService) {
+    constructor(private gapi: GapiUserService,
+        private router: Router) {
 
     }
 
@@ -27,7 +28,9 @@ export class LoginGoogleComponent implements OnDestroy, OnInit {
         this.mIsButtonDisabled = true;
         this.subs.push(this.gapi.signIn()
             .subscribe((res: gapi.auth2.GoogleUser) => {
+                console.log(res);
                 this.mIsButtonDisabled = false;
+                this.router.navigate(['/']);
             }, console.error));
     }
 

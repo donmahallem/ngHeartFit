@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { UploadComponent } from './analyze/upload/upload.component';
 import { LoginGoogleComponent } from './components/login-google/login-google.component';
 import { GoogleAuthCallbackGuard } from './components/google-auth-callback/google-auth-callback.guard';
+import { RouteGuardService } from './service/route-guard.service';
 
 const routes: Routes = [
     {
@@ -22,6 +23,9 @@ const routes: Routes = [
         data: {
             requiresLogin: true
         },
+        //canLoad: [RouteGuardService],
+        canActivate: [RouteGuardService],
+        canActivateChild: [RouteGuardService],
         loadChildren: "./bodymetrics/bodymetrics.module#BodyMetricsModule"
     }, {
         path: 'login',
