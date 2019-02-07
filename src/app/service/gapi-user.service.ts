@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { GoogleAuthService } from "ng-gapi";
 import { ngGapiService } from "./nggapi-base.service";
 import { Observable, Observer } from "rxjs";
-import { flatMap } from "rxjs/operators";
+import { flatMap, map, tap } from "rxjs/operators";
 
 @Injectable()
 export class GapiUserService {
@@ -20,11 +20,13 @@ export class GapiUserService {
         return sessionStorage.getItem(GapiUserService.SESSION_STORAGE_KEY);
     }
 
-    public signIn(): void {
-        this.googleAuth.getAuth()
-            .subscribe((auth) => {
-                auth.signIn().then(res => this.signInSuccessHandler(res));
-            });
+    public signIn(): Observable<gapi.auth2.GoogleUser> {
+        return this.googleAuth.getAuth()
+            .pipe(flatMap((auth: gapi.auth2.GoogleAuth) => {
+                return auth.signIn();
+            }), tap((user: gapi.auth2.GoogleUser) => {
+                this.signInSuccessHandler(user);
+            }));
     }
 
     public get isSignedIn(): boolean {

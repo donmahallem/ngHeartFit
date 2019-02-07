@@ -1,4 +1,4 @@
-import { BaseEnvironment } from "./environment.base";
+import { BaseEnvironment } from './environment.base';
 
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
@@ -7,8 +7,8 @@ import { BaseEnvironment } from "./environment.base";
 export const environment: BaseEnvironment = {
     production: false,
     gapi: {
-        client_id: "test_id",
-        redirect_url: "your redirect url"
+        client_id: 'your client id',
+        redirect_url: 'https://your.redirect/url'
     }
 }
 

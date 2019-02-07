@@ -10,20 +10,39 @@ import { MatButton } from '@angular/material';
 import { Subscription } from 'rxjs';
 import { GapiAuthService } from '../../service/gapi-auth.service';
 import { ActivatedRoute } from '@angular/router';
+import { GapiUserService } from 'src/app/service/gapi-user.service';
 @Component({
     selector: 'login-google-cmp',
     templateUrl: './login-google.component.pug',
     styleUrls: ['./login-google.component.scss']
 })
-export class LoginGoogleComponent {
-    public signin_url: string;
-    @ViewChild("btnSignin")
-    public btnSignIn: MatButton;
-    private _isSignedIn: boolean = false;
-    private signinSubscription: Subscription;
-    constructor(private gapiService: GapiAuthService,
-        private cd: ChangeDetectorRef,
-        private activatedRoute: ActivatedRoute) {
-        console.log(activatedRoute.snapshot.data);
+export class LoginGoogleComponent implements OnDestroy, OnInit {
+    private mIsButtonDisabled: boolean = true;
+    private subs: Subscription[] = [];
+    constructor(private gapi: GapiUserService) {
+
+    }
+
+    public onClickSignin(event: MouseEvent) {
+        this.mIsButtonDisabled = true;
+        this.subs.push(this.gapi.signIn()
+            .subscribe((res: gapi.auth2.GoogleUser) => {
+                this.mIsButtonDisabled = false;
+            }, console.error));
+    }
+
+    public get isButtonDisabled(): boolean {
+        return this.mIsButtonDisabled;
+    }
+
+    public ngOnInit() {
+        this.mIsButtonDisabled = false;
+    }
+
+    public ngOnDestroy() {
+        for (let sub of this.subs) {
+            sub.unsubscribe();
+        }
+        this.subs = [];
     }
 }
