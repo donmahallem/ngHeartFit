@@ -21,12 +21,16 @@ import { DatasourcesComponent } from './datasources/datasources.component';
 import { FitRoutingModule } from './fit-routing.module';
 import { DatasourceDetailComponent } from './datasources/datasource-detail.component';
 import { DatasourceComponent } from './datasources/datasource.component';
+import { SessionsComponent } from './sessions/sessions.component';
+import { SessionComponent } from './sessions/session.component';
 
 @NgModule({
     declarations: [
         DatasourcesComponent,
         DatasourceDetailComponent,
-        DatasourceComponent
+        DatasourceComponent,
+        SessionsComponent,
+        SessionComponent
     ],
     imports: [
         CommonModule,

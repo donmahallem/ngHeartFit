@@ -80,3 +80,25 @@ export interface DataSourceInformation {
     };
     type: 'derived' | 'raw';
 }
+
+
+export interface Session {
+    activityType: number;
+    application: {
+        packageName: string;
+    };
+    packageName: string;
+    description: string;
+    endTimeMillis: string;
+    id: string;
+    modifiedTimeMillis: string;
+    name: string;
+    startTimeMillis: string;
+}
+
+export interface ListSessionsResponse {
+    session: Session[],
+    deletedSession?: Session[],
+    nextPageToken?: string;
+    hasMoreData?: boolean;
+}

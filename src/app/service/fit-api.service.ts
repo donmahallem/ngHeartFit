@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { FitDatasource } from './fit-datasource.modal';
 import { map, flatMap, filter } from 'rxjs/operators';
 import { DataPoint } from '../analyze/view-upload/data-point';
-import { SubmitValue, SubmitToDatasetBody, SubmitToDatasetResponse, BucketResponse, DataSourceListResponse, DataSourceInformation } from './fit-api-modals';
+import { SubmitValue, SubmitToDatasetBody, SubmitToDatasetResponse, BucketResponse, DataSourceListResponse, DataSourceInformation, ListSessionsResponse } from './fit-api-modals';
 import { ngGapiService, GapiStatus } from './nggapi-base.service';
 import { GapiUserService } from './gapi-user.service';
 import * as moment from 'moment';
@@ -43,6 +43,41 @@ export class FitApiService {
                     params['dataTypeName'] = dataTypeName;
                 }
                 return this.httpService.get<DataSourceListResponse>(url, {
+                    headers: {
+                        'Authorization': 'Bearer ' + this.gapiUser.getToken()
+                    },
+                    params
+                });
+            }));
+    }
+
+    public getSession(id: string): Observable<ListSessionsResponse> {
+        return this.base()
+            .pipe(flatMap((t: void) => {
+                const url = FitApiService.ENDPOINT + '/users/me/sessions/' + id;
+                return this.httpService.get<ListSessionsResponse>(url, {
+                    headers: {
+                        'Authorization': 'Bearer ' + this.gapiUser.getToken()
+                    }
+                });
+            }));
+    }
+
+    public getSessions(startTime?: moment.Moment, endTime?: moment.Moment): Observable<ListSessionsResponse> {
+        return this.base()
+            .pipe(flatMap((t: void) => {
+                const url = FitApiService.ENDPOINT + '/users/me/sessions';
+                const headers: HttpHeaders = new HttpHeaders();
+                const params: HttpParams | {
+                    [param: string]: string | string[];
+                } = {};
+                if (startTime) {
+                    params['startTime'] = startTime.utc().format('YYYY-MM-DDTHH:mm:ss.SSS') + 'Z';
+                }
+                if (endTime) {
+                    params['endTime'] = endTime.utc().format('YYYY-MM-DDTHH:mm:ss.SSS') + 'Z';
+                }
+                return this.httpService.get<ListSessionsResponse>(url, {
                     headers: {
                         'Authorization': 'Bearer ' + this.gapiUser.getToken()
                     },
