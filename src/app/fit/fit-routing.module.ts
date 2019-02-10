@@ -5,7 +5,7 @@ import { DatasourceDetailComponent } from './datasources/datasource-detail.compo
 
 const routes: Routes = [
     {
-        path: "datasources",
+        path: 'datasources',
         component: DatasourcesComponent
     },
     {

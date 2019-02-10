@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
     styleUrls: ['./login-google.component.scss']
 })
 export class LoginGoogleComponent implements OnDestroy, OnInit {
-    private mIsButtonDisabled: boolean = true;
+    private mIsButtonDisabled = true;
     private subs: Subscription[] = [];
     constructor(private gapiUserService: GapiUserService,
         private router: Router, private nggapi: FitApiService) {
@@ -42,7 +42,7 @@ export class LoginGoogleComponent implements OnDestroy, OnInit {
     }
 
     public ngOnDestroy() {
-        for (let sub of this.subs) {
+        for (const sub of this.subs) {
             sub.unsubscribe();
         }
         this.subs = [];

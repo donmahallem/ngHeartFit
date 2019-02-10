@@ -3,5 +3,5 @@ export interface BaseEnvironment {
     gapi: {
         client_id: string;
         redirect_url: string;
-    }
+    };
 }

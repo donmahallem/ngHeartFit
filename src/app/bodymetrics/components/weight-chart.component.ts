@@ -22,8 +22,8 @@ export function createCompareDateValidator(): ValidatorFn {
             return null;
         }
         return {
-            oneValueRequired: "Atleast one value is required"
-        }
+            oneValueRequired: 'Atleast one value is required'
+        };
     };
 }
 function newDate(days) {
@@ -44,10 +44,10 @@ export class WeightChartComponent implements AfterViewInit {
     chart: ChartComponent;
     public metricsForm: FormGroup = new FormGroup({
         enddate: new FormControl(moment.utc().local(), Validators.required),
-        startdate: new FormControl(moment.utc().subtract(7, "days").local(), Validators.required)
+        startdate: new FormControl(moment.utc().subtract(7, 'days').local(), Validators.required)
     }, createCompareDateValidator());
     constructor(private zone: NgZone, private fitApi: FitApiService) {
-        console.log("JJGJGJ")
+        console.log('JJGJGJ');
     }
 
     public chartConfig: ChartConfiguration = {
@@ -130,23 +130,23 @@ export class WeightChartComponent implements AfterViewInit {
             .subscribe(console.log, console.error);
     }
 
-    //raw:com.google.body.fat.percentage:265564637760:Example Browser:Browser:1000002:PolarImport
-    //raw:com.google.weight:265564637760:Example Browser:Browser:1000001:PolarImport
+    // raw:com.google.body.fat.percentage:265564637760:Example Browser:Browser:1000002:PolarImport
+    // raw:com.google.weight:265564637760:Example Browser:Browser:1000001:PolarImport
     public insertRandomWeights() {
-        let list: { fat: number, timestamp: moment.Moment }[] = [];
+        const list: { fat: number, timestamp: moment.Moment }[] = [];
         const start: number = moment().subtract(30, 'day').unix();
         const now: number = moment().unix();
         const windowSize: number = now - start;
-        console.log("windowsize", windowSize, moment.unix(start), moment.unix(now));
+        console.log('windowsize', windowSize, moment.unix(start), moment.unix(now));
         for (let i = 0; i < 100; i++) {
-            let item: { fat: number, timestamp: moment.Moment } = {
+            const item: { fat: number, timestamp: moment.Moment } = {
                 fat: Math.random() * 20 + 20,
                 timestamp: moment.unix(start + Math.round(windowSize * Math.random()))
             };
             list.push(item);
         }
-        console.log("createde items", list.length);
-        this.fitApi.insertFatDataPoints("derived:com.google.body.fat.percentage:265564637760:Example Browser:Browser:1000002:PolarImport",
+        console.log('createde items', list.length);
+        this.fitApi.insertFatDataPoints('derived:com.google.body.fat.percentage:265564637760:Example Browser:Browser:1000002:PolarImport',
             list)
             .subscribe(console.log, console.error);
     }
@@ -190,7 +190,7 @@ export class WeightChartComponent implements AfterViewInit {
             }]
         }];
         this.zone.run(() => {
-            this.chart.chart.update();/*
+            this.chart.chart.update(); /*
             this.fitApi.getMergedWeights()
                 .subscribe((dat: {
                     point: {
@@ -220,13 +220,13 @@ export class WeightChartComponent implements AfterViewInit {
                 }, console.error);*/
             this.fitApi.aggregateWeightAndHeight()
                 .subscribe((data) => {
-                    let weightDatapoints: ChartPoint[] = [];
-                    let fatDatapoints: ChartPoint[] = [];
-                    for (let bucket of data.bucket) {
-                        for (let dataset of bucket.dataset) {
+                    const weightDatapoints: ChartPoint[] = [];
+                    const fatDatapoints: ChartPoint[] = [];
+                    for (const bucket of data.bucket) {
+                        for (const dataset of bucket.dataset) {
                             if (dataset.point.length > 0) {
                                 if (dataset.dataSourceId === 'derived:com.google.weight.summary:com.google.android.gms:aggregated') {
-                                    for (let p of dataset.point) {
+                                    for (const p of dataset.point) {
                                         weightDatapoints.push({
                                             x: new Date(parseInt(p.startTimeNanos.substr(0, p.startTimeNanos.length - 6))),
                                             y: p.value[0].fpVal
@@ -234,7 +234,7 @@ export class WeightChartComponent implements AfterViewInit {
                                     }
                                 } else
                                     if (dataset.dataSourceId === 'derived:com.google.body.fat.percentage.summary:com.google.android.gms:aggregated') {
-                                        for (let p of dataset.point) {
+                                        for (const p of dataset.point) {
                                             fatDatapoints.push({
                                                 x: new Date(parseInt(p.startTimeNanos.substr(0, p.startTimeNanos.length - 6))),
                                                 y: p.value[0].fpVal
@@ -249,8 +249,8 @@ export class WeightChartComponent implements AfterViewInit {
                     this.chart.chart.data.datasets[0].data = weightDatapoints;
                     this.chart.chart.data.datasets[1].data = fatDatapoints;
                     this.chart.chart.update(this.chart.chart.config.options);
-                })
-            //this.fitApi.getMergedBodyFat();
-        })
+                });
+            // this.fitApi.getMergedBodyFat();
+        });
     }
 }
