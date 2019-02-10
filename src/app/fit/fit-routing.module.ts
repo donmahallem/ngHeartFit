@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { DatasourcesComponent } from './datasources/datasources.component';
 import { DatasourceDetailComponent } from './datasources/datasource-detail.component';
 import { SessionsComponent } from './sessions/sessions.component';
+import { SessionDetailComponent } from './session-detail/session-detail.component';
 
 const routes: Routes = [
     {
@@ -16,6 +17,10 @@ const routes: Routes = [
     {
         path: 'sessions',
         component: SessionsComponent
+    },
+    {
+        path: 'session/:id',
+        component: SessionDetailComponent
     }
 ];
 

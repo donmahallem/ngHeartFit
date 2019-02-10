@@ -23,6 +23,7 @@ import { DatasourceDetailComponent } from './datasources/datasource-detail.compo
 import { DatasourceComponent } from './datasources/datasource.component';
 import { SessionsComponent } from './sessions/sessions.component';
 import { SessionComponent } from './sessions/session.component';
+import { SessionDetailComponent } from './session-detail/session-detail.component';
 
 @NgModule({
     declarations: [
@@ -30,7 +31,8 @@ import { SessionComponent } from './sessions/session.component';
         DatasourceDetailComponent,
         DatasourceComponent,
         SessionsComponent,
-        SessionComponent
+        SessionComponent,
+        SessionDetailComponent
     ],
     imports: [
         CommonModule,
