@@ -19,7 +19,7 @@ export class UploadToFitComponent implements
     OnDestroy {
     private dataPointsSubject: BehaviorSubject<DataPoint[]> = new BehaviorSubject<DataPoint[]>([]);
     private subscriptions: Subscription[] = [];
-    private numOfItems: number = 0;
+    private numOfItems = 0;
 
     public get numerOfItems(): number {
         return this.numOfItems;
@@ -29,7 +29,7 @@ export class UploadToFitComponent implements
     constructor(private fitApi: FitApiService) {
     }
 
-    @Input("dataPoints")
+    @Input('dataPoints')
     public set dataPoints(data: DataPoint[]) {
         this.dataPointsSubject.next(data);
     }
@@ -38,10 +38,10 @@ export class UploadToFitComponent implements
         return this.dataPointsSubject.value;
     }
     public ngAfterViewInit(): void {
-        //this.idSubscription = this.router.
+        // this.idSubscription = this.router.
         this.subscriptions.push(this.dataPointsSubject.subscribe((dataPoints) => {
             this.numOfItems = dataPoints.length;
-        }))
+        }));
     }
 
     public uploadData(): void {
@@ -58,7 +58,7 @@ export class UploadToFitComponent implements
     }
 
     public ngOnDestroy(): void {
-        for (let sub of this.subscriptions) {
+        for (const sub of this.subscriptions) {
             sub.unsubscribe();
         }
         this.subscriptions = [];

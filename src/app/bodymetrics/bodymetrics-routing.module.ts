@@ -4,7 +4,7 @@ import { BodyMetricsFormComponent } from './components/bodymetrics-form.componen
 
 const routes: Routes = [
     {
-        path: "insert",
+        path: 'insert',
         component: BodyMetricsFormComponent
     }
 ];

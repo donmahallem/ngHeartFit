@@ -1,6 +1,6 @@
 
 export interface FpVal {
-    fpVal: number
+    fpVal: number;
 }
 
 export interface IntVal {

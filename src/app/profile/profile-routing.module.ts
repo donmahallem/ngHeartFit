@@ -5,7 +5,7 @@ import { RouteGuardService } from '../service/route-guard.service';
 
 const routes: Routes = [
     {
-        path: "",
+        path: '',
         component: ProfileComponent,
         canActivate: [RouteGuardService]
     }

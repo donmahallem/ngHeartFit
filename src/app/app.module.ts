@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProfileComponent } from './components/profile.component';
-import { environment } from "src/environments/environment";
+import { environment } from 'src/environments/environment';
 import { MatButtonModule, MatSidenavModule, MatToolbarModule, MatTabsModule } from '@angular/material';
 import { GapiAuthService } from './service/gapi-auth.service';
 import { GapiService } from './service/gapi.service';

@@ -21,13 +21,13 @@ export class ProfileComponent implements OnInit {
         }
         const reader: FileReader = new FileReader();
         reader.onload = function (loadEvent: any) {
-            var contents = e.returnValue;
+            let contents = e.returnValue;
             console.log(loadEvent.target.result, e);
         };
         reader.readAsText(file);
     }
 
     public onClickMe(event: MouseEvent): void {
-        console.log("yes");
+        console.log('yes');
     }
 }

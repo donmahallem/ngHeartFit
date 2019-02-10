@@ -14,7 +14,7 @@ export class RouteGuardService implements CanActivate, CanActivateChild {
 
     constructor(private gapiUserService: GapiAuthService, private router: Router) { }
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
-        if (!route.data["requiresLogin"]) {
+        if (!route.data['requiresLogin']) {
             return true;
         } else {
             return true;
