@@ -21,7 +21,7 @@ export class ProfileComponent implements OnInit {
         }
         const reader: FileReader = new FileReader();
         reader.onload = function (loadEvent: any) {
-            let contents = e.returnValue;
+            const contents = e.returnValue;
             console.log(loadEvent.target.result, e);
         };
         reader.readAsText(file);
