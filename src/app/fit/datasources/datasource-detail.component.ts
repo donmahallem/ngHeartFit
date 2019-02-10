@@ -56,7 +56,7 @@ export class DatasourceDetailComponent implements OnDestroy, AfterViewInit {
             })).subscribe((dataSource) => {
                 this.mDataSource = dataSource;
                 const cols: string[] = dataSource.dataType.field.map((val) => {
-                    return val.name
+                    return val.name;
                 });
                 this.displayedColumns = ['date'].concat(cols);
             }, console.error);
@@ -64,7 +64,7 @@ export class DatasourceDetailComponent implements OnDestroy, AfterViewInit {
         this.activatedRoute
             .paramMap
             .pipe(flatMap((value) => {
-                return this.nggapi.getDataPointsFromDataSource(value.get('id'), moment().subtract(30, 'day'), moment())
+                return this.nggapi.getDataPointsFromDataSource(value.get('id'), moment().subtract(30, 'day'), moment());
             })).subscribe(console.log, console.error);
     }
 

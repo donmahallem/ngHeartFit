@@ -1,6 +1,6 @@
 
 export interface FpVal {
-    fpVal: number
+    fpVal: number;
 }
 
 export interface IntVal {
@@ -28,27 +28,27 @@ export interface SubmitToDatasetResponse {
     point: SubmitValue[];
 }
 export interface BucketResponse {
-    bucket: Bucket[]
+    bucket: Bucket[];
 }
 export interface Bucket {
-    endTimeMillis: string,
-    startTimeMillis: string,
-    dataset: Dataset[]
+    endTimeMillis: string;
+    startTimeMillis: string;
+    dataset: Dataset[];
 }
 
 export interface Dataset {
-    point: DatasetPoint[],
-    dataSourceId: string
+    point: DatasetPoint[];
+    dataSourceId: string;
 }
 
 export interface DatasetPoint {
-    dataTypeName: "com.google.weight.summary" | string
-    endTimeNanos: string,
-    originDataSourceId: string,
-    startTimeNanos: string,
+    dataTypeName: 'com.google.weight.summary' | string;
+    endTimeNanos: string;
+    originDataSourceId: string;
+    startTimeNanos: string;
     value: {
         fpVal: number, mapVal: any[]
-    }[]
+    }[];
 }
 
 export interface DataSourceListResponse {
@@ -60,23 +60,23 @@ export interface DataSourceInformation {
         version: string,
         detailsUrl: string,
         name: string
-    },
-    dataQualityStandard: [],
-    dataStreamId: string,
-    dataStreamName: string,
+    };
+    dataQualityStandard: [];
+    dataStreamId: string;
+    dataStreamName: string;
     dataType: {
         name: string,
         field: {
             name: string,
-            format: "blob" | "floatList" | "floatPoint" | "integer" | "integerList" | "map" | "string"
+            format: 'blob' | 'floatList' | 'floatPoint' | 'integer' | 'integerList' | 'map' | 'string'
         }[]
-    },
+    };
     device: {
         uid: string,
-        type: "chestStrap" | "headMounted" | "phone" | "scale" | "tablet" | "unknown" | "watch",
+        type: 'chestStrap' | 'headMounted' | 'phone' | 'scale' | 'tablet' | 'unknown' | 'watch',
         version: string,
         model: string,
         manufacturer: string
-    },
-    type: "derived" | "raw"
+    };
+    type: 'derived' | 'raw';
 }

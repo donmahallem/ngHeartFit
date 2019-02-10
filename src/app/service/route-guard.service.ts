@@ -15,7 +15,7 @@ export class RouteGuardService implements CanActivate, CanActivateChild {
 
     constructor(private gapiUserService: GapiUserService, private router: Router) { }
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
-        if (!route.data["requiresLogin"]) {
+        if (!route.data['requiresLogin']) {
             return true;
         } else if (this.gapiUserService.isSignedIn === true) {
             return true;
@@ -26,7 +26,7 @@ export class RouteGuardService implements CanActivate, CanActivateChild {
                 if (!signedIn) {
                     this.router.navigate(['google', 'login']);
                 }
-            }))
+            }));
     }
 
     canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
