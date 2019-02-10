@@ -7,7 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 export class ChartComponent implements AfterViewInit {
     private mChart: Chart;
 
-    private mType: string = 'line';
+    private mType = 'line';
 
     constructor(private elRef: ElementRef) { }
 

@@ -20,8 +20,8 @@ export function createCompareDateValidator(): ValidatorFn {
             return null;
         }
         return {
-            oneValueRequired: "Atleast one value is required"
-        }
+            oneValueRequired: 'Atleast one value is required'
+        };
     };
 }
 @Component({
@@ -34,14 +34,14 @@ export class WeightChartComponent implements AfterViewInit {
     chart: ChartComponent;
     public metricsForm: FormGroup = new FormGroup({
         enddate: new FormControl(moment.utc().local(), Validators.required),
-        startdate: new FormControl(moment.utc().subtract(7, "days").local(), Validators.required)
+        startdate: new FormControl(moment.utc().subtract(7, 'days').local(), Validators.required)
     }, createCompareDateValidator());
     constructor(private zone: NgZone) { }
 
 
     public ngAfterViewInit(): void {
         this.chart.chart.data = {
-            labels: ["Weight in kg"],
+            labels: ['Weight in kg'],
             datasets: [{
                 label: 'Weight',
                 data: [
