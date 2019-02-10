@@ -97,8 +97,8 @@ export interface Session {
 }
 
 export interface ListSessionsResponse {
-    session: Session[],
-    deletedSession?: Session[],
+    session: Session[];
+    deletedSession?: Session[];
     nextPageToken?: string;
     hasMoreData?: boolean;
 }
