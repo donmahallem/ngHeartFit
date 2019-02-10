@@ -10,10 +10,10 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import * as sinon from "sinon";
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
-import { GapiService, SubmitBodyMetricsRequest } from 'src/app/service/gapi.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import * as moment from 'moment';
+import { FitApiService, SubmitBodyMetricsRequest } from 'src/app/service/fit-api.service';
 
 export function newEvent(eventName: string, bubbles = false, cancelable = false) {
     let evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
@@ -48,7 +48,7 @@ describe('BodyMetricsComponent', () => {
                 BodyMetricsFormComponent
             ],
             providers: [
-                { provide: GapiService, useValue: new testGapiService() },
+                { provide: FitApiService, useValue: new testGapiService() },
                 { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
                 { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS }
             ]
@@ -71,11 +71,11 @@ describe('BodyMetricsComponent', () => {
         let component: BodyMetricsFormComponent;
         let validStub: sinon.SinonStub;
         let submitBodyMetricsStub: sinon.SinonStub;
-        let service: GapiService;
+        let service: FitApiService;
         beforeEach(() => {
             fixture = TestBed.createComponent(BodyMetricsFormComponent);
             component = fixture.debugElement.componentInstance;
-            service = fixture.debugElement.injector.get(GapiService);
+            service = fixture.debugElement.injector.get(FitApiService);
             validStub = sinon.stub(component.metricsForm, 'valid');
             submitBodyMetricsStub = sandbox.stub(service, 'submitBodyMetrics');
             submitBodyMetricsStub.returns(of(true));

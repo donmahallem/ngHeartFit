@@ -15,7 +15,6 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
 
 
     public ngAfterViewInit(): void {
-        console.log("INIT");
         this.chart = new Chart(this.mySpan.nativeElement, {
             type: 'line',
             data: {

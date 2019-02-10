@@ -6,19 +6,27 @@ import {
     RouterStateSnapshot,
     CanActivateChild
 } from '@angular/router';
-import { Observable } from 'rxjs';
-import { GapiAuthService } from './gapi-auth.service';
+import { Observable, of } from 'rxjs';
+import { GapiUserService } from './gapi-user.service';
+import { tap, single, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class RouteGuardService implements CanActivate, CanActivateChild {
 
-    constructor(private gapiUserService: GapiAuthService, private router: Router) { }
+    constructor(private gapiUserService: GapiUserService, private router: Router) { }
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
-        if (!route.data["requiresLogin"]) {
+        if (!route.data['requiresLogin']) {
             return true;
-        } else {
+        } else if (this.gapiUserService.isSignedIn === true) {
             return true;
         }
+        return this.gapiUserService
+            .isSignedInObservable
+            .pipe(tap((signedIn) => {
+                if (!signedIn) {
+                    this.router.navigate(['google', 'login']);
+                }
+            }));
     }
 
     canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {

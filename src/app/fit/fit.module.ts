@@ -7,29 +7,36 @@ import {
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    MatTableModule
 } from '@angular/material';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FitApiService } from '../service/fit-api.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { BodyMetricsRoutingModule } from './bodymetrics-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { BodyMetricsFormComponent } from './components/bodymetrics-form.component';
-import { WeightChartComponent } from './components/weight-chart.component';
-import { ChartComponent } from '../common-components/chart.component';
 import { NgGapiConfigModule } from '../nggapi-config.module';
+import { DatasourcesComponent } from './datasources/datasources.component';
+import { FitRoutingModule } from './fit-routing.module';
+import { DatasourceDetailComponent } from './datasources/datasource-detail.component';
+import { DatasourceComponent } from './datasources/datasource.component';
+import { SessionsComponent } from './sessions/sessions.component';
+import { SessionComponent } from './sessions/session.component';
+import { SessionDetailComponent } from './session-detail/session-detail.component';
 
 @NgModule({
     declarations: [
-        BodyMetricsFormComponent,
-        WeightChartComponent,
-        ChartComponent
+        DatasourcesComponent,
+        DatasourceDetailComponent,
+        DatasourceComponent,
+        SessionsComponent,
+        SessionComponent,
+        SessionDetailComponent
     ],
     imports: [
         CommonModule,
-        BodyMetricsRoutingModule,
+        FitRoutingModule,
         MatButtonModule,
         HttpClientModule,
         MatGridListModule,
@@ -40,7 +47,8 @@ import { NgGapiConfigModule } from '../nggapi-config.module';
         MatInputModule,
         MatSelectModule,
         MatDatepickerModule,
-        NgGapiConfigModule
+        NgGapiConfigModule,
+        MatTableModule
     ],
     providers: [
         FitApiService,
@@ -48,4 +56,4 @@ import { NgGapiConfigModule } from '../nggapi-config.module';
         { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS }
     ]
 })
-export class BodyMetricsModule { }
+export class FitModule { }

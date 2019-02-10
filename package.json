@@ -34,6 +34,7 @@
         "material-design-icons": "^3.0.1",
         "moment": "^2.24.0",
         "ng-cli-pug-loader": "^0.1.7",
+        "ng-gapi": "0.0.7",
         "rxjs": "^6.4.0",
         "zone.js": "^0.8.29"
     },
@@ -43,6 +44,8 @@
         "@angular/compiler-cli": "^7.2.0",
         "@angular/language-service": "^7.2.4",
         "@types/chart.js": "^2.7.42",
+        "@types/gapi": "0.0.36",
+        "@types/gapi.auth2": "0.0.49",
         "@types/jasmine": "^3.3.8",
         "@types/jasminewd2": "^2.0.6",
         "@types/node": "^10.12.23",

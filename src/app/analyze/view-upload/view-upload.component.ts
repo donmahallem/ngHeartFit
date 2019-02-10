@@ -28,7 +28,6 @@ export class ViewUploadComponent implements
     }
 
     public updateData(summary: Pair[]): void {
-        console.log(summary);
         let lst: DataPoint[] = [];
         for (let p of summary) {
             lst.push({

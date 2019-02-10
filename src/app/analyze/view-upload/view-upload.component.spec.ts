@@ -8,13 +8,8 @@ import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-mo
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
 import * as sinon from "sinon";
-import { Router } from '@angular/router';
-import { tap } from 'rxjs/operators';
-import { GapiService } from 'src/app/service/gapi.service';
-import { ReactiveFormsModule } from '@angular/forms';
 import { AnalyzeDataService } from '../services/analyze-data.service';
 import { DataPoint } from './data-point';
-import { WeightChartComponent } from './weight-chart.component';
 
 @Injectable()
 class testAnalyzeDataService {

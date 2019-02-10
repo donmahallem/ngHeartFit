@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { MatButton } from '@angular/material';
 import { Subscription } from 'rxjs';
-import { GapiAuthService } from '../service/gapi-auth.service';
 @Component({
     selector: 'profile-view',
     templateUrl: './profile.component.pug',
@@ -20,7 +19,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     public btnSignIn: MatButton;
     private _isSignedIn: boolean = false;
     private signinSubscription: Subscription;
-    constructor(private gapiService: GapiAuthService, private cd: ChangeDetectorRef) { }
+    constructor(private cd: ChangeDetectorRef) { }
     public ngAfterViewInit(): void {
         /*this.signinSubscription = this.gapiService.getUserObservable()
             .subscribe((res) => {
