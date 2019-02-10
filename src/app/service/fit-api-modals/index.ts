@@ -97,8 +97,8 @@ export interface FitSession {
 }
 
 export interface ListSessionsResponse {
-    session: FitSession[],
-    deletedSession?: FitSession[],
+    session: FitSession[];
+    deletedSession?: FitSession[];
     nextPageToken?: string;
     hasMoreData?: boolean;
 }
