@@ -228,9 +228,9 @@ export class WeightChartComponent implements AfterViewInit {
                     });
                     data.push({
                         dataTypeName: 'com.google.body.fat.percentage',
-                        //dataSourceId: 'derived:com.google.body.fat.percentage.summary:com.google.android.gms:aggregated'
-                    })
-                    for (let info of value.dataSource) {
+                        // dataSourceId: 'derived:com.google.body.fat.percentage.summary:com.google.android.gms:aggregated'
+                    });
+                    for (const info of value.dataSource) {
                         data.push({
                             dataSourceId: info.dataStreamId
                         });
