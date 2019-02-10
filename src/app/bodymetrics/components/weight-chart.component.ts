@@ -226,12 +226,16 @@ export class WeightChartComponent implements AfterViewInit {
                     data.push({
                         dataTypeName: 'com.google.weight'
                     });
+                    data.push({
+                        dataTypeName: 'com.google.body.fat.percentage',
+                        //dataSourceId: 'derived:com.google.body.fat.percentage.summary:com.google.android.gms:aggregated'
+                    })
                     for (let info of value.dataSource) {
                         data.push({
                             dataSourceId: info.dataStreamId
                         });
                     }
-                    return this.fitApi.getAggregateData(data, moment().subtract(90, "days"), moment(), 1000 * 3600)
+                    return this.fitApi.getAggregateData(data, moment().subtract(30, "days"), moment(), 1000 * 3600 * 2)
                 }))
                 .subscribe((data) => {
                     const weightDatapoints: ChartPoint[] = [];
@@ -246,17 +250,16 @@ export class WeightChartComponent implements AfterViewInit {
                                             y: p.value[0].fpVal
                                         });
                                     }
-                                } else
-                                    if (dataset.dataSourceId === 'derived:com.google.body.fat.percentage.summary:com.google.android.gms:aggregated') {
-                                        for (const p of dataset.point) {
-                                            fatDatapoints.push({
-                                                x: new Date(parseInt(p.startTimeNanos.substr(0, p.startTimeNanos.length - 6))),
-                                                y: p.value[0].fpVal
-                                            });
-                                        }
-                                    } else {
-                                        console.log(dataset);
+                                } else if (dataset.dataSourceId === 'derived:com.google.body.fat.percentage.summary:com.google.android.gms:aggregated') {
+                                    for (const p of dataset.point) {
+                                        fatDatapoints.push({
+                                            x: new Date(parseInt(p.startTimeNanos.substr(0, p.startTimeNanos.length - 6))),
+                                            y: p.value[0].fpVal
+                                        });
                                     }
+                                } else {
+                                    console.log(dataset);
+                                }
                             }
                         }
                     }
