@@ -145,7 +145,7 @@ export class WeightChartComponent implements AfterViewInit {
             };
             list.push(item);
         }
-        console.log('createde items', list.length);/*
+        console.log('createde items', list.length); /*
         this.fitApi.insertFatDataPoints('raw:com.google.body.fat.percentage:265564637760:Example Browser:Browser:1000002:PolarImport',
             list)
             .subscribe(console.log, console.error);*/
@@ -222,7 +222,7 @@ export class WeightChartComponent implements AfterViewInit {
             this.fitApi
                 .getDataSources(['com.google.body.fat.percentage'])
                 .pipe(flatMap((value: DataSourceListResponse) => {
-                    let data: AggregateByFilter[] = [];
+                    const data: AggregateByFilter[] = [];
                     data.push({
                         dataTypeName: 'com.google.weight'
                     });
@@ -235,7 +235,7 @@ export class WeightChartComponent implements AfterViewInit {
                             dataSourceId: info.dataStreamId
                         });
                     }
-                    return this.fitApi.getAggregateData(data, moment().subtract(30, "days"), moment(), 1000 * 3600 * 2)
+                    return this.fitApi.getAggregateData(data, moment().subtract(90, 'days'), moment(), 1000 * 3600);
                 }))
                 .subscribe((data) => {
                     const weightDatapoints: ChartPoint[] = [];

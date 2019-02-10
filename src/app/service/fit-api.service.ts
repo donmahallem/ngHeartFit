@@ -36,7 +36,7 @@ export class FitApiService {
             .pipe(flatMap((t: void) => {
                 const url = FitApiService.ENDPOINT + '/users/me/dataSources/';
                 const headers: HttpHeaders = new HttpHeaders();
-                let params: HttpParams | {
+                const params: HttpParams | {
                     [param: string]: string | string[];
                 } = {};
                 if (dataTypeName) {
@@ -311,4 +311,4 @@ export interface Tasklist {
 export interface AggregateByFilter {
     dataTypeName?: string;
     dataSourceId?: string;
-};
+}
