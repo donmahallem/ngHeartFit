@@ -293,7 +293,7 @@ export class FitApiService {
     }
 
     public submitBodyMetrics(metrics: SubmitBodyMetricsRequest): Observable<any> {
-        return throwError(new Error("needs to implement"));
+        return throwError(new Error('needs to implement'));
     }
 
 }
