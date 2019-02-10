@@ -7,8 +7,10 @@ import {
 import { ChartComponent } from 'src/app/common-components/chart.component';
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import * as moment from 'moment';
-import { FitApiService } from 'src/app/service/fit-api.service';
+import { FitApiService, AggregateByFilter } from 'src/app/service/fit-api.service';
 import { ChartPoint, ChartConfiguration } from 'chart.js';
+import { flatMap } from 'rxjs/operators';
+import { DataSourceListResponse } from 'src/app/service/fit-api-modals';
 
 
 export function createCompareDateValidator(): ValidatorFn {
@@ -122,8 +124,6 @@ export class WeightChartComponent implements AfterViewInit {
         }
     };
     public createDatasource() {
-        this.fitApi.aggregateWeightAndHeight()
-            .subscribe(console.log, console.error);
     }
     public createFatDatasource() {
         this.fitApi.createBodyFatDatasource()
@@ -145,10 +145,11 @@ export class WeightChartComponent implements AfterViewInit {
             };
             list.push(item);
         }
-        console.log('createde items', list.length);
-        this.fitApi.insertFatDataPoints('derived:com.google.body.fat.percentage:265564637760:Example Browser:Browser:1000002:PolarImport',
+        console.log('createde items', list.length);/*
+        this.fitApi.insertFatDataPoints('raw:com.google.body.fat.percentage:265564637760:Example Browser:Browser:1000002:PolarImport',
             list)
-            .subscribe(console.log, console.error);
+            .subscribe(console.log, console.error);*/
+        this.fitApi.getDataSources(['com.google.body.fat.percentage', 'com.google.weight']).subscribe(console.log, console.error);
     }
 
 
@@ -218,7 +219,20 @@ export class WeightChartComponent implements AfterViewInit {
                     this.chart.chart.data.datasets[0].data = lst;
                     this.chart.chart.update(this.chart.chart.config.options);
                 }, console.error);*/
-            this.fitApi.aggregateWeightAndHeight()
+            this.fitApi
+                .getDataSources(['com.google.body.fat.percentage'])
+                .pipe(flatMap((value: DataSourceListResponse) => {
+                    let data: AggregateByFilter[] = [];
+                    data.push({
+                        dataTypeName: 'com.google.weight'
+                    });
+                    for (let info of value.dataSource) {
+                        data.push({
+                            dataSourceId: info.dataStreamId
+                        });
+                    }
+                    return this.fitApi.getAggregateData(data, moment().subtract(90, "days"), moment(), 1000 * 3600)
+                }))
                 .subscribe((data) => {
                     const weightDatapoints: ChartPoint[] = [];
                     const fatDatapoints: ChartPoint[] = [];

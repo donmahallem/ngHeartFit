@@ -1,7 +1,7 @@
 
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { FitDatasource } from './fit-datasource.modal';
 import { map, flatMap, filter } from 'rxjs/operators';
 import { DataPoint } from '../analyze/view-upload/data-point';
@@ -28,6 +28,26 @@ export class FitApiService {
                     throw new Error();
                 }
                 return;
+            }));
+    }
+
+    public getDataSources(dataTypeName?: string[] | string): Observable<DataSourceListResponse> {
+        return this.base()
+            .pipe(flatMap((t: void) => {
+                const url = FitApiService.ENDPOINT + '/users/me/dataSources/';
+                const headers: HttpHeaders = new HttpHeaders();
+                let params: HttpParams | {
+                    [param: string]: string | string[];
+                } = {};
+                if (dataTypeName) {
+                    params['dataTypeName'] = dataTypeName;
+                }
+                return this.httpService.get<DataSourceListResponse>(url, {
+                    headers: {
+                        'Authorization': 'Bearer ' + this.gapiUser.getToken()
+                    },
+                    params
+                });
             }));
     }
 
@@ -159,26 +179,17 @@ export class FitApiService {
                 });
             }));
     }
-    public aggregateWeightAndHeight(): Observable<BucketResponse> {
+
+    public getAggregateData(source: AggregateByFilter[], from: moment.Moment, to: moment.Moment, bucketWindowMillis: number): Observable<BucketResponse> {
         return this.base()
             .pipe(flatMap(() => {
                 const requestBody: any = {
-                    'startTimeMillis': moment().subtract(90, 'day').valueOf(),
-                    'endTimeMillis': moment.now(),
-                    'aggregateBy': [
-                        {
-                            'dataTypeName': 'com.google.weight'
-                        }, {
-                            'dataTypeName': 'com.google.body.fat.percentage',
-                            'dataSourceId': 'derived:com.google.body.fat.percentage:265564637760:Example Browser:Browser:1000002:PolarImport'
-                        }
-                    ],
+                    'startTimeMillis': from.valueOf(),
+                    'endTimeMillis': to.valueOf(),
+                    'aggregateBy': source,
                     'bucketByTime': {
-                        'durationMillis': 1000 * 60 * 60 * 12,
-                        /*'"period": {
-                            type: "day"
-                        }*/
-                    },
+                        'durationMillis': bucketWindowMillis
+                    }
                 };
                 const url = FitApiService.ENDPOINT + '/users/me/dataset:aggregate';
                 return this.httpService.post<BucketResponse>(url, requestBody, {
@@ -296,3 +307,8 @@ export interface SubmitBodyMetricsRequest {
 export interface Tasklist {
     id?: string;
 }
+
+export interface AggregateByFilter {
+    dataTypeName?: string;
+    dataSourceId?: string;
+};
