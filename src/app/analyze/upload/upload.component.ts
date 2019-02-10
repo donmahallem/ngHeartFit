@@ -106,8 +106,7 @@ export class UploadComponent implements OnInit {
             .pipe(filter((file: File) => {
                 if (file) {
                     return true;
-                }
-                else {
+                } else {
                     return false;
                 }
             }), flatMap((file: File) => {
