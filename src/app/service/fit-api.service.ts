@@ -67,30 +67,6 @@ export class FitApiService {
                 })
             }))
     }
-    /*
-        public getMergedWeights(): Observable<any> {derived:com.google.weight:com.google.android.gms:merge_weight
-            return this.base()
-                .pipe(flatMap(() => {
-                    const dataSourceId: string = "raw:com.google.weight:265564637760:Example Manufacturer:ExampleTablet:1000001:MyDataSource";
-                    const nanoTimestamp: string = moment.utc().subtract(7, "days").unix() + "000000000"; 1397515179728708316;
-                    const nanoTimestamp2: string = moment.utc().unix() + "000000000";
-                    return this.awaitClientObservable()
-                        .pipe(mergeMap((status: ClientStatus) => {
-                            return gapi.client.request({
-                                path: "/fitness/v1/users/me/dataSources/" + dataSourceId + "/datasets/" + nanoTimestamp + "-" + nanoTimestamp2,
-                                method: "get"
-                            });
-                        }));
-                    let url = FitApiService.ENDPOINT + '/users/me/dataSources';
-                    const headers: HttpHeaders = new HttpHeaders();
-                    console.log(headers);
-                    return this.httpService.get(url, {
-                        headers: {
-                            'Authorization': 'Bearer ' + this.gapiUser.getToken()
-                        }
-                    })
-                }));
-        }*/
     public getMergedWeights(): Observable<any> {
         return this.base()
             .pipe(flatMap(() => {
@@ -302,32 +278,6 @@ export class FitApiService {
             }));
     }
 
-    /*
-        private createHeader(): Observable<HttpHeaders> {
-            const header: HttpHeaders = new HttpHeaders()
-                .set('Authorization', 'Bearer ');
-            return of(header);
-        }
-    
-        findAll(): Observable<TasklistListResponse> {
-            return <any>this.httpService.get(this.ENDPOINT_URL, { headers: this.authHeader });
-        }
-    
-        findById(id: string): Observable<Tasklist> {
-            return this.httpService.get(this.ENDPOINT_URL + "/" + id, { headers: this.authHeader })
-        }
-    
-        create(tasklist: Tasklist): Observable<Tasklist> {
-            return this.httpService.post(this.ENDPOINT_URL, tasklist, { headers: this.authHeader })
-        }
-    
-        update(tasklist: Tasklist): Observable<Tasklist> {
-            return this.httpService.put(this.ENDPOINT_URL + "/" + tasklist.id, tasklist, { headers: this.authHeader })
-        }
-    
-        delete(id: string): Observable<Object> {
-            return this.httpService.delete(this.ENDPOINT_URL + "/" + id, { headers: this.authHeader })
-        }*/
 }
 export interface TasklistListResponse {
     items: Tasklist[];
