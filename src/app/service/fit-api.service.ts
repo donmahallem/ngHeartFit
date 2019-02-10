@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { FitDatasource } from "./fit-datasource.modal";
 import { map, flatMap, filter } from "rxjs/operators";
 import { DataPoint } from "../analyze/view-upload/data-point";
-import { SubmitValue, SubmitToDatasetBody, SubmitToDatasetResponse } from "./fit-api-modals";
+import { SubmitValue, SubmitToDatasetBody, SubmitToDatasetResponse, BucketResponse, DataSourceListResponse, DataSourceInformation } from "./fit-api-modals";
 import { ngGapiService, GapiStatus } from "./nggapi-base.service";
 import { GapiUserService } from "./gapi-user.service";
 import * as moment from "moment";
@@ -30,12 +30,37 @@ export class FitApiService {
             }))
     }
 
-    public getAllDataSources(): Observable<FitDatasource> {
+    public getDataSource(id: string): Observable<DataSourceInformation> {
+        return this.base()
+            .pipe(flatMap((t: void) => {
+                let url = FitApiService.ENDPOINT + '/users/me/dataSources/' + id;
+                const headers: HttpHeaders = new HttpHeaders();
+                return this.httpService.get<DataSourceInformation>(url, {
+                    headers: {
+                        'Authorization': 'Bearer ' + this.gapiUser.getToken()
+                    }
+                })
+            }))
+    }
+
+    public getAllDataSources(): Observable<DataSourceListResponse> {
         return this.base()
             .pipe(flatMap((t: void) => {
                 let url = FitApiService.ENDPOINT + '/users/me/dataSources';
                 const headers: HttpHeaders = new HttpHeaders();
-                return this.httpService.get(url, {
+                return this.httpService.get<DataSourceListResponse>(url, {
+                    headers: {
+                        'Authorization': 'Bearer ' + this.gapiUser.getToken()
+                    }
+                })
+            }))
+    }
+    public getDataPointsFromDataSource(dataSource: string, from: moment.Moment, to: moment.Moment): Observable<DataSourceListResponse> {
+        return this.base()
+            .pipe(flatMap((t: void) => {
+                let url = FitApiService.ENDPOINT + '/users/me/dataSources/' + dataSource + '/datasets/' + from.valueOf() + '000000-' + to.valueOf() + '000000';
+                const headers: HttpHeaders = new HttpHeaders();
+                return this.httpService.get<DataSourceListResponse>(url, {
                     headers: {
                         'Authorization': 'Bearer ' + this.gapiUser.getToken()
                     }
@@ -85,6 +110,42 @@ export class FitApiService {
     public createDatasource(a?: any): any {
         return null;
     }
+    public createBodyFatDatasource(): Observable<any> {
+        return this.base()
+            .pipe(flatMap(() => {
+                const requestBody: any = {
+                    "dataStreamName": "PolarImport",
+                    "type": "derived",
+                    "application": {
+                        "detailsUrl": "https://donmahallem.github.io/ngHeartFit",
+                        "name": "HeartFit",
+                        "version": "1"
+                    },
+                    "dataType": {
+                        "field": [
+                            {
+                                "name": "percentage",
+                                "format": "floatPoint"
+                            }
+                        ],
+                        "name": "com.google.body.fat.percentage"
+                    },
+                    "device": {
+                        "manufacturer": "Example Browser",
+                        "model": "Browser",
+                        "type": "unknown",
+                        "uid": "1000002",
+                        "version": "1.0"
+                    }
+                };
+                let url = FitApiService.ENDPOINT + '/users/me/dataSources';
+                return this.httpService.post(url, requestBody, {
+                    headers: {
+                        'Authorization': 'Bearer ' + this.gapiUser.getToken()
+                    }
+                });
+            }))
+    }
     public createWeightDatasource(): Observable<any> {
         return this.base()
             .pipe(flatMap(() => {
@@ -121,6 +182,35 @@ export class FitApiService {
                 });
             }))
     }
+    public aggregateWeightAndHeight(): Observable<BucketResponse> {
+        return this.base()
+            .pipe(flatMap(() => {
+                const requestBody: any = {
+                    "startTimeMillis": moment().subtract(90, "day").valueOf(),
+                    "endTimeMillis": moment.now(),
+                    "aggregateBy": [
+                        {
+                            "dataTypeName": 'com.google.weight'
+                        }, {
+                            "dataTypeName": 'com.google.body.fat.percentage',
+                            'dataSourceId': "derived:com.google.body.fat.percentage:265564637760:Example Browser:Browser:1000002:PolarImport"
+                        }
+                    ],
+                    "bucketByTime": {
+                        "durationMillis": 1000 * 60 * 60 * 12,
+                        /*'"period": {
+                            type: "day"
+                        }*/
+                    },
+                };
+                let url = FitApiService.ENDPOINT + '/users/me/dataset:aggregate';
+                return this.httpService.post<BucketResponse>(url, requestBody, {
+                    headers: {
+                        'Authorization': 'Bearer ' + this.gapiUser.getToken()
+                    }
+                });
+            }))
+    }
 
     public insertDataPoints(a?: any[]) {
         return null;
@@ -148,6 +238,49 @@ export class FitApiService {
                                 "value": [
                                     {
                                         "fpVal": dpoint.weight
+                                    }
+                                ]
+                            })
+                }
+                const requestBody: SubmitToDatasetBody = {
+                    "dataSourceId": sourceId,
+                    "maxEndTimeNs": endTimeMillis * 1000000,
+                    "minStartTimeNs": startTimeMillis * 1000000,
+                    "point": submitPoints
+                };
+
+                return this.httpService.patch(FitApiService.ENDPOINT + "/users/me/dataSources/" + sourceId + "/datasets/" + requestBody.minStartTimeNs + '-' + requestBody.maxEndTimeNs, requestBody, {
+                    headers: {
+                        'Authorization': 'Bearer ' + this.gapiUser.getToken()
+                    }
+                });
+            }), map((value: Object) => {
+                return <SubmitToDatasetResponse>value;
+            }));
+    }
+    public insertFatDataPoints(sourceId: string, dataPoints: { fat: number, timestamp: moment.Moment }[]): Observable<SubmitToDatasetResponse> {
+        return this.base()
+            .pipe(flatMap(() => {
+                let startTimeMillis: any = -1;
+                let endTimeMillis: any = -1;
+                let submitPoints: SubmitValue[] = [];
+                for (let dpoint of dataPoints) {
+                    if (startTimeMillis < 0 || startTimeMillis > dpoint.timestamp.valueOf()) {
+                        startTimeMillis = dpoint.timestamp.valueOf();
+                    }
+                    if (endTimeMillis < 0 || endTimeMillis < dpoint.timestamp.valueOf()) {
+                        endTimeMillis = dpoint.timestamp.valueOf();
+                    }
+                    if (dpoint.fat)
+                        submitPoints.push(
+                            {
+                                "dataTypeName": "com.google.body.fat.percentage",
+                                "endTimeNanos": dpoint.timestamp.valueOf() * 1000000,
+                                "originDataSourceId": sourceId,
+                                "startTimeNanos": dpoint.timestamp.valueOf() * 1000000,
+                                "value": [
+                                    {
+                                        "fpVal": dpoint.fat
                                     }
                                 ]
                             })
