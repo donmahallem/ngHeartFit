@@ -82,7 +82,7 @@ export interface DataSourceInformation {
 }
 
 
-export interface Session {
+export interface FitSession {
     activityType: number;
     application: {
         packageName: string;
@@ -97,8 +97,8 @@ export interface Session {
 }
 
 export interface ListSessionsResponse {
-    session: Session[],
-    deletedSession?: Session[],
+    session: FitSession[],
+    deletedSession?: FitSession[],
     nextPageToken?: string;
     hasMoreData?: boolean;
 }

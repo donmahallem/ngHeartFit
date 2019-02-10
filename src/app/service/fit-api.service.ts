@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { FitDatasource } from './fit-datasource.modal';
 import { map, flatMap, filter } from 'rxjs/operators';
 import { DataPoint } from '../analyze/view-upload/data-point';
-import { SubmitValue, SubmitToDatasetBody, SubmitToDatasetResponse, BucketResponse, DataSourceListResponse, DataSourceInformation, ListSessionsResponse } from './fit-api-modals';
+import { SubmitValue, SubmitToDatasetBody, SubmitToDatasetResponse, BucketResponse, DataSourceListResponse, DataSourceInformation, ListSessionsResponse, FitSession } from './fit-api-modals';
 import { ngGapiService, GapiStatus } from './nggapi-base.service';
 import { GapiUserService } from './gapi-user.service';
 import * as moment from 'moment';
@@ -51,11 +51,11 @@ export class FitApiService {
             }));
     }
 
-    public getSession(id: string): Observable<ListSessionsResponse> {
+    public getSession(id: string): Observable<FitSession> {
         return this.base()
             .pipe(flatMap((t: void) => {
                 const url = FitApiService.ENDPOINT + '/users/me/sessions/' + id;
-                return this.httpService.get<ListSessionsResponse>(url, {
+                return this.httpService.get<FitSession>(url, {
                     headers: {
                         'Authorization': 'Bearer ' + this.gapiUser.getToken()
                     }

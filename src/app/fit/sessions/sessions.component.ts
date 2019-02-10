@@ -11,20 +11,20 @@ import { Subscription } from 'rxjs';
 import { GapiUserService } from 'src/app/service/gapi-user.service';
 import { FitApiService } from 'src/app/service/fit-api.service';
 import { Router } from '@angular/router';
-import { DataSourceListResponse, DataSourceInformation, Session } from 'src/app/service/fit-api-modals';
+import { DataSourceListResponse, DataSourceInformation, FitSession } from 'src/app/service/fit-api-modals';
 import * as moment from 'moment';
 
 @Component({
-    selector: 'sessions',
+    selector: 'sessions-list',
     templateUrl: './sessions.component.pug',
     styleUrls: ['./sessions.component.scss']
 })
 export class SessionsComponent implements OnDestroy, AfterViewInit {
-    private mDataSources: Session[] = [];
+    private mDataSources: FitSession[] = [];
     constructor(private zone: NgZone, private nggapi: FitApiService) {
     }
 
-    public get dataSources(): Session[] {
+    public get dataSources(): FitSession[] {
         return this.mDataSources;
     }
 

@@ -14,7 +14,7 @@ import { FitApiService } from 'src/app/service/fit-api.service';
 import { Router } from '@angular/router';
 import { DataSourceListResponse, DataSourceInformation } from 'src/app/service/fit-api-modals';
 @Component({
-    selector: 'session',
+    selector: 'session-list-item',
     templateUrl: './session.component.pug',
     styleUrls: ['./session.component.scss']
 })
