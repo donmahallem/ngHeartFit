@@ -1,6 +1,6 @@
 
 import { Injectable } from "@angular/core";
-import { Observable, of } from "rxjs";
+import { Observable, of, throwError } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { FitDatasource } from "./fit-datasource.modal";
 import { map, flatMap, filter } from "rxjs/operators";
@@ -278,9 +278,16 @@ export class FitApiService {
             }));
     }
 
+    public submitBodyMetrics(metrics: SubmitBodyMetricsRequest): Observable<any> {
+        return throwError(new Error("needs to implement"));
+    }
+
 }
-export interface TasklistListResponse {
-    items: Tasklist[];
+export interface SubmitBodyMetricsRequest {
+    timestamp: number;
+    bodyweight?: number;
+    bodyheight?: number;
+    bodyfat?: number;
 }
 
 export interface Tasklist {

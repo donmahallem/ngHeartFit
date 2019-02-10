@@ -6,13 +6,6 @@ import { Injectable, Component, Input } from '@angular/core';
 import { UploadToFitComponent } from './upload-to-fit.component';
 
 import * as sinon from "sinon";
-import { Router } from '@angular/router';
-import { tap } from 'rxjs/operators';
-import { GapiService } from 'src/app/service/gapi.service';
-import { ReactiveFormsModule } from '@angular/forms';
-import { AnalyzeDataService } from '../services/analyze-data.service';
-import { DataPoint } from './data-point';
-import { WeightChartComponent } from './weight-chart.component';
 import { FitApiService } from 'src/app/service/fit-api.service';
 
 @Injectable()
