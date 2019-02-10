@@ -17,9 +17,9 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class LoginGoogleComponent {
     public signin_url: string;
-    @ViewChild("btnSignin")
+    @ViewChild('btnSignin')
     public btnSignIn: MatButton;
-    private _isSignedIn: boolean = false;
+    private _isSignedIn = false;
     private signinSubscription: Subscription;
     constructor(private gapiService: GapiAuthService,
         private cd: ChangeDetectorRef,

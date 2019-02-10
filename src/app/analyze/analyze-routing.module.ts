@@ -7,18 +7,18 @@ import { UploadResolver } from './services/upload.resolver';
 
 const routes: Routes = [
     {
-        path: "upload",
+        path: 'upload',
         component: UploadComponent,
         canActivate: [RouteGuardService]
     },
     {
-        path: "view",
+        path: 'view',
         component: ViewUploadComponent,
-        //resolve: { uploadData: UploadResolver }
+        // resolve: { uploadData: UploadResolver }
     },
     {
-        path: "**",
-        redirectTo: "upload"
+        path: '**',
+        redirectTo: 'upload'
     }
 ];
 

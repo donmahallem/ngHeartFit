@@ -1,7 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
-import { timer, Observable, Subscription, of, combineLatest, BehaviorSubject, throwError } from "rxjs";
+import { timer, Observable, Subscription, of, combineLatest, BehaviorSubject, throwError } from 'rxjs';
 import { catchError, map, tap, mergeMapTo, filter, mergeMap, retryWhen, flatMap, delay } from 'rxjs/operators';
 import * as moment from 'moment';
 
@@ -10,7 +10,7 @@ export interface SignInUrlResponse {
 }
 
 export interface ExchangeCodeResponse {
-    url: string
+    url: string;
 }
 export interface User {
 
@@ -23,28 +23,28 @@ export class GapiAuthService {
 
     constructor(private http: HttpClient) {
     }
+    a = 0;
 
     public getMe(): Observable<User> {
         return this.http
-            .get<User>("/api/google/user/me");
+            .get<User>('/api/google/user/me');
     }
 
     public getSigninUrl(): Observable<SignInUrlResponse> {
         return this.http
-            .get<SignInUrlResponse>("/api/google/auth/url");
+            .get<SignInUrlResponse>('/api/google/auth/url');
     }
 
     public exchangeCode(code: string): Observable<ExchangeCodeResponse> {
         const body: any = {
             code: code
         };
-        return this.http.post<ExchangeCodeResponse>("/api/google/auth/code", body);
+        return this.http.post<ExchangeCodeResponse>('/api/google/auth/code', body);
     }
-    a: number = 0;
     public refreshToken(): Observable<boolean> {
         this.a++;
         if (this.a % 3 == 0) {
-            return throwError(new Error("asdf"));
+            return throwError(new Error('asdf'));
         } else {
             return of(true);
         }
@@ -52,7 +52,7 @@ export class GapiAuthService {
     public authRequest<T>(obs: Observable<T>): Observable<T> {
         return obs
             .pipe(retryWhen((errors: Observable<any | HttpErrorResponse>) => {
-                let retries: number = 0;
+                let retries = 0;
                 return errors.pipe(flatMap((err: any | HttpErrorResponse) => {
                     if (err.status) {
                         if (err.status == 401) {

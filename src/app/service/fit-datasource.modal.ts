@@ -1,3 +1,3 @@
-export interface FitDatasource{
-    
+export interface FitDatasource {
+
 }

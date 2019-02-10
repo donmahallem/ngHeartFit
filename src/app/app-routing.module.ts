@@ -6,28 +6,28 @@ import { GoogleAuthCallbackGuard } from './components/google-auth-callback/googl
 
 const routes: Routes = [
     {
-        path: "analyze",
+        path: 'analyze',
         data: {
             requiresLogin: true
         },
-        loadChildren: "./analyze/analyze.module#AnalyzeModule"
+        loadChildren: './analyze/analyze.module#AnalyzeModule'
     }, {
         path: 'profile',
         data: {
             requiresLogin: true
         },
-        loadChildren: "./profile/profile.module#ProfileModule"
+        loadChildren: './profile/profile.module#ProfileModule'
     }, {
         path: 'bodymetrics',
         data: {
             requiresLogin: true
         },
-        loadChildren: "./bodymetrics/bodymetrics.module#BodyMetricsModule"
+        loadChildren: './bodymetrics/bodymetrics.module#BodyMetricsModule'
     }, {
         path: 'login',
         children: [
             {
-                path: "google",
+                path: 'google',
                 component: LoginGoogleComponent,
                 resolve: {
                     signin_url: GoogleAuthCallbackGuard
@@ -35,13 +35,13 @@ const routes: Routes = [
                 children: [
                     {
                         canActivate: [GoogleAuthCallbackGuard],
-                        path: "callback",
+                        path: 'callback',
                         children: []
                     }
                 ]
             },
             {
-                path: "polarflow",
+                path: 'polarflow',
                 children: []
             }
         ]

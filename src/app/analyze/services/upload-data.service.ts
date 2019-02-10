@@ -7,7 +7,7 @@ export class UploadDataService {
     private uploadFilesSubject: BehaviorSubject<UploadFile[]> = new BehaviorSubject([]);
     private hasUploadableFiles: BehaviorSubject<boolean> = new BehaviorSubject(false);
     public update(): void {
-        for (let upFile of this.uploadedFiles) {
+        for (const upFile of this.uploadedFiles) {
             if (upFile.valid && upFile.selected) {
                 this.hasUploadableFiles.next(true);
                 return;
