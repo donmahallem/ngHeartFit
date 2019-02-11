@@ -10,7 +10,7 @@ export const environment: BaseEnvironment = {
         client_id: 'your client id',
         redirect_uri: 'https://your.redirect/url'
     }
-}
+};
 
 
 /*
