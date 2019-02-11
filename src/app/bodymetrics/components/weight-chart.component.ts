@@ -52,6 +52,9 @@ export class WeightChartComponent implements AfterViewInit {
         console.log('JJGJGJ');
     }
 
+    public onSubmit(): void {
+
+    }
     public chartConfig: ChartConfiguration = {
         type: 'line',
         data: {
