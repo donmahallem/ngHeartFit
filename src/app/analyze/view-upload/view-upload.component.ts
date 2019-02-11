@@ -28,8 +28,8 @@ export class ViewUploadComponent implements
     }
 
     public updateData(summary: Pair[]): void {
-        let lst: DataPoint[] = [];
-        for (let p of summary) {
+        const lst: DataPoint[] = [];
+        for (const p of summary) {
             lst.push({
                 x: new Date(p.timestamp),
                 y: p.bpm
