@@ -5,6 +5,6 @@ import { Component, OnInit, NgZone } from '@angular/core';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    private _title: string = "app title";
+    private _title = 'app title';
 
 }

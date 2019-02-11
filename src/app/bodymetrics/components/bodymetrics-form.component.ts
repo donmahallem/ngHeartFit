@@ -78,7 +78,6 @@ export class BodyMetricsFormComponent {
             const timeSplit: string[] = time.split(':');
             date.hours(parseInt(timeSplit[0]));
             date.minutes(parseInt(timeSplit[1]));
-
             const submitObject: SubmitBodyMetricsRequest = {
                 timestamp: date.unix()
             };

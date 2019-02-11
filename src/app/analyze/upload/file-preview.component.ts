@@ -17,22 +17,25 @@ export class FilePreviewComponent {
     private mUploadFile: UploadFile;
     @HostBinding('class.validFile')
     public get isValidFile(): boolean {
-        if (this.mUploadFile)
+        if (this.mUploadFile) {
             return this.mUploadFile.valid;
+        }
         return false;
     }
 
     public get filename(): string {
-        if (this.mUploadFile)
+        if (this.mUploadFile) {
             return this.mUploadFile.filename;
-        return "Unknown";
+        }
+        return 'Unknown';
     }
     public get filesize(): number {
-        if (this.mUploadFile)
+        if (this.mUploadFile) {
             return this.mUploadFile.data.length;
+        }
         return 0;
     }
-    @Input("uploadFile")
+    @Input('uploadFile')
     public set uploadFile(upload: UploadFile) {
         this.mUploadFile = upload;
     }

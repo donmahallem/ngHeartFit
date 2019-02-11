@@ -6,7 +6,7 @@ import {
 import { UploadDataService } from '../services/upload-data.service';
 import { from, Observable, Observer, of } from 'rxjs';
 import { filter, flatMap, map } from 'rxjs/operators';
-import { FlowApiValidator, DaySummary, DayData } from "@donmahallem/flowapi";
+import { FlowApiValidator, DaySummary, DayData } from '@donmahallem/flowapi';
 import { UploadFile } from '../services';
 import { AnalyzeDataService } from '../services/analyze-data.service';
 import { Router } from '@angular/router';
@@ -30,9 +30,10 @@ export class UploadComponent implements OnInit {
 
     public get validFiles(): boolean {
         if (this.uploadFiles.length > 0) {
-            for (let upFile of this.uploadFiles) {
-                if (upFile.valid && (upFile.selected === true || upFile.selected === undefined))
+            for (const upFile of this.uploadFiles) {
+                if (upFile.valid && (upFile.selected === true || upFile.selected === undefined)) {
                     return true;
+                }
             }
         }
         return false;
@@ -61,7 +62,7 @@ export class UploadComponent implements OnInit {
                 pub.complete();
             };
             reader.onerror = (er: ProgressEvent) => {
-                pub.error(new Error("loading error"));
+                pub.error(new Error('loading error'));
             };
             reader.readAsText(file);
         });
@@ -69,10 +70,12 @@ export class UploadComponent implements OnInit {
 
     public clickImport(event: MouseEvent): void {
         this.importFiles().subscribe((result) => {
+            console.log('res', result);
         }, (err: Error) => {
         }, () => {
-            this.router.navigate(["analyze", "view"]);
-        })
+            console.log('Complete');
+            this.router.navigate(['analyze', 'view']);
+        });
 
     }
 
@@ -86,7 +89,7 @@ export class UploadComponent implements OnInit {
                 return JSON.parse(upload.data);
             }), flatMap((summary: DaySummary) => {
                 const summaries: DayData[] = [];
-                for (let key of Object.keys(summary)) {
+                for (const key of Object.keys(summary)) {
                     summaries.push(summary[key]);
                 }
                 return from(summaries);
@@ -99,10 +102,11 @@ export class UploadComponent implements OnInit {
         this.uploadDataService.clear();
         return from(e.files)
             .pipe(filter((file: File) => {
-                if (file)
+                if (file) {
                     return true;
-                else
+                } else {
                     return false;
+                }
             }), flatMap((file: File) => {
                 return this.ads(file);
             }), map((data: UploadFile): UploadFile => {

@@ -5,7 +5,7 @@ import { WeightChartComponent } from './components/weight-chart.component';
 
 const routes: Routes = [
     {
-        path: "insert",
+        path: 'insert',
         component: BodyMetricsFormComponent
     },
     {

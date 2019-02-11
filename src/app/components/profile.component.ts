@@ -15,9 +15,9 @@ import { Subscription } from 'rxjs';
 })
 export class ProfileComponent implements AfterViewInit, OnDestroy {
     public user: any;
-    @ViewChild("btnSignin")
+    @ViewChild('btnSignin')
     public btnSignIn: MatButton;
-    private _isSignedIn: boolean = false;
+    private _isSignedIn = false;
     private signinSubscription: Subscription;
     constructor(private cd: ChangeDetectorRef) { }
     public ngAfterViewInit(): void {
@@ -37,8 +37,9 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     }
 
     public ngOnDestroy(): void {
-        if (this.signinSubscription)
+        if (this.signinSubscription) {
             this.signinSubscription.unsubscribe();
+        }
     }
 
     public get isSignedIn(): boolean {
@@ -46,6 +47,6 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     }
 
     public signin(event: MouseEvent): void {
-        //this.gapiService.
+        // this.gapiService.
     }
 }

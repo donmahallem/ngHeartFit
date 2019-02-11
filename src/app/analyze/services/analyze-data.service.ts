@@ -19,7 +19,7 @@ export class AnalyzeDataService {
 
     public insert(data: ActivityGraphData): Observable<number> {
         const lst: Pair[] = [];
-        for (let pair of data.heartRateTimelineSamples) {
+        for (const pair of data.heartRateTimelineSamples) {
             if (pair.value < 1) {
                 continue;
             }
