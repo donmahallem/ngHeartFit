@@ -1,0 +1,12 @@
+:host {
+    width: 100%;
+    display: block;
+    position: relative;
+}
+
+canvas.graph {
+    width: 100%;
+    height: 300px;
+    margin:30px;
+    display: block;
+}

@@ -1,0 +1,198 @@
+import { TestBed, async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MatButtonModule, MatCheckboxModule, MatGridListModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatIconModule } from '@angular/material';
+import { Observable, from, of, throwError } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { BodyMetricsFormComponent, BodyMetricsFormData } from './bodymetrics-form.component';
+import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+
+import * as sinon from "sinon";
+import { Router } from '@angular/router';
+import { tap } from 'rxjs/operators';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import * as moment from 'moment';
+import { FitApiService, SubmitBodyMetricsRequest } from 'src/app/service/fit-api.service';
+
+export function newEvent(eventName: string, bubbles = false, cancelable = false) {
+    let evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
+    evt.initCustomEvent(eventName, bubbles, cancelable, null);
+    return evt;
+}
+
+@Injectable()
+class testGapiService {
+    submitBodyMetrics(data: SubmitBodyMetricsRequest): Observable<any> {
+        return null;
+    }
+}
+let sandbox;
+describe('BodyMetricsComponent', () => {
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [
+                RouterTestingModule,
+                MatButtonModule,
+                MatCheckboxModule,
+                MatGridListModule,
+                ReactiveFormsModule,
+                MatFormFieldModule,
+                MatInputModule,
+                MatSelectModule,
+                MatIconModule,
+                MatDatepickerModule,
+                NoopAnimationsModule
+            ],
+            declarations: [
+                BodyMetricsFormComponent
+            ],
+            providers: [
+                { provide: FitApiService, useValue: new testGapiService() },
+                { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+                { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS }
+            ]
+        }).compileComponents();
+    }));
+
+    beforeEach(() => {
+        //testUploadDataService.
+    });
+
+    it('should create the component', () => {
+        const fixture = TestBed.createComponent(BodyMetricsFormComponent);
+        const app = fixture.debugElement.componentInstance;
+        expect(app).toBeTruthy();
+    });
+    beforeAll(() => { sandbox = sinon.sandbox.create(); })
+    afterEach(() => { sandbox.restore(); })
+    describe('onSubmit()', () => {
+        let fixture: ComponentFixture<BodyMetricsFormComponent>;
+        let component: BodyMetricsFormComponent;
+        let validStub: sinon.SinonStub;
+        let submitBodyMetricsStub: sinon.SinonStub;
+        let service: FitApiService;
+        beforeEach(() => {
+            fixture = TestBed.createComponent(BodyMetricsFormComponent);
+            component = fixture.debugElement.componentInstance;
+            service = fixture.debugElement.injector.get(FitApiService);
+            validStub = sinon.stub(component.metricsForm, 'valid');
+            submitBodyMetricsStub = sandbox.stub(service, 'submitBodyMetrics');
+            submitBodyMetricsStub.returns(of(true));
+        });
+        describe('form is not valid', () => {
+            beforeEach(() => {
+                validStub.value(false);
+            })
+            it('should not call submitBodyMetrics', () => {
+                component.onSubmit();
+                expect(submitBodyMetricsStub.callCount).toEqual(0);
+            });
+        });
+        describe('form is valid', () => {
+            let inputBodyWeight,
+                inputBodyFat,
+                inputBodyHeight,
+                inputDate,
+                inputTime: HTMLInputElement;
+            let inputBodyHeightUnit,
+                inputBodyWeightUnit: HTMLSelectElement;
+            const testTimestamp: number = 1549193178;
+            beforeEach(() => {
+                validStub.value(true);
+                inputBodyHeight = fixture.nativeElement.querySelector('.inputbodyheight');
+                inputBodyFat = fixture.nativeElement.querySelector('.inputbodyfat');
+                inputBodyWeight = fixture.nativeElement.querySelector('.inputbodyweight');
+                inputBodyHeightUnit = fixture.nativeElement.querySelector('.inputbodyheightunit');
+                inputBodyWeightUnit = fixture.nativeElement.querySelector('.inputbodyweightunit');
+                inputDate = fixture.nativeElement.querySelector('.inputdate');
+                inputTime = fixture.nativeElement.querySelector('.inputtime');
+            });
+            it('should connect inputs to form', () => {
+                const testData: BodyMetricsFormData = {
+                    bodyfat: 29.2,
+                    bodyheight: 92,
+                    bodyweight: 78,
+                    bodyheightunit: 'inch',
+                    bodyweightunit: 'kilogram',
+                    date: moment.unix(testTimestamp).local(),
+                    time: moment.unix(testTimestamp).local().format("HH:mm")
+                };
+                component.metricsForm.patchValue(testData);
+                fixture.detectChanges();
+                expect(inputBodyHeight.value).toEqual('78');
+                expect(inputBodyWeight.value).toEqual('92');
+                expect(inputBodyFat.value).toEqual('29.2');
+                //expect(inputBodyHeightUnit.options[inputBodyHeightUnit.selectedIndex].value).toEqual('inch');
+                //expect(inputBodyWeightUnit.options[inputBodyWeightUnit.selectedIndex].value).toEqual('kg');
+            });
+
+            it('should call submitBodyMetrics with inch and pound', () => {
+                const testData: BodyMetricsFormData = {
+                    bodyfat: 29.2,
+                    bodyheight: 92,
+                    bodyweight: 78,
+                    bodyheightunit: 'inch',
+                    bodyweightunit: 'pound',
+                    date: moment.unix(testTimestamp).local(),
+                    time: moment.unix(testTimestamp).local().format("HH:mm")
+                };
+                component.metricsForm.patchValue(testData);
+                fixture.detectChanges();
+                component.metricsForm.updateValueAndValidity();
+                component.onSubmit();
+                expect(submitBodyMetricsStub.callCount).toEqual(1);
+                expect(submitBodyMetricsStub.getCall(0).args[0]).toEqual({
+                    bodyweight: testData.bodyweight * BodyMetricsFormComponent.POUND_TO_KILOGRAM,
+                    timestamp: testTimestamp,
+                    bodyfat: testData.bodyfat,
+                    bodyheight: testData.bodyheight * BodyMetricsFormComponent.INCH_TO_METER
+                });
+            });
+            it('should call submitBodyMetrics with foot and stone', () => {
+                const testData: BodyMetricsFormData = {
+                    bodyfat: 29.2,
+                    bodyheight: 92,
+                    bodyweight: 78,
+                    bodyheightunit: 'foot',
+                    bodyweightunit: 'stone',
+                    date: moment.unix(testTimestamp).local(),
+                    time: moment.unix(testTimestamp).local().format("HH:mm")
+                };
+                component.metricsForm.patchValue(testData);
+                fixture.detectChanges();
+                component.metricsForm.updateValueAndValidity();
+                component.onSubmit();
+                expect(submitBodyMetricsStub.callCount).toEqual(1);
+                expect(submitBodyMetricsStub.getCall(0).args[0]).toEqual({
+                    bodyweight: testData.bodyweight * BodyMetricsFormComponent.STONE_TO_KILOGRAM,
+                    timestamp: testTimestamp,
+                    bodyfat: testData.bodyfat,
+                    bodyheight: testData.bodyheight * BodyMetricsFormComponent.FOOT_TO_METER
+                });
+            });
+            it('should call submitBodyMetrics with kilogram and meter', () => {
+                const testData: BodyMetricsFormData = {
+                    bodyfat: 29.2,
+                    bodyheight: 92,
+                    bodyweight: 78,
+                    bodyheightunit: 'meter',
+                    bodyweightunit: 'kilogram',
+                    date: moment.unix(testTimestamp).local(),
+                    time: moment.unix(testTimestamp).local().format("HH:mm")
+                };
+                component.metricsForm.patchValue(testData);
+                fixture.detectChanges();
+                component.metricsForm.updateValueAndValidity();
+                component.onSubmit();
+                expect(submitBodyMetricsStub.callCount).toEqual(1);
+                expect(submitBodyMetricsStub.getCall(0).args[0]).toEqual({
+                    bodyweight: testData.bodyweight,
+                    timestamp: testTimestamp,
+                    bodyfat: testData.bodyfat,
+                    bodyheight: testData.bodyheight
+                });
+            });
+        });
+    });
+});

@@ -1,7 +1,6 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatButtonModule, MatToolbarModule, MatCheckboxModule } from '@angular/material';
-import { GoogleAuthService } from 'ng-gapi';
 import { Observable, from } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { FilePreviewComponent } from './file-preview.component';

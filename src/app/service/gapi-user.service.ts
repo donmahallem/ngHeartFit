@@ -1,83 +1,90 @@
-import { GoogleAuthService, GoogleApiService } from "ng-gapi";
-import { Injectable } from "@angular/core";
-import {
-    timer,
-    Observable,
-    Subscription,
-    of,
-    combineLatest,
-    BehaviorSubject
-} from "rxjs";
-import {
-    catchError,
-    map,
-    tap,
-    mergeMapTo,
-    filter,
-    mergeMap,
-    single,
-    flatMap
-} from 'rxjs/operators';
-export enum ClientStatus {
-    LOADING = 1,
-    LOADED = 2,
-    ERROR = 3
-}
-@Injectable({
-    providedIn: 'root'
-})
+import { Injectable } from '@angular/core';
+import { GoogleAuthService, GoogleApiService } from 'ng-gapi';
+import { ngGapiService } from './nggapi-base.service';
+import { Observable, Observer, BehaviorSubject, of } from 'rxjs';
+import { flatMap, map, tap, share, catchError, shareReplay } from 'rxjs/operators';
+
+@Injectable()
 export class GapiUserService {
-    public static SESSION_STORAGE_KEY: string = 'accessToken';
+    public static SESSION_STORAGE_KEY = 'accessToken';
     private user: gapi.auth2.GoogleUser;
-    private signinStatusSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
-    private clientStatusSubject: BehaviorSubject<ClientStatus> = new BehaviorSubject(ClientStatus.LOADING);
+    private signedInObservable: Observable<boolean>;
 
-    constructor(private googleAuthService: GoogleAuthService) {
+    constructor(private googleAuth: GoogleAuthService) {
+        this.watchUserChanges();
+        this.signedInObservable = this.createSignedInObservable();
     }
 
-    public getToken2(): Observable<string> {
-        return this.googleAuthService.getAuth()
-            .pipe(map((auth) => {
-                return auth.currentUser.get().getAuthResponse().access_token;
-            }));
+    public createSignedInObservable(): Observable<boolean> {
+        return this.googleAuth
+            .getAuth()
+            .pipe(flatMap((googleAuthClient: gapi.auth2.GoogleAuth): Observable<boolean> => {
+                return Observable.create((observer: Observer<boolean>) => {
+                    observer.next(googleAuthClient.isSignedIn.get());
+                    googleAuthClient.isSignedIn.listen((signedIn: boolean) => {
+                        observer.next(signedIn);
+                    });
+                });
+            }), catchError((err): Observable<boolean> => {
+                return of(false);
+            }), shareReplay(1));
+
+    }
+    public watchUserChanges(): void {
+        this.googleAuth
+            .getAuth()
+            .pipe(flatMap((googleAuthClient: gapi.auth2.GoogleAuth): Observable<string> => {
+                return Observable.create((observer: Observer<string>) => {
+                    if (googleAuthClient.currentUser.get()) {
+                        observer.next(googleAuthClient.currentUser.get().getAuthResponse().access_token);
+                    }
+                    googleAuthClient.currentUser.listen((user) => {
+                        observer.next(user.getAuthResponse().access_token);
+                    });
+                });
+            }))
+            .subscribe((token: string) => {
+                this.setAccessToken(token);
+            });
     }
 
+    private setAccessToken(token: string) {
+        sessionStorage.setItem(
+            GapiUserService.SESSION_STORAGE_KEY, token
+        );
+    }
     public getToken(): string {
-        let token: string = sessionStorage.getItem(GapiUserService.SESSION_STORAGE_KEY);
+        const token: string = sessionStorage.getItem(GapiUserService.SESSION_STORAGE_KEY);
         if (!token) {
-            throw new Error("no token set , authentication required");
+            throw new Error('no token set , authentication required');
         }
         return sessionStorage.getItem(GapiUserService.SESSION_STORAGE_KEY);
     }
 
-    public getUserObservable(): Observable<gapi.auth2.GoogleUser> {
-        return this.googleAuthService.getAuth()
-            .pipe(map((auth: gapi.auth2.GoogleAuth) => {
-                if (auth.isSignedIn.get()) {
-                    return auth.currentUser.get();
-                } else {
-                    throw new Error("not signed in");
-                }
+    public signIn(): Observable<gapi.auth2.GoogleUser> {
+        return this.googleAuth.getAuth()
+            .pipe(flatMap((auth: gapi.auth2.GoogleAuth) => {
+                return auth.signIn();
+            }), tap((user: gapi.auth2.GoogleUser) => {
+                this.signInSuccessHandler(user);
             }));
     }
 
-    public isSignedInObservable(): Observable<boolean> {
-        return this.googleAuthService
-            .getAuth()
-            .pipe(map((value: gapi.auth2.GoogleAuth) => {
-                return value.isSignedIn.get();
-            }), single());
+    public get isSignedIn(): boolean {
+        const inst: gapi.auth2.GoogleAuth = (<any>this.googleAuth).GoogleAuth;
+        if (inst) {
+            return inst.isSignedIn.get();
+        }
+        return false;
     }
 
-    public signIn(): void {
-        this.googleAuthService.getAuth()
-            .subscribe((auth) => {
-                auth.signIn().then(res => this.signInSuccessHandler(res));
-            });
+    public get isSignedInObservable(): Observable<boolean> {
+        return this.signedInObservable;
     }
 
     private signInSuccessHandler(res: gapi.auth2.GoogleUser) {
         this.user = res;
+        console.log('update tokens');
         sessionStorage.setItem(
             GapiUserService.SESSION_STORAGE_KEY, res.getAuthResponse().access_token
         );

@@ -1,9 +1,6 @@
 import { Component, OnInit, NgZone, ElementRef, AfterViewInit, ViewChild, Input, DoCheck } from '@angular/core';
 import { Chart } from 'chart.js';
-import { from, BehaviorSubject } from 'rxjs';
-import { mergeMap, filter, merge, map, toArray, take } from 'rxjs/operators';
-import { fitness_v1 } from 'googleapis';
-import * as moment from 'moment';
+import { BehaviorSubject } from 'rxjs';
 import { DataPoint } from './data-point';
 @Component({
     selector: 'weight-chart',
@@ -18,7 +15,6 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
 
 
     public ngAfterViewInit(): void {
-        console.log("INIT");
         this.chart = new Chart(this.mySpan.nativeElement, {
             type: 'line',
             data: {
@@ -38,9 +34,6 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
 
                     xAxes: [{
                         type: 'time',
-                        time: {
-                            unit: 'month'
-                        }
                     }]
                 }, responsive: true
             }
