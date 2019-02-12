@@ -2,52 +2,39 @@ import {
     Component,
     NgZone,
     AfterViewInit,
-    ViewChild
+    ViewChild,
+    OnDestroy
 } from '@angular/core';
 import { ChartComponent } from 'src/app/common-components/chart.component';
-import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import * as moment from 'moment';
 import { FitApiService, AggregateByFilter } from 'src/app/service/fit-api.service';
 import { ChartPoint, ChartConfiguration } from 'chart.js';
 import { flatMap } from 'rxjs/operators';
 import { DataSourceListResponse } from 'src/app/service/fit-api-modals';
+import { WeightChartService } from '../services/weight-chart.service';
 
-
-export function createCompareDateValidator(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-        const group: FormGroup = <any>control;
-        const values: {
-            startdate: moment.Moment,
-            enddate: moment.Moment
-        } = group.value;
-        if (values.startdate.isBefore(values.enddate)) {
-            return null;
-        }
-        return {
-            oneValueRequired: 'Atleast one value is required'
-        };
-    };
-}
 
 @Component({
     selector: 'weight-chart',
     templateUrl: './weight-chart.component.pug',
     styleUrls: ['./weight-chart.component.scss']
 })
-export class WeightChartComponent implements AfterViewInit {
+export class WeightChartComponent implements AfterViewInit, OnDestroy {
     @ViewChild(ChartComponent)
     chart: ChartComponent;
-    public metricsForm: FormGroup = new FormGroup({
-        enddate: new FormControl(moment.utc().local(), Validators.required),
-        startdate: new FormControl(moment.utc().subtract(7, 'days').local(), Validators.required)
-    }, createCompareDateValidator());
-    constructor(private zone: NgZone, private fitApi: FitApiService) {
-        console.log('JJGJGJ');
+    constructor(private zone: NgZone,
+        private fitApi: FitApiService,
+        private chartService: WeightChartService) {
     }
 
     public onSubmit(): void {
 
     }
+
+    public ngOnDestroy() {
+
+    }
+
     public chartConfig: ChartConfiguration = {
         type: 'line',
         data: {
