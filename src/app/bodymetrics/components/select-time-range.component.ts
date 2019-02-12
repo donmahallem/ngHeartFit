@@ -10,7 +10,7 @@ import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from
 import * as moment from 'moment';
 import { FitApiService, AggregateByFilter } from 'src/app/service/fit-api.service';
 import { ChartPoint, ChartConfiguration } from 'chart.js';
-import { flatMap } from 'rxjs/operators';
+import { flatMap, debounceTime } from 'rxjs/operators';
 import { DataSourceListResponse } from 'src/app/service/fit-api-modals';
 import { WeightChartService, Status } from '../services/weight-chart.service';
 import { Subscription } from 'rxjs';
@@ -42,10 +42,9 @@ export class SelectTimeRangeComponent implements AfterViewInit,
     private mSubscriptions: Subscription[] = [];
     public dateForm: FormGroup = new FormGroup({
         enddate: new FormControl(moment.utc().local(), Validators.required),
-        startdate: new FormControl(moment.utc().subtract(7, 'days').local(), Validators.required)
+        startdate: new FormControl(moment.utc().subtract(31, 'days').local(), Validators.required)
     }, createCompareDateValidator());
     constructor(private chartService: WeightChartService) {
-        this.chartService.combinedDateListener.subscribe(console.log);
     }
 
     public onSubmit(): void {

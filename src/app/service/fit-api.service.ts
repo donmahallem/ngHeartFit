@@ -219,8 +219,8 @@ export class FitApiService {
         return this.base()
             .pipe(flatMap(() => {
                 const requestBody: any = {
-                    'startTimeMillis': from.valueOf(),
-                    'endTimeMillis': to.valueOf(),
+                    'startTimeMillis': from.utc().valueOf(),
+                    'endTimeMillis': to.utc().valueOf(),
                     'aggregateBy': source,
                     'bucketByTime': {
                         'durationMillis': bucketWindowMillis

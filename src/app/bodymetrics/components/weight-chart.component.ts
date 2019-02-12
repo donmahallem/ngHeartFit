@@ -9,9 +9,10 @@ import { ChartComponent } from 'src/app/common-components/chart.component';
 import * as moment from 'moment';
 import { FitApiService, AggregateByFilter } from 'src/app/service/fit-api.service';
 import { ChartPoint, ChartConfiguration } from 'chart.js';
-import { flatMap } from 'rxjs/operators';
-import { DataSourceListResponse } from 'src/app/service/fit-api-modals';
+import { flatMap, debounceTime, delay } from 'rxjs/operators';
+import { DataSourceListResponse, BucketResponse } from 'src/app/service/fit-api-modals';
 import { WeightChartService } from '../services/weight-chart.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -22,6 +23,7 @@ import { WeightChartService } from '../services/weight-chart.service';
 export class WeightChartComponent implements AfterViewInit, OnDestroy {
     @ViewChild(ChartComponent)
     chart: ChartComponent;
+    private mSubscriptions: Subscription[] = [];
     constructor(private zone: NgZone,
         private fitApi: FitApiService,
         private chartService: WeightChartService) {
@@ -32,7 +34,10 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
     }
 
     public ngOnDestroy() {
-
+        for (const sub of this.mSubscriptions) {
+            sub.unsubscribe();
+        }
+        this.mSubscriptions = [];
     }
 
     public chartConfig: ChartConfiguration = {
@@ -50,6 +55,14 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,/*
+            animation: {
+                duration: 0
+            },
+            hover: {
+                animationDuration: 0
+            },
+            responsiveAnimationDuration: 0,*/
             title: {
                 display: true,
                 text: 'Chart.js Time Point Data'
@@ -79,38 +92,17 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
                         beginAtZero: true
                     }
                 }]
+            },
+            layout: {
+                padding: {
+                    left: 20,
+                    right: 20,
+                    top: 10,
+                    bottom: 10
+                }
             }
         }
     };
-    public createDatasource() {
-    }
-    public createFatDatasource() {
-        this.fitApi.createBodyFatDatasource()
-            .subscribe(console.log, console.error);
-    }
-
-    // raw:com.google.body.fat.percentage:265564637760:Example Browser:Browser:1000002:PolarImport
-    // raw:com.google.weight:265564637760:Example Browser:Browser:1000001:PolarImport
-    public insertRandomWeights() {
-        const list: { fat: number, timestamp: moment.Moment }[] = [];
-        const start: number = moment().subtract(30, 'day').unix();
-        const now: number = moment().unix();
-        const windowSize: number = now - start;
-        console.log('windowsize', windowSize, moment.unix(start), moment.unix(now));
-        for (let i = 0; i < 100; i++) {
-            const item: { fat: number, timestamp: moment.Moment } = {
-                fat: Math.random() * 20 + 20,
-                timestamp: moment.unix(start + Math.round(windowSize * Math.random()))
-            };
-            list.push(item);
-        }
-        console.log('createde items', list.length); /*
-        this.fitApi.insertFatDataPoints('raw:com.google.body.fat.percentage:265564637760:Example Browser:Browser:1000002:PolarImport',
-            list)
-            .subscribe(console.log, console.error);*/
-        this.fitApi.getDataSources(['com.google.body.fat.percentage', 'com.google.weight']).subscribe(console.log, console.error);
-    }
-
 
     public ngAfterViewInit(): void {
 
@@ -123,8 +115,7 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
             pointBackgroundColor: 'rgba(0,75,160,0.5)',
             fill: true,
             backgroundColor: 'rgba(0,75,160,0.5)',
-            data: [
-            ]
+            data: []
         }, {
             label: 'Body Fat',
             pointRadius: 3,
@@ -134,87 +125,59 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
             pointBackgroundColor: 'rgba(0,75,160,0.5)',
             fill: true,
             backgroundColor: 'rgb(255,160,0,0.5)',
-
             data: []
         }];
-        this.zone.run(() => {
-            this.chart.chart.update(); /*
-            this.fitApi.getMergedWeights()
-                .subscribe((dat: {
-                    point: {
-                        dataTypeName: string,
-                        endTimeNanos: string,
-                        modifiedTimeMillis: string,
-                        originDataSourceId: string,
-                        startTimeNanos: string,
-                        value: { fpVal: number }[]
-                    }[]
-                }) => {
-                    let lst: ChartPoint[] = [];
-                    for (let p of dat.point) {
-
-                        lst.push({
-                            x: new Date(parseInt(p.startTimeNanos.substr(0, p.startTimeNanos.length - 6))),
-                            y: p.value[0].fpVal
-                        });
-                    }
-                    lst.sort((a: ChartPoint, b: ChartPoint) => {
-                        const t1: Date = <any>a.x;
-                        const t2: Date = <any>b.x;
-                        return t1.valueOf() - t2.valueOf();
-                    });
-                    this.chart.chart.data.datasets[0].data = lst;
-                    this.chart.chart.update(this.chart.chart.config.options);
-                }, console.error);*/
-            this.fitApi
-                .getDataSources(['com.google.body.fat.percentage'])
-                .pipe(flatMap((value: DataSourceListResponse) => {
-                    const data: AggregateByFilter[] = [];
-                    data.push({
-                        dataTypeName: 'com.google.weight'
-                    });
-                    data.push({
-                        dataTypeName: 'com.google.body.fat.percentage',
-                        // dataSourceId: 'derived:com.google.body.fat.percentage.summary:com.google.android.gms:aggregated'
-                    });
-                    for (const info of value.dataSource) {
-                        data.push({
-                            dataSourceId: info.dataStreamId
-                        });
-                    }
-                    return this.fitApi.getAggregateData(data, moment().subtract(90, 'days'), moment(), 1000 * 3600);
-                }))
-                .subscribe((data) => {
-                    const weightDatapoints: ChartPoint[] = [];
-                    const fatDatapoints: ChartPoint[] = [];
-                    for (const bucket of data.bucket) {
-                        for (const dataset of bucket.dataset) {
-                            if (dataset.point.length > 0) {
-                                if (dataset.dataSourceId === 'derived:com.google.weight.summary:com.google.android.gms:aggregated') {
-                                    for (const p of dataset.point) {
-                                        weightDatapoints.push({
-                                            x: new Date(parseInt(p.startTimeNanos.substr(0, p.startTimeNanos.length - 6))),
-                                            y: p.value[0].fpVal
-                                        });
-                                    }
-                                } else if (dataset.dataSourceId === 'derived:com.google.body.fat.percentage.summary:com.google.android.gms:aggregated') {
-                                    for (const p of dataset.point) {
-                                        fatDatapoints.push({
-                                            x: new Date(parseInt(p.startTimeNanos.substr(0, p.startTimeNanos.length - 6))),
-                                            y: p.value[0].fpVal
-                                        });
-                                    }
-                                } else {
-                                    console.log(dataset);
-                                }
-                            }
+        /**
+         * debounce so no double emissions
+         */
+        this.mSubscriptions.push(this.chartService
+            .combinedDateListener
+            .pipe(debounceTime(100),
+                flatMap((moments: [moment.Moment, moment.Moment]) => {
+                    const diff: number = 24 * 3600 * 1000;
+                    const types: AggregateByFilter[] = [
+                        {
+                            dataTypeName: 'com.google.weight'
+                        },
+                        {
+                            dataTypeName: 'com.google.body.fat.percentage'
                         }
+                    ]
+                    return this.fitApi.getAggregateData(types, moments[0], moments[1], diff);
+                }), delay(1000))
+            .subscribe(this.updateData.bind(this), console.error));
+    }
+
+    public updateData(bucketResponse: BucketResponse): void {
+        const weightDatapoints: ChartPoint[] = [];
+        const fatDatapoints: ChartPoint[] = [];
+        for (const bucket of bucketResponse.bucket) {
+            for (const dataset of bucket.dataset) {
+                if (dataset.point.length > 0) {
+                    if (dataset.dataSourceId === 'derived:com.google.weight.summary:com.google.android.gms:aggregated') {
+                        for (const p of dataset.point) {
+                            weightDatapoints.push({
+                                x: new Date(parseInt(p.startTimeNanos.substr(0, p.startTimeNanos.length - 6))),
+                                y: p.value[0].fpVal
+                            });
+                        }
+                    } else if (dataset.dataSourceId === 'derived:com.google.body.fat.percentage.summary:com.google.android.gms:aggregated') {
+                        for (const p of dataset.point) {
+                            fatDatapoints.push({
+                                x: new Date(parseInt(p.startTimeNanos.substr(0, p.startTimeNanos.length - 6))),
+                                y: p.value[0].fpVal
+                            });
+                        }
+                    } else {
+                        console.log(dataset);
                     }
-                    this.chart.chart.data.datasets[0].data = weightDatapoints;
-                    this.chart.chart.data.datasets[1].data = fatDatapoints;
-                    this.chart.chart.update(this.chart.chart.config.options);
-                });
-            // this.fitApi.getMergedBodyFat();
+                }
+            }
+        }
+        this.zone.run(() => {
+            this.chart.chart.data.datasets[0].data = weightDatapoints;
+            this.chart.chart.data.datasets[1].data = fatDatapoints;
+            this.chart.chart.update(this.chart.chart.config.options);
         });
     }
 }
