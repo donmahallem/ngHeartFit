@@ -12,9 +12,3 @@ form([formGroup]="metricsForm",(ngSubmit)="onSubmit()")
     button(mat-icon-button,type="submit")
         mat-icon(aria-label="Refresh the graph") favorite
 canvas.graph(chartcmp,height="300px",[chartConfiguration]="chartConfig")
-
-button(mat-button,(click)="createDatasource()") Create Fat Datasource
-br
-button(mat-button,(click)="createFatDatasource()") Create Fat Datasource
-br
-button(mat-button,(click)="insertRandomWeights()") Insert Random points
