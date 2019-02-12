@@ -28,13 +28,6 @@ export function createCompareDateValidator(): ValidatorFn {
         };
     };
 }
-function newDate(days) {
-    return moment().add(days, 'd').toDate();
-}
-
-function newDateString(days) {
-    return moment().add(days, 'd').format();
-}
 
 @Component({
     selector: 'weight-chart',
@@ -61,35 +54,11 @@ export class WeightChartComponent implements AfterViewInit {
             datasets: [{
                 label: 'Dataset with string point data',
                 fill: false,
-                data: [{
-                    x: newDateString(0),
-                    y: 1
-                }, {
-                    x: newDateString(2),
-                    y: 6
-                }, {
-                    x: newDateString(4),
-                    y: 2
-                }, {
-                    x: newDateString(5),
-                    y: 64
-                }],
+                data: [],
             }, {
                 label: 'Dataset with date object point data',
                 fill: false,
-                data: [{
-                    x: newDate(0),
-                    y: 346
-                }, {
-                    x: newDate(2),
-                    y: 34
-                }, {
-                    x: newDate(4),
-                    y: 353
-                }, {
-                    x: newDate(5),
-                    y: 215
-                }]
+                data: []
             }]
         },
         options: {
@@ -179,19 +148,7 @@ export class WeightChartComponent implements AfterViewInit {
             fill: true,
             backgroundColor: 'rgb(255,160,0,0.5)',
 
-            data: [{
-                x: newDate(0),
-                y: 346
-            }, {
-                x: newDate(2),
-                y: 34
-            }, {
-                x: newDate(4),
-                y: 353
-            }, {
-                x: newDate(5),
-                y: 215
-            }]
+            data: []
         }];
         this.zone.run(() => {
             this.chart.chart.update(); /*
