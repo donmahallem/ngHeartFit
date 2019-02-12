@@ -24,7 +24,7 @@ export class RouteGuardService implements CanActivate, CanActivateChild {
             .isSignedInObservable
             .pipe(tap((signedIn) => {
                 if (!signedIn) {
-                    this.router.navigate(['google', 'login']);
+                    this.router.navigate(['login', 'google']);
                 }
             }));
     }
