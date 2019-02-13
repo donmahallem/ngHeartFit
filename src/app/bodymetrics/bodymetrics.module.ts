@@ -22,6 +22,7 @@ import { ChartComponent } from '../common-components/chart.component';
 import { NgGapiConfigModule } from '../nggapi-config.module';
 import { SelectTimeRangeComponent } from './components/select-time-range.component';
 import { WeightChartService } from './services/weight-chart.service';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
     declarations: [
@@ -43,7 +44,8 @@ import { WeightChartService } from './services/weight-chart.service';
         MatInputModule,
         MatSelectModule,
         MatDatepickerModule,
-        NgGapiConfigModule
+        NgGapiConfigModule,
+        FlexLayoutModule
     ],
     providers: [
         FitApiService,
