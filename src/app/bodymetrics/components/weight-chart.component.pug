@@ -1,14 +1,3 @@
-form([formGroup]="metricsForm",(ngSubmit)="onSubmit()")
-    mat-form-field
-        input.inputdate(matInput,[matDatepicker]="picker1",placeholder="Date",formControlName="startdate")
-        mat-datepicker-toggle(matSuffix,[for]="picker1")
-        mat-datepicker(#picker1)
-        mat-hint Hint
-    mat-form-field
-        input.inputdate(matInput,[matDatepicker]="picker2",placeholder="Date",formControlName="enddate")
-        mat-datepicker-toggle(matSuffix,[for]="picker2")
-        mat-datepicker(#picker2)
-        mat-hint Hint
-    button(mat-icon-button,type="submit")
-        mat-icon(aria-label="Refresh the graph") favorite
-canvas.graph(chartcmp,height="300px",[chartConfiguration]="chartConfig")
+select-time-range-cmp
+div.canvas-box
+    canvas.graph(chartcmp,height="300px",[chartConfiguration]="chartConfig")

@@ -20,12 +20,16 @@ import { BodyMetricsFormComponent } from './components/bodymetrics-form.componen
 import { WeightChartComponent } from './components/weight-chart.component';
 import { ChartComponent } from '../common-components/chart.component';
 import { NgGapiConfigModule } from '../nggapi-config.module';
+import { SelectTimeRangeComponent } from './components/select-time-range.component';
+import { WeightChartService } from './services/weight-chart.service';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
     declarations: [
         BodyMetricsFormComponent,
         WeightChartComponent,
-        ChartComponent
+        ChartComponent,
+        SelectTimeRangeComponent
     ],
     imports: [
         CommonModule,
@@ -40,10 +44,12 @@ import { NgGapiConfigModule } from '../nggapi-config.module';
         MatInputModule,
         MatSelectModule,
         MatDatepickerModule,
-        NgGapiConfigModule
+        NgGapiConfigModule,
+        FlexLayoutModule
     ],
     providers: [
         FitApiService,
+        WeightChartService,
         { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
         { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS }
     ]
