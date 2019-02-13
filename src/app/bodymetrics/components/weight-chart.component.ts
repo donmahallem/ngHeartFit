@@ -67,7 +67,6 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
     }
 
     public updateData(bucketResponse: BucketResponse): void {
-        console.log("UpdateData");
         const weightDatapoints: ChartPoint[] = [];
         const fatDatapoints: ChartPoint[] = [];
         for (const bucket of bucketResponse.bucket) {
