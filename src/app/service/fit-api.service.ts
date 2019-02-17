@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { FitDatasource } from './fit-datasource.modal';
 import { map, flatMap, filter } from 'rxjs/operators';
 import { DataPoint } from '../analyze/view-upload/data-point';
-import { SubmitValue, SubmitToDatasetBody, SubmitToDatasetResponse, BucketResponse, DataSourceListResponse, DataSourceInformation, ListSessionsResponse, FitSession } from './fit-api-modals';
+import { SubmitValue, SubmitToDatasetBody, SubmitToDatasetResponse, BucketResponse, ListSessionsResponse, FitSession, Bucket } from './fit-api-modals';
 import { ngGapiService, GapiStatus } from './nggapi-base.service';
 import { GapiUserService } from './gapi-user.service';
 import * as moment from 'moment';
@@ -28,26 +28,6 @@ export class FitApiService {
                     throw new Error();
                 }
                 return;
-            }));
-    }
-
-    public getDataSources(dataTypeName?: string[] | string): Observable<DataSourceListResponse> {
-        return this.base()
-            .pipe(flatMap((t: void) => {
-                const url = FitApiService.ENDPOINT + '/users/me/dataSources/';
-                const headers: HttpHeaders = new HttpHeaders();
-                const params: HttpParams | {
-                    [param: string]: string | string[];
-                } = {};
-                if (dataTypeName) {
-                    params['dataTypeName'] = dataTypeName;
-                }
-                return this.httpService.get<DataSourceListResponse>(url, {
-                    headers: {
-                        'Authorization': 'Bearer ' + this.gapiUser.getToken()
-                    },
-                    params
-                });
             }));
     }
 
@@ -85,44 +65,6 @@ export class FitApiService {
                 });
             }));
     }
-
-    public getDataSource(id: string): Observable<DataSourceInformation> {
-        return this.base()
-            .pipe(flatMap((t: void) => {
-                const url = FitApiService.ENDPOINT + '/users/me/dataSources/' + id;
-                const headers: HttpHeaders = new HttpHeaders();
-                return this.httpService.get<DataSourceInformation>(url, {
-                    headers: {
-                        'Authorization': 'Bearer ' + this.gapiUser.getToken()
-                    }
-                });
-            }));
-    }
-
-    public getAllDataSources(): Observable<DataSourceListResponse> {
-        return this.base()
-            .pipe(flatMap((t: void) => {
-                const url = FitApiService.ENDPOINT + '/users/me/dataSources';
-                const headers: HttpHeaders = new HttpHeaders();
-                return this.httpService.get<DataSourceListResponse>(url, {
-                    headers: {
-                        'Authorization': 'Bearer ' + this.gapiUser.getToken()
-                    }
-                });
-            }));
-    }
-    public getDataPointsFromDataSource(dataSource: string, from: moment.Moment, to: moment.Moment): Observable<DataSourceListResponse> {
-        return this.base()
-            .pipe(flatMap((t: void) => {
-                const url = FitApiService.ENDPOINT + '/users/me/dataSources/' + dataSource + '/datasets/' + from.valueOf() + '000000-' + to.valueOf() + '000000';
-                const headers: HttpHeaders = new HttpHeaders();
-                return this.httpService.get<DataSourceListResponse>(url, {
-                    headers: {
-                        'Authorization': 'Bearer ' + this.gapiUser.getToken()
-                    }
-                });
-            }));
-    }
     public getMergedWeights(): Observable<any> {
         return this.base()
             .pipe(flatMap(() => {
@@ -139,85 +81,61 @@ export class FitApiService {
                 });
             }));
     }
-    public createDatasource(a?: any): any {
-        return null;
+
+    public createDataSourceMetaData(dataType: DataType, dataStreamName?: string): CreateDataSourceRequest {
+        return {
+            'dataStreamName': dataStreamName,
+            'type': 'raw',
+            'application': {
+                'detailsUrl': 'https://donmahallem.github.io/ngHeartFit',
+                'name': 'HeartFit',
+                'version': '1'
+            },
+            'dataType': dataType,
+            'device': {
+                'manufacturer': navigator.appCodeName,
+                'model': navigator.appName,
+                'type': 'unknown',
+                'uid': navigator.userAgent,
+                'version': navigator.appVersion
+            }
+        };
     }
-    public createBodyFatDatasource(): Observable<any> {
-        return this.base()
-            .pipe(flatMap(() => {
-                const requestBody: any = {
-                    'dataStreamName': 'PolarImport',
-                    'type': 'derived',
-                    'application': {
-                        'detailsUrl': 'https://donmahallem.github.io/ngHeartFit',
-                        'name': 'HeartFit',
-                        'version': '1'
-                    },
-                    'dataType': {
-                        'field': [
-                            {
-                                'name': 'percentage',
-                                'format': 'floatPoint'
-                            }
-                        ],
-                        'name': 'com.google.body.fat.percentage'
-                    },
-                    'device': {
-                        'manufacturer': 'Example Browser',
-                        'model': 'Browser',
-                        'type': 'unknown',
-                        'uid': '1000002',
-                        'version': '1.0'
-                    }
-                };
-                const url = FitApiService.ENDPOINT + '/users/me/dataSources';
-                return this.httpService.post(url, requestBody, {
-                    headers: {
-                        'Authorization': 'Bearer ' + this.gapiUser.getToken()
-                    }
-                });
-            }));
-    }
+
     public createWeightDatasource(): Observable<any> {
+        return this.createDataSource(this.createDataSourceMetaData({
+            'field': [
+                {
+                    'name': 'weight',
+                    'format': 'floatPoint'
+                }
+            ],
+            'name': 'com.google.weight'
+        }, 'HeartFitWeightUserInput'));
+    }
+
+    public createBodyFatPercentageDatasource(): Observable<any> {
+        return this.createDataSource(this.createDataSourceMetaData({
+            'field': [
+                {
+                    'name': 'percentage',
+                    'format': 'floatPoint'
+                }
+            ],
+            'name': 'com.google.body.fat.percentage'
+        }, 'HeartFitBodyFatPercentageUserInput'));
+    }
+
+    public createDataSource(datasource: CreateDataSourceRequest): Observable<any> {
         return this.base()
             .pipe(flatMap(() => {
-                const requestBody: any = {
-                    'dataStreamName': 'PolarImport',
-                    'type': 'raw',
-                    'application': {
-                        'detailsUrl': 'https://donmahallem.github.io/ngHeartFit',
-                        'name': 'HeartFit',
-                        'version': '1'
-                    },
-                    'dataType': {
-                        'field': [
-                            {
-                                'name': 'weight',
-                                'format': 'floatPoint'
-                            }
-                        ],
-                        'name': 'com.google.weight'
-                    },
-                    'device': {
-                        'manufacturer': 'Example Browser',
-                        'model': 'Browser',
-                        'type': 'unknown',
-                        'uid': '1000001',
-                        'version': '1.0'
-                    }
-                };
-                const url = FitApiService.ENDPOINT + '/users/me/dataSources';
-                return this.httpService.post(url, requestBody, {
-                    headers: {
-                        'Authorization': 'Bearer ' + this.gapiUser.getToken()
-                    }
-                });
+                return this.postRequest(FitApiService.ENDPOINT + '/users/me/dataSources', datasource);
             }));
     }
 
     public getAggregateData(source: AggregateByFilter[], from: moment.Moment, to: moment.Moment, bucketWindowMillis: number): Observable<BucketResponse> {
         return this.base()
-            .pipe(flatMap(() => {
+            .pipe(flatMap((): Observable<BucketResponse> => {
                 const requestBody: any = {
                     'startTimeMillis': from.utc().valueOf(),
                     'endTimeMillis': to.utc().valueOf(),
@@ -227,12 +145,28 @@ export class FitApiService {
                     }
                 };
                 const url = FitApiService.ENDPOINT + '/users/me/dataset:aggregate';
-                return this.httpService.post<BucketResponse>(url, requestBody, {
-                    headers: {
-                        'Authorization': 'Bearer ' + this.gapiUser.getToken()
-                    }
-                });
+                return this.postRequest<BucketResponse>(url, requestBody);
             }));
+    }
+
+    public getRequest<T>(url: string, body: any, params: HttpParams | {
+        [param: string]: string | string[];
+    } = null): Observable<T> {
+        return this.httpService.post<T>(url, body, {
+            headers: {
+                'Authorization': 'Bearer ' + this.gapiUser.getToken()
+            }, params: params
+        });
+    }
+
+    public postRequest<T>(url: string, body: any, params: HttpParams | {
+        [param: string]: string | string[];
+    } = null): Observable<T> {
+        return this.httpService.post<T>(url, body, {
+            headers: {
+                'Authorization': 'Bearer ' + this.gapiUser.getToken()
+            }, params: params
+        });
     }
 
     public insertDataPoints(a?: any[]) {
@@ -328,7 +262,29 @@ export class FitApiService {
     }
 
     public submitBodyMetrics(metrics: SubmitBodyMetricsRequest): Observable<any> {
-        return throwError(new Error('needs to implement'));
+        this.nggapi
+            .loadClient
+            .subscribe(() => {
+                // @ts-ignore: Property 'newBatch' does not exist on type 'typeof client'.
+                const myBatch: gapi.client.HttpBatch = gapi.client.newBatch();
+                //const myBatch: gapi.client.HttpBatch = new gapi.client.HttpBatch();
+                const req1: gapi.client.HttpRequest<any> = gapi.client.request({
+                    path: FitApiService.ENDPOINT + '/users/me/dataSources/',
+                    params: {
+                        'dataTypeName': 'com.google.weight'
+                    }
+                });
+                const req2: gapi.client.HttpRequest<any> = gapi.client.request({
+                    path: FitApiService.ENDPOINT + '/users/me/dataSources/',
+                    params: {
+                        'dataTypeName': 'com.google.body.fat.percentage'
+                    }
+                });
+                myBatch.add(req1);
+                myBatch.add(req2);
+                myBatch.execute(console.log);
+            });
+        return null;
     }
 
 }
@@ -346,4 +302,30 @@ export interface Tasklist {
 export interface AggregateByFilter {
     dataTypeName?: string;
     dataSourceId?: string;
+}
+
+export interface DataType {
+    'name': string;
+    'field': {
+        'name': string;
+        'format': 'blob' | 'floatList' | 'floatPoint' | 'integer' | 'integerList' | 'map' | 'string';
+        'optional'?: boolean;
+    }[]
+}
+export interface CreateDataSourceRequest {
+    'dataStreamName'?: string;
+    'type': 'raw' | 'derived';
+    'application'?: {
+        'detailsUrl': string;
+        'name': string;
+        'version': string;
+    };
+    'dataType': DataType;
+    'device': {
+        'manufacturer': string;
+        'model': string;
+        'type': 'chestStrap' | 'headMounted' | 'phone' | 'scale' | 'tablet' | 'unknown' | 'watch';
+        'uid': string;
+        'version': string;
+    }
 }

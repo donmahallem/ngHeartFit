@@ -13,6 +13,9 @@ import { environment } from 'src/environments/environment';
 import { ngGapiService } from './service/nggapi-base.service';
 import { ModuleWithProviders } from '@angular/compiler/src/core';
 import { FitApiService } from './service/fit-api.service';
+import { FitApiBaseService } from './service/fit-api-base.service';
+import { FitApiDataSetService } from './service/fit-data-set.service';
+import { FitApiDataSourceService } from './service/fit-data-source.service';
 
 const gapiClientConfig: NgGapiClientConfig = {
     client_id: environment.gapi.client_id,
@@ -38,7 +41,10 @@ export class NgGapiConfigModule {
             providers: [
                 GapiUserService,
                 ngGapiService,
-                FitApiService
+                FitApiService,
+                FitApiBaseService,
+                FitApiDataSetService,
+                FitApiDataSourceService
             ]
         };
     }

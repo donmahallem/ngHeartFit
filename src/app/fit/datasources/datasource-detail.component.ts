@@ -10,9 +10,10 @@ import { Subscription, Observable } from 'rxjs';
 import { GapiUserService } from 'src/app/service/gapi-user.service';
 import { FitApiService } from 'src/app/service/fit-api.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { DataSourceInformation } from 'src/app/service/fit-api-modals';
 import { flatMap } from 'rxjs/operators';
 import * as moment from 'moment';
+import { FitDataSource, FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
+import { FitApiDataSetService } from 'src/app/service/fit-data-set.service';
 
 
 const ELEMENT_DATA: any[] = [
@@ -37,22 +38,23 @@ export class DatasourceDetailComponent implements OnDestroy, AfterViewInit {
 
     displayedColumns: string[] = ['position', 'name'];
     dataSource2 = ELEMENT_DATA;
-    private mDataSource: DataSourceInformation = null;
+    private mDataSource: FitDataSource = null;
     private mSubscriptions: Subscription[] = [];
-    constructor(private nggapi: FitApiService,
+    constructor(private fitDataSourceService: FitApiDataSourceService,
+        private fitDataSetService: FitApiDataSetService,
         private activatedRoute: ActivatedRoute) {
     }
 
-    public get dataSource(): DataSourceInformation {
+    public get dataSource(): FitDataSource {
         return this.mDataSource;
     }
 
     public ngAfterViewInit() {
         this.activatedRoute
             .paramMap
-            .pipe(flatMap((params: ParamMap): Observable<DataSourceInformation> => {
+            .pipe(flatMap((params: ParamMap): Observable<FitDataSource> => {
                 console.log(params);
-                return this.nggapi.getDataSource(params.get('id'));
+                return this.fitDataSourceService.getDataSource(params.get('id'));
             })).subscribe((dataSource) => {
                 this.mDataSource = dataSource;
                 const cols: string[] = dataSource.dataType.field.map((val) => {
@@ -64,7 +66,7 @@ export class DatasourceDetailComponent implements OnDestroy, AfterViewInit {
         this.activatedRoute
             .paramMap
             .pipe(flatMap((value) => {
-                return this.nggapi.getDataPointsFromDataSource(value.get('id'), moment().subtract(30, 'day'), moment());
+                return this.fitDataSetService.getDataSetData(value.get('id'), moment().subtract(30, 'day'), moment());
             })).subscribe(console.log, console.error);
     }
 

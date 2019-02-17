@@ -10,11 +10,12 @@ import * as moment from 'moment';
 import { FitApiService, AggregateByFilter } from 'src/app/service/fit-api.service';
 import { ChartPoint, ChartConfiguration } from 'chart.js';
 import { flatMap, debounceTime, delay } from 'rxjs/operators';
-import { DataSourceListResponse, BucketResponse } from 'src/app/service/fit-api-modals';
+import { BucketResponse } from 'src/app/service/fit-api-modals';
 import { WeightChartService } from '../services/weight-chart.service';
 import { Subscription } from 'rxjs';
 import { ChartJsMinMaxPlugin } from './chartjs-min-max.plugin';
 import { chartConfig } from './weight-chart.config';
+import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 
 @Component({
     selector: 'weight-chart',
@@ -27,6 +28,7 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
     private mSubscriptions: Subscription[] = [];
     constructor(private zone: NgZone,
         private fitApi: FitApiService,
+        private fitApiDataSource: FitApiDataSourceService,
         private chartService: WeightChartService) {
     }
 
@@ -52,16 +54,22 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
             .combinedDateListener
             .pipe(debounceTime(100),
                 flatMap((moments: [moment.Moment, moment.Moment]) => {
-                    const diff: number = 24 * 3600 * 1000;
-                    const types: AggregateByFilter[] = [
-                        {
-                            dataTypeName: 'com.google.weight'
-                        },
-                        {
-                            dataTypeName: 'com.google.body.fat.percentage'
-                        }
-                    ]
-                    return this.fitApi.getAggregateData(types, moments[0], moments[1], diff);
+                    return this.fitApiDataSource.getDataSources(['com.google.body.fat.percentage'])
+                        .pipe(flatMap((sources) => {
+                            const diff: number = 24 * 3600 * 1000;
+                            const types: AggregateByFilter[] = [
+                                {
+                                    dataTypeName: 'com.google.weight'
+                                }
+                            ];
+                            for (let datasource of sources.dataSource) {
+                                types.push({
+                                    dataTypeName: 'com.google.body.fat.percentage',
+                                    dataSourceId: datasource.dataStreamId
+                                });
+                            }
+                            return this.fitApi.getAggregateData(types, moments[0], moments[1], diff);
+                        }));
                 }), delay(1000))
             .subscribe(this.updateData.bind(this), console.error));
     }

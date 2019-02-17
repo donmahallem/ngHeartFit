@@ -6,6 +6,7 @@ import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from
 import { MatDatepickerInputEvent } from '@angular/material';
 import * as moment from 'moment';
 import { FitApiService, SubmitBodyMetricsRequest } from 'src/app/service/fit-api.service';
+import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 
 
 export function forbiddenNameValidator(nameRe: RegExp): ValidatorFn {
@@ -41,7 +42,7 @@ export interface BodyMetricsFormData {
     styleUrls: ['./bodymetrics-form.component.scss']
 })
 export class BodyMetricsFormComponent {
-    constructor(private fitApi: FitApiService) { }
+    constructor(private fitApi: FitApiDataSourceService) { }
 
     public static readonly FOOT_TO_METER: number = 0.3048;
     public static readonly INCH_TO_METER: number = 0.0254;
@@ -85,9 +86,9 @@ export class BodyMetricsFormComponent {
             submitObject.bodyheight = this.metricsForm.get('bodyheight').value * bodyHeightMultiplicator;
             submitObject.bodyfat = this.metricsForm.get('bodyfat').value * 1;
 
-            this.fitApi.submitBodyMetrics(submitObject)
-                .subscribe(console.log, console.error);
+            //this.fitApi.submitBodyMetrics(submitObject);
         }
+        this.fitApi.getOrCreateWeightDataSource().subscribe(console.log, console.error);
     }
 
 }
