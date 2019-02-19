@@ -14,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import * as moment from 'moment';
 import { FitApiService, SubmitBodyMetricsRequest } from 'src/app/service/fit-api.service';
+import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 
 export function newEvent(eventName: string, bubbles = false, cancelable = false) {
     let evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
@@ -48,7 +49,7 @@ describe('BodyMetricsComponent', () => {
                 BodyMetricsFormComponent
             ],
             providers: [
-                { provide: FitApiService, useValue: new testGapiService() },
+                { provide: FitApiDataSourceService, useValue: new testGapiService() },
                 { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
                 { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS }
             ]
@@ -71,11 +72,11 @@ describe('BodyMetricsComponent', () => {
         let component: BodyMetricsFormComponent;
         let validStub: sinon.SinonStub;
         let submitBodyMetricsStub: sinon.SinonStub;
-        let service: FitApiService;
+        let service: FitApiDataSourceService;
         beforeEach(() => {
             fixture = TestBed.createComponent(BodyMetricsFormComponent);
             component = fixture.debugElement.componentInstance;
-            service = fixture.debugElement.injector.get(FitApiService);
+            service = fixture.debugElement.injector.get(FitApiDataSourceService);
             validStub = sinon.stub(component.metricsForm, 'valid');
             submitBodyMetricsStub = sandbox.stub(service, 'submitBodyMetrics');
             submitBodyMetricsStub.returns(of(true));

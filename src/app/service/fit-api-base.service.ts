@@ -73,7 +73,6 @@ export class FitApiBaseService {
 
     public executeBatchRequest<T extends { [req: string]: HttpRequest<any> }, RESPBODY extends { [K in keyof T]: HttpResponse<any> }>(requests: T): Observable<HttpResponse<RESPBODY>> {
         const request: HttpRequest<string> = this.createBatchRequest(requests);
-        console.log("buffrequest", request);
         return this.httpService.request(request)
             .pipe(filter((resp: HttpEvent<string>): boolean => {
                 return (resp.type == HttpEventType.Response);

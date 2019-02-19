@@ -17,6 +17,10 @@ export class FitApiDataSourceService {
 
     }
 
+    public submitBodyMetrics(a: any): Observable<any> {
+        return null;
+    }
+
     public getDataSources(dataTypeName?: string[] | string): Observable<FitDataSourceList> {
         const params: HttpParams | {
             [param: string]: string | string[];
