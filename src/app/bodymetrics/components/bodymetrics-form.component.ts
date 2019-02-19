@@ -86,7 +86,6 @@ export class BodyMetricsFormComponent {
             submitObject.bodyweight = this.metricsForm.get('bodyweight').value * bodyWeightMultiplicator;
             submitObject.bodyheight = this.metricsForm.get('bodyheight').value * bodyHeightMultiplicator;
             submitObject.bodyfat = this.metricsForm.get('bodyfat').value * 1;
-
             this.fitApi.submitBodyMetrics(submitObject);
         }
     }
