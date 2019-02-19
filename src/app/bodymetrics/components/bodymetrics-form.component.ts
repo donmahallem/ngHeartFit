@@ -7,6 +7,7 @@ import { MatDatepickerInputEvent } from '@angular/material';
 import * as moment from 'moment';
 import { FitApiService, SubmitBodyMetricsRequest } from 'src/app/service/fit-api.service';
 import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
+import { HttpResponse } from '@angular/common/http';
 
 
 export function forbiddenNameValidator(nameRe: RegExp): ValidatorFn {
@@ -88,7 +89,10 @@ export class BodyMetricsFormComponent {
 
             //this.fitApi.submitBodyMetrics(submitObject);
         }
-        this.fitApi.getOrCreateWeightDataSource().subscribe(console.log, console.error);
+        this.fitApi.getOrCreateWeightDataSource2().subscribe((sdf) => {
+            console.log("result", sdf);
+
+        }, console.error);
     }
 
 }

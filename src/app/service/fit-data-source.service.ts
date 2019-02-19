@@ -1,7 +1,7 @@
 
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { HttpParams } from '@angular/common/http';
+import { HttpParams, HttpRequest } from '@angular/common/http';
 
 import { FitApiBaseService } from './fit-api-base.service';
 import { map, flatMap } from 'rxjs/operators';
@@ -101,6 +101,15 @@ export class FitApiDataSourceService {
                 }
                 return this.createWeightDatasource();
             }));
+    }
+    public getOrCreateWeightDataSource2(): Observable<FitDataSource> {
+        let req1: HttpRequest<any> = this.fitApiBaseService.createGetRequest(FitApiBaseService.ENDPOINT + '/users/me/dataSources');
+        let req2: HttpRequest<any> = this.fitApiBaseService.createGetRequest(FitApiBaseService.ENDPOINT + '/users/me/dataSources');
+        return <any>this.fitApiBaseService
+            .executeBatchRequest({
+                res1: req1,
+                res2: req2
+            });
     }
 
     public getOrCreateDataSource(dataType: DataTypes, streamName: string) {
