@@ -1,9 +1,9 @@
 import { async, } from '@angular/core/testing';
-import { DateTimeComponent } from './date-time.component';
+import { SelectDateTimeDialoComponent } from './select-date-time-dialog.component';
 import * as sinon from "sinon";
 
 let sandbox;
-describe('DateTimeComponent', () => {
+describe('SelectDateTimeDialoComponent', () => {
     beforeEach(async(() => {
     }));
 
