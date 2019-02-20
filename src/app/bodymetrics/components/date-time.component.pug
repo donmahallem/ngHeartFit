@@ -1,0 +1,11 @@
+mat-form-field
+    mat-label Date
+    input.inputdate(matInput,[matDatepicker]="picker1",placeholder="Date",formControlName="date")
+    mat-datepicker-toggle(matSuffix,[for]="picker1")
+    mat-datepicker(#picker1)
+    mat-hint Date of occurance
+mat-form-field
+    mat-label Time
+    input.inputtime(matInput,placeholder="Time",type="time", formControlName="time")
+    mat-icon(matSuffix) schedule
+    mat-hint Time of occurance

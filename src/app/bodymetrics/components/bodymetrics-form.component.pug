@@ -1,20 +1,20 @@
 form([formGroup]="metricsForm",(ngSubmit)="onSubmit()")
     mat-form-field(appearance="outline")
-        mat-label Height
-        input.inputbodyheight(matInput,placeholder="Weight",type="number", formControlName="bodyweight")
+        mat-label Weight
+        input.inputbodyweight(matInput,placeholder="Weight",type="number", formControlName="bodyweight")
         mat-hint Hint
     mat-form-field
-        select.inputbodyheightunit(matNativeControl,required,formControlName="bodyweightunit")
+        select.inputbodyweightunit(matNativeControl,required,formControlName="bodyweightunit")
             option(value="kilogram") KG
             option(value="stone") Stone
             option(value="pound") lbs
     br
     mat-form-field(appearance="outline")
         mat-label Height
-        input.inputbodyweight(matInput,placeholder="Height",type="number",formControlName="bodyheight")
+        input.inputbodyheight(matInput,placeholder="Height",type="number",formControlName="bodyheight")
         mat-hint Hint
     mat-form-field
-        select.inputbodyweightunit(matNativeControl,required,formControlName="bodyheightunit")
+        select.inputbodyheightunit(matNativeControl,required,formControlName="bodyheightunit")
             option(value="meter") Meter
             option(value="inch") Inch
             option(value="foot") Feet
@@ -23,17 +23,11 @@ form([formGroup]="metricsForm",(ngSubmit)="onSubmit()")
         mat-label Body Fat Percentage
         input.inputbodyfat(matInput,placeholder="Body Fat",type="number", formControlName="bodyfat")
         mat-icon(matSuffix) sentiment_very_satisfied
-        mat-hint Hint
+        mat-hint Hint 
+        mat-error(*ngIf="metricsForm.get('bodyfat').invalid") The value must be between 0 and 100
     br
-    mat-form-field
-        input.inputdate(matInput,[matDatepicker]="picker1",placeholder="Date",formControlName="date")
-        mat-datepicker-toggle(matSuffix,[for]="picker1")
-        mat-datepicker(#picker1)
-        mat-hint Hint
-    mat-form-field
-        mat-label Body Fat Percentage
-        input.inputtime(matInput,placeholder="Time",type="time", formControlName="time")
-        mat-icon(matSuffix) sentiment_very_satisfied
-        mat-hint Hint
+    input(type="hidden",formControlName="timestamp")
+    button(mat-stroked-button) {{metricsForm.get('timestamp').value?.format('LLLL')}}
     br
-    button(mat-button) Send
+    button(mat-raised-button,color="primary",[disabled]="metricsForm.invalid") Send
+p Status: {{ metricsForm.status }} - {{hass | json}}
