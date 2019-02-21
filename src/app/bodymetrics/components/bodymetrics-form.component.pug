@@ -27,7 +27,7 @@ form([formGroup]="metricsForm",(ngSubmit)="onSubmit()")
         mat-error(*ngIf="metricsForm.get('bodyfat').invalid") The value must be between 0 and 100
     br
     input(type="hidden",formControlName="timestamp")
-    button(mat-stroked-button) {{metricsForm.get('timestamp').value?.format('LLLL')}}
+    button(mat-stroked-button,(click)="onPickTimestamp($event)") {{metricsForm.get('timestamp').value?.format('LLLL')}}
     br
     button(mat-raised-button,color="primary",[disabled]="metricsForm.invalid") Send
 p Status: {{ metricsForm.status }} - {{hass | json}}

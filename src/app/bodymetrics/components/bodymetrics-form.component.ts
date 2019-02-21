@@ -3,10 +3,11 @@ import {
     OnInit
 } from '@angular/core';
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl, ValidationErrors, FormBuilder } from '@angular/forms';
-import { MatDatepickerInputEvent } from '@angular/material';
+import { MatDatepickerInputEvent, MatDialog } from '@angular/material';
 import * as moment from 'moment';
 import { FitApiService, SubmitBodyMetricsRequest } from 'src/app/service/fit-api.service';
 import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
+import { SelectDateTimeDialogComponent } from './select-date-time-dialog.component';
 
 
 export function forbiddenNameValidator(): ValidatorFn {
@@ -52,7 +53,8 @@ export class BodyMetricsFormComponent {
     public static readonly STONE_TO_KILOGRAM: number = 6.35029;
     public metricsForm: FormGroup;
     constructor(private fitApi: FitApiDataSourceService,
-        private fb: FormBuilder) {
+        private fb: FormBuilder,
+        private dialog: MatDialog) {
         this.metricsForm = this.fb
             .group({
                 bodyweight: [0, Validators.min(0)],
@@ -66,6 +68,14 @@ export class BodyMetricsFormComponent {
         this.metricsForm.valueChanges.subscribe(console.log);
         this.metricsForm.statusChanges.subscribe((stat) => {
             console.log(stat, this.metricsForm.errors, this.metricsForm.get('bodyfat').errors);
+        });
+    }
+
+    public onPickTimestamp(ev: MouseEvent): void {
+        this.dialog.open(SelectDateTimeDialogComponent, {
+            data: {
+                animal: 'panda'
+            }
         });
     }
 

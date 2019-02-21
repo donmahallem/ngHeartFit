@@ -9,11 +9,11 @@ import * as moment from 'moment';
     templateUrl: './select-date-time-dialog.component.pug',
     styleUrls: ['./select-date-time-dialog.component.scss']
 })
-export class SelectDateTimeDialoComponent {
+export class SelectDateTimeDialogComponent {
 
     private timestamp: moment.Moment = moment();
 
-    constructor(public dialogRef: MatDialogRef<SelectDateTimeDialoComponent>) {
+    constructor(public dialogRef: MatDialogRef<SelectDateTimeDialogComponent>) {
     }
 
 }
