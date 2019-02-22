@@ -6,10 +6,10 @@ import {
 import { UploadDataService } from '../services/upload-data.service';
 import { from, Observable, Observer, of } from 'rxjs';
 import { filter, flatMap, map } from 'rxjs/operators';
-import { FlowApiValidator, DaySummary, DayData } from '@donmahallem/flowapi';
 import { UploadFile } from '../services';
 import { AnalyzeDataService } from '../services/analyze-data.service';
 import { Router } from '@angular/router';
+import { FlowApiValidator, DaySummary, DayData } from '@donmahallem/flow-api-types';
 
 @Component({
     selector: 'upload-cmp',

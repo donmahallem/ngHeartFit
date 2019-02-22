@@ -2,8 +2,8 @@ import { Dexie } from 'dexie';
 import { Injectable } from '@angular/core';
 import { UploadFile } from './upload-file.modal';
 import { BehaviorSubject, Observable, of, from } from 'rxjs';
-import { DaySummary, ActivityGraphData } from '@donmahallem/flowapi';
 import { AnalyzeDatabase } from './analyze-database';
+import { ActivityGraphData } from '@donmahallem/flow-api-types';
 
 export interface Pair {
     timestamp: number;
