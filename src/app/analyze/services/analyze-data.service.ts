@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { UploadFile } from './upload-file.modal';
 import { BehaviorSubject, Observable, of, from } from 'rxjs';
 import { AnalyzeDatabase } from './analyze-database';
-import { ActivityGraphData } from '@donmahallem/flow-api-types';
+import { IActivityGraphData } from '@donmahallem/flow-api-types';
 
 export interface Pair {
     timestamp: number;
@@ -17,7 +17,7 @@ export class AnalyzeDataService {
         this.database = new AnalyzeDatabase();
     }
 
-    public insert(data: ActivityGraphData): Observable<number> {
+    public insert(data: IActivityGraphData): Observable<number> {
         const lst: Pair[] = [];
         for (const pair of data.heartRateTimelineSamples) {
             if (pair.value < 1) {
