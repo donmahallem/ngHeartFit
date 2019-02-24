@@ -23,7 +23,7 @@
         "@angular/forms": "^7.2.0",
         "@angular/http": "^7.2.0",
         "@angular/material": "^7.2.1",
-        "@angular/material-moment-adapter": "^7.3.2",
+        "@angular/material-moment-adapter": "^7.3.3",
         "@angular/platform-browser": "^7.2.0",
         "@angular/platform-browser-dynamic": "^7.2.0",
         "@angular/router": "^7.2.0",
@@ -42,13 +42,13 @@
         "@angular-devkit/build-angular": "^0.13.2",
         "@angular/cli": "^7.3.2",
         "@angular/compiler-cli": "^7.2.0",
-        "@angular/language-service": "^7.2.5",
+        "@angular/language-service": "^7.2.6",
         "@types/chart.js": "^2.7.45",
         "@types/gapi": "0.0.36",
         "@types/gapi.auth2": "0.0.50",
         "@types/jasmine": "^3.3.9",
         "@types/jasminewd2": "^2.0.6",
-        "@types/node": "^11.9.4",
+        "@types/node": "^11.9.5",
         "@types/sinon": "^7.0.6",
         "apply-loader": "^2.0.0",
         "codelyzer": "^4.5.0",
@@ -64,7 +64,7 @@
         "pug-loader": "^2.4.0",
         "sinon": "^7.2.4",
         "ts-node": "^8.0.2",
-        "tslint": "^5.12.1",
+        "tslint": "^5.13.0",
         "typescript": "^3.2.4"
     }
 }
