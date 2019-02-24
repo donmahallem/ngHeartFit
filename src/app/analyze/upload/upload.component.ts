@@ -6,10 +6,10 @@ import {
 import { UploadDataService } from '../services/upload-data.service';
 import { from, Observable, Observer, of } from 'rxjs';
 import { filter, flatMap, map } from 'rxjs/operators';
-import { FlowApiValidator, DaySummary, DayData } from '@donmahallem/flowapi';
 import { UploadFile } from '../services';
 import { AnalyzeDataService } from '../services/analyze-data.service';
 import { Router } from '@angular/router';
+import { FlowApiValidator, IDaySummary, IDayData } from '@donmahallem/flow-api-types';
 
 @Component({
     selector: 'upload-cmp',
@@ -85,15 +85,15 @@ export class UploadComponent implements OnInit {
                 return from(this.uploadFiles);
             }), filter((upload: UploadFile) => {
                 return upload.valid && (upload.selected || upload.selected == undefined);
-            }), map((upload: UploadFile): DaySummary => {
+            }), map((upload: UploadFile): IDaySummary => {
                 return JSON.parse(upload.data);
-            }), flatMap((summary: DaySummary) => {
-                const summaries: DayData[] = [];
+            }), flatMap((summary: IDaySummary) => {
+                const summaries: IDayData[] = [];
                 for (const key of Object.keys(summary)) {
                     summaries.push(summary[key]);
                 }
                 return from(summaries);
-            }), flatMap((data: DayData) => {
+            }), flatMap((data: IDayData) => {
                 return this.analyzeDataService.insert(data.activityGraphData);
             }));
     }

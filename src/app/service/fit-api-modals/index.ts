@@ -51,36 +51,6 @@ export interface DatasetPoint {
     }[];
 }
 
-export interface DataSourceListResponse {
-    dataSource: DataSourceInformation[];
-}
-
-export interface DataSourceInformation {
-    application: {
-        version: string,
-        detailsUrl: string,
-        name: string
-    };
-    dataQualityStandard: [];
-    dataStreamId: string;
-    dataStreamName: string;
-    dataType: {
-        name: string,
-        field: {
-            name: string,
-            format: 'blob' | 'floatList' | 'floatPoint' | 'integer' | 'integerList' | 'map' | 'string'
-        }[]
-    };
-    device: {
-        uid: string,
-        type: 'chestStrap' | 'headMounted' | 'phone' | 'scale' | 'tablet' | 'unknown' | 'watch',
-        version: string,
-        model: string,
-        manufacturer: string
-    };
-    type: 'derived' | 'raw';
-}
-
 
 export interface FitSession {
     activityType: number;

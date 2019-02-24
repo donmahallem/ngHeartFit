@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 import { GapiUserService } from 'src/app/service/gapi-user.service';
 import { FitApiService } from 'src/app/service/fit-api.service';
 import { Router } from '@angular/router';
-import { DataSourceListResponse, DataSourceInformation, FitSession } from 'src/app/service/fit-api-modals';
+import { FitSession } from 'src/app/service/fit-api-modals';
 import * as moment from 'moment';
 
 @Component({

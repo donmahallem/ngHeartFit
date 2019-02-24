@@ -2,28 +2,33 @@ import {
     Component,
     OnInit
 } from '@angular/core';
-import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
-import { MatDatepickerInputEvent } from '@angular/material';
+import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl, ValidationErrors, FormBuilder } from '@angular/forms';
+import { MatDatepickerInputEvent, MatDialog } from '@angular/material';
 import * as moment from 'moment';
 import { FitApiService, SubmitBodyMetricsRequest } from 'src/app/service/fit-api.service';
+import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
+import { SelectDateTimeDialogComponent } from './select-date-time-dialog.component';
 
 
-export function forbiddenNameValidator(nameRe: RegExp): ValidatorFn {
+export function forbiddenNameValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
         const group: FormGroup = <any>control;
         const weightControl: FormControl = <FormControl>group.get('bodyweight');
         const fatControl: FormControl = <FormControl>group.get('bodyfat');
         const heightControl: FormControl = <FormControl>group.get('bodyheight');
+        let groupErrors: ValidationErrors | null = group.errors;
         let controlValue = false;
-        controlValue = controlValue || (weightControl.valid && weightControl.value > 0);
-        controlValue = controlValue || (fatControl.valid && fatControl.value > 0);
-        controlValue = controlValue || (heightControl.valid && heightControl.value > 0);
-        if (controlValue) {
+        controlValue = controlValue || weightControl.value > 0;
+        controlValue = controlValue || fatControl.value > 0;
+        controlValue = controlValue || heightControl.value > 0;
+        if (controlValue === true) {
             return null;
         }
-        return {
-            oneValueRequired: 'Atleast one value is required'
-        };
+        if (groupErrors === null || groupErrors === undefined) {
+            groupErrors = {};
+        }
+        groupErrors['oneValueRequired'] = 'Atleast one value is required';
+        return groupErrors;
     };
 }
 export interface BodyMetricsFormData {
@@ -32,8 +37,7 @@ export interface BodyMetricsFormData {
     bodyheight: number;
     bodyweightunit: string | 'stone' | 'kg';
     bodyheightunit: string | 'meter' | 'foot' | 'inch';
-    date: moment.Moment;
-    time: string;
+    timestamp: moment.Moment;
 }
 @Component({
     selector: 'bodymetrics-form-cmp',
@@ -41,21 +45,33 @@ export interface BodyMetricsFormData {
     styleUrls: ['./bodymetrics-form.component.scss']
 })
 export class BodyMetricsFormComponent {
-    constructor(private fitApi: FitApiService) { }
 
     public static readonly FOOT_TO_METER: number = 0.3048;
     public static readonly INCH_TO_METER: number = 0.0254;
     public static readonly POUND_TO_KILOGRAM: number = 0.453592;
     public static readonly STONE_TO_KILOGRAM: number = 6.35029;
-    public metricsForm: FormGroup = new FormGroup({
-        bodyweight: new FormControl(0, Validators.compose([Validators.min(0)])),
-        bodyfat: new FormControl(0, Validators.compose([Validators.min(0), Validators.max(100)])),
-        bodyheight: new FormControl(0, Validators.compose([Validators.min(0)])),
-        bodyweightunit: new FormControl('kilogram'),
-        bodyheightunit: new FormControl('meter'),
-        date: new FormControl(moment.utc().local(), Validators.required),
-        time: new FormControl(moment.utc().local().format('HH:mm'), Validators.pattern(/^(([0-1][0-9])|(2[0-3]))\:([0-5][0-9])/))
-    }, forbiddenNameValidator(/.*/));
+    public metricsForm: FormGroup;
+    constructor(private fitApi: FitApiDataSourceService,
+        private fb: FormBuilder,
+        private dialog: MatDialog) {
+        this.metricsForm = this.fb
+            .group({
+                bodyweight: [0, Validators.min(0)],
+                bodyfat: [0, [Validators.min(0), Validators.max(100)]],
+                bodyheight: [0, Validators.min(0)],
+                bodyweightunit: ['kilogram', Validators.required],
+                bodyheightunit: ['meter', Validators.required],
+                timestamp: [moment.utc().local(), Validators.required]
+            });
+    }
+
+    public onPickTimestamp(ev: MouseEvent): void {
+        this.dialog.open(SelectDateTimeDialogComponent, {
+            data: {
+                animal: 'panda'
+            }
+        });
+    }
 
     public onSubmit(): void {
         if (this.metricsForm.valid === true) {
@@ -73,21 +89,22 @@ export class BodyMetricsFormComponent {
             } else if (bodyHeightUnit === 'foot') {
                 bodyHeightMultiplicator = BodyMetricsFormComponent.FOOT_TO_METER;
             }
-            const date: moment.Moment = this.metricsForm.get('date').value;
-            const time: string = this.metricsForm.get('time').value;
-            const timeSplit: string[] = time.split(':');
-            date.hours(parseInt(timeSplit[0]));
-            date.minutes(parseInt(timeSplit[1]));
+            const timestamp: moment.Moment = this.metricsForm.get('timestamp').value;
             const submitObject: SubmitBodyMetricsRequest = {
-                timestamp: date.unix()
+                timestamp: timestamp.unix()
             };
             submitObject.bodyweight = this.metricsForm.get('bodyweight').value * bodyWeightMultiplicator;
             submitObject.bodyheight = this.metricsForm.get('bodyheight').value * bodyHeightMultiplicator;
             submitObject.bodyfat = this.metricsForm.get('bodyfat').value * 1;
-
-            this.fitApi.submitBodyMetrics(submitObject)
-                .subscribe(console.log, console.error);
+            this.submitData(submitObject);
+        } else {
+            //console.log(this.metricsForm.errors);
         }
     }
 
+    public submitData(data: SubmitBodyMetricsRequest): void {
+        /*
+        this.fitApi.submitBodyMetrics(submitObject)
+        .subscribe(console.log, console.error);*/
+    }
 }

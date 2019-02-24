@@ -7,7 +7,8 @@ import {
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    MatDialogModule
 } from '@angular/material';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -23,13 +24,19 @@ import { NgGapiConfigModule } from '../nggapi-config.module';
 import { SelectTimeRangeComponent } from './components/select-time-range.component';
 import { WeightChartService } from './services/weight-chart.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { SelectDateTimeDialogComponent } from './components/select-date-time-dialog.component';
 
 @NgModule({
     declarations: [
         BodyMetricsFormComponent,
         WeightChartComponent,
         ChartComponent,
-        SelectTimeRangeComponent
+        SelectTimeRangeComponent,
+        SelectDateTimeDialogComponent
+    ],
+    entryComponents: [
+        SelectDateTimeDialogComponent
+
     ],
     imports: [
         CommonModule,
@@ -45,7 +52,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         MatSelectModule,
         MatDatepickerModule,
         NgGapiConfigModule,
-        FlexLayoutModule
+        FlexLayoutModule,
+        MatDialogModule
     ],
     providers: [
         FitApiService,

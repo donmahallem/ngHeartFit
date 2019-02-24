@@ -5,13 +5,8 @@ import {
     ViewChild,
     OnDestroy
 } from '@angular/core';
-import { ChartComponent } from 'src/app/common-components/chart.component';
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import * as moment from 'moment';
-import { FitApiService, AggregateByFilter } from 'src/app/service/fit-api.service';
-import { ChartPoint, ChartConfiguration } from 'chart.js';
-import { flatMap, debounceTime } from 'rxjs/operators';
-import { DataSourceListResponse } from 'src/app/service/fit-api-modals';
 import { WeightChartService, Status } from '../services/weight-chart.service';
 import { Subscription } from 'rxjs';
 

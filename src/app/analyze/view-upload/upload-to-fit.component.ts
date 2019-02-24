@@ -7,6 +7,7 @@ import {
 import { from, Observable, Observer, Subscription, BehaviorSubject } from 'rxjs';
 import { DataPoint } from './data-point';
 import { FitApiService } from 'src/app/service/fit-api.service';
+import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 
 
 @Component({
@@ -26,7 +27,7 @@ export class UploadToFitComponent implements
     }
 
 
-    constructor(private fitApi: FitApiService) {
+    constructor(private fitDataSourceService: FitApiDataSourceService) {
     }
 
     @Input('dataPoints')
@@ -45,16 +46,14 @@ export class UploadToFitComponent implements
     }
 
     public uploadData(): void {
-        this.fitApi.getAllDataSources()
+        this.fitDataSourceService.getDataSources()
             .subscribe(console.log, console.error);
     }
     public createDatasource(): void {
-        this.fitApi.createDatasource()
+        this.fitDataSourceService.createDataSource(null)
             .subscribe(console.log, console.error);
     }
     public sendData(): void {
-        this.fitApi.insertDataPoints(this.dataPointsSubject.value)
-            .subscribe(console.log, console.error);
     }
 
     public ngOnDestroy(): void {

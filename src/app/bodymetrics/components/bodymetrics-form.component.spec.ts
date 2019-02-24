@@ -14,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import * as moment from 'moment';
 import { FitApiService, SubmitBodyMetricsRequest } from 'src/app/service/fit-api.service';
+import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 
 export function newEvent(eventName: string, bubbles = false, cancelable = false) {
     let evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
@@ -48,7 +49,7 @@ describe('BodyMetricsComponent', () => {
                 BodyMetricsFormComponent
             ],
             providers: [
-                { provide: FitApiService, useValue: new testGapiService() },
+                { provide: FitApiDataSourceService, useValue: new testGapiService() },
                 { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
                 { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS }
             ]
@@ -71,13 +72,13 @@ describe('BodyMetricsComponent', () => {
         let component: BodyMetricsFormComponent;
         let validStub: sinon.SinonStub;
         let submitBodyMetricsStub: sinon.SinonStub;
-        let service: FitApiService;
+        let service: FitApiDataSourceService;
         beforeEach(() => {
             fixture = TestBed.createComponent(BodyMetricsFormComponent);
             component = fixture.debugElement.componentInstance;
-            service = fixture.debugElement.injector.get(FitApiService);
+            service = fixture.debugElement.injector.get(FitApiDataSourceService);
             validStub = sinon.stub(component.metricsForm, 'valid');
-            submitBodyMetricsStub = sandbox.stub(service, 'submitBodyMetrics');
+            submitBodyMetricsStub = sandbox.stub(component, 'submitData');
             submitBodyMetricsStub.returns(of(true));
         });
         describe('form is not valid', () => {
@@ -93,8 +94,7 @@ describe('BodyMetricsComponent', () => {
             let inputBodyWeight,
                 inputBodyFat,
                 inputBodyHeight,
-                inputDate,
-                inputTime: HTMLInputElement;
+                inputTimestamp: HTMLInputElement;
             let inputBodyHeightUnit,
                 inputBodyWeightUnit: HTMLSelectElement;
             const testTimestamp: number = 1549193178;
@@ -105,8 +105,7 @@ describe('BodyMetricsComponent', () => {
                 inputBodyWeight = fixture.nativeElement.querySelector('.inputbodyweight');
                 inputBodyHeightUnit = fixture.nativeElement.querySelector('.inputbodyheightunit');
                 inputBodyWeightUnit = fixture.nativeElement.querySelector('.inputbodyweightunit');
-                inputDate = fixture.nativeElement.querySelector('.inputdate');
-                inputTime = fixture.nativeElement.querySelector('.inputtime');
+                inputTimestamp = fixture.nativeElement.querySelector('.inputtimestamp');
             });
             it('should connect inputs to form', () => {
                 const testData: BodyMetricsFormData = {
@@ -115,13 +114,12 @@ describe('BodyMetricsComponent', () => {
                     bodyweight: 78,
                     bodyheightunit: 'inch',
                     bodyweightunit: 'kilogram',
-                    date: moment.unix(testTimestamp).local(),
-                    time: moment.unix(testTimestamp).local().format("HH:mm")
+                    timestamp: moment.unix(testTimestamp).local()
                 };
                 component.metricsForm.patchValue(testData);
                 fixture.detectChanges();
-                expect(inputBodyHeight.value).toEqual('78');
-                expect(inputBodyWeight.value).toEqual('92');
+                expect(inputBodyHeight.value).toEqual('92');
+                expect(inputBodyWeight.value).toEqual('78');
                 expect(inputBodyFat.value).toEqual('29.2');
                 //expect(inputBodyHeightUnit.options[inputBodyHeightUnit.selectedIndex].value).toEqual('inch');
                 //expect(inputBodyWeightUnit.options[inputBodyWeightUnit.selectedIndex].value).toEqual('kg');
@@ -134,10 +132,9 @@ describe('BodyMetricsComponent', () => {
                     bodyweight: 78,
                     bodyheightunit: 'inch',
                     bodyweightunit: 'pound',
-                    date: moment.unix(testTimestamp).local(),
-                    time: moment.unix(testTimestamp).local().format("HH:mm")
+                    timestamp: moment.unix(testTimestamp).local(),
                 };
-                component.metricsForm.patchValue(testData);
+                component.metricsForm.setValue(testData);
                 fixture.detectChanges();
                 component.metricsForm.updateValueAndValidity();
                 component.onSubmit();
@@ -156,8 +153,7 @@ describe('BodyMetricsComponent', () => {
                     bodyweight: 78,
                     bodyheightunit: 'foot',
                     bodyweightunit: 'stone',
-                    date: moment.unix(testTimestamp).local(),
-                    time: moment.unix(testTimestamp).local().format("HH:mm")
+                    timestamp: moment.unix(testTimestamp).local()
                 };
                 component.metricsForm.patchValue(testData);
                 fixture.detectChanges();
@@ -178,8 +174,7 @@ describe('BodyMetricsComponent', () => {
                     bodyweight: 78,
                     bodyheightunit: 'meter',
                     bodyweightunit: 'kilogram',
-                    date: moment.unix(testTimestamp).local(),
-                    time: moment.unix(testTimestamp).local().format("HH:mm")
+                    timestamp: moment.unix(testTimestamp).local()
                 };
                 component.metricsForm.patchValue(testData);
                 fixture.detectChanges();
