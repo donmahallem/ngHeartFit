@@ -12,5 +12,16 @@ describe('SelectTimeRangeComponent', () => {
     });
     beforeAll(() => { sandbox = sinon.sandbox.create(); })
     afterEach(() => { sandbox.restore(); })
-    it('to be implemented');
+    describe('enableInputs()', () => {
+        it('to be implemented');
+    });
+    describe('onSubmit()', () => {
+        it('to be implemented');
+    });
+    describe('ngAfterViewInit()', () => {
+        it('to be implemented');
+    });
+    describe('ngOnDestroy()', () => {
+        it('to be implemented');
+    });
 });
