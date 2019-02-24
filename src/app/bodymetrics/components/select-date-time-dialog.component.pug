@@ -1,11 +1,18 @@
-mat-form-field
-    mat-label Date
-    input.inputdate(matInput,[matDatepicker]="picker1",placeholder="Date",formControlName="date")
-    mat-datepicker-toggle(matSuffix,[for]="picker1")
-    mat-datepicker(#picker1)
-    mat-hint Date of occurance
-mat-form-field
-    mat-label Time
-    input.inputtime(matInput,placeholder="Time",type="time", formControlName="time")
-    mat-icon(matSuffix) schedule
-    mat-hint Time of occurance
+h4 Select Date and Time
+form([formGroup]="dateTimeForm",(ngSubmit)="onSubmit()")
+    mat-form-field
+        mat-label Date
+        input.inputdate(matInput,[matDatepicker]="picker1",placeholder="Date",formControlName="date")
+        mat-datepicker-toggle(matSuffix,[for]="picker1")
+        mat-datepicker(#picker1)
+        mat-hint Date of occurance
+    br
+    mat-form-field
+        mat-label Time
+        input.inputtime(matInput,placeholder="Time",type="time", formControlName="time")
+        mat-icon(matSuffix) schedule
+        mat-hint Time of occurance
+    br
+    p {{dateTimeForm.value | json}}
+    button(mat-button,(click)="onClose($event)") CLOSE
+    button(mat-flat-button,color="primary",type="submit") OK
