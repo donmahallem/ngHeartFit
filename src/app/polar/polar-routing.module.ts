@@ -14,7 +14,6 @@ const routes: Routes = [
     {
         path: 'view',
         component: ViewUploadComponent,
-        // resolve: { uploadData: UploadResolver }
     },
     {
         path: '**',
