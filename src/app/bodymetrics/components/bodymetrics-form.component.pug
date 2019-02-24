@@ -30,4 +30,3 @@ form([formGroup]="metricsForm",(ngSubmit)="onSubmit()")
     button(mat-stroked-button,(click)="onPickTimestamp($event)") {{metricsForm.get('timestamp').value?.format('LLLL')}}
     br
     button(mat-raised-button,color="primary",[disabled]="metricsForm.invalid",type="submit") Send
-p Status: {{ metricsForm.status }} - {{hass | json}}

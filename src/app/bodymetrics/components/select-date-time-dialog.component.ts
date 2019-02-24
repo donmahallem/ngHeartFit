@@ -12,8 +12,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 })
 export class SelectDateTimeDialogComponent implements OnInit {
 
-    private timestamp: moment.Moment = moment();
-    private dateTimeForm: FormGroup;
+    public dateTimeForm: FormGroup;
     constructor(public dialogRef: MatDialogRef<SelectDateTimeDialogComponent>,
         private fb: FormBuilder,
         private zone: NgZone) {
