@@ -30,4 +30,4 @@ const routes: Routes = [
         UploadResolver
     ]
 })
-export class AnalyzeRoutingModule { }
+export class PolarRoutingModule { }

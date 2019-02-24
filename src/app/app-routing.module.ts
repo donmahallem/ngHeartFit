@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { UploadComponent } from './analyze/upload/upload.component';
 import { LoginGoogleComponent } from './components/login-google/login-google.component';
 import { RouteGuardService } from './service/route-guard.service';
 
 const routes: Routes = [
     {
-        path: 'analyze',
+        path: 'polar',
         data: {
             requiresLogin: true
         },
-        loadChildren: './analyze/analyze.module#AnalyzeModule'
+        loadChildren: './polar/polar.module#PolarModule'
     }, {
         path: 'profile',
         data: {
