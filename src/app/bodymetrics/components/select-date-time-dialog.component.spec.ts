@@ -1,5 +1,5 @@
 import { async, } from '@angular/core/testing';
-import { SelectDateTimeDialoComponent } from './select-date-time-dialog.component';
+import { SelectDateTimeDialogComponent } from './select-date-time-dialog.component';
 import * as sinon from "sinon";
 
 let sandbox;

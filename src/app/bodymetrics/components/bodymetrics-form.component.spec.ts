@@ -78,7 +78,7 @@ describe('BodyMetricsComponent', () => {
             component = fixture.debugElement.componentInstance;
             service = fixture.debugElement.injector.get(FitApiDataSourceService);
             validStub = sinon.stub(component.metricsForm, 'valid');
-            submitBodyMetricsStub = sandbox.stub(service, 'submitBodyMetrics');
+            submitBodyMetricsStub = sandbox.stub(component, 'submitData');
             submitBodyMetricsStub.returns(of(true));
         });
         describe('form is not valid', () => {
@@ -94,8 +94,7 @@ describe('BodyMetricsComponent', () => {
             let inputBodyWeight,
                 inputBodyFat,
                 inputBodyHeight,
-                inputDate,
-                inputTime: HTMLInputElement;
+                inputTimestamp: HTMLInputElement;
             let inputBodyHeightUnit,
                 inputBodyWeightUnit: HTMLSelectElement;
             const testTimestamp: number = 1549193178;
@@ -106,8 +105,7 @@ describe('BodyMetricsComponent', () => {
                 inputBodyWeight = fixture.nativeElement.querySelector('.inputbodyweight');
                 inputBodyHeightUnit = fixture.nativeElement.querySelector('.inputbodyheightunit');
                 inputBodyWeightUnit = fixture.nativeElement.querySelector('.inputbodyweightunit');
-                inputDate = fixture.nativeElement.querySelector('.inputdate');
-                inputTime = fixture.nativeElement.querySelector('.inputtime');
+                inputTimestamp = fixture.nativeElement.querySelector('.inputtimestamp');
             });
             it('should connect inputs to form', () => {
                 const testData: BodyMetricsFormData = {
@@ -116,13 +114,12 @@ describe('BodyMetricsComponent', () => {
                     bodyweight: 78,
                     bodyheightunit: 'inch',
                     bodyweightunit: 'kilogram',
-                    date: moment.unix(testTimestamp).local(),
-                    time: moment.unix(testTimestamp).local().format("HH:mm")
+                    timestamp: moment.unix(testTimestamp).local()
                 };
                 component.metricsForm.patchValue(testData);
                 fixture.detectChanges();
-                expect(inputBodyHeight.value).toEqual('78');
-                expect(inputBodyWeight.value).toEqual('92');
+                expect(inputBodyHeight.value).toEqual('92');
+                expect(inputBodyWeight.value).toEqual('78');
                 expect(inputBodyFat.value).toEqual('29.2');
                 //expect(inputBodyHeightUnit.options[inputBodyHeightUnit.selectedIndex].value).toEqual('inch');
                 //expect(inputBodyWeightUnit.options[inputBodyWeightUnit.selectedIndex].value).toEqual('kg');
@@ -135,10 +132,9 @@ describe('BodyMetricsComponent', () => {
                     bodyweight: 78,
                     bodyheightunit: 'inch',
                     bodyweightunit: 'pound',
-                    date: moment.unix(testTimestamp).local(),
-                    time: moment.unix(testTimestamp).local().format("HH:mm")
+                    timestamp: moment.unix(testTimestamp).local(),
                 };
-                component.metricsForm.patchValue(testData);
+                component.metricsForm.setValue(testData);
                 fixture.detectChanges();
                 component.metricsForm.updateValueAndValidity();
                 component.onSubmit();
@@ -157,8 +153,7 @@ describe('BodyMetricsComponent', () => {
                     bodyweight: 78,
                     bodyheightunit: 'foot',
                     bodyweightunit: 'stone',
-                    date: moment.unix(testTimestamp).local(),
-                    time: moment.unix(testTimestamp).local().format("HH:mm")
+                    timestamp: moment.unix(testTimestamp).local()
                 };
                 component.metricsForm.patchValue(testData);
                 fixture.detectChanges();
@@ -179,12 +174,12 @@ describe('BodyMetricsComponent', () => {
                     bodyweight: 78,
                     bodyheightunit: 'meter',
                     bodyweightunit: 'kilogram',
-                    date: moment.unix(testTimestamp).local(),
-                    time: moment.unix(testTimestamp).local().format("HH:mm")
+                    timestamp: moment.unix(testTimestamp).local()
                 };
                 component.metricsForm.patchValue(testData);
                 fixture.detectChanges();
                 component.metricsForm.updateValueAndValidity();
+                console.log("DDF", component.metricsForm.get('bodyweightunit'));
                 component.onSubmit();
                 expect(submitBodyMetricsStub.callCount).toEqual(1);
                 expect(submitBodyMetricsStub.getCall(0).args[0]).toEqual({

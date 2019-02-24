@@ -7,7 +7,6 @@ import {
 import { UploadDataService } from '../services/upload-data.service';
 import { from, Observable, Observer, Subscription } from 'rxjs';
 import { filter, flatMap, map } from 'rxjs/operators';
-import { DaySummary, DayData } from '@donmahallem/flowapi';
 import { Router, Route, ActivatedRouteSnapshot, ActivatedRoute, Params } from '@angular/router';
 import { DataPoint } from './data-point';
 import { AnalyzeDataService, Pair } from '../services/analyze-data.service';

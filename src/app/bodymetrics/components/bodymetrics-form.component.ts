@@ -37,8 +37,7 @@ export interface BodyMetricsFormData {
     bodyheight: number;
     bodyweightunit: string | 'stone' | 'kg';
     bodyheightunit: string | 'meter' | 'foot' | 'inch';
-    date: moment.Moment;
-    time: string;
+    timestamp: moment.Moment;
 }
 @Component({
     selector: 'bodymetrics-form-cmp',
@@ -95,25 +94,21 @@ export class BodyMetricsFormComponent {
             } else if (bodyHeightUnit === 'foot') {
                 bodyHeightMultiplicator = BodyMetricsFormComponent.FOOT_TO_METER;
             }
-            const date: moment.Moment = this.metricsForm.get('date').value;
-            const time: string = this.metricsForm.get('time').value;
-            const timeSplit: string[] = time.split(':');
-            date.hours(parseInt(timeSplit[0]));
-            date.minutes(parseInt(timeSplit[1]));
+            const timestamp: moment.Moment = this.metricsForm.get('timestamp').value;
             const submitObject: SubmitBodyMetricsRequest = {
-                timestamp: date.unix()
+                timestamp: timestamp.unix()
             };
             submitObject.bodyweight = this.metricsForm.get('bodyweight').value * bodyWeightMultiplicator;
             submitObject.bodyheight = this.metricsForm.get('bodyheight').value * bodyHeightMultiplicator;
             submitObject.bodyfat = this.metricsForm.get('bodyfat').value * 1;
             this.submitData(submitObject);
         } else {
-            console.log(this.metricsForm.errors);
+            //console.log(this.metricsForm.errors);
         }
     }
 
     public submitData(data: SubmitBodyMetricsRequest): void {
-        console.log(data);/*
+        /*
         this.fitApi.submitBodyMetrics(submitObject)
         .subscribe(console.log, console.error);*/
     }
