@@ -179,7 +179,6 @@ describe('BodyMetricsComponent', () => {
                 component.metricsForm.patchValue(testData);
                 fixture.detectChanges();
                 component.metricsForm.updateValueAndValidity();
-                console.log("DDF", component.metricsForm.get('bodyweightunit'));
                 component.onSubmit();
                 expect(submitBodyMetricsStub.callCount).toEqual(1);
                 expect(submitBodyMetricsStub.getCall(0).args[0]).toEqual({

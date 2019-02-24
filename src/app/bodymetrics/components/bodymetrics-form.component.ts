@@ -62,12 +62,7 @@ export class BodyMetricsFormComponent {
                 bodyweightunit: ['kilogram', Validators.required],
                 bodyheightunit: ['meter', Validators.required],
                 timestamp: [moment.utc().local(), Validators.required]
-            })
-        //this.metricsForm.setValidators(forbiddenNameValidator());
-        this.metricsForm.valueChanges.subscribe(console.log);
-        this.metricsForm.statusChanges.subscribe((stat) => {
-            console.log(stat, this.metricsForm.errors, this.metricsForm.get('bodyfat').errors);
-        });
+            });
     }
 
     public onPickTimestamp(ev: MouseEvent): void {
