@@ -1,4 +1,4 @@
-import { async, TestBed, } from '@angular/core/testing';
+import { async, TestBed, ComponentFixture, } from '@angular/core/testing';
 import { SelectDateTimeDialogComponent } from './select-date-time-dialog.component';
 import * as sinon from "sinon";
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -27,7 +27,7 @@ class MatDialogRefStub {
 }
 
 let sandbox;
-describe('SelectDateTimeDialogComponent', () => {
+describe('bodymetrics/components/SelectDateTimeDialogComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
@@ -61,4 +61,19 @@ describe('SelectDateTimeDialogComponent', () => {
     });
     beforeAll(() => { sandbox = sinon.sandbox.create(); })
     afterEach(() => { sandbox.restore(); })
+
+    describe('onClose()', () => {
+        let dialogRefCloseStub: sinon.SinonStub;
+        let fixture: ComponentFixture<SelectDateTimeDialogComponent>;
+        beforeEach(() => {
+            fixture = TestBed.createComponent(SelectDateTimeDialogComponent);
+            const service: MatDialogRef<SelectDateTimeDialogComponent, any> = <any>fixture.debugElement.injector.get(MatDialogRef);
+            dialogRefCloseStub = sinon.stub(service, "close");
+        });
+        it('should be call on close on the DialogRef', () => {
+            fixture.componentInstance.onClose(null);
+            expect(dialogRefCloseStub.callCount).toEqual(1);
+            expect(dialogRefCloseStub.getCall(0).args.length).toEqual(0);
+        });
+    });
 });
