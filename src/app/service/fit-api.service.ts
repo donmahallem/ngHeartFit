@@ -2,9 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { FitDatasource } from './fit-datasource.modal';
 import { map, flatMap, filter } from 'rxjs/operators';
-import { DataPoint } from '../analyze/view-upload/data-point';
 import { SubmitValue, SubmitToDatasetBody, SubmitToDatasetResponse, BucketResponse, ListSessionsResponse, FitSession, Bucket } from './fit-api-modals';
 import { ngGapiService, GapiStatus } from './nggapi-base.service';
 import { GapiUserService } from './gapi-user.service';
