@@ -1,12 +1,10 @@
-h3.filename {{filename}}
-p Filesize:&nbsp;
-    |
-    
-mat-expansion-panel(*ngIf="!isValidFile")
-    mat-expansion-panel-header
-        mat-panel-title {{filename}}
-        mat-panel-description
+mat-slide-toggle([checked]="isValidFile",[disabled]="!isValidFile",labelPosition="after",(change)="onChangeSelection($event)")
+div.content
+    div.title-bar
+        h3.filename {{filename}}
+        span.right-title
             span.filesize {{filesize}}
             | &nbsp;Bytes
-    p.error-detail(*ngFor="let err of uploadFile.errors") {{err | json}}
-mat-slide-toggle(*ngIf="isValidFile",[checked]="isValidFile",[disabled]="!isValidFile",labelPosition="after",(change)="onChangeSelection($event)") Import this File
+    div.errors(*ngIf="!isValidFile")
+        h4 The file could not be read due to the following errors
+        p.error-detail(*ngFor="let err of uploadFile.errors") {{err | json}}

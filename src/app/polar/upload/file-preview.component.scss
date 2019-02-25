@@ -1,11 +1,28 @@
 :host {
-    display: block;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     border: 1px #DADADA solid;
     padding: 5px 10px 5px 10px;
     margin-top: 5px;
     margin-bottom: 5px;
     border-radius: 5px;
     background:#F1F1F1;
+}
+
+div.content{
+    display:flex;
+    flex-direction:column;
+    align-items: stretch;
+    padding-left:20px;
+    flex: 1 0 auto;
+}
+div.title-bar h3.filename{
+    float:left;
+}
+
+div.title-bar span.right-title{
+    float:right;
 }
 
 span.filesize {
@@ -17,6 +34,6 @@ h3.filename {
     font-size: 16px;
 }
 
-p.fileerror{
+div.errors h4{
     color:red;
 }
