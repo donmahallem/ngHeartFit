@@ -112,6 +112,7 @@ export class UploadComponent implements OnInit {
             }), map((data: UploadFile): UploadFile => {
                 try {
                     const parsedData: any = JSON.parse(data.data);
+                    console.log("errors", FlowApiValidator.validateTimelineSummary(parsedData).errors);
                     data.valid = FlowApiValidator.validateTimelineSummary(parsedData).valid;
                 } catch (err) {
                     data.valid = false;

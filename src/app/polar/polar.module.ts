@@ -1,6 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatButtonModule, MatCheckboxModule, MatGridListModule, MatIconModule } from '@angular/material';
+import {
+    MatButtonModule,
+    MatGridListModule,
+    MatIconModule,
+    MatSlideToggleModule,
+    MatExpansionModule
+} from '@angular/material';
 
 import { PolarRoutingModule } from './polar-routing.module';
 import { UploadComponent } from './upload/upload.component';
@@ -28,7 +34,8 @@ import { AnalyzeDataService } from './services/analyze-data.service';
         HttpClientModule,
         MatGridListModule,
         MatIconModule,
-        MatCheckboxModule
+        MatSlideToggleModule,
+        MatExpansionModule
     ],
     providers: [
         UploadDataService,

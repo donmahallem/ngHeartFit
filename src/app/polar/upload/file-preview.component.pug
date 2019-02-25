@@ -1,5 +1,12 @@
 h3.filename {{filename}}
-p Filesize:
+p Filesize:&nbsp;
     |
-    span.filesize {{filesize}}b
-mat-checkbox([checked]="isValidFile",[disabled]="!isValidFile",labelPosition="after",(change)="onChangeSelection($event)") Import this File
+    
+mat-expansion-panel(*ngIf="!isValidFile")
+    mat-expansion-panel-header
+        mat-panel-title {{filename}}
+        mat-panel-description
+            span.filesize {{filesize}}
+            | &nbsp;Bytes
+    p.error-detail(*ngFor="let err of uploadFile.errors") {{err | json}}
+mat-slide-toggle(*ngIf="isValidFile",[checked]="isValidFile",[disabled]="!isValidFile",labelPosition="after",(change)="onChangeSelection($event)") Import this File
