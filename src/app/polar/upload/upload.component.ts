@@ -61,7 +61,7 @@ export class UploadComponent implements OnInit {
 
     public onUpload(e: Event): void {
         const target: HTMLInputElement = <HTMLInputElement>e.target;
-        this.upd(target).subscribe((res: UploadFile) => {
+        this.validateFiles(target).subscribe((res: UploadFile) => {
             this.zone.run(() => {
                 this.uploadDataService.addUploadFile(res);
             });
@@ -118,7 +118,7 @@ export class UploadComponent implements OnInit {
             }));
     }
 
-    public upd(e: HTMLInputElement): Observable<UploadFile> {
+    public validateFiles(e: HTMLInputElement): Observable<UploadFile> {
         this.uploadDataService.clear();
         return from(e.files)
             .pipe(filter((file: File) => {
