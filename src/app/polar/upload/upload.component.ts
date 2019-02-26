@@ -4,12 +4,13 @@ import {
     NgZone
 } from '@angular/core';
 import { UploadDataService } from '../services/upload-data.service';
-import { from, Observable, Observer, of } from 'rxjs';
+import { from, Observable, Observer, of, OperatorFunction } from 'rxjs';
 import { filter, flatMap, map } from 'rxjs/operators';
-import { UploadFile } from '../services';
+import { UploadFile, UploadFileType } from '../services';
 import { AnalyzeDataService } from '../services/analyze-data.service';
 import { Router } from '@angular/router';
 import { FlowApiValidator, IDaySummary, IDayData } from '@donmahallem/flow-api-types';
+import { ValidatorResult } from 'jsonschema';
 
 @Component({
     selector: 'upload-cmp',
@@ -49,7 +50,7 @@ export class UploadComponent implements OnInit {
         });
     }
 
-    public ads(file: File): Observable<UploadFile> {
+    public readFile(file: File): Observable<UploadFile> {
         return Observable.create((pub: Observer<UploadFile>) => {
             const reader: FileReader = new FileReader();
             reader.onload = function (loadEvent: any) {
@@ -57,7 +58,7 @@ export class UploadComponent implements OnInit {
                     data: loadEvent.target.result,
                     filename: file.name,
                     valid: false,
-                    key: null
+                    type: UploadFileType.UNKNOWN
                 });
                 pub.complete();
             };
@@ -108,17 +109,27 @@ export class UploadComponent implements OnInit {
                     return false;
                 }
             }), flatMap((file: File) => {
-                return this.ads(file);
-            }), map((data: UploadFile): UploadFile => {
-                try {
-                    const parsedData: any = JSON.parse(data.data);
-                    console.log("errors", FlowApiValidator.validateTimelineSummary(parsedData).errors);
-                    data.valid = FlowApiValidator.validateTimelineSummary(parsedData).valid;
-                } catch (err) {
-                    data.valid = false;
-                }
-                return data;
-            }));
+                return this.readFile(file);
+            }), ConvertUploadFileAndCheckValidity);
     }
 
 }
+
+export const ConvertUploadFileAndCheckValidity: OperatorFunction<UploadFile, UploadFile> = map((data: UploadFile): UploadFile => {
+    try {
+        const parsedData: any = JSON.parse(data.data);
+        const validatorResult: ValidatorResult = FlowApiValidator.validateTimelineSummary(parsedData);
+        data.valid = validatorResult.valid;
+        if (!validatorResult.valid) {
+            data.errors = validatorResult.errors;
+        } else {
+            data.type = UploadFileType.DAY_SUMMARY;
+        }
+    } catch (err) {
+        data.valid = false;
+        data.errors = [
+            err
+        ];
+    }
+    return data;
+});

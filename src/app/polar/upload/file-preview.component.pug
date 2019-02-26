@@ -7,4 +7,5 @@ div.content
             | &nbsp;Bytes
     div.errors(*ngIf="!isValidFile")
         h4 The file could not be read due to the following errors
-        p.error-detail(*ngFor="let err of uploadFile.errors") {{err | json}}
+        ul
+            li.error-detail(*ngFor="let err of uploadFile.errors") {{err?.message}}

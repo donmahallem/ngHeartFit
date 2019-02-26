@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    align-content: stretch;
     border: 1px #DADADA solid;
     padding: 5px 10px 5px 10px;
     margin-top: 5px;
@@ -15,7 +16,7 @@ div.content{
     flex-direction:column;
     align-items: stretch;
     padding-left:20px;
-    flex: 1 0 auto;
+    flex: 1;
 }
 div.title-bar h3.filename{
     float:left;
