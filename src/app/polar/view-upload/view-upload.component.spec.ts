@@ -9,7 +9,7 @@ import { AnalyzeDataService } from '../services/analyze-data.service';
 import { DataPoint } from './data-point';
 
 @Injectable()
-class testAnalyzeDataService {
+class TestAnalyzeDataService {
     submitBodyMetrics() {
 
     }
@@ -21,7 +21,7 @@ class testAnalyzeDataService {
     template: '',
     styleUrls: []
 })
-class testWeightChartComponent {
+class TestWeightChartComponent {
     @Input('chartData')
     public chartData: DataPoint[];
 }
@@ -42,7 +42,7 @@ export class TestUploadToFitComponent {
         return this._dataPoints;
     }
 }
-let sandbox;
+let sandbox: sinon.SinonSandbox;
 describe('BodyMetricsComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -52,11 +52,11 @@ describe('BodyMetricsComponent', () => {
             ],
             declarations: [
                 ViewUploadComponent,
-                testWeightChartComponent,
+                TestWeightChartComponent,
                 TestUploadToFitComponent
             ],
             providers: [
-                { provide: AnalyzeDataService, useValue: new testAnalyzeDataService() }
+                { provide: AnalyzeDataService, useValue: new TestAnalyzeDataService() }
             ]
         }).compileComponents();
     }));
