@@ -23,19 +23,4 @@ export class NgGapiService {
     public get statusObservable(): Observable<GapiStatus> {
         return this.statusSubject.asObservable();
     }
-
-    public get loadClient(): Observable<void> {
-        return new Observable<void>((subscriber: Subscriber<void>) => {
-            const loadCfg: any = {
-                callback: () => {
-                    subscriber.next(null);
-                    subscriber.complete();
-                },
-                onerror: (err: Error) => {
-                    subscriber.error(err);
-                }
-            };
-            gapi.load('client', loadCfg);
-        });
-    }
 }

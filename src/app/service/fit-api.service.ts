@@ -260,29 +260,7 @@ export class FitApiService {
     }
 
     public submitBodyMetrics(metrics: SubmitBodyMetricsRequest): Observable<any> {
-        this.nggapi
-            .loadClient
-            .subscribe(() => {
-                // @ts-ignore: Property 'newBatch' does not exist on type 'typeof client'.
-                const myBatch: gapi.client.HttpBatch = gapi.client.newBatch();
-                // const myBatch: gapi.client.HttpBatch = new gapi.client.HttpBatch();
-                const req1: gapi.client.HttpRequest<any> = gapi.client.request({
-                    path: FitApiService.ENDPOINT + '/users/me/dataSources/',
-                    params: {
-                        'dataTypeName': 'com.google.weight'
-                    }
-                });
-                const req2: gapi.client.HttpRequest<any> = gapi.client.request({
-                    path: FitApiService.ENDPOINT + '/users/me/dataSources/',
-                    params: {
-                        'dataTypeName': 'com.google.body.fat.percentage'
-                    }
-                });
-                myBatch.add(req1);
-                myBatch.add(req2);
-                myBatch.execute(console.log);
-            });
-        return null;
+        return of(null);
     }
 
 }

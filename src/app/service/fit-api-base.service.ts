@@ -14,30 +14,8 @@ export class FitApiBaseService {
     private observable: Observable<void>;
     constructor(private httpService: HttpClient,
         private nggapi: NgGapiService,
-        private gapiUser: GapiUserService,
-        private googleApiService: GoogleApiService) {
-        this.observable = this.googleApiService
-            .onLoad()
-            .pipe(flatMap(() => {
-                return this.loadClient();
-            }), shareReplay(1),
-                single());
+        private gapiUser: GapiUserService) {
 
-    }
-
-    public loadClient(): Observable<void> {
-        return Observable.create((observer: Observer<void>) => {
-            const loadCfg: any = {
-                callback: () => {
-                    observer.next(null);
-                    observer.complete();
-                },
-                onerror: (err: Error) => {
-                    observer.error(err);
-                }
-            };
-            gapi.load('client', loadCfg);
-        });
     }
 
     public base(): Observable<void> {
