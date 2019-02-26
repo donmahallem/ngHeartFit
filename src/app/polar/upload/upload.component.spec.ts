@@ -11,6 +11,8 @@ import * as sinon from 'sinon';
 import { AnalyzeDataService } from '../services/analyze-data.service';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
+import { FlowApiValidator } from '@donmahallem/flow-api-types';
+import { ValidatorResult, ValidationError } from 'jsonschema';
 
 @Injectable()
 class TestUploadDataService {
@@ -94,6 +96,10 @@ describe('app/polar/upload/upload.component', () => {
         afterEach(() => { sandbox.restore(); });
 
         describe('createConvertUploadFileAndCheckValidity()', () => {
+            let validatorStub: sinon.SinonStub;
+            beforeEach(() => {
+                validatorStub = sandbox.stub(FlowApiValidator, 'validateTimelineSummary');
+            });
             it('should test for the case JSON.parse fails', (done) => {
                 const testFile: UploadFile = {
                     valid: false,
@@ -110,12 +116,75 @@ describe('app/polar/upload/upload.component', () => {
                         expect(parsedFile).toEqual(jasmine.objectContaining(testFile));
                         expect(parsedFile.errors).not.toBeUndefined('it should exist');
                         expect(parsedFile.errors.length).toEqual(1);
+                        expect(validatorStub.callCount).toEqual(0, 'Should not be called as JSON parse throws');
                         // expect(parsedFile.errors[0]).toHaveClass(SyntaxError);
                         done();
                     });
             });
-            it('should test that there is non conforming json');
-            it('should test for conforming json');
+            it('should test that there is non conforming json', (done) => {
+                const testFile: UploadFile = {
+                    valid: false,
+                    data: '{"test":2}',
+                    filename: 'asdf',
+                    type: UploadFileType.UNKNOWN
+                };
+                const validatorErrors: ValidationError[] = [
+                    <any>{
+                        test: 1
+                    }, <any>{
+                        test: 2
+                    }
+                ];
+                const validatorRes: ValidatorResult = <any>{
+                    valid: false,
+                    errors: validatorErrors
+                };
+                validatorStub.returns(validatorRes);
+                const nextSpy: sinon.SinonSpy = sinon.spy();
+                from([testFile])
+                    .pipe(cmpInstance.createConvertUploadFileAndCheckValidity())
+                    .subscribe(nextSpy, done, () => {
+                        expect(nextSpy.callCount).toEqual(1);
+                        expect(validatorStub.callCount).toEqual(1, 'Should not be called as JSON parse throws');
+                        const parsedFile: UploadFile = nextSpy.getCall(0).args[0];
+                        expect(parsedFile).toEqual(jasmine.objectContaining(testFile));
+                        expect(parsedFile.errors).toEqual(validatorRes.errors);
+                        // expect(parsedFile.errors[0]).toHaveClass(SyntaxError);
+                        done();
+                    });
+            });
+            it('should test for conforming json', (done) => {
+                const testFile: UploadFile = {
+                    valid: false,
+                    data: '{"test":2}',
+                    filename: 'asdf',
+                    type: UploadFileType.UNKNOWN
+                };
+                const validatorErrors: ValidationError[] = [
+                    <any>{
+                        test: 1
+                    }, <any>{
+                        test: 2
+                    }
+                ];
+                const validatorRes: ValidatorResult = <any>{
+                    valid: true
+                };
+                validatorStub.returns(validatorRes);
+                const nextSpy: sinon.SinonSpy = sinon.spy();
+                from([testFile])
+                    .pipe(cmpInstance.createConvertUploadFileAndCheckValidity())
+                    .subscribe(nextSpy, done, () => {
+                        expect(nextSpy.callCount).toEqual(1);
+                        expect(validatorStub.callCount).toEqual(1, 'Should not be called as JSON parse throws');
+                        const parsedFile: UploadFile = nextSpy.getCall(0).args[0];
+                        const res: UploadFile = Object.assign({}, testFile);
+                        res.valid = true;
+                        res.type = UploadFileType.DAY_SUMMARY;
+                        expect(parsedFile).toEqual(jasmine.objectContaining(res));
+                        done();
+                    });
+            });
         });
 
         describe('validateFiles()', () => {
