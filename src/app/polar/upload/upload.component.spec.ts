@@ -62,83 +62,93 @@ export class TestFilePreviewComponent {
 }
 let sandbox: sinon.SinonSandbox;
 describe('app/polar/upload/upload.component', () => {
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            imports: [
-                RouterTestingModule,
-                MatButtonModule
-            ],
-            declarations: [
-                testObject.UploadComponent,
-                TestFilePreviewComponent
-            ],
-            providers: [
-                { provide: UploadDataService, useValue: new TestUploadDataService() },
-                { provide: AnalyzeDataService, useValue: new TestAnalyzeDataService() },
-                { provide: Router, useValue: new TestRouter() }
-            ]
-        }).compileComponents();
-    }));
+    describe('createConvertUploadFileAndCheckValidity()', () => {
+        it('should test for the case JSON.parse fails');
+        it('should test that there is non conforming json');
+        it('should test for conforming json');
+    });
+    describe('UploadComponent', () => {
+        beforeEach(async(() => {
+            TestBed.configureTestingModule({
+                imports: [
+                    RouterTestingModule,
+                    MatButtonModule
+                ],
+                declarations: [
+                    testObject.UploadComponent,
+                    TestFilePreviewComponent
+                ],
+                providers: [
+                    { provide: UploadDataService, useValue: new TestUploadDataService() },
+                    { provide: AnalyzeDataService, useValue: new TestAnalyzeDataService() },
+                    { provide: Router, useValue: new TestRouter() }
+                ]
+            }).compileComponents();
+        }));
 
-    let fixture: ComponentFixture<testObject.UploadComponent>;
-    let cmpInstance: testObject.UploadComponent;
-    beforeEach(() => {
-        fixture = TestBed.createComponent(testObject.UploadComponent);
-        cmpInstance = fixture.debugElement.componentInstance;
-    });
-    it('should create the app', () => {
-        expect(cmpInstance).toBeTruthy();
-    });
-    beforeAll(() => { sandbox = sinon.createSandbox(); });
-    afterEach(() => { sandbox.restore(); });
-    describe('validateFiles()', () => {
-        let upDataService: UploadDataService;
-        let uploadDataServiceClearStub: sinon.SinonStub;
-        let readFileStub: sinon.SinonStub;
-        let nextSpy: sinon.SinonSpy;
-        let createConvertUploadFileAndCheckValidityStub: sinon.SinonStub;
+        let fixture: ComponentFixture<testObject.UploadComponent>;
+        let cmpInstance: testObject.UploadComponent;
         beforeEach(() => {
-            upDataService = fixture.debugElement.injector.get(UploadDataService);
-            uploadDataServiceClearStub = sandbox.stub(upDataService, 'clear');
-            readFileStub = sandbox.stub(cmpInstance, 'readFile');
-            readFileStub.callsFake((inp) => from([inp]));
-            nextSpy = sandbox.spy();
-            createConvertUploadFileAndCheckValidityStub = sandbox.stub(testObject, 'createConvertUploadFileAndCheckValidity');
-            createConvertUploadFileAndCheckValidityStub.callsFake(() => {
-                return map((inp) => {
+            fixture = TestBed.createComponent(testObject.UploadComponent);
+            cmpInstance = fixture.debugElement.componentInstance;
+        });
+        it('should create the app', () => {
+            expect(cmpInstance).toBeTruthy();
+        });
+        beforeAll(() => { sandbox = sinon.createSandbox(); });
+        afterEach(() => { sandbox.restore(); });
+        describe('validateFiles()', () => {
+            let upDataService: UploadDataService;
+            let uploadDataServiceClearStub: sinon.SinonStub;
+            let readFileStub: sinon.SinonStub;
+            let nextSpy: sinon.SinonSpy;
+            let convertValidityStub: sinon.SinonStub;
+            let convertValidityInnerStub: sinon.SinonStub;
+            beforeEach(() => {
+                upDataService = fixture.debugElement.injector.get(UploadDataService);
+                uploadDataServiceClearStub = sandbox.stub(upDataService, 'clear');
+                readFileStub = sandbox.stub(cmpInstance, 'readFile');
+                readFileStub.callsFake((inp) => from([inp]));
+                nextSpy = sandbox.spy();
+                convertValidityStub = sandbox.stub(cmpInstance, 'createConvertUploadFileAndCheckValidity');
+                convertValidityInnerStub = sandbox.stub();
+                convertValidityInnerStub.callsFake((inp) => {
                     return {
                         inp: inp
                     };
                 });
-            });
-        });
-        it('should test', (done) => {
-            const testData: HTMLInputElement = <any>{
-                files: [
-                    { test: 1 },
-                    { test: 2 },
-                    null,
-                    { test: 3 }
-                ]
-            };
-            const observable: Observable<UploadFile> = cmpInstance.validateFiles(testData);
-            expect(uploadDataServiceClearStub.callCount).toEqual(1, 'the database should be cleared before new data is added');
-            observable
-                .subscribe(nextSpy, done, () => {
-                    expect(nextSpy.callCount).toEqual(3);
-                    expect(nextSpy.calledWith({
-                        inp: testData.files[0]
-                    }));
-                    expect(nextSpy.calledWith({
-                        inp: testData.files[1]
-                    }));
-                    expect(nextSpy.calledWith({
-                        inp: testData.files[3]
-                    }));
-                    done();
+                convertValidityStub.callsFake(() => {
+                    return map(convertValidityInnerStub);
                 });
-        });
-        afterEach(() => {
+            });
+            it('should test fine', (done) => {
+                const testData: HTMLInputElement = <any>{
+                    files: [
+                        { test: 1 },
+                        { test: 2 },
+                        null,
+                        { test: 3 }
+                    ]
+                };
+                const observable: Observable<UploadFile> = cmpInstance.validateFiles(testData);
+                expect(uploadDataServiceClearStub.callCount).toEqual(1, 'the database should be cleared before new data is added');
+                observable
+                    .subscribe(nextSpy, done, () => {
+                        expect(nextSpy.callCount).toEqual(3, 'the observable should create three results');
+                        expect(convertValidityInnerStub.callCount).toEqual(3, 'the inner map should be called three times');
+                        expect(convertValidityStub.callCount).toEqual(1);
+                        expect(nextSpy.getCall(0).args).toEqual([{
+                            inp: testData.files[0]
+                        }]);
+                        expect(nextSpy.getCall(1).args).toEqual([{
+                            inp: testData.files[1]
+                        }]);
+                        expect(nextSpy.getCall(2).args).toEqual([{
+                            inp: testData.files[3]
+                        }]);
+                        done();
+                    });
+            });
         });
     });
 });

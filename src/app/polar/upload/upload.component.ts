@@ -12,26 +12,6 @@ import { Router } from '@angular/router';
 import { FlowApiValidator, IDaySummary, IDayData } from '@donmahallem/flow-api-types';
 import { ValidatorResult } from 'jsonschema';
 
-export const createConvertUploadFileAndCheckValidity = (): OperatorFunction<UploadFile, UploadFile> => {
-    return map((data: UploadFile): UploadFile => {
-        try {
-            const parsedData: any = JSON.parse(data.data);
-            const validatorResult: ValidatorResult = FlowApiValidator.validateTimelineSummary(parsedData);
-            data.valid = validatorResult.valid;
-            if (!validatorResult.valid) {
-                data.errors = validatorResult.errors;
-            } else {
-                data.type = UploadFileType.DAY_SUMMARY;
-            }
-        } catch (err) {
-            data.valid = false;
-            data.errors = [
-                err
-            ];
-        }
-        return data;
-    });
-};
 
 @Component({
     selector: 'upload-cmp',
@@ -59,6 +39,26 @@ export class UploadComponent implements OnInit {
             }
         }
         return false;
+    }
+    public createConvertUploadFileAndCheckValidity(): OperatorFunction<UploadFile, UploadFile> {
+        return map((data: UploadFile): UploadFile => {
+            try {
+                const parsedData: any = JSON.parse(data.data);
+                const validatorResult: ValidatorResult = FlowApiValidator.validateTimelineSummary(parsedData);
+                data.valid = validatorResult.valid;
+                if (!validatorResult.valid) {
+                    data.errors = validatorResult.errors;
+                } else {
+                    data.type = UploadFileType.DAY_SUMMARY;
+                }
+            } catch (err) {
+                data.valid = false;
+                data.errors = [
+                    err
+                ];
+            }
+            return data;
+        });
     }
 
     public onUpload(e: Event): void {
@@ -131,7 +131,7 @@ export class UploadComponent implements OnInit {
                 }
             }), flatMap((file: File) => {
                 return this.readFile(file);
-            }), createConvertUploadFileAndCheckValidity());
+            }), this.createConvertUploadFileAndCheckValidity());
     }
 
 }
