@@ -40,6 +40,7 @@ export class UploadComponent implements OnInit {
         }
         return false;
     }
+
     public createConvertUploadFileAndCheckValidity(): OperatorFunction<UploadFile, UploadFile> {
         return map((data: UploadFile): UploadFile => {
             try {

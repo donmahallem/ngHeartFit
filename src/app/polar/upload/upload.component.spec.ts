@@ -5,7 +5,7 @@ import { Observable, from, Subscriber } from 'rxjs';
 import { Injectable, Component, Input } from '@angular/core';
 import * as testObject from './upload.component';
 import { FilePreviewComponent } from './file-preview.component';
-import { UploadDataService, UploadFile } from '../services';
+import { UploadDataService, UploadFile, UploadFileType } from '../services';
 
 import * as sinon from 'sinon';
 import { AnalyzeDataService } from '../services/analyze-data.service';
@@ -53,7 +53,7 @@ class TestRouter {
 }
 @Component({
     selector: 'file-preview-cmp',
-    template: "<p></p>"
+    template: '<p></p>'
 })
 export class TestFilePreviewComponent {
 
@@ -62,11 +62,6 @@ export class TestFilePreviewComponent {
 }
 let sandbox: sinon.SinonSandbox;
 describe('app/polar/upload/upload.component', () => {
-    describe('createConvertUploadFileAndCheckValidity()', () => {
-        it('should test for the case JSON.parse fails');
-        it('should test that there is non conforming json');
-        it('should test for conforming json');
-    });
     describe('UploadComponent', () => {
         beforeEach(async(() => {
             TestBed.configureTestingModule({
@@ -97,6 +92,32 @@ describe('app/polar/upload/upload.component', () => {
         });
         beforeAll(() => { sandbox = sinon.createSandbox(); });
         afterEach(() => { sandbox.restore(); });
+
+        describe('createConvertUploadFileAndCheckValidity()', () => {
+            it('should test for the case JSON.parse fails', (done) => {
+                const testFile: UploadFile = {
+                    valid: false,
+                    data: 'jasdf;dsf',
+                    filename: 'asdf',
+                    type: UploadFileType.UNKNOWN
+                };
+                const nextSpy: sinon.SinonSpy = sinon.spy();
+                from([testFile])
+                    .pipe(cmpInstance.createConvertUploadFileAndCheckValidity())
+                    .subscribe(nextSpy, done, () => {
+                        expect(nextSpy.callCount).toEqual(1);
+                        const parsedFile: UploadFile = nextSpy.getCall(0).args[0];
+                        expect(parsedFile).toEqual(jasmine.objectContaining(testFile));
+                        expect(parsedFile.errors).not.toBeUndefined('it should exist');
+                        expect(parsedFile.errors.length).toEqual(1);
+                        // expect(parsedFile.errors[0]).toHaveClass(SyntaxError);
+                        done();
+                    });
+            });
+            it('should test that there is non conforming json');
+            it('should test for conforming json');
+        });
+
         describe('validateFiles()', () => {
             let upDataService: UploadDataService;
             let uploadDataServiceClearStub: sinon.SinonStub;
