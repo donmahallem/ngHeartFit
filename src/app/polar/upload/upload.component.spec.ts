@@ -10,6 +10,7 @@ import { UploadDataService, UploadFile } from '../services';
 import * as sinon from 'sinon';
 import { AnalyzeDataService } from '../services/analyze-data.service';
 import { Router } from '@angular/router';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 class TestUploadDataService {
@@ -95,12 +96,21 @@ describe('app/polar/upload/upload.component', () => {
         let uploadDataServiceClearStub: sinon.SinonStub;
         let readFileStub: sinon.SinonStub;
         let nextSpy: sinon.SinonSpy;
+        let createConvertUploadFileAndCheckValidityStub: sinon.SinonStub;
         beforeEach(() => {
             upDataService = fixture.debugElement.injector.get(UploadDataService);
             uploadDataServiceClearStub = sandbox.stub(upDataService, 'clear');
             readFileStub = sandbox.stub(cmpInstance, 'readFile');
             readFileStub.callsFake((inp) => from([inp]));
             nextSpy = sandbox.spy();
+            createConvertUploadFileAndCheckValidityStub = sandbox.stub(testObject, 'createConvertUploadFileAndCheckValidity');
+            createConvertUploadFileAndCheckValidityStub.callsFake(() => {
+                return map((inp) => {
+                    return {
+                        inp: inp
+                    };
+                });
+            });
         });
         it('should test', (done) => {
             const testData: HTMLInputElement = <any>{
@@ -116,6 +126,15 @@ describe('app/polar/upload/upload.component', () => {
             observable
                 .subscribe(nextSpy, done, () => {
                     expect(nextSpy.callCount).toEqual(3);
+                    expect(nextSpy.calledWith({
+                        inp: testData.files[0]
+                    }));
+                    expect(nextSpy.calledWith({
+                        inp: testData.files[1]
+                    }));
+                    expect(nextSpy.calledWith({
+                        inp: testData.files[3]
+                    }));
                     done();
                 });
         });
