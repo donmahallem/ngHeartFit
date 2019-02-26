@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { GapiUserService } from './service/gapi-user.service';
 import { environment } from 'src/environments/environment';
-import { ngGapiService } from './service/nggapi-base.service';
+import { NgGapiService } from './service/nggapi-base.service';
 import { ModuleWithProviders } from '@angular/compiler/src/core';
 import { FitApiService } from './service/fit-api.service';
 import { FitApiBaseService } from './service/fit-api-base.service';
@@ -40,7 +40,7 @@ export class NgGapiConfigModule {
             ngModule: NgGapiConfigModule,
             providers: [
                 GapiUserService,
-                ngGapiService,
+                NgGapiService,
                 FitApiService,
                 FitApiBaseService,
                 FitApiDataSetService,

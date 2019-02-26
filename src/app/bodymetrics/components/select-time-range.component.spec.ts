@@ -10,7 +10,7 @@ describe('SelectTimeRangeComponent', () => {
     beforeEach(() => {
         // testUploadDataService.
     });
-    beforeAll(() => { sandbox = sinon.sandbox.create(); });
+    beforeAll(() => { sandbox = sinon.createSandbox(); });
     afterEach(() => { sandbox.restore(); });
     describe('enableInputs()', () => {
         it('to be implemented');

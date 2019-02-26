@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { GoogleApiService } from 'ng-gapi';
-import { BehaviorSubject, Observable, Observer } from 'rxjs';
+import { BehaviorSubject, Observable, Observer, Subscribable, Subscriber } from 'rxjs';
 
 
 export enum GapiStatus {
@@ -10,7 +10,7 @@ export enum GapiStatus {
 }
 
 @Injectable()
-export class ngGapiService {
+export class NgGapiService {
     private statusSubject: BehaviorSubject<GapiStatus> = new BehaviorSubject(GapiStatus.LOADING);
     constructor(gapiService: GoogleApiService) {
         gapiService.onLoad().subscribe((loadStatus) => {
@@ -25,14 +25,14 @@ export class ngGapiService {
     }
 
     public get loadClient(): Observable<void> {
-        return Observable.create((observer: Observer<void>) => {
+        return new Observable<void>((subscriber: Subscriber<void>) => {
             const loadCfg: any = {
                 callback: () => {
-                    observer.next(null);
-                    observer.complete();
+                    subscriber.next(null);
+                    subscriber.complete();
                 },
                 onerror: (err: Error) => {
-                    observer.error(err);
+                    subscriber.error(err);
                 }
             };
             gapi.load('client', loadCfg);

@@ -83,7 +83,7 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
                     if (dataset.dataSourceId === 'derived:com.google.weight.summary:com.google.android.gms:aggregated') {
                         for (const p of dataset.point) {
                             const chartP: ChartPoint = {
-                                x: new Date(parseInt(p.startTimeNanos.substr(0, p.startTimeNanos.length - 6))),
+                                x: new Date(parseInt(p.startTimeNanos.substr(0, p.startTimeNanos.length - 6), 10)),
                                 y: p.value[0].fpVal
                             };
                             chartP['ymax'] = p.value[1].fpVal;
@@ -93,7 +93,7 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
                     } else if (dataset.dataSourceId === 'derived:com.google.body.fat.percentage.summary:com.google.android.gms:aggregated') {
                         for (const p of dataset.point) {
                             const chartP: ChartPoint = {
-                                x: new Date(parseInt(p.startTimeNanos.substr(0, p.startTimeNanos.length - 6))),
+                                x: new Date(parseInt(p.startTimeNanos.substr(0, p.startTimeNanos.length - 6), 10)),
                                 y: p.value[0].fpVal
                             };
                             chartP['ymax'] = p.value[1].fpVal;

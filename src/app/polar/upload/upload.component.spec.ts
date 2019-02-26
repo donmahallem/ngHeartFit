@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 
 @Injectable()
-class testUploadDataService {
+class TestUploadDataService {
 
     public get uploadedFiles(): UploadFile[] {
         return [];
@@ -39,14 +39,14 @@ class testUploadDataService {
     }
 }
 @Injectable()
-class testAnalyzeDataService {
+class TestAnalyzeDataService {
     clear(): Observable<void> {
         return null;
     }
 
 }
 @Injectable()
-class testRouter {
+class TestRouter {
     public navigate(): void {
 
     }
@@ -66,9 +66,9 @@ describe('UploadComponent', () => {
                 FilePreviewComponent
             ],
             providers: [
-                { provide: UploadDataService, useValue: new testUploadDataService() },
-                { provide: AnalyzeDataService, useValue: new testAnalyzeDataService() },
-                { provide: Router, useValue: new testRouter() }
+                { provide: UploadDataService, useValue: new TestUploadDataService() },
+                { provide: AnalyzeDataService, useValue: new TestAnalyzeDataService() },
+                { provide: Router, useValue: new TestRouter() }
             ]
         }).compileComponents();
     }));
@@ -82,7 +82,7 @@ describe('UploadComponent', () => {
         const app = fixture.debugElement.componentInstance;
         expect(app).toBeTruthy();
     });
-    beforeAll(() => { sandbox = sinon.sandbox.create(); });
+    beforeAll(() => { sandbox = sinon.createSandbox(); });
     afterEach(() => { sandbox.restore(); });
     describe('uploadFiles()', () => {
         it('should test', () => {

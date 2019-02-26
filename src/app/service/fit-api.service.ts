@@ -4,7 +4,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { map, flatMap, filter } from 'rxjs/operators';
 import { SubmitValue, SubmitToDatasetBody, SubmitToDatasetResponse, BucketResponse, ListSessionsResponse, FitSession, Bucket } from './fit-api-modals';
-import { ngGapiService, GapiStatus } from './nggapi-base.service';
+import { NgGapiService, GapiStatus } from './nggapi-base.service';
 import { GapiUserService } from './gapi-user.service';
 import * as moment from 'moment';
 
@@ -12,7 +12,7 @@ import * as moment from 'moment';
 export class FitApiService {
     public static readonly ENDPOINT: string = 'https://www.googleapis.com/fitness/v1';
     constructor(private httpService: HttpClient,
-        private nggapi: ngGapiService,
+        private nggapi: NgGapiService,
         private gapiUser: GapiUserService) {
 
     }
@@ -20,7 +20,7 @@ export class FitApiService {
     public base(): Observable<void> {
         return this.nggapi.statusObservable
             .pipe(filter((status) => {
-                return status != GapiStatus.LOADING;
+                return status !== GapiStatus.LOADING;
             }), map((status: GapiStatus) => {
                 if (status === GapiStatus.FAILED) {
                     throw new Error();
@@ -67,7 +67,7 @@ export class FitApiService {
         return this.base()
             .pipe(flatMap(() => {
                 const dataSourceId = 'derived:com.google.weight:com.google.android.gms:merge_weight';
-                const nanoTimestamp: string = moment.utc().subtract(100, 'days').unix() + '000000000'; 1397515179728708316;
+                const nanoTimestamp: string = moment.utc().subtract(100, 'days').unix() + '000000000';
                 const nanoTimestamp2: string = moment.utc().unix() + '000000000';
                 const url = FitApiService.ENDPOINT + '/users/me/dataSources/' + dataSourceId + '/datasets/' + nanoTimestamp + '-' + nanoTimestamp2;
                 const headers: HttpHeaders = new HttpHeaders();

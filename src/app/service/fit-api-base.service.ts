@@ -4,7 +4,7 @@ import { Observable, of, throwError, Observer, from } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams, HttpRequest, HttpResponse, HttpEvent, HttpEventType } from '@angular/common/http';
 import { FitDatasource } from './fit-datasource.modal';
 import { map, flatMap, filter, shareReplay, single } from 'rxjs/operators';
-import { ngGapiService, GapiStatus } from './nggapi-base.service';
+import { NgGapiService, GapiStatus } from './nggapi-base.service';
 import { GapiUserService } from './gapi-user.service';
 import { GoogleApiService } from 'ng-gapi';
 
@@ -13,7 +13,7 @@ export class FitApiBaseService {
     public static readonly ENDPOINT: string = 'https://www.googleapis.com/fitness/v1';
     private observable: Observable<void>;
     constructor(private httpService: HttpClient,
-        private nggapi: ngGapiService,
+        private nggapi: NgGapiService,
         private gapiUser: GapiUserService,
         private googleApiService: GoogleApiService) {
         this.observable = this.googleApiService
@@ -75,7 +75,7 @@ export class FitApiBaseService {
         const request: HttpRequest<string> = this.createBatchRequest(requests);
         return this.httpService.request(request)
             .pipe(filter((resp: HttpEvent<string>): boolean => {
-                return (resp.type == HttpEventType.Response);
+                return (resp.type === HttpEventType.Response);
             }), map((res: HttpEvent<string>): HttpResponse<any> => {
                 return <any>this.parseBatchResponse(<HttpResponse<string>>res);
             }));
@@ -141,7 +141,7 @@ export class FitApiBaseService {
             parsedResponse[contentId] = new HttpResponse({
                 body: JSON.parse(responseBody),
                 headers: headers,
-                status: parseInt(statusLineSplits[1]),
+                status: parseInt(statusLineSplits[1], 10),
                 statusText: statusLineSplits[2].trim()
             });
         }

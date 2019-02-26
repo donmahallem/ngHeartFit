@@ -59,7 +59,7 @@ describe('bodymetrics/components/SelectDateTimeDialogComponent', () => {
     beforeEach(() => {
         // testUploadDataService.
     });
-    beforeAll(() => { sandbox = sinon.sandbox.create(); });
+    beforeAll(() => { sandbox = sinon.createSandbox(); });
     afterEach(() => { sandbox.restore(); });
 
     describe('onClose()', () => {

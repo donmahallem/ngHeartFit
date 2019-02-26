@@ -1,6 +1,15 @@
 import { TestBed, async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MatButtonModule, MatCheckboxModule, MatGridListModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatIconModule } from '@angular/material';
+import {
+    MatButtonModule,
+    MatCheckboxModule,
+    MatGridListModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatIconModule
+} from '@angular/material';
 import { Observable, from, of, throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { BodyMetricsFormComponent, BodyMetricsFormData } from './bodymetrics-form.component';
@@ -16,14 +25,14 @@ import * as moment from 'moment';
 import { FitApiService, SubmitBodyMetricsRequest } from 'src/app/service/fit-api.service';
 import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 
-export function newEvent(eventName: string, bubbles = false, cancelable = false) {
+export function NewEvent(eventName: string, bubbles = false, cancelable = false) {
     const evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
     evt.initCustomEvent(eventName, bubbles, cancelable, null);
     return evt;
 }
 
 @Injectable()
-class testGapiService {
+class TestGapiService {
     submitBodyMetrics(data: SubmitBodyMetricsRequest): Observable<any> {
         return null;
     }
@@ -49,7 +58,7 @@ describe('BodyMetricsComponent', () => {
                 BodyMetricsFormComponent
             ],
             providers: [
-                { provide: FitApiDataSourceService, useValue: new testGapiService() },
+                { provide: FitApiDataSourceService, useValue: new TestGapiService() },
                 { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
                 { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS }
             ]
@@ -65,7 +74,7 @@ describe('BodyMetricsComponent', () => {
         const app = fixture.debugElement.componentInstance;
         expect(app).toBeTruthy();
     });
-    beforeAll(() => { sandbox = sinon.sandbox.create(); });
+    beforeAll(() => { sandbox = sinon.createSandbox(); });
     afterEach(() => { sandbox.restore(); });
     describe('onSubmit()', () => {
         let fixture: ComponentFixture<BodyMetricsFormComponent>;

@@ -4,7 +4,7 @@ import { MatButtonModule, MatToolbarModule, MatCheckboxModule } from '@angular/m
 import { Observable, from } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { FilePreviewComponent } from './file-preview.component';
-import { UploadDataService, UploadFile } from '../services';
+import { UploadDataService, UploadFile, UploadFileType } from '../services';
 
 @Injectable()
 class testUploadDataService {
@@ -46,13 +46,13 @@ describe('FilePreviewComponent', () => {
             valid: true,
             selected: false,
             data: 'testdata',
-            key: '923'
+            type: UploadFileType.UNKNOWN
         }, {
             filename: 'testname2',
             valid: false,
             selected: true,
             data: 'testdata2',
-            key: '923asdf'
+            type: UploadFileType.UNKNOWN
         }];
         for (const tdata of testData) {
             app.uploadFile = tdata;

@@ -12,6 +12,25 @@ import { Router } from '@angular/router';
 import { FlowApiValidator, IDaySummary, IDayData } from '@donmahallem/flow-api-types';
 import { ValidatorResult } from 'jsonschema';
 
+export const ConvertUploadFileAndCheckValidity: OperatorFunction<UploadFile, UploadFile> = map((data: UploadFile): UploadFile => {
+    try {
+        const parsedData: any = JSON.parse(data.data);
+        const validatorResult: ValidatorResult = FlowApiValidator.validateTimelineSummary(parsedData);
+        data.valid = validatorResult.valid;
+        if (!validatorResult.valid) {
+            data.errors = validatorResult.errors;
+        } else {
+            data.type = UploadFileType.DAY_SUMMARY;
+        }
+    } catch (err) {
+        data.valid = false;
+        data.errors = [
+            err
+        ];
+    }
+    return data;
+});
+
 @Component({
     selector: 'upload-cmp',
     templateUrl: './upload.component.pug',
@@ -85,7 +104,7 @@ export class UploadComponent implements OnInit {
             .pipe(flatMap((result) => {
                 return from(this.uploadFiles);
             }), filter((upload: UploadFile) => {
-                return upload.valid && (upload.selected || upload.selected == undefined);
+                return upload.valid && (upload.selected || upload.selected === undefined);
             }), map((upload: UploadFile): IDaySummary => {
                 return JSON.parse(upload.data);
             }), flatMap((summary: IDaySummary) => {
@@ -114,22 +133,3 @@ export class UploadComponent implements OnInit {
     }
 
 }
-
-export const ConvertUploadFileAndCheckValidity: OperatorFunction<UploadFile, UploadFile> = map((data: UploadFile): UploadFile => {
-    try {
-        const parsedData: any = JSON.parse(data.data);
-        const validatorResult: ValidatorResult = FlowApiValidator.validateTimelineSummary(parsedData);
-        data.valid = validatorResult.valid;
-        if (!validatorResult.valid) {
-            data.errors = validatorResult.errors;
-        } else {
-            data.type = UploadFileType.DAY_SUMMARY;
-        }
-    } catch (err) {
-        data.valid = false;
-        data.errors = [
-            err
-        ];
-    }
-    return data;
-});

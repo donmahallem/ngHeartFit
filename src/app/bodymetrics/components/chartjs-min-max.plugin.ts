@@ -18,7 +18,7 @@ export class ChartJsMinMaxPlugin {
             const yAxis: TestAxis = (<any>chart).scales[dataset.yAxisID];
 
             // get meta for both data sets
-            let meta1 = chart.getDatasetMeta(datasetId);
+            const meta1 = chart.getDatasetMeta(datasetId);
             // var meta2 = chart.getDatasetMeta(dataset.fillBetweenSet);
 
             // do not draw fill if one of the datasets is hidden

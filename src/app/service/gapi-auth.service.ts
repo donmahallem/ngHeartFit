@@ -43,7 +43,7 @@ export class GapiAuthService {
     }
     public refreshToken(): Observable<boolean> {
         this.a++;
-        if (this.a % 3 == 0) {
+        if (this.a % 3 === 0) {
             return throwError(new Error('asdf'));
         } else {
             return of(true);
@@ -55,7 +55,7 @@ export class GapiAuthService {
                 let retries = 0;
                 return errors.pipe(flatMap((err: any | HttpErrorResponse) => {
                     if (err.status) {
-                        if (err.status == 401) {
+                        if (err.status === 401) {
                             return this.refreshToken();
                         } else {
                             throw err;

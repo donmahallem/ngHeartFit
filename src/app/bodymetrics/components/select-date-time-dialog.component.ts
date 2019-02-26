@@ -34,8 +34,8 @@ export class SelectDateTimeDialogComponent implements OnInit {
             const date: moment.Moment = this.dateTimeForm.get('date').value;
             const time: string = this.dateTimeForm.get('time').value;
             const timeSplit: string[] = time.split(':');
-            date.hours(parseInt(timeSplit[0]));
-            date.minutes(parseInt(timeSplit[1]));
+            date.hours(parseInt(timeSplit[0], 10));
+            date.minutes(parseInt(timeSplit[1], 10));
             this.zone.run(() => {
                 this.dialogRef.close(date);
             });
