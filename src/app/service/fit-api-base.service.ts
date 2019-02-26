@@ -85,9 +85,10 @@ export class FitApiBaseService {
         const boundary: string = 'batch' + new Date().valueOf();
         let body: string = '--' + boundary + '\n';
         let reqIdx = 0;
-        for (let req in requests) {
-            if (reqIdx > 0)
+        for (const req in requests) {
+            if (reqIdx > 0) {
                 body += '\n';
+            }
             const convertedBody: string = this.createBatchRequestBlock(req, requests[req]);
             body += convertedBody;
             body += '\n--' + boundary;
@@ -118,8 +119,8 @@ export class FitApiBaseService {
         const boundaryMarker: string = response.headers.get('Content-Type').split('boundary=')[1];
         const splittedContent: string[] = response.body.split('--' + boundaryMarker);
         const parsedResponse: { [key: string]: HttpResponse<any> } = {};
-        //const lineBreakRegex: RegExp = /[^\n{2,2}]+/gm;
-        //skip first and last as those dont contain content
+        // const lineBreakRegex: RegExp = /[^\n{2,2}]+/gm;
+        // skip first and last as those dont contain content
         for (let i = 1; i < splittedContent.length - 1; i++) {
             const content: string = splittedContent[i].trim();
             const lineBreakRegex: RegExp = /(\r\n|(\r|\n){2,2}){2,}[^(\r|\n)]/gm;
@@ -131,7 +132,7 @@ export class FitApiBaseService {
             const firstHeader: string = content.substr(0, breakPoints[0]).trim();
             const secondHeader: string = content.substr(breakPoints[0], breakPoints[1] - breakPoints[0]).trim();
             const responseBody: string = content.substr(breakPoints[1]).trim();
-            const contentId: string = this.getContentID(firstHeader)
+            const contentId: string = this.getContentID(firstHeader);
 
             const statusLineEndIdx: number = secondHeader.search(/(\r|\n)/);
             const statusLine: string = secondHeader.substr(0, statusLineEndIdx);
@@ -149,7 +150,7 @@ export class FitApiBaseService {
 
 
     public createBatchRequestBlock<REQUEST_BODY_TYPE>(id: string, request: HttpRequest<REQUEST_BODY_TYPE>) {
-        let body: string = '';
+        let body = '';
         body += 'Content-Type: application/http\n';
         body += 'Content-Transfer-Encoding: binary\n';
         body += 'Content-ID: ' + id + '\n';
@@ -160,11 +161,11 @@ export class FitApiBaseService {
         innerBody += 'Authorization: Bearer ' + this.gapiUser.getToken() + '\n';
         if (request.body) {
             const convertedBody: string = request.serializeBody().toString();
-            //innerBody += 'Content-Length: ' + convertedBody.length + '\n';
+            // innerBody += 'Content-Length: ' + convertedBody.length + '\n';
             innerBody += '\n';
             innerBody += convertedBody;
         }
-        //body += 'Content-Length: ' + innerBody.length+'\n';
+        // body += 'Content-Length: ' + innerBody.length+'\n';
         body += '\n' + innerBody;
         return body;
     }
@@ -213,11 +214,11 @@ export interface PostBatchRequest extends BatchRequest {
 
 export interface BatchRequest {
     content_id: string;
-    method: 'get' | 'post' | 'put' | 'patch',
+    method: 'get' | 'post' | 'put' | 'patch';
     path: string;
 }
 
-export class ApiRequest<T>{
+export class ApiRequest<T> {
     private mClient: HttpClient;
     private mRequest: HttpRequest<T>;
     constructor(client: HttpClient, request: HttpRequest<T>) {

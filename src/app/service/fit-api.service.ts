@@ -265,7 +265,7 @@ export class FitApiService {
             .subscribe(() => {
                 // @ts-ignore: Property 'newBatch' does not exist on type 'typeof client'.
                 const myBatch: gapi.client.HttpBatch = gapi.client.newBatch();
-                //const myBatch: gapi.client.HttpBatch = new gapi.client.HttpBatch();
+                // const myBatch: gapi.client.HttpBatch = new gapi.client.HttpBatch();
                 const req1: gapi.client.HttpRequest<any> = gapi.client.request({
                     path: FitApiService.ENDPOINT + '/users/me/dataSources/',
                     params: {
@@ -308,7 +308,7 @@ export interface DataType {
         'name': string;
         'format': 'blob' | 'floatList' | 'floatPoint' | 'integer' | 'integerList' | 'map' | 'string';
         'optional'?: boolean;
-    }[]
+    }[];
 }
 export interface CreateDataSourceRequest {
     'dataStreamName'?: string;
@@ -325,5 +325,5 @@ export interface CreateDataSourceRequest {
         'type': 'chestStrap' | 'headMounted' | 'phone' | 'scale' | 'tablet' | 'unknown' | 'watch';
         'uid': string;
         'version': string;
-    }
+    };
 }

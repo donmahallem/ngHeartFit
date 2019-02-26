@@ -7,7 +7,7 @@ import { BodyMetricsFormComponent, BodyMetricsFormData } from './bodymetrics-for
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
-import * as sinon from "sinon";
+import * as sinon from 'sinon';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -17,7 +17,7 @@ import { FitApiService, SubmitBodyMetricsRequest } from 'src/app/service/fit-api
 import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 
 export function newEvent(eventName: string, bubbles = false, cancelable = false) {
-    let evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
+    const evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
     evt.initCustomEvent(eventName, bubbles, cancelable, null);
     return evt;
 }
@@ -57,7 +57,7 @@ describe('BodyMetricsComponent', () => {
     }));
 
     beforeEach(() => {
-        //testUploadDataService.
+        // testUploadDataService.
     });
 
     it('should create the component', () => {
@@ -65,8 +65,8 @@ describe('BodyMetricsComponent', () => {
         const app = fixture.debugElement.componentInstance;
         expect(app).toBeTruthy();
     });
-    beforeAll(() => { sandbox = sinon.sandbox.create(); })
-    afterEach(() => { sandbox.restore(); })
+    beforeAll(() => { sandbox = sinon.sandbox.create(); });
+    afterEach(() => { sandbox.restore(); });
     describe('onSubmit()', () => {
         let fixture: ComponentFixture<BodyMetricsFormComponent>;
         let component: BodyMetricsFormComponent;
@@ -84,7 +84,7 @@ describe('BodyMetricsComponent', () => {
         describe('form is not valid', () => {
             beforeEach(() => {
                 validStub.value(false);
-            })
+            });
             it('should not call submitBodyMetrics', () => {
                 component.onSubmit();
                 expect(submitBodyMetricsStub.callCount).toEqual(0);
@@ -97,7 +97,7 @@ describe('BodyMetricsComponent', () => {
                 inputTimestamp: HTMLInputElement;
             let inputBodyHeightUnit,
                 inputBodyWeightUnit: HTMLSelectElement;
-            const testTimestamp: number = 1549193178;
+            const testTimestamp = 1549193178;
             beforeEach(() => {
                 validStub.value(true);
                 inputBodyHeight = fixture.nativeElement.querySelector('.inputbodyheight');
@@ -121,8 +121,8 @@ describe('BodyMetricsComponent', () => {
                 expect(inputBodyHeight.value).toEqual('92');
                 expect(inputBodyWeight.value).toEqual('78');
                 expect(inputBodyFat.value).toEqual('29.2');
-                //expect(inputBodyHeightUnit.options[inputBodyHeightUnit.selectedIndex].value).toEqual('inch');
-                //expect(inputBodyWeightUnit.options[inputBodyWeightUnit.selectedIndex].value).toEqual('kg');
+                // expect(inputBodyHeightUnit.options[inputBodyHeightUnit.selectedIndex].value).toEqual('inch');
+                // expect(inputBodyWeightUnit.options[inputBodyWeightUnit.selectedIndex].value).toEqual('kg');
             });
 
             it('should call submitBodyMetrics with inch and pound', () => {

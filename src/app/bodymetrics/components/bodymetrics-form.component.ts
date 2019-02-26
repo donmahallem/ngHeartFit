@@ -98,7 +98,7 @@ export class BodyMetricsFormComponent {
             submitObject.bodyfat = this.metricsForm.get('bodyfat').value * 1;
             this.submitData(submitObject);
         } else {
-            //console.log(this.metricsForm.errors);
+            // console.log(this.metricsForm.errors);
         }
     }
 

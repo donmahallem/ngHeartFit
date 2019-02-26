@@ -7,7 +7,7 @@ import { ViewUploadComponent } from './view-upload.component';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
-import * as sinon from "sinon";
+import * as sinon from 'sinon';
 import { AnalyzeDataService } from '../services/analyze-data.service';
 import { DataPoint } from './data-point';
 
@@ -25,8 +25,8 @@ class testAnalyzeDataService {
     styleUrls: []
 })
 class testWeightChartComponent {
-    @Input("chartData")
-    public chartData: DataPoint[]
+    @Input('chartData')
+    public chartData: DataPoint[];
 }
 
 @Component({
@@ -36,7 +36,7 @@ class testWeightChartComponent {
 })
 export class testUploadToFitComponent {
     public _dataPoints: DataPoint[] = [];
-    @Input("dataPoints")
+    @Input('dataPoints')
     public set dataPoints(data: DataPoint[]) {
         this._dataPoints = data;
     }
@@ -65,7 +65,7 @@ describe('BodyMetricsComponent', () => {
     }));
 
     beforeEach(() => {
-        //testUploadDataService.
+        // testUploadDataService.
     });
 
     it('should create the app', () => {

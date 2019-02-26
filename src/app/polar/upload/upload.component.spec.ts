@@ -7,7 +7,7 @@ import { UploadComponent } from './upload.component';
 import { FilePreviewComponent } from './file-preview.component';
 import { UploadDataService, UploadFile } from '../services';
 
-import * as sinon from "sinon";
+import * as sinon from 'sinon';
 import { AnalyzeDataService } from '../services/analyze-data.service';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
@@ -74,7 +74,7 @@ describe('UploadComponent', () => {
     }));
 
     beforeEach(() => {
-        //testUploadDataService.
+        // testUploadDataService.
     });
 
     it('should create the app', () => {
@@ -82,14 +82,14 @@ describe('UploadComponent', () => {
         const app = fixture.debugElement.componentInstance;
         expect(app).toBeTruthy();
     });
-    beforeAll(() => { sandbox = sinon.sandbox.create(); })
-    afterEach(() => { sandbox.restore(); })
+    beforeAll(() => { sandbox = sinon.sandbox.create(); });
+    afterEach(() => { sandbox.restore(); });
     describe('uploadFiles()', () => {
         it('should test', () => {
             const fixture = TestBed.createComponent(UploadComponent);
             const app: UploadComponent = fixture.debugElement.componentInstance;
             expect(app).toBeTruthy();
-            let service = fixture.debugElement.injector.get(UploadDataService);
+            const service = fixture.debugElement.injector.get(UploadDataService);
             const stub: sinon.SinonStub = sandbox.stub(service, 'uploadedFiles');
             const testData: any[] = [{
                 'test': 'data1',
@@ -98,7 +98,7 @@ describe('UploadComponent', () => {
                 'test': 'data6',
                 'test2': 1234436
             }];
-            stub.get(() => { return testData });
+            stub.get(() => testData);
             expect(app.uploadFiles).toEqual(testData);
             stub.restore();
         });
@@ -108,10 +108,10 @@ describe('UploadComponent', () => {
             const fixture = TestBed.createComponent(UploadComponent);
             const app: UploadComponent = fixture.debugElement.componentInstance;
             expect(app).toBeTruthy();
-            let service = fixture.debugElement.injector.get(UploadDataService);
+            const service = fixture.debugElement.injector.get(UploadDataService);
             const stub: sinon.SinonStub = sandbox.stub(service, 'uploadedFiles');
-            const testData: any[] = []
-            stub.get(() => { return testData });
+            const testData: any[] = [];
+            stub.get(() => testData);
             expect(app.validFiles).toBeFalsy();
             stub.restore();
         });
@@ -119,7 +119,7 @@ describe('UploadComponent', () => {
             const fixture = TestBed.createComponent(UploadComponent);
             const app: UploadComponent = fixture.debugElement.componentInstance;
             expect(app).toBeTruthy();
-            let service = fixture.debugElement.injector.get(UploadDataService);
+            const service = fixture.debugElement.injector.get(UploadDataService);
             const stub: sinon.SinonStub = sandbox.stub(service, 'uploadedFiles');
             const testData: any[] = [{
                 'test': 'data1',
@@ -130,7 +130,7 @@ describe('UploadComponent', () => {
                 'test2': 1234436,
                 valid: false
             }];
-            stub.get(() => { return testData });
+            stub.get(() => testData);
             expect(app.validFiles).toBeFalsy();
             stub.restore();
         });
@@ -138,7 +138,7 @@ describe('UploadComponent', () => {
             const fixture = TestBed.createComponent(UploadComponent);
             const app: UploadComponent = fixture.debugElement.componentInstance;
             expect(app).toBeTruthy();
-            let service = fixture.debugElement.injector.get(UploadDataService);
+            const service = fixture.debugElement.injector.get(UploadDataService);
             const stub: sinon.SinonStub = sandbox.stub(service, 'uploadedFiles');
             const testData: any[] = [{
                 'test': 'data1',
@@ -149,7 +149,7 @@ describe('UploadComponent', () => {
                 'test2': 1234436,
                 valid: true
             }];
-            stub.get(() => { return testData });
+            stub.get(() => testData);
             expect(app.validFiles).toBeTruthy();
             stub.restore();
         });
@@ -157,7 +157,7 @@ describe('UploadComponent', () => {
             const fixture = TestBed.createComponent(UploadComponent);
             const app: UploadComponent = fixture.debugElement.componentInstance;
             expect(app).toBeTruthy();
-            let service = fixture.debugElement.injector.get(UploadDataService);
+            const service = fixture.debugElement.injector.get(UploadDataService);
             const stub: sinon.SinonStub = sandbox.stub(service, 'uploadedFiles');
             const testData: any[] = [{
                 'test': 'data1',
@@ -169,7 +169,7 @@ describe('UploadComponent', () => {
                 valid: true,
                 selected: false
             }];
-            stub.get(() => { return testData });
+            stub.get(() => testData);
             expect(app.validFiles).toBeFalsy();
             stub.restore();
         });
@@ -177,7 +177,7 @@ describe('UploadComponent', () => {
             const fixture = TestBed.createComponent(UploadComponent);
             const app: UploadComponent = fixture.debugElement.componentInstance;
             expect(app).toBeTruthy();
-            let service = fixture.debugElement.injector.get(UploadDataService);
+            const service = fixture.debugElement.injector.get(UploadDataService);
             const stub: sinon.SinonStub = sandbox.stub(service, 'uploadedFiles');
             const testData: any[] = [{
                 'test': 'data1',
@@ -189,7 +189,7 @@ describe('UploadComponent', () => {
                 valid: true,
                 selected: true
             }];
-            stub.get(() => { return testData });
+            stub.get(() => testData);
             expect(app.validFiles).toBeTruthy();
             stub.restore();
         });
@@ -213,7 +213,7 @@ describe('UploadComponent', () => {
             uploadDataServiceInstance = fixture.debugElement.injector.get(UploadDataService);
             analyzeDataServiceInstance = fixture.debugElement.injector.get(AnalyzeDataService);
             stubUploadedFiles = sandbox.stub(uploadDataServiceInstance, 'uploadedFiles');
-            stubDbClear = sandbox.stub(analyzeDataServiceInstance, "clear");
+            stubDbClear = sandbox.stub(analyzeDataServiceInstance, 'clear');
             nextSpy = sinon.spy();
             completeSpy = sinon.spy();
             errorSpy = sinon.spy();
@@ -224,10 +224,10 @@ describe('UploadComponent', () => {
             nextSpy.resetHistory();
             completeSpy.resetHistory();
             errorSpy.resetHistory();
-        })
+        });
         it('it should pass with an empty array of files', (done) => {
-            const testData: any[] = []
-            stubUploadedFiles.get(() => { return testData });
+            const testData: any[] = [];
+            stubUploadedFiles.get(() => testData);
             stubDbClear.returns(of({}));
             const cb = () => {
                 expect(stubDbClear.callCount).toEqual(1);
@@ -235,16 +235,16 @@ describe('UploadComponent', () => {
                 expect(completeSpy.callCount).toEqual(1);
                 expect(nextSpy.callCount).toEqual(0);
                 done();
-            }
+            };
 
             component.importFiles()
                 .pipe(tap(nextSpy, errorSpy, completeSpy))
                 .subscribe(() => { }, cb, cb);
         });
         it('it should fail if clearing the database fails', (done) => {
-            const testData: any[] = []
-            const testError: Error = new Error("test error");
-            stubUploadedFiles.get(() => { return testData });
+            const testData: any[] = [];
+            const testError: Error = new Error('test error');
+            stubUploadedFiles.get(() => testData);
             stubDbClear.returns(throwError(testError));
             const cb = () => {
                 expect(stubDbClear.callCount).toEqual(1);
@@ -253,7 +253,7 @@ describe('UploadComponent', () => {
                 expect(nextSpy.callCount).toEqual(0);
                 expect(errorSpy.getCall(0).args).toEqual([testError]);
                 done();
-            }
+            };
 
             component.importFiles()
                 .pipe(tap(nextSpy, errorSpy, completeSpy))

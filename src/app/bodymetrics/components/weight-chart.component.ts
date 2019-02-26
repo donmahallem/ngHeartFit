@@ -23,14 +23,16 @@ import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service
     styleUrls: ['./weight-chart.component.scss']
 })
 export class WeightChartComponent implements AfterViewInit, OnDestroy {
-    @ViewChild(ChartComponent)
-    chart: ChartComponent;
-    private mSubscriptions: Subscription[] = [];
     constructor(private zone: NgZone,
         private fitApi: FitApiService,
         private fitApiDataSource: FitApiDataSourceService,
         private chartService: WeightChartService) {
     }
+    @ViewChild(ChartComponent)
+    chart: ChartComponent;
+    private mSubscriptions: Subscription[] = [];
+
+    public chartConfig: ChartConfiguration = chartConfig;
 
     public onSubmit(): void {
 
@@ -42,8 +44,6 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
         }
         this.mSubscriptions = [];
     }
-
-    public chartConfig: ChartConfiguration = chartConfig;
 
     public ngAfterViewInit(): void {
 
@@ -62,7 +62,7 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
                                     dataTypeName: 'com.google.weight'
                                 }
                             ];
-                            for (let datasource of sources.dataSource) {
+                            for (const datasource of sources.dataSource) {
                                 types.push({
                                     dataTypeName: 'com.google.body.fat.percentage',
                                     dataSourceId: datasource.dataStreamId
@@ -108,9 +108,9 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
         }
         this.chart.chart.data.datasets[0].data = weightDatapoints;
         this.chart.chart.data.datasets[1].data = fatDatapoints;
-        //this.chart.chart.config.options.scales.xAxes[0].
+        // this.chart.chart.config.options.scales.xAxes[0].
         this.zone.run(() => {
             this.chart.chart.update(this.chart.chart.config.options);
-        })
+        });
     }
 }
