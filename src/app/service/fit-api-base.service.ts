@@ -21,7 +21,7 @@ export class FitApiBaseService {
     public base(): Observable<void> {
         return this.nggapi.statusObservable
             .pipe(filter((status) => {
-                return status != GapiStatus.LOADING;
+                return status !== GapiStatus.LOADING;
             }), map((status: GapiStatus) => {
                 if (status === GapiStatus.FAILED) {
                     throw new Error();
