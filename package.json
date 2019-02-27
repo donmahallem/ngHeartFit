@@ -49,7 +49,7 @@
         "@types/jasmine": "^3.3.9",
         "@types/jasminewd2": "^2.0.6",
         "@types/node": "^11.9.5",
-        "@types/sinon": "^7.0.7",
+        "@types/sinon": "^7.0.8",
         "apply-loader": "^2.0.0",
         "codelyzer": "^4.5.0",
         "jasmine-core": "^3.3.0",
