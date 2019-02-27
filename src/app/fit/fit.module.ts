@@ -13,8 +13,7 @@ import {
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { FitApiService } from '../service/fit-api.service';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgGapiConfigModule } from '../nggapi-config.module';
 import { DatasourcesComponent } from './datasources/datasources.component';
@@ -51,7 +50,6 @@ import { SessionDetailComponent } from './session-detail/session-detail.componen
         MatTableModule
     ],
     providers: [
-        FitApiService,
         { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
         { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS }
     ]

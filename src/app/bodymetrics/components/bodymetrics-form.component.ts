@@ -3,9 +3,9 @@ import {
     OnInit
 } from '@angular/core';
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl, ValidationErrors, FormBuilder } from '@angular/forms';
-import { MatDatepickerInputEvent, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import * as moment from 'moment';
-import { FitApiService, SubmitBodyMetricsRequest } from 'src/app/service/fit-api.service';
+import { SubmitBodyMetricsRequest } from 'src/app/service/fit-api.service';
 import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 import { SelectDateTimeDialogComponent } from './select-date-time-dialog.component';
 

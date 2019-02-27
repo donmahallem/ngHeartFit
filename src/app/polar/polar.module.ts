@@ -39,7 +39,6 @@ import { AnalyzeDataService } from './services/analyze-data.service';
     ],
     providers: [
         UploadDataService,
-        FitApiService,
         AnalyzeDataService
     ]
 })

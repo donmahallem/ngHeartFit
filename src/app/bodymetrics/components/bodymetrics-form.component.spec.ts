@@ -10,19 +10,17 @@ import {
     MatDatepickerModule,
     MatIconModule
 } from '@angular/material';
-import { Observable, from, of, throwError } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { BodyMetricsFormComponent, BodyMetricsFormData } from './bodymetrics-form.component';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
 import * as sinon from 'sinon';
-import { Router } from '@angular/router';
-import { tap } from 'rxjs/operators';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import * as moment from 'moment';
-import { FitApiService, SubmitBodyMetricsRequest } from 'src/app/service/fit-api.service';
+import { SubmitBodyMetricsRequest } from 'src/app/service/fit-api.service';
 import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 
 export function NewEvent(eventName: string, bubbles = false, cancelable = false) {

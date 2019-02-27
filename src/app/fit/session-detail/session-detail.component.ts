@@ -1,17 +1,9 @@
 import {
     Component,
-    OnInit,
-    ViewChild,
     AfterViewInit,
     OnDestroy,
-    ChangeDetectorRef,
-    NgZone,
     Input
 } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { GapiUserService } from 'src/app/service/gapi-user.service';
-import { FitApiService } from 'src/app/service/fit-api.service';
-import { Router } from '@angular/router';
 import { FitSession } from 'src/app/service/fit-api-modals';
 @Component({
     selector: 'session-detail',
@@ -20,7 +12,7 @@ import { FitSession } from 'src/app/service/fit-api-modals';
 })
 export class SessionDetailComponent implements OnDestroy, AfterViewInit {
     private mDataSource: FitSession;
-    constructor(private zone: NgZone, private nggapi: FitApiService) {
+    constructor() {
     }
 
     @Input('session')

@@ -4,9 +4,8 @@ import {
     OnDestroy,
     Input
 } from '@angular/core';
-import { from, Observable, Observer, Subscription, BehaviorSubject } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { DataPoint } from './data-point';
-import { FitApiService } from 'src/app/service/fit-api.service';
 import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 
 

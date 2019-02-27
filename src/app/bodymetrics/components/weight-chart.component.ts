@@ -7,15 +7,14 @@ import {
 } from '@angular/core';
 import { ChartComponent } from 'src/app/common-components/chart.component';
 import * as moment from 'moment';
-import { FitApiService, AggregateByFilter } from 'src/app/service/fit-api.service';
 import { ChartPoint, ChartConfiguration } from 'chart.js';
 import { flatMap, debounceTime, delay } from 'rxjs/operators';
 import { BucketResponse } from 'src/app/service/fit-api-modals';
 import { WeightChartService } from '../services/weight-chart.service';
 import { Subscription } from 'rxjs';
-import { ChartJsMinMaxPlugin } from './chartjs-min-max.plugin';
 import { chartConfig } from './weight-chart.config';
 import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
+import { AggregateByFilter, FitApiAggregateService } from 'src/app/service/fit-aggregate.service';
 
 @Component({
     selector: 'weight-chart',
@@ -24,8 +23,8 @@ import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service
 })
 export class WeightChartComponent implements AfterViewInit, OnDestroy {
     constructor(private zone: NgZone,
-        private fitApi: FitApiService,
         private fitApiDataSource: FitApiDataSourceService,
+        private fitApiAggregateService: FitApiAggregateService,
         private chartService: WeightChartService) {
     }
     @ViewChild(ChartComponent)
@@ -68,7 +67,7 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
                                     dataSourceId: datasource.dataStreamId
                                 });
                             }
-                            return this.fitApi.getAggregateData(types, moments[0], moments[1], diff);
+                            return this.fitApiAggregateService.getAggregateData(types, moments[0], moments[1], diff);
                         }));
                 }), delay(1000))
             .subscribe(this.updateData.bind(this), console.error));

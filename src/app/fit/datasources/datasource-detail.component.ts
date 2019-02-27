@@ -1,15 +1,10 @@
 import {
     Component,
-    OnInit,
-    ViewChild,
     AfterViewInit,
-    OnDestroy,
-    ChangeDetectorRef
+    OnDestroy
 } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
-import { GapiUserService } from 'src/app/service/gapi-user.service';
-import { FitApiService } from 'src/app/service/fit-api.service';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { flatMap } from 'rxjs/operators';
 import * as moment from 'moment';
 import { FitDataSource, FitApiDataSourceService } from 'src/app/service/fit-data-source.service';

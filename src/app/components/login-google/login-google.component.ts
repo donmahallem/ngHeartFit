@@ -1,14 +1,10 @@
 import {
     Component,
     OnInit,
-    ViewChild,
-    AfterViewInit,
-    OnDestroy,
-    ChangeDetectorRef
+    OnDestroy
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GapiUserService } from 'src/app/service/gapi-user.service';
-import { FitApiService } from 'src/app/service/fit-api.service';
 import { Router } from '@angular/router';
 @Component({
     selector: 'login-google-cmp',
@@ -19,7 +15,7 @@ export class LoginGoogleComponent implements OnDestroy, OnInit {
     private mIsButtonDisabled = true;
     private subs: Subscription[] = [];
     constructor(private gapiUserService: GapiUserService,
-        private router: Router, private nggapi: FitApiService) {
+        private router: Router) {
     }
 
     public onClickSignin(event: MouseEvent) {
