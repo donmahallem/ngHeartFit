@@ -5,7 +5,6 @@ import {
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl, ValidationErrors, FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import * as moment from 'moment';
-import { SubmitBodyMetricsRequest } from 'src/app/service/fit-api.service';
 import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 import { SelectDateTimeDialogComponent } from './select-date-time-dialog.component';
 
@@ -90,7 +89,7 @@ export class BodyMetricsFormComponent {
                 bodyHeightMultiplicator = BodyMetricsFormComponent.FOOT_TO_METER;
             }
             const timestamp: moment.Moment = this.metricsForm.get('timestamp').value;
-            const submitObject: SubmitBodyMetricsRequest = {
+            const submitObject: any = {
                 timestamp: timestamp.unix()
             };
             submitObject.bodyweight = this.metricsForm.get('bodyweight').value * bodyWeightMultiplicator;
@@ -102,7 +101,7 @@ export class BodyMetricsFormComponent {
         }
     }
 
-    public submitData(data: SubmitBodyMetricsRequest): void {
+    public submitData(data: any): void {
         /*
         this.fitApi.submitBodyMetrics(submitObject)
         .subscribe(console.log, console.error);*/

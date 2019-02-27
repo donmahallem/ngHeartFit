@@ -17,13 +17,13 @@ import { FitApiSessionService } from 'src/app/service/fit-session.service';
     styleUrls: ['./sessions.component.scss']
 })
 export class SessionsComponent implements OnDestroy, AfterViewInit {
-    private mDataSources: FitSession[] = [];
+    private mSessions: FitSession[] = [];
     constructor(private zone: NgZone,
         private sessionService: FitApiSessionService) {
     }
 
-    public get dataSources(): FitSession[] {
-        return this.mDataSources;
+    public get sessions(): FitSession[] {
+        return this.mSessions;
     }
 
     public ngAfterViewInit() {
@@ -31,7 +31,7 @@ export class SessionsComponent implements OnDestroy, AfterViewInit {
             .subscribe((dat) => {
                 console.log(dat);
                 this.zone.run(() => {
-                    this.mDataSources = dat.session;
+                    this.mSessions = dat.session;
                 });
             }, console.error);
     }

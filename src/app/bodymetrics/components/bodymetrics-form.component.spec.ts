@@ -20,7 +20,6 @@ import * as sinon from 'sinon';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import * as moment from 'moment';
-import { SubmitBodyMetricsRequest } from 'src/app/service/fit-api.service';
 import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 
 export function NewEvent(eventName: string, bubbles = false, cancelable = false) {
@@ -31,7 +30,7 @@ export function NewEvent(eventName: string, bubbles = false, cancelable = false)
 
 @Injectable()
 class TestGapiService {
-    submitBodyMetrics(data: SubmitBodyMetricsRequest): Observable<any> {
+    submitBodyMetrics(data: any): Observable<any> {
         return null;
     }
 }
