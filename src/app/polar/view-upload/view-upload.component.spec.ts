@@ -1,18 +1,15 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MatButtonModule, MatCheckboxModule, MatGridListModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatIconModule } from '@angular/material';
-import { Observable, from, of, throwError } from 'rxjs';
+import { MatButtonModule, } from '@angular/material';
 import { Injectable, Component, Input } from '@angular/core';
 import { ViewUploadComponent } from './view-upload.component';
-import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
-import * as sinon from "sinon";
+import * as sinon from 'sinon';
 import { AnalyzeDataService } from '../services/analyze-data.service';
 import { DataPoint } from './data-point';
 
 @Injectable()
-class testAnalyzeDataService {
+class TestAnalyzeDataService {
     submitBodyMetrics() {
 
     }
@@ -24,9 +21,9 @@ class testAnalyzeDataService {
     template: '',
     styleUrls: []
 })
-class testWeightChartComponent {
-    @Input("chartData")
-    public chartData: DataPoint[]
+class TestWeightChartComponent {
+    @Input('chartData')
+    public chartData: DataPoint[];
 }
 
 @Component({
@@ -34,9 +31,9 @@ class testWeightChartComponent {
     template: '',
     styleUrls: []
 })
-export class testUploadToFitComponent {
+export class TestUploadToFitComponent {
     public _dataPoints: DataPoint[] = [];
-    @Input("dataPoints")
+    @Input('dataPoints')
     public set dataPoints(data: DataPoint[]) {
         this._dataPoints = data;
     }
@@ -45,7 +42,7 @@ export class testUploadToFitComponent {
         return this._dataPoints;
     }
 }
-let sandbox;
+let sandbox: sinon.SinonSandbox;
 describe('BodyMetricsComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -55,17 +52,17 @@ describe('BodyMetricsComponent', () => {
             ],
             declarations: [
                 ViewUploadComponent,
-                testWeightChartComponent,
-                testUploadToFitComponent
+                TestWeightChartComponent,
+                TestUploadToFitComponent
             ],
             providers: [
-                { provide: AnalyzeDataService, useValue: new testAnalyzeDataService() }
+                { provide: AnalyzeDataService, useValue: new TestAnalyzeDataService() }
             ]
         }).compileComponents();
     }));
 
     beforeEach(() => {
-        //testUploadDataService.
+        // testUploadDataService.
     });
 
     it('should create the app', () => {

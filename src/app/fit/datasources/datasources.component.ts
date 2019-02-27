@@ -1,16 +1,9 @@
 import {
     Component,
-    OnInit,
-    ViewChild,
     AfterViewInit,
     OnDestroy,
-    ChangeDetectorRef,
     NgZone
 } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { GapiUserService } from 'src/app/service/gapi-user.service';
-import { FitApiService } from 'src/app/service/fit-api.service';
-import { Router } from '@angular/router';
 import { FitApiDataSourceService, FitDataSource } from 'src/app/service/fit-data-source.service';
 @Component({
     selector: 'datasources',

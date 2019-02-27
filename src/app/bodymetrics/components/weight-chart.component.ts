@@ -7,15 +7,14 @@ import {
 } from '@angular/core';
 import { ChartComponent } from 'src/app/common-components/chart.component';
 import * as moment from 'moment';
-import { FitApiService, AggregateByFilter } from 'src/app/service/fit-api.service';
 import { ChartPoint, ChartConfiguration } from 'chart.js';
 import { flatMap, debounceTime, delay } from 'rxjs/operators';
 import { BucketResponse } from 'src/app/service/fit-api-modals';
 import { WeightChartService } from '../services/weight-chart.service';
 import { Subscription } from 'rxjs';
-import { ChartJsMinMaxPlugin } from './chartjs-min-max.plugin';
 import { chartConfig } from './weight-chart.config';
 import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
+import { AggregateByFilter, FitApiAggregateService } from 'src/app/service/fit-aggregate.service';
 
 @Component({
     selector: 'weight-chart',
@@ -23,14 +22,16 @@ import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service
     styleUrls: ['./weight-chart.component.scss']
 })
 export class WeightChartComponent implements AfterViewInit, OnDestroy {
+    constructor(private zone: NgZone,
+        private fitApiDataSource: FitApiDataSourceService,
+        private fitApiAggregateService: FitApiAggregateService,
+        private chartService: WeightChartService) {
+    }
     @ViewChild(ChartComponent)
     chart: ChartComponent;
     private mSubscriptions: Subscription[] = [];
-    constructor(private zone: NgZone,
-        private fitApi: FitApiService,
-        private fitApiDataSource: FitApiDataSourceService,
-        private chartService: WeightChartService) {
-    }
+
+    public chartConfig: ChartConfiguration = chartConfig;
 
     public onSubmit(): void {
 
@@ -42,8 +43,6 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
         }
         this.mSubscriptions = [];
     }
-
-    public chartConfig: ChartConfiguration = chartConfig;
 
     public ngAfterViewInit(): void {
 
@@ -62,13 +61,13 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
                                     dataTypeName: 'com.google.weight'
                                 }
                             ];
-                            for (let datasource of sources.dataSource) {
+                            for (const datasource of sources.dataSource) {
                                 types.push({
                                     dataTypeName: 'com.google.body.fat.percentage',
                                     dataSourceId: datasource.dataStreamId
                                 });
                             }
-                            return this.fitApi.getAggregateData(types, moments[0], moments[1], diff);
+                            return this.fitApiAggregateService.getAggregateData(types, moments[0], moments[1], diff);
                         }));
                 }), delay(1000))
             .subscribe(this.updateData.bind(this), console.error));
@@ -83,7 +82,7 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
                     if (dataset.dataSourceId === 'derived:com.google.weight.summary:com.google.android.gms:aggregated') {
                         for (const p of dataset.point) {
                             const chartP: ChartPoint = {
-                                x: new Date(parseInt(p.startTimeNanos.substr(0, p.startTimeNanos.length - 6))),
+                                x: new Date(parseInt(p.startTimeNanos.substr(0, p.startTimeNanos.length - 6), 10)),
                                 y: p.value[0].fpVal
                             };
                             chartP['ymax'] = p.value[1].fpVal;
@@ -93,7 +92,7 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
                     } else if (dataset.dataSourceId === 'derived:com.google.body.fat.percentage.summary:com.google.android.gms:aggregated') {
                         for (const p of dataset.point) {
                             const chartP: ChartPoint = {
-                                x: new Date(parseInt(p.startTimeNanos.substr(0, p.startTimeNanos.length - 6))),
+                                x: new Date(parseInt(p.startTimeNanos.substr(0, p.startTimeNanos.length - 6), 10)),
                                 y: p.value[0].fpVal
                             };
                             chartP['ymax'] = p.value[1].fpVal;
@@ -108,9 +107,9 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
         }
         this.chart.chart.data.datasets[0].data = weightDatapoints;
         this.chart.chart.data.datasets[1].data = fatDatapoints;
-        //this.chart.chart.config.options.scales.xAxes[0].
+        // this.chart.chart.config.options.scales.xAxes[0].
         this.zone.run(() => {
             this.chart.chart.update(this.chart.chart.config.options);
-        })
+        });
     }
 }

@@ -10,12 +10,13 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { GapiUserService } from './service/gapi-user.service';
 import { environment } from 'src/environments/environment';
-import { ngGapiService } from './service/nggapi-base.service';
+import { NgGapiService } from './service/nggapi-base.service';
 import { ModuleWithProviders } from '@angular/compiler/src/core';
-import { FitApiService } from './service/fit-api.service';
 import { FitApiBaseService } from './service/fit-api-base.service';
 import { FitApiDataSetService } from './service/fit-data-set.service';
 import { FitApiDataSourceService } from './service/fit-data-source.service';
+import { FitApiSessionService } from './service/fit-session.service';
+import { FitApiAggregateService } from './service/fit-aggregate.service';
 
 const gapiClientConfig: NgGapiClientConfig = {
     client_id: environment.gapi.client_id,
@@ -40,11 +41,12 @@ export class NgGapiConfigModule {
             ngModule: NgGapiConfigModule,
             providers: [
                 GapiUserService,
-                ngGapiService,
-                FitApiService,
+                NgGapiService,
                 FitApiBaseService,
                 FitApiDataSetService,
-                FitApiDataSourceService
+                FitApiDataSourceService,
+                FitApiAggregateService,
+                FitApiSessionService
             ]
         };
     }

@@ -7,9 +7,9 @@ interface TestAxis {
 export class ChartJsMinMaxPlugin {
     public beforeDatasetDraw(chart: Chart, options): void {
         const ctx = chart.ctx;
-        const xaxis: TestAxis = (<any>chart).scales['x-axis-0'];;
-        //const yAxisWeight: TestAxis = (<any>chart).scales['weightAxis'];
-        //const yAxisFat: TestAxis = (<any>chart).scales['fatAxis'];
+        const xaxis: TestAxis = (<any>chart).scales['x-axis-0'];
+        // const yAxisWeight: TestAxis = (<any>chart).scales['weightAxis'];
+        // const yAxisFat: TestAxis = (<any>chart).scales['fatAxis'];
         const datasets = chart.data.datasets;
         ctx.save();
 
@@ -18,12 +18,12 @@ export class ChartJsMinMaxPlugin {
             const yAxis: TestAxis = (<any>chart).scales[dataset.yAxisID];
 
             // get meta for both data sets
-            var meta1 = chart.getDatasetMeta(datasetId);
-            //var meta2 = chart.getDatasetMeta(dataset.fillBetweenSet);
+            const meta1 = chart.getDatasetMeta(datasetId);
+            // var meta2 = chart.getDatasetMeta(dataset.fillBetweenSet);
 
             // do not draw fill if one of the datasets is hidden
-            if (meta1.hidden) continue;
-            if (meta1.data.length < 2) continue;
+            if (meta1.hidden) { continue; }
+            if (meta1.data.length < 2) { continue; }
             ctx.beginPath();
             let curr = meta1.data[0];
             let next = meta1.data[1];
@@ -43,11 +43,9 @@ export class ChartJsMinMaxPlugin {
                 if (curr._view.steppedLine === true) {
                     ctx.lineTo(next._view.x, currValueY);
                     ctx.lineTo(next._view.x, nextValueY);
-                }
-                else if (next._view.tension === 0) {
+                } else if (next._view.tension === 0) {
                     ctx.lineTo(next._view.x, nextValueY);
-                }
-                else {
+                } else {
                     ctx.bezierCurveTo(
                         curr._view.controlPointNextX,
                         currValueY,
@@ -59,7 +57,7 @@ export class ChartJsMinMaxPlugin {
                 }
             }
             currValueY = yAxis.getPixelForValue(nextDot['ymin'], 0, 0, false);
-            ctx.lineTo(next._view.x, currValueY)
+            ctx.lineTo(next._view.x, currValueY);
             for (let p = meta1.data.length - 1; p > 0; p--) {
                 curr = meta1.data[p];
                 next = meta1.data[p - 1];
@@ -70,11 +68,9 @@ export class ChartJsMinMaxPlugin {
                 if (curr._view.steppedLine === true) {
                     ctx.lineTo(next._view.x, currValueY);
                     ctx.lineTo(next._view.x, nextValueY);
-                }
-                else if (next._view.tension === 0) {
+                } else if (next._view.tension === 0) {
                     ctx.lineTo(next._view.x, nextValueY);
-                }
-                else {
+                } else {
                     ctx.bezierCurveTo(
                         curr._view.controlPointPreviousX,
                         currValueY,

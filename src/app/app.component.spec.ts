@@ -7,7 +7,7 @@ import { Observable, from } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 @Injectable()
-class gUserService {
+class GUserService {
     public isSignedInObservable(): Observable<boolean> {
         return from([true, false, true]);
     }

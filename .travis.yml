@@ -12,6 +12,7 @@ before_install:
 after_install:
 - npm run postinstall
 script:
+- ng build --prod --aot --base-href /ngHeartFit/
 - npm run test-headless
 after_success:
 - ng build --prod --aot --base-href /ngHeartFit/

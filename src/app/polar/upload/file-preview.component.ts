@@ -7,7 +7,7 @@ import { UploadFile, UploadDataService } from '../services';
 import { MatCheckboxChange } from '@angular/material';
 
 @Component({
-    selector: 'file-preview-cmp',
+    selector: 'app-file-preview',
     templateUrl: './file-preview.component.pug',
     styleUrls: ['./file-preview.component.scss']
 })
@@ -15,7 +15,6 @@ export class FilePreviewComponent {
     public user: any;
     constructor(private uploadDataService: UploadDataService) { }
     private mUploadFile: UploadFile;
-    @HostBinding('class.validFile')
     public get isValidFile(): boolean {
         if (this.mUploadFile) {
             return this.mUploadFile.valid;
@@ -38,6 +37,10 @@ export class FilePreviewComponent {
     @Input('uploadFile')
     public set uploadFile(upload: UploadFile) {
         this.mUploadFile = upload;
+    }
+
+    public get uploadFile(): UploadFile {
+        return this.mUploadFile;
     }
 
     public onChangeSelection(event: MatCheckboxChange): void {

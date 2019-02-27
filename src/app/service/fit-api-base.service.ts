@@ -4,7 +4,7 @@ import { Observable, of, throwError, Observer, from } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams, HttpRequest, HttpResponse, HttpEvent, HttpEventType } from '@angular/common/http';
 import { FitDatasource } from './fit-datasource.modal';
 import { map, flatMap, filter, shareReplay, single } from 'rxjs/operators';
-import { ngGapiService, GapiStatus } from './nggapi-base.service';
+import { NgGapiService, GapiStatus } from './nggapi-base.service';
 import { GapiUserService } from './gapi-user.service';
 import { GoogleApiService } from 'ng-gapi';
 
@@ -13,31 +13,9 @@ export class FitApiBaseService {
     public static readonly ENDPOINT: string = 'https://www.googleapis.com/fitness/v1';
     private observable: Observable<void>;
     constructor(private httpService: HttpClient,
-        private nggapi: ngGapiService,
-        private gapiUser: GapiUserService,
-        private googleApiService: GoogleApiService) {
-        this.observable = this.googleApiService
-            .onLoad()
-            .pipe(flatMap(() => {
-                return this.loadClient();
-            }), shareReplay(1),
-                single());
+        private nggapi: NgGapiService,
+        private gapiUser: GapiUserService) {
 
-    }
-
-    public loadClient(): Observable<void> {
-        return Observable.create((observer: Observer<void>) => {
-            const loadCfg: any = {
-                callback: () => {
-                    observer.next(null);
-                    observer.complete();
-                },
-                onerror: (err: Error) => {
-                    observer.error(err);
-                }
-            };
-            gapi.load('client', loadCfg);
-        });
     }
 
     public base(): Observable<void> {
@@ -75,7 +53,7 @@ export class FitApiBaseService {
         const request: HttpRequest<string> = this.createBatchRequest(requests);
         return this.httpService.request(request)
             .pipe(filter((resp: HttpEvent<string>): boolean => {
-                return (resp.type == HttpEventType.Response);
+                return (resp.type === HttpEventType.Response);
             }), map((res: HttpEvent<string>): HttpResponse<any> => {
                 return <any>this.parseBatchResponse(<HttpResponse<string>>res);
             }));
@@ -85,9 +63,10 @@ export class FitApiBaseService {
         const boundary: string = 'batch' + new Date().valueOf();
         let body: string = '--' + boundary + '\n';
         let reqIdx = 0;
-        for (let req in requests) {
-            if (reqIdx > 0)
+        for (const req in requests) {
+            if (reqIdx > 0) {
                 body += '\n';
+            }
             const convertedBody: string = this.createBatchRequestBlock(req, requests[req]);
             body += convertedBody;
             body += '\n--' + boundary;
@@ -118,8 +97,8 @@ export class FitApiBaseService {
         const boundaryMarker: string = response.headers.get('Content-Type').split('boundary=')[1];
         const splittedContent: string[] = response.body.split('--' + boundaryMarker);
         const parsedResponse: { [key: string]: HttpResponse<any> } = {};
-        //const lineBreakRegex: RegExp = /[^\n{2,2}]+/gm;
-        //skip first and last as those dont contain content
+        // const lineBreakRegex: RegExp = /[^\n{2,2}]+/gm;
+        // skip first and last as those dont contain content
         for (let i = 1; i < splittedContent.length - 1; i++) {
             const content: string = splittedContent[i].trim();
             const lineBreakRegex: RegExp = /(\r\n|(\r|\n){2,2}){2,}[^(\r|\n)]/gm;
@@ -131,7 +110,7 @@ export class FitApiBaseService {
             const firstHeader: string = content.substr(0, breakPoints[0]).trim();
             const secondHeader: string = content.substr(breakPoints[0], breakPoints[1] - breakPoints[0]).trim();
             const responseBody: string = content.substr(breakPoints[1]).trim();
-            const contentId: string = this.getContentID(firstHeader)
+            const contentId: string = this.getContentID(firstHeader);
 
             const statusLineEndIdx: number = secondHeader.search(/(\r|\n)/);
             const statusLine: string = secondHeader.substr(0, statusLineEndIdx);
@@ -140,7 +119,7 @@ export class FitApiBaseService {
             parsedResponse[contentId] = new HttpResponse({
                 body: JSON.parse(responseBody),
                 headers: headers,
-                status: parseInt(statusLineSplits[1]),
+                status: parseInt(statusLineSplits[1], 10),
                 statusText: statusLineSplits[2].trim()
             });
         }
@@ -149,7 +128,7 @@ export class FitApiBaseService {
 
 
     public createBatchRequestBlock<REQUEST_BODY_TYPE>(id: string, request: HttpRequest<REQUEST_BODY_TYPE>) {
-        let body: string = '';
+        let body = '';
         body += 'Content-Type: application/http\n';
         body += 'Content-Transfer-Encoding: binary\n';
         body += 'Content-ID: ' + id + '\n';
@@ -160,11 +139,11 @@ export class FitApiBaseService {
         innerBody += 'Authorization: Bearer ' + this.gapiUser.getToken() + '\n';
         if (request.body) {
             const convertedBody: string = request.serializeBody().toString();
-            //innerBody += 'Content-Length: ' + convertedBody.length + '\n';
+            // innerBody += 'Content-Length: ' + convertedBody.length + '\n';
             innerBody += '\n';
             innerBody += convertedBody;
         }
-        //body += 'Content-Length: ' + innerBody.length+'\n';
+        // body += 'Content-Length: ' + innerBody.length+'\n';
         body += '\n' + innerBody;
         return body;
     }
@@ -213,11 +192,11 @@ export interface PostBatchRequest extends BatchRequest {
 
 export interface BatchRequest {
     content_id: string;
-    method: 'get' | 'post' | 'put' | 'patch',
+    method: 'get' | 'post' | 'put' | 'patch';
     path: string;
 }
 
-export class ApiRequest<T>{
+export class ApiRequest<T> {
     private mClient: HttpClient;
     private mRequest: HttpRequest<T>;
     constructor(client: HttpClient, request: HttpRequest<T>) {

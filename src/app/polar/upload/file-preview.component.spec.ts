@@ -1,10 +1,10 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MatButtonModule, MatToolbarModule, MatCheckboxModule } from '@angular/material';
+import { MatButtonModule, MatToolbarModule, MatCheckboxModule, MatSlideToggle, MatSlideToggleModule } from '@angular/material';
 import { Observable, from } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { FilePreviewComponent } from './file-preview.component';
-import { UploadDataService, UploadFile } from '../services';
+import { UploadDataService, UploadFile, UploadFileType } from '../services';
 
 @Injectable()
 class testUploadDataService {
@@ -17,10 +17,7 @@ describe('FilePreviewComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
-                RouterTestingModule,
-                MatButtonModule,
-                MatToolbarModule,
-                MatCheckboxModule
+                MatSlideToggleModule
             ],
             declarations: [
                 FilePreviewComponent
@@ -42,19 +39,19 @@ describe('FilePreviewComponent', () => {
         const app: FilePreviewComponent = fixture.debugElement.componentInstance;
         expect(app).toBeTruthy();
         const testData: UploadFile[] = [{
-            filename: "testname",
+            filename: 'testname',
             valid: true,
             selected: false,
-            data: "testdata",
-            key: "923"
+            data: 'testdata',
+            type: UploadFileType.UNKNOWN
         }, {
-            filename: "testname2",
+            filename: 'testname2',
             valid: false,
             selected: true,
-            data: "testdata2",
-            key: "923asdf"
+            data: 'testdata2',
+            type: UploadFileType.UNKNOWN
         }];
-        for (let tdata of testData) {
+        for (const tdata of testData) {
             app.uploadFile = tdata;
             expect(app.filesize).toEqual(tdata.data.length);
             expect(app.filename).toEqual(tdata.filename);
@@ -66,7 +63,7 @@ describe('FilePreviewComponent', () => {
         const app: FilePreviewComponent = fixture.debugElement.componentInstance;
         expect(app).toBeTruthy();
         expect(app.filesize).toEqual(0);
-        expect(app.filename).toEqual("Unknown");
+        expect(app.filename).toEqual('Unknown');
         expect(app.isValidFile).toEqual(false);
     });
 

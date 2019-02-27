@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { GoogleAuthService, GoogleApiService } from 'ng-gapi';
-import { ngGapiService } from './nggapi-base.service';
-import { Observable, Observer, BehaviorSubject, of } from 'rxjs';
-import { flatMap, map, tap, share, catchError, shareReplay } from 'rxjs/operators';
+import { GoogleAuthService } from 'ng-gapi';
+import { Observable, Observer, of } from 'rxjs';
+import { flatMap, tap, catchError, shareReplay } from 'rxjs/operators';
 
 @Injectable()
 export class GapiUserService {

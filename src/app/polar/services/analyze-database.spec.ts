@@ -1,8 +1,8 @@
-import { AnalyzeDatabase } from "./analyze-database";
+import { AnalyzeDatabase } from './analyze-database';
 
-describe("analyze-database", () => {
-    it("should build", () => {
-        let db: AnalyzeDatabase = new AnalyzeDatabase();
+describe('analyze-database', () => {
+    it('should build', () => {
+        const db: AnalyzeDatabase = new AnalyzeDatabase();
         expect(db).toBeDefined();
     });
 });

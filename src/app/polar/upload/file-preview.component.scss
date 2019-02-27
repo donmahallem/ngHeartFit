@@ -1,20 +1,40 @@
 :host {
-    display: block;
-    border: 1px black solid;
-    width: 100%;
-    margin: 5px;
-    padding: 6px;
-    background: #ff8a65;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: stretch;
+    border: 1px #DADADA solid;
+    padding: 5px 10px 5px 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    background:#F1F1F1;
+}
+
+div.content{
+    display:flex;
+    flex-direction:column;
+    align-items: stretch;
+    padding-left:20px;
+    flex: 1;
+}
+div.title-bar h3.filename{
+    float:left;
+}
+
+div.title-bar span.right-title{
+    float:right;
 }
 
 span.filesize {
     font-family: monospace;
+    font-style: italic;
 }
 
 h3.filename {
     font-size: 16px;
 }
 
-:host(.validFile) {
-    background: #aed581;
+div.errors h4{
+    color:red;
 }

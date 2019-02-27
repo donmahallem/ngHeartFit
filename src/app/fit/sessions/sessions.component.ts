@@ -7,12 +7,9 @@ import {
     ChangeDetectorRef,
     NgZone
 } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { GapiUserService } from 'src/app/service/gapi-user.service';
-import { FitApiService } from 'src/app/service/fit-api.service';
-import { Router } from '@angular/router';
 import { FitSession } from 'src/app/service/fit-api-modals';
 import * as moment from 'moment';
+import { FitApiSessionService } from 'src/app/service/fit-session.service';
 
 @Component({
     selector: 'sessions-list',
@@ -20,20 +17,21 @@ import * as moment from 'moment';
     styleUrls: ['./sessions.component.scss']
 })
 export class SessionsComponent implements OnDestroy, AfterViewInit {
-    private mDataSources: FitSession[] = [];
-    constructor(private zone: NgZone, private nggapi: FitApiService) {
+    private mSessions: FitSession[] = [];
+    constructor(private zone: NgZone,
+        private sessionService: FitApiSessionService) {
     }
 
-    public get dataSources(): FitSession[] {
-        return this.mDataSources;
+    public get sessions(): FitSession[] {
+        return this.mSessions;
     }
 
     public ngAfterViewInit() {
-        this.nggapi.getSessions(moment().subtract(3, 'month'), moment())
+        this.sessionService.getSessions()
             .subscribe((dat) => {
                 console.log(dat);
                 this.zone.run(() => {
-                    this.mDataSources = dat.session;
+                    this.mSessions = dat.session;
                 });
             }, console.error);
     }

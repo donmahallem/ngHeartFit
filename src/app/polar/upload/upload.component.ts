@@ -4,15 +4,17 @@ import {
     NgZone
 } from '@angular/core';
 import { UploadDataService } from '../services/upload-data.service';
-import { from, Observable, Observer, of } from 'rxjs';
+import { from, Observable, Observer, of, OperatorFunction } from 'rxjs';
 import { filter, flatMap, map } from 'rxjs/operators';
-import { UploadFile } from '../services';
+import { UploadFile, UploadFileType } from '../services';
 import { AnalyzeDataService } from '../services/analyze-data.service';
 import { Router } from '@angular/router';
 import { FlowApiValidator, IDaySummary, IDayData } from '@donmahallem/flow-api-types';
+import { ValidatorResult } from 'jsonschema';
+
 
 @Component({
-    selector: 'upload-cmp',
+    selector: 'app-polar-upload',
     templateUrl: './upload.component.pug',
     styleUrls: ['./upload.component.scss']
 })
@@ -39,9 +41,30 @@ export class UploadComponent implements OnInit {
         return false;
     }
 
+    public createConvertUploadFileAndCheckValidity(): OperatorFunction<UploadFile, UploadFile> {
+        return map((data: UploadFile): UploadFile => {
+            try {
+                const parsedData: any = JSON.parse(data.data);
+                const validatorResult: ValidatorResult = FlowApiValidator.validateTimelineSummary(parsedData);
+                data.valid = validatorResult.valid;
+                if (!validatorResult.valid) {
+                    data.errors = validatorResult.errors;
+                } else {
+                    data.type = UploadFileType.DAY_SUMMARY;
+                }
+            } catch (err) {
+                data.valid = false;
+                data.errors = [
+                    err
+                ];
+            }
+            return data;
+        });
+    }
+
     public onUpload(e: Event): void {
         const target: HTMLInputElement = <HTMLInputElement>e.target;
-        this.upd(target).subscribe((res: UploadFile) => {
+        this.validateFiles(target).subscribe((res: UploadFile) => {
             this.zone.run(() => {
                 this.uploadDataService.addUploadFile(res);
             });
@@ -49,7 +72,7 @@ export class UploadComponent implements OnInit {
         });
     }
 
-    public ads(file: File): Observable<UploadFile> {
+    public readFile(file: File): Observable<UploadFile> {
         return Observable.create((pub: Observer<UploadFile>) => {
             const reader: FileReader = new FileReader();
             reader.onload = function (loadEvent: any) {
@@ -57,7 +80,7 @@ export class UploadComponent implements OnInit {
                     data: loadEvent.target.result,
                     filename: file.name,
                     valid: false,
-                    key: null
+                    type: UploadFileType.UNKNOWN
                 });
                 pub.complete();
             };
@@ -84,7 +107,7 @@ export class UploadComponent implements OnInit {
             .pipe(flatMap((result) => {
                 return from(this.uploadFiles);
             }), filter((upload: UploadFile) => {
-                return upload.valid && (upload.selected || upload.selected == undefined);
+                return upload.valid && (upload.selected || upload.selected === undefined);
             }), map((upload: UploadFile): IDaySummary => {
                 return JSON.parse(upload.data);
             }), flatMap((summary: IDaySummary) => {
@@ -98,7 +121,7 @@ export class UploadComponent implements OnInit {
             }));
     }
 
-    public upd(e: HTMLInputElement): Observable<UploadFile> {
+    public validateFiles(e: HTMLInputElement): Observable<UploadFile> {
         this.uploadDataService.clear();
         return from(e.files)
             .pipe(filter((file: File) => {
@@ -108,16 +131,8 @@ export class UploadComponent implements OnInit {
                     return false;
                 }
             }), flatMap((file: File) => {
-                return this.ads(file);
-            }), map((data: UploadFile): UploadFile => {
-                try {
-                    const parsedData: any = JSON.parse(data.data);
-                    data.valid = FlowApiValidator.validateTimelineSummary(parsedData).valid;
-                } catch (err) {
-                    data.valid = false;
-                }
-                return data;
-            }));
+                return this.readFile(file);
+            }), this.createConvertUploadFileAndCheckValidity());
     }
 
 }

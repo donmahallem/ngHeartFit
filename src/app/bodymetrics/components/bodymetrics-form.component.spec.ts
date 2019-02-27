@@ -1,30 +1,36 @@
 import { TestBed, async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MatButtonModule, MatCheckboxModule, MatGridListModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatIconModule } from '@angular/material';
-import { Observable, from, of, throwError } from 'rxjs';
+import {
+    MatButtonModule,
+    MatCheckboxModule,
+    MatGridListModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatIconModule
+} from '@angular/material';
+import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { BodyMetricsFormComponent, BodyMetricsFormData } from './bodymetrics-form.component';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
-import * as sinon from "sinon";
-import { Router } from '@angular/router';
-import { tap } from 'rxjs/operators';
+import * as sinon from 'sinon';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import * as moment from 'moment';
-import { FitApiService, SubmitBodyMetricsRequest } from 'src/app/service/fit-api.service';
 import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 
-export function newEvent(eventName: string, bubbles = false, cancelable = false) {
-    let evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
+export function NewEvent(eventName: string, bubbles = false, cancelable = false) {
+    const evt = document.createEvent('CustomEvent');  // MUST be 'CustomEvent'
     evt.initCustomEvent(eventName, bubbles, cancelable, null);
     return evt;
 }
 
 @Injectable()
-class testGapiService {
-    submitBodyMetrics(data: SubmitBodyMetricsRequest): Observable<any> {
+class TestGapiService {
+    submitBodyMetrics(data: any): Observable<any> {
         return null;
     }
 }
@@ -49,7 +55,7 @@ describe('BodyMetricsComponent', () => {
                 BodyMetricsFormComponent
             ],
             providers: [
-                { provide: FitApiDataSourceService, useValue: new testGapiService() },
+                { provide: FitApiDataSourceService, useValue: new TestGapiService() },
                 { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
                 { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS }
             ]
@@ -57,7 +63,7 @@ describe('BodyMetricsComponent', () => {
     }));
 
     beforeEach(() => {
-        //testUploadDataService.
+        // testUploadDataService.
     });
 
     it('should create the component', () => {
@@ -65,8 +71,8 @@ describe('BodyMetricsComponent', () => {
         const app = fixture.debugElement.componentInstance;
         expect(app).toBeTruthy();
     });
-    beforeAll(() => { sandbox = sinon.sandbox.create(); })
-    afterEach(() => { sandbox.restore(); })
+    beforeAll(() => { sandbox = sinon.createSandbox(); });
+    afterEach(() => { sandbox.restore(); });
     describe('onSubmit()', () => {
         let fixture: ComponentFixture<BodyMetricsFormComponent>;
         let component: BodyMetricsFormComponent;
@@ -84,7 +90,7 @@ describe('BodyMetricsComponent', () => {
         describe('form is not valid', () => {
             beforeEach(() => {
                 validStub.value(false);
-            })
+            });
             it('should not call submitBodyMetrics', () => {
                 component.onSubmit();
                 expect(submitBodyMetricsStub.callCount).toEqual(0);
@@ -97,7 +103,7 @@ describe('BodyMetricsComponent', () => {
                 inputTimestamp: HTMLInputElement;
             let inputBodyHeightUnit,
                 inputBodyWeightUnit: HTMLSelectElement;
-            const testTimestamp: number = 1549193178;
+            const testTimestamp = 1549193178;
             beforeEach(() => {
                 validStub.value(true);
                 inputBodyHeight = fixture.nativeElement.querySelector('.inputbodyheight');
@@ -121,8 +127,8 @@ describe('BodyMetricsComponent', () => {
                 expect(inputBodyHeight.value).toEqual('92');
                 expect(inputBodyWeight.value).toEqual('78');
                 expect(inputBodyFat.value).toEqual('29.2');
-                //expect(inputBodyHeightUnit.options[inputBodyHeightUnit.selectedIndex].value).toEqual('inch');
-                //expect(inputBodyWeightUnit.options[inputBodyWeightUnit.selectedIndex].value).toEqual('kg');
+                // expect(inputBodyHeightUnit.options[inputBodyHeightUnit.selectedIndex].value).toEqual('inch');
+                // expect(inputBodyWeightUnit.options[inputBodyWeightUnit.selectedIndex].value).toEqual('kg');
             });
 
             it('should call submitBodyMetrics with inch and pound', () => {

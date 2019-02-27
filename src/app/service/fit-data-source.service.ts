@@ -86,7 +86,7 @@ export class FitApiDataSourceService {
     public getOrCreateBodyFatPercentageDataSource(): Observable<FitDataSource> {
         return this.getDataSources(FitApiDataSourceService.DATA_TYPE_BODY_FAT_PERCENTAGE)
             .pipe(flatMap((dataSources: FitDataSourceList) => {
-                for (let source of dataSources.dataSource) {
+                for (const source of dataSources.dataSource) {
                     if (source.dataStreamName === FitApiDataSourceService.BODY_FAT_PERCENTAGE_NAME && source.device.uid === navigator.userAgent) {
                         return of(source);
                     }
@@ -98,7 +98,7 @@ export class FitApiDataSourceService {
     public getOrCreateWeightDataSource(): Observable<FitDataSource> {
         return this.getDataSources(FitApiDataSourceService.DATA_TYPE_WEIGHT)
             .pipe(flatMap((dataSources: FitDataSourceList) => {
-                for (let source of dataSources.dataSource) {
+                for (const source of dataSources.dataSource) {
                     if (source.dataStreamName === FitApiDataSourceService.WEIGHT_NAME && source.device.uid === navigator.userAgent) {
                         return of(source);
                     }
@@ -107,8 +107,8 @@ export class FitApiDataSourceService {
             }));
     }
     public getOrCreateWeightDataSource2(): Observable<FitDataSource> {
-        let req1: HttpRequest<any> = this.fitApiBaseService.createGetRequest(FitApiBaseService.ENDPOINT + '/users/me/dataSources');
-        let req2: HttpRequest<any> = this.fitApiBaseService.createGetRequest(FitApiBaseService.ENDPOINT + '/users/me/dataSources');
+        const req1: HttpRequest<any> = this.fitApiBaseService.createGetRequest(FitApiBaseService.ENDPOINT + '/users/me/dataSources');
+        const req2: HttpRequest<any> = this.fitApiBaseService.createGetRequest(FitApiBaseService.ENDPOINT + '/users/me/dataSources');
         return <any>this.fitApiBaseService
             .executeBatchRequest({
                 res1: req1,
@@ -160,7 +160,7 @@ export interface DataType {
         'name': string;
         'format': 'blob' | 'floatList' | 'floatPoint' | 'integer' | 'integerList' | 'map' | 'string';
         'optional'?: boolean;
-    }[]
+    }[];
 }
 export interface CreateDataSourceRequest {
     'dataStreamName'?: string;
@@ -177,5 +177,5 @@ export interface CreateDataSourceRequest {
         'type': 'chestStrap' | 'headMounted' | 'phone' | 'scale' | 'tablet' | 'unknown' | 'watch';
         'uid': string;
         'version': string;
-    }
+    };
 }
