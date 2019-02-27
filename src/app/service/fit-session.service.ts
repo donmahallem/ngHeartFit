@@ -10,7 +10,7 @@ import {
     FitSession,
     ListSessionsResponse
 } from './fit-api-modals';
-import * as moment from "moment";
+import * as moment from 'moment';
 
 @Injectable()
 export class FitApiSessionService {
