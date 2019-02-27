@@ -14,7 +14,7 @@ import { ValidatorResult } from 'jsonschema';
 
 
 @Component({
-    selector: 'upload-cmp',
+    selector: 'app-polar-upload',
     templateUrl: './upload.component.pug',
     styleUrls: ['./upload.component.scss']
 })

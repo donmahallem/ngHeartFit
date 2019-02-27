@@ -54,7 +54,7 @@ class TestRouter {
     }
 }
 @Component({
-    selector: 'file-preview-cmp',
+    selector: 'app-file-preview',
     template: '<p></p>'
 })
 export class TestFilePreviewComponent {
@@ -184,6 +184,32 @@ describe('app/polar/upload/upload.component', () => {
                         expect(parsedFile).toEqual(jasmine.objectContaining(res));
                         done();
                     });
+            });
+        });
+
+        describe('uploadFiles', () => {
+            describe('getter', () => {
+                let upDataService: UploadDataService;
+                let uploadedFilesStub: sinon.SinonStub;
+                let readFileStub: sinon.SinonStub;
+                const testValues: any[] = [
+                    { test: 1 },
+                    { test: 2 },
+                    { test: 5 },
+                    { test: 3 }
+                ];
+                beforeEach(() => {
+                    upDataService = fixture.debugElement.injector.get(UploadDataService);
+                    uploadedFilesStub = sandbox.stub(upDataService, 'uploadedFiles');
+                });
+                testValues.forEach((value: any) => {
+                    it('should return the expected value from the service', () => {
+                        uploadedFilesStub.get(() => {
+                            return value;
+                        });
+                        expect(cmpInstance.uploadFiles).toEqual(value);
+                    });
+                });
             });
         });
 

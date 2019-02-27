@@ -22,15 +22,10 @@ export class FitApiAggregateService {
     constructor(private fitApiBaseService: FitApiBaseService) {
 
     }
-
-    public getSession(id: string): Observable<FitSession> {
-        return this.fitApiBaseService.getRequest(FitApiBaseService.ENDPOINT + '/users/me/sessions/' + id);
-    }
-
-    public getSessions(startTime?: moment.Moment, endTime?: moment.Moment): Observable<ListSessionsResponse> {
-        return this.fitApiBaseService.getRequest(FitApiBaseService.ENDPOINT + '/users/me/sessions/');
-    }
-    public getAggregateData(source: AggregateByFilter[], from: moment.Moment, to: moment.Moment, bucketWindowMillis: number): Observable<BucketResponse> {
+    public getAggregateData(source: AggregateByFilter[],
+        from: moment.Moment,
+        to: moment.Moment,
+        bucketWindowMillis: number): Observable<BucketResponse> {
         return this.fitApiBaseService.base()
             .pipe(flatMap((): Observable<BucketResponse> => {
                 const requestBody: any = {

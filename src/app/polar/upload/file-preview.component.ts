@@ -7,7 +7,7 @@ import { UploadFile, UploadDataService } from '../services';
 import { MatCheckboxChange } from '@angular/material';
 
 @Component({
-    selector: 'file-preview-cmp',
+    selector: 'app-file-preview',
     templateUrl: './file-preview.component.pug',
     styleUrls: ['./file-preview.component.scss']
 })

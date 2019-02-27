@@ -11,17 +11,17 @@ import { FitSession } from 'src/app/service/fit-api-modals';
     styleUrls: ['./session-detail.component.scss']
 })
 export class SessionDetailComponent implements OnDestroy, AfterViewInit {
-    private mDataSource: FitSession;
+    private mSession: FitSession;
     constructor() {
     }
 
     @Input('session')
-    public set dataSource(source: FitSession) {
-        this.mDataSource = source;
+    public set session(session: FitSession) {
+        this.mSession = session;
     }
 
-    public get dataSource(): FitSession {
-        return this.mDataSource;
+    public get session(): FitSession {
+        return this.mSession;
     }
 
     public ngAfterViewInit() {
