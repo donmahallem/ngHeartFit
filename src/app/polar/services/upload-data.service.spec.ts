@@ -12,33 +12,35 @@ describe('app/polar/services/upload-data.service', () => {
     afterEach(() => {
         sand.restore();
     });
-    describe('uploadedFiles', () => {
-        const testValues: any[] = [
-            {
-                test: 1
-            },
-            {
-                test: 2
-            },
-            {
-                test: 3
-            }
-        ];
-        describe('getter', () => {
-            testValues.forEach((testValue: any) => {
-                it('should return the value of the uploadFilesSubject', () => {
-                    sand.stub((<any>testInstance).uploadFilesSubject, 'value').get(() => testValue);
-                    expect(testInstance.uploadedFiles).toEqual(testValue);
+    describe('UploadDataService', () => {
+        describe('uploadedFiles', () => {
+            const testValues: any[] = [
+                {
+                    test: 1
+                },
+                {
+                    test: 2
+                },
+                {
+                    test: 3
+                }
+            ];
+            describe('getter', () => {
+                testValues.forEach((testValue: any) => {
+                    it('should return the value of the uploadFilesSubject', () => {
+                        sand.stub((<any>testInstance).uploadFilesSubject, 'value').get(() => testValue);
+                        expect(testInstance.uploadedFiles).toEqual(testValue);
+                    });
                 });
             });
-        });
-        describe('setter', () => {
-            testValues.forEach((testValue: any) => {
-                it('should return the value of the uploadFilesSubject', () => {
-                    const nextStub: sinon.SinonStub = sand.stub((<any>testInstance).uploadFilesSubject, 'next');
-                    testInstance.uploadedFiles = testValue;
-                    expect(nextStub.callCount).toEqual(1);
-                    expect(nextStub.getCall(0).args).toEqual([testValue]);
+            describe('setter', () => {
+                testValues.forEach((testValue: any) => {
+                    it('should return the value of the uploadFilesSubject', () => {
+                        const nextStub: sinon.SinonStub = sand.stub((<any>testInstance).uploadFilesSubject, 'next');
+                        testInstance.uploadedFiles = testValue;
+                        expect(nextStub.callCount).toEqual(1);
+                        expect(nextStub.getCall(0).args).toEqual([testValue]);
+                    });
                 });
             });
         });

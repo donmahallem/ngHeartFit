@@ -1,4 +1,4 @@
-mat-slide-toggle([checked]="isValidFile",[disabled]="!isValidFile",labelPosition="after",(change)="onChangeSelection($event)")
+mat-slide-toggle([checked]="isSelected",[disabled]="!isValidFile",labelPosition="after",(change)="onChangeSelection($event)")
 div.content
     div.title-bar
         h3.filename {{filename}}
@@ -8,4 +8,4 @@ div.content
     div.errors(*ngIf="!isValidFile")
         h4 The file could not be read due to the following errors
         ul
-            li.error-detail(*ngFor="let err of uploadFile.errors") {{err?.message}}
+            li.error-detail(*ngFor="let err of uploadFile?.errors") {{err?.message}}
