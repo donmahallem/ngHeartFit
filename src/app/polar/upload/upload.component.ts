@@ -4,7 +4,7 @@ import {
     NgZone
 } from '@angular/core';
 import { UploadDataService } from '../services/upload-data.service';
-import { from, Observable, Observer, of, OperatorFunction } from 'rxjs';
+import { from, Observable, Observer, of, OperatorFunction, Subscriber } from 'rxjs';
 import { filter, flatMap, map } from 'rxjs/operators';
 import { UploadFile, UploadFileType } from '../services';
 import { AnalyzeDataService } from '../services/analyze-data.service';
@@ -73,19 +73,19 @@ export class UploadComponent implements OnInit {
     }
 
     public readFile(file: File): Observable<UploadFile> {
-        return Observable.create((pub: Observer<UploadFile>) => {
+        return new Observable((subscriber: Subscriber<UploadFile>) => {
             const reader: FileReader = new FileReader();
             reader.onload = function (loadEvent: any) {
-                pub.next({
+                subscriber.next({
                     data: loadEvent.target.result,
                     filename: file.name,
                     valid: false,
                     type: UploadFileType.UNKNOWN
                 });
-                pub.complete();
+                subscriber.complete();
             };
             reader.onerror = (er: ProgressEvent) => {
-                pub.error(new Error('loading error'));
+                subscriber.error(new Error('loading error'));
             };
             reader.readAsText(file);
         });
