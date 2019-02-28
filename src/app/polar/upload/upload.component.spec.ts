@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { FlowApiValidator } from '@donmahallem/flow-api-types';
 import { ValidatorResult, ValidationError } from 'jsonschema';
+import { FileUtil } from 'src/app/util';
 
 @Injectable()
 class TestUploadDataService {
@@ -223,7 +224,7 @@ describe('app/polar/upload/upload.component', () => {
             beforeEach(() => {
                 upDataService = fixture.debugElement.injector.get(UploadDataService);
                 uploadDataServiceClearStub = sandbox.stub(upDataService, 'clear');
-                readFileStub = sandbox.stub(cmpInstance, 'readFile');
+                readFileStub = sandbox.stub(FileUtil, 'readFileAsText');
                 readFileStub.callsFake((inp) => from([inp]));
                 nextSpy = sandbox.spy();
                 convertValidityStub = sandbox.stub(cmpInstance, 'createConvertUploadFileAndCheckValidity');

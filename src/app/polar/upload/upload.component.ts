@@ -11,6 +11,7 @@ import { AnalyzeDataService } from '../services/analyze-data.service';
 import { Router } from '@angular/router';
 import { FlowApiValidator, IDaySummary, IDayData } from '@donmahallem/flow-api-types';
 import { ValidatorResult } from 'jsonschema';
+import { FileUtil } from 'src/app/util';
 
 
 @Component({
@@ -72,25 +73,6 @@ export class UploadComponent implements OnInit {
         });
     }
 
-    public readFile(file: File): Observable<UploadFile> {
-        return new Observable((subscriber: Subscriber<UploadFile>) => {
-            const reader: FileReader = new FileReader();
-            reader.onload = function (loadEvent: any) {
-                subscriber.next({
-                    data: loadEvent.target.result,
-                    filename: file.name,
-                    valid: false,
-                    type: UploadFileType.UNKNOWN
-                });
-                subscriber.complete();
-            };
-            reader.onerror = (er: ProgressEvent) => {
-                subscriber.error(new Error('loading error'));
-            };
-            reader.readAsText(file);
-        });
-    }
-
     public clickImport(event: MouseEvent): void {
         this.importFiles().subscribe((result) => {
             console.log('res', result);
@@ -131,7 +113,7 @@ export class UploadComponent implements OnInit {
                     return false;
                 }
             }), flatMap((file: File) => {
-                return this.readFile(file);
+                return <any>FileUtil.readFileAsText(file);
             }), this.createConvertUploadFileAndCheckValidity());
     }
 
