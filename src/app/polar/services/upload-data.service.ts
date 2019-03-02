@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { UploadFile } from './upload-file.modal';
+import { UploadFile, TypedFile, TypedFiles } from './upload-file.modal';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { FileLoadEvents } from 'src/app/util';
 
 @Injectable()
 export class UploadDataService {
@@ -14,6 +15,10 @@ export class UploadDataService {
             }
         }
         this.hasUploadableFiles.next(false);
+    }
+
+    public updateFile(fileEvent: FileLoadEvents<TypedFiles>) {
+
     }
 
     public set uploadedFiles(files: UploadFile[]) {

@@ -6,12 +6,12 @@ import {
 import { UploadDataService } from '../services/upload-data.service';
 import { from, Observable, Observer, of, OperatorFunction, Subscriber } from 'rxjs';
 import { filter, flatMap, map } from 'rxjs/operators';
-import { UploadFile, UploadFileType } from '../services';
+import { UploadFile, UploadFileType, TypedFiles } from '../services';
 import { AnalyzeDataService } from '../services/analyze-data.service';
 import { Router } from '@angular/router';
 import { FlowApiValidator, IDaySummary, IDayData } from '@donmahallem/flow-api-types';
 import { ValidatorResult } from 'jsonschema';
-import { FileUtil } from 'src/app/util';
+import { FileUtil, FileLoadEvent, FileLoadEvents, FileLoadEventType } from 'src/app/util';
 
 
 @Component({
@@ -42,33 +42,32 @@ export class UploadComponent implements OnInit {
         return false;
     }
 
-    public createConvertUploadFileAndCheckValidity(): OperatorFunction<UploadFile, UploadFile> {
-        return map((data: UploadFile): UploadFile => {
-            try {
-                const parsedData: any = JSON.parse(data.data);
-                const validatorResult: ValidatorResult = FlowApiValidator.validateTimelineSummary(parsedData);
-                data.valid = validatorResult.valid;
-                if (!validatorResult.valid) {
-                    data.errors = validatorResult.errors;
+    public createConvertUploadFileAndCheckValidity(): OperatorFunction<FileLoadEvents<any>, FileLoadEvents<TypedFiles>> {
+        return map((data: FileLoadEvents<any>): FileLoadEvents<TypedFiles> => {
+            if (data.type === FileLoadEventType.RESULT) {
+                const validatorResult: ValidatorResult = FlowApiValidator.validateTimelineSummary(data.result);
+                if (validatorResult.valid) {
+                    return {
+                        type: FileLoadEventType.RESULT,
+                        key: data.key,
+                        result: {
+                            type: UploadFileType.DAY_SUMMARY,
+                            data: data.result
+                        }
+                    };
                 } else {
-                    data.type = UploadFileType.DAY_SUMMARY;
+                    throw validatorResult.errors[0];
                 }
-            } catch (err) {
-                data.valid = false;
-                data.errors = [
-                    err
-                ];
+            } else {
+                return data;
             }
-            return data;
         });
     }
 
     public onUpload(e: Event): void {
         const target: HTMLInputElement = <HTMLInputElement>e.target;
-        this.validateFiles(target).subscribe((res: UploadFile) => {
-            this.zone.run(() => {
-                this.uploadDataService.addUploadFile(res);
-            });
+        this.validateFiles(target).subscribe((res: FileLoadEvents<any>) => {
+            this.uploadDataService.updateFile(res);
         }, (err: any) => {
         });
     }
@@ -103,7 +102,7 @@ export class UploadComponent implements OnInit {
             }));
     }
 
-    public validateFiles(e: HTMLInputElement): Observable<UploadFile> {
+    public validateFiles(e: HTMLInputElement): Observable<FileLoadEvents<TypedFiles>> {
         this.uploadDataService.clear();
         return from(e.files)
             .pipe(filter((file: File) => {
@@ -112,8 +111,8 @@ export class UploadComponent implements OnInit {
                 } else {
                     return false;
                 }
-            }), flatMap((file: File) => {
-                return <any>FileUtil.readFileAsText(file);
+            }), flatMap((file: File): Observable<FileLoadEvents<string>> => {
+                return FileUtil.readFileAsJson(file, file.name);
             }), this.createConvertUploadFileAndCheckValidity());
     }
 

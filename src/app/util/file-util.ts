@@ -1,4 +1,5 @@
 import { Observable, Subscriber } from 'rxjs';
+import { map } from 'rxjs/operators';
 export interface ReadFile {
     raw: string;
     source: File;
@@ -11,6 +12,7 @@ export enum FileLoadEventType {
 }
 export interface FileLoadEvent {
     type: FileLoadEventType;
+    key: string | number;
 }
 
 export interface FileLoadStartEvent extends FileLoadEvent {
@@ -38,15 +40,17 @@ export class FileUtil {
     public static createFileReader(): FileReader {
         return new FileReader();
     }
-    public static readFileAsText(file: File): Observable<FileLoadEvents<string>> {
+    public static readFileAsText(file: File, key: string | number): Observable<FileLoadEvents<string>> {
         return new Observable((subscriber: Subscriber<FileLoadEvents<string>>) => {
             const reader: FileReader = FileUtil.createFileReader();
+            console.log('IAIAIA');
             reader.onprogress = (progress: ProgressEvent) => {
                 subscriber.next({
                     type: FileLoadEventType.PROGRESS,
                     lengthComputable: progress.lengthComputable,
                     loaded: progress.loaded,
-                    total: progress.total
+                    total: progress.total,
+                    key: key
                 });
             };
             reader.onabort = (ev: ProgressEvent) => {
@@ -55,13 +59,15 @@ export class FileUtil {
             reader.onload = (loadEvent: any) => {
                 subscriber.next({
                     type: FileLoadEventType.RESULT,
-                    result: loadEvent.target.result
+                    result: loadEvent.target.result,
+                    key: key
                 });
                 subscriber.complete();
             };
             reader.onloadstart = () => {
                 subscriber.next({
-                    type: FileLoadEventType.START
+                    type: FileLoadEventType.START,
+                    key: key
                 });
             };
             reader.onerror = <any>((er: DOMError | DOMException): void => {
@@ -69,6 +75,21 @@ export class FileUtil {
             });
             reader.readAsText(file);
         });
+    }
+    public static readFileAsJson<T>(file: File, key: string | number): Observable<FileLoadEvents<T>> {
+        return FileUtil.readFileAsText(file, key)
+            .pipe(map((event: FileLoadEvents<string>): FileLoadEvents<T> => {
+                if (event.type === FileLoadEventType.RESULT) {
+                    const convEvent: FileLoadResultEvent<T> = {
+                        result: JSON.parse(event.result),
+                        type: FileLoadEventType.RESULT,
+                        key: event.key
+                    };
+                    return convEvent;
+                } else {
+                    return event;
+                }
+            }));
     }
 
 }
