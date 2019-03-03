@@ -29,6 +29,7 @@ export interface FileLoadProgressEvent extends FileLoadEvent {
 export interface FileLoadResultEvent<T> extends FileLoadEvent {
     type: FileLoadEventType.RESULT;
     result: T;
+    filesize: number;
 }
 
 export type FileLoadEvents<T> = FileLoadProgressEvent | FileLoadResultEvent<T> | FileLoadStartEvent;
@@ -43,7 +44,6 @@ export class FileUtil {
     public static readFileAsText(file: File, key: string | number): Observable<FileLoadEvents<string>> {
         return new Observable((subscriber: Subscriber<FileLoadEvents<string>>) => {
             const reader: FileReader = FileUtil.createFileReader();
-            console.log('IAIAIA');
             reader.onprogress = (progress: ProgressEvent) => {
                 subscriber.next({
                     type: FileLoadEventType.PROGRESS,
@@ -60,7 +60,8 @@ export class FileUtil {
                 subscriber.next({
                     type: FileLoadEventType.RESULT,
                     result: loadEvent.target.result,
-                    key: key
+                    key: key,
+                    filesize: loadEvent.target.result.length
                 });
                 subscriber.complete();
             };
@@ -83,7 +84,8 @@ export class FileUtil {
                     const convEvent: FileLoadResultEvent<T> = {
                         result: JSON.parse(event.result),
                         type: FileLoadEventType.RESULT,
-                        key: event.key
+                        key: event.key,
+                        filesize: event.filesize
                     };
                     return convEvent;
                 } else {

@@ -17,7 +17,9 @@ import { FilePreviewComponent } from './file-preview.component';
 import {
     UploadDataService,
     UploadFile,
-    UploadFileType
+    UploadFileType,
+    UploadFiles,
+    UploadFileStatus
 } from '../services';
 
 import * as sinon from 'sinon';
@@ -60,45 +62,45 @@ describe('app/polar/upload/file-preview.component', () => {
     describe('FilePreviewComponent', () => {
         let fixture: ComponentFixture<FilePreviewComponent>;
         let cmpInstance: FilePreviewComponent;
-        const testFiles: UploadFile[] = [
+        const testFiles: UploadFiles[] = [
             {
-                data: 'test data to do some stuff',
-                filename: 'testFile1.json',
-                type: UploadFileType.UNKNOWN,
-                valid: true,
-                selected: false
+                data: <any>'test data to do some stuff',
+                key: 'testFile1.json',
+                type: UploadFileType.DAY_SUMMARY,
+                selected: false,
+                status: UploadFileStatus.LOADED
             },
             {
-                data: 'test data to do some stuff two',
-                filename: 'testFile2.json',
+                data: <any>'test data to do some stuff two',
+                key: 'testFile2.json',
                 type: UploadFileType.UNKNOWN,
                 valid: true,
                 selected: true
             },
             {
-                data: 'test data to do some stuff three',
-                filename: 'testFile3.json',
+                data: <any>'test data to do some stuff three',
+                key: 'testFile3.json',
                 type: UploadFileType.UNKNOWN,
                 valid: false,
                 selected: false
             },
             {
-                data: 'test data to do some stuff four',
-                filename: 'testFile4.json',
+                data: <any>'test data to do some stuff four',
+                key: 'testFile4.json',
                 type: UploadFileType.UNKNOWN,
                 valid: false,
                 selected: true
             },
             {
-                data: 'test data to do some stuff four',
-                filename: null,
+                data: <any>'test data to do some stuff four tw',
+                key: null,
                 type: UploadFileType.UNKNOWN,
                 valid: false,
                 selected: true
             },
             {
                 data: null,
-                filename: 'testFile5.json',
+                key: 'testFile5.json',
                 type: UploadFileType.UNKNOWN,
                 valid: false,
                 selected: true
@@ -137,7 +139,7 @@ describe('app/polar/upload/file-preview.component', () => {
                 });
                 describe('mUploadFile is set', () => {
                     testFiles.forEach((testFile: UploadFile) => {
-                        it('should return ' + testFile.valid, () => {
+                        it('should return ' + testFile.status, () => {
                             (<any>cmpInstance).mUploadFile = testFile;
                             expect(cmpInstance.isValidFile).toEqual(testFile.valid, 'should be equal');
                         });
@@ -155,8 +157,8 @@ describe('app/polar/upload/file-preview.component', () => {
                 });
                 describe('mUploadFile is set', () => {
                     testFiles.forEach((testFile: UploadFile) => {
-                        if (testFile.filename) {
-                            it('should return ' + testFile.filename, () => {
+                        if (testFile.key) {
+                            it('should return ' + testFile.key, () => {
                                 (<any>cmpInstance).mUploadFile = testFile;
                                 expect(cmpInstance.filename).toEqual(testFile.filename, 'should be equal');
                             });

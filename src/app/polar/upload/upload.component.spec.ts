@@ -110,7 +110,8 @@ describe('app/polar/upload/upload.component', () => {
             }, {
                 result: 'jasdf;dsf',
                 key: 'testkey',
-                type: FileLoadEventType.RESULT
+                type: FileLoadEventType.RESULT,
+                filesize: 2392
             }];
             beforeEach(() => {
                 validatorStub = sandbox.stub(FlowApiValidator, 'validateTimelineSummary');

@@ -5,7 +5,7 @@ import {
     Output,
     ViewChild
 } from '@angular/core';
-import { UploadFile, UploadDataService } from '../services';
+import { UploadFile, UploadDataService, UploadFileStatus, UploadFiles, UploadFileResult, UploadFileResults } from '../services';
 import { MatCheckboxChange, MatSlideToggle } from '@angular/material';
 
 @Component({
@@ -15,11 +15,11 @@ import { MatCheckboxChange, MatSlideToggle } from '@angular/material';
 })
 export class FilePreviewComponent {
     constructor(private uploadDataService: UploadDataService) { }
-    private mUploadFile: UploadFile;
+    private mUploadFile: UploadFiles;
 
     public get isValidFile(): boolean {
-        if (this.mUploadFile) {
-            return this.mUploadFile.valid;
+        if (this.mUploadFile.status === UploadFileStatus.LOADED) {
+            return true;
         }
         return false;
     }
@@ -31,31 +31,34 @@ export class FilePreviewComponent {
         return 'Unknown';
     }
 
+    public isUploadResult(file: UploadFiles): boolean {
+        return (file && file.status === UploadFileStatus.LOADED);
+    }
+
     public get filesize(): number {
-        if (this.mUploadFile && this.mUploadFile.data) {
-            return this.mUploadFile.data.length;
+        if (this.isUploadResult(this.mUploadFile)) {
+            return (<UploadFileResults>this.mUploadFile).filesize;
         }
         return 0;
     }
 
     @Input('uploadFile')
-    public set uploadFile(upload: UploadFile) {
+    public set uploadFile(upload: UploadFiles) {
         this.mUploadFile = upload;
     }
 
     public get isSelected(): boolean {
-        if (this.mUploadFile && this.uploadFile.valid) {
-            return this.mUploadFile.selected;
+        if (this.mUploadFile && this.uploadFile.status === UploadFileStatus.LOADED) {
+            return (<UploadFileResults>this.mUploadFile).selected === true;
         }
         return false;
     }
 
-    public get uploadFile(): UploadFile {
+    public get uploadFile(): UploadFiles {
         return this.mUploadFile;
     }
 
     public onChangeSelection(event: MatCheckboxChange): void {
-        this.mUploadFile.selected = event.checked;
-        this.uploadDataService.update();
+        this.uploadDataService.setSelected(this.mUploadFile.key, event.checked);
     }
 }

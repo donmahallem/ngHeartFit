@@ -5,13 +5,14 @@ import {
 } from '@angular/core';
 import { UploadDataService } from '../services/upload-data.service';
 import { from, Observable, Observer, of, OperatorFunction, Subscriber } from 'rxjs';
-import { filter, flatMap, map } from 'rxjs/operators';
-import { UploadFile, UploadFileType, TypedFiles } from '../services';
+import { filter, flatMap, map, catchError, startWith, debounce, debounceTime } from 'rxjs/operators';
+import { UploadFile, UploadFileType, TypedFiles, UploadFileStatus, UploadFileError, UploadFiles, UploadFileResult } from '../services';
 import { AnalyzeDataService } from '../services/analyze-data.service';
 import { Router } from '@angular/router';
 import { FlowApiValidator, IDaySummary, IDayData } from '@donmahallem/flow-api-types';
 import { ValidatorResult } from 'jsonschema';
 import { FileUtil, FileLoadEvent, FileLoadEvents, FileLoadEventType } from 'src/app/util';
+import { FileUploadObserver } from './file-upload.observer';
 
 
 @Component({
@@ -34,9 +35,6 @@ export class UploadComponent implements OnInit {
     public get validFiles(): boolean {
         if (this.uploadFiles.length > 0) {
             for (const upFile of this.uploadFiles) {
-                if (upFile.valid && (upFile.selected === true || upFile.selected === undefined)) {
-                    return true;
-                }
             }
         }
         return false;
@@ -53,7 +51,8 @@ export class UploadComponent implements OnInit {
                         result: {
                             type: UploadFileType.DAY_SUMMARY,
                             data: data.result
-                        }
+                        },
+                        filesize: data.filesize
                     };
                 } else {
                     throw validatorResult.errors[0];
@@ -66,10 +65,7 @@ export class UploadComponent implements OnInit {
 
     public onUpload(e: Event): void {
         const target: HTMLInputElement = <HTMLInputElement>e.target;
-        this.validateFiles(target).subscribe((res: FileLoadEvents<any>) => {
-            this.uploadDataService.updateFile(res);
-        }, (err: any) => {
-        });
+        this.validateFiles(target);
     }
 
     public clickImport(event: MouseEvent): void {
@@ -84,14 +80,16 @@ export class UploadComponent implements OnInit {
     }
 
     public importFiles(): Observable<number> {
+        return null;
+        /*
         return this.analyzeDataService.clear()
             .pipe(flatMap((result) => {
                 return from(this.uploadFiles);
             }), filter((upload: UploadFile) => {
                 return upload.valid && (upload.selected || upload.selected === undefined);
-            }), map((upload: UploadFile): IDaySummary => {
-                return JSON.parse(upload.data);
-            }), flatMap((summary: IDaySummary) => {
+            }), map((upload: UploadFile): TypedFiles => {
+                return upload.data;
+            }), flatMap((summary: TypedFiles) => {
                 const summaries: IDayData[] = [];
                 for (const key of Object.keys(summary)) {
                     summaries.push(summary[key]);
@@ -99,21 +97,23 @@ export class UploadComponent implements OnInit {
                 return from(summaries);
             }), flatMap((data: IDayData) => {
                 return this.analyzeDataService.insert(data.activityGraphData);
-            }));
+            }));*/
     }
 
-    public validateFiles(e: HTMLInputElement): Observable<FileLoadEvents<TypedFiles>> {
+    public validateFiles(e: HTMLInputElement): void {
         this.uploadDataService.clear();
-        return from(e.files)
-            .pipe(filter((file: File) => {
-                if (file) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }), flatMap((file: File): Observable<FileLoadEvents<string>> => {
-                return FileUtil.readFileAsJson(file, file.name);
-            }), this.createConvertUploadFileAndCheckValidity());
+        for (let i = 0; i < e.files.length; i++) {
+            const file: File = e.files[i];
+            if (file) {
+                this.validateFile(file)
+                    .subscribe(new FileUploadObserver(this.uploadDataService, file));
+            }
+        }
+    }
+    public validateFile(file: File): Observable<FileLoadEvents<TypedFiles>> {
+        return FileUtil.readFileAsJson(file, file.name)
+            .pipe(debounceTime(10),
+                this.createConvertUploadFileAndCheckValidity());
     }
 
 }
