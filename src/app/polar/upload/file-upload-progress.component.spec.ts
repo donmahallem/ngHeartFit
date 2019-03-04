@@ -60,9 +60,9 @@ class TestSlideToggleComponent {
     public labelPosition: string;
 }
 
-describe('app/polar/upload/file-preview.component', () => {
+describe('app/polar/upload/file-upload-progress.component', () => {
     let sandbox: sinon.SinonSandbox;
-    describe('FilePreviewComponent', () => {
+    describe('FileUploadProgressComponent', () => {
         let fixture: ComponentFixture<FilePreviewComponent>;
         let cmpInstance: FilePreviewComponent;
         const testFiles: UploadFiles[] = [
@@ -163,7 +163,15 @@ describe('app/polar/upload/file-preview.component', () => {
         describe('isValidFile', () => {
             describe('getter', () => {
                 describe('mUploadFile is not set', () => {
-                    it('should return false for no upload file being set');
+                    it('should return false for no upload file being set', () => {
+                        (<any>cmpInstance).mUploadFile = null;
+                        expect(cmpInstance.isValidFile).toBeFalsy('should be false');
+                    });
+                });
+                describe('mUploadFile is set', () => {
+                    testFiles.forEach((testFile: UploadFile) => {
+                        it('should return ' + testFile.status);
+                    });
                 });
             });
         });
