@@ -17,6 +17,7 @@ import {
 
 import * as sinon from 'sinon';
 import { FileUploadProgressComponent } from './file-upload-progress.component';
+import { By } from '@angular/platform-browser';
 @Injectable()
 class TestUploadDataService {
     public update(): void {
@@ -40,6 +41,8 @@ class TestParentComponent {
 class TestMatProgressBarComponent {
     @Input()
     public mode: 'determinate' | 'indeterminate' | 'buffer' | 'query';
+    @Input()
+    public value: number;
 }
 
 describe('app/polar/upload/file-upload-progress.component', () => {
@@ -72,6 +75,13 @@ describe('app/polar/upload/file-upload-progress.component', () => {
         }, {
             key: 'testFile12.json',
             totalBytes: 29929,
+            currentBytes: 291,
+            filename: 'testFile12.json',
+            lengthComputable: true,
+            status: UploadFileStatus.LOADING
+        }, {
+            key: 'testFile12.json',
+            totalBytes: 0,
             currentBytes: 291,
             filename: 'testFile12.json',
             lengthComputable: true,
@@ -183,6 +193,56 @@ describe('app/polar/upload/file-upload-progress.component', () => {
                     it('should return buffer', () => {
                         (<any>cmpInstance).mUploadFile = null;
                         expect(cmpInstance.totalProgress).toEqual(0);
+                    });
+                });
+            });
+        });
+        describe('progressBarValue', () => {
+            describe('getter', () => {
+                describe('mUploadFile is set', () => {
+                    testFiles.forEach((testFile) => {
+                        if (testFile.status === UploadFileStatus.LOADING &&
+                            testFile.lengthComputable === true &&
+                            testFile.totalBytes > 0) {
+                            const testValue: number = 100 * testFile.currentBytes / testFile.totalBytes;
+                            it('should return ' + testValue, () => {
+                                (<any>cmpInstance).mUploadFile = testFile;
+                                expect(cmpInstance.progressBarValue).toEqual(testValue);
+                            });
+                        } else {
+                            it('should return 0', () => {
+                                (<any>cmpInstance).mUploadFile = testFile;
+                                expect(cmpInstance.progressBarValue).toEqual(0);
+                            });
+                        }
+                    });
+                });
+                describe('mUploadFile is not set', () => {
+                    it('should return buffer', () => {
+                        (<any>cmpInstance).mUploadFile = null;
+                        expect(cmpInstance.progressBarValue).toEqual(0);
+                    });
+                });
+            });
+        });
+        describe('layout', () => {
+            let progressCmp: TestMatProgressBarComponent;
+            describe('set properties correcly on progress bar component', () => {
+                beforeEach(() => {
+                    progressCmp = fixture.debugElement.query(By.directive(TestMatProgressBarComponent)).componentInstance;
+                });
+                testFiles.forEach((testFile) => {
+                    it('should set the correct mode', () => {
+                        (<any>cmpInstance).mUploadFile = testFile;
+                        fixture.detectChanges();
+                        expect(progressCmp.mode).toEqual(cmpInstance.progressBarMode);
+                    });
+                });
+                testFiles.forEach((testFile) => {
+                    it('should set the correct value', () => {
+                        (<any>cmpInstance).mUploadFile = testFile;
+                        fixture.detectChanges();
+                        expect(progressCmp.value).toEqual(cmpInstance.progressBarValue);
                     });
                 });
             });
