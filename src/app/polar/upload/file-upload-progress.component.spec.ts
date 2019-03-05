@@ -239,7 +239,8 @@ describe('app/polar/upload/file-upload-progress.component', () => {
                 let progressCmp: TestMatProgressBarComponent;
                 describe('set properties correcly on progress bar component', () => {
                     beforeEach(() => {
-                        progressCmp = fixture.debugElement.query(By.directive(TestMatProgressBarComponent)).componentInstance;
+                        progressCmp = fixture.debugElement
+                        .query(By.directive(TestMatProgressBarComponent)).componentInstance;
                     });
                     testFiles.forEach((testFile) => {
                         it('should set the correct mode', () => {
@@ -263,7 +264,8 @@ describe('app/polar/upload/file-upload-progress.component', () => {
                 beforeEach(() => {
                     parentFixture = TestBed.createComponent(TestParentComponent);
                     parentCmpInstance = parentFixture.debugElement.componentInstance;
-                    cmpInstance = parentFixture.debugElement.query(By.directive(FileUploadProgressComponent)).componentInstance;
+                    cmpInstance = parentFixture.debugElement
+                    .query(By.directive(FileUploadProgressComponent)).componentInstance;
                 });
                 it('should create the app', () => {
                     expect(parentCmpInstance).toBeTruthy();
