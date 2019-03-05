@@ -5,7 +5,9 @@ import {
     MatGridListModule,
     MatIconModule,
     MatSlideToggleModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatProgressBar,
+    MatProgressBarModule
 } from '@angular/material';
 
 import { PolarRoutingModule } from './polar-routing.module';
@@ -38,10 +40,10 @@ import { FileUploadProgressComponent } from './upload/file-upload-progress.compo
         MatGridListModule,
         MatIconModule,
         MatSlideToggleModule,
-        MatExpansionModule
+        MatExpansionModule,
+        MatProgressBarModule
     ],
     providers: [
-        UploadDataService,
         AnalyzeDataService
     ]
 })
