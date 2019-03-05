@@ -1,34 +1,25 @@
 import {
     TestBed,
     async,
-    ComponentFixture,
-    fakeAsync
+    ComponentFixture
 } from '@angular/core/testing';
-import { MatCheckboxChange } from '@angular/material';
 import {
     Injectable,
     Component,
-    DebugElement,
-    Output,
-    EventEmitter,
     Input
 } from '@angular/core';
 import {
     UploadDataService,
     UploadFile,
-    UploadFileType,
     UploadFiles,
     UploadFileStatus,
-    UploadFileResult,
-    UploadFileProgress,
-    UploadFileResults,
     UploadFileError
 } from '../services';
 
 import * as sinon from 'sinon';
 import { By } from '@angular/platform-browser';
-import { ValidationError } from 'jsonschema';
 import { FileUploadErrorComponent } from './file-upload-error.component';
+import { ValidationError } from 'jsonschema';
 @Injectable()
 class TestUploadDataService {
     public update(): void {
@@ -46,20 +37,14 @@ class TestParentComponent {
 }
 @Component({
     // tslint:disable-next-line
-    selector: 'mat-slide-toggle',
+    selector: 'mat-progress-bar',
     template: '<div></div>'
 })
-class TestSlideToggleComponent {
-    @Output()
-    public change: EventEmitter<MatCheckboxChange> = new EventEmitter();
-
+class TestMatProgressBarComponent {
     @Input()
-    public checked: boolean;
-
+    public mode: 'determinate' | 'indeterminate' | 'buffer' | 'query';
     @Input()
-    public disabled: boolean;
-    @Input()
-    public labelPosition: string;
+    public value: number;
 }
 
 describe('app/polar/upload/file-upload-error.component', () => {
@@ -86,33 +71,75 @@ describe('app/polar/upload/file-upload-error.component', () => {
                 declarations: [
                     FileUploadErrorComponent,
                     TestParentComponent,
-                    TestSlideToggleComponent
+                    TestMatProgressBarComponent
                 ],
                 providers: [
                     { provide: UploadDataService, useValue: new TestUploadDataService() }
                 ]
             }).compileComponents();
         }));
-        beforeEach(() => {
-            fixture = TestBed.createComponent(FileUploadErrorComponent);
-            cmpInstance = fixture.debugElement.componentInstance;
-        });
-        it('should create the app', () => {
-            expect(cmpInstance).toBeTruthy();
-        });
         beforeAll(() => { sandbox = sinon.createSandbox(); });
         afterEach(() => { sandbox.restore(); });
-        describe('isValidFile', () => {
-            describe('getter', () => {
-                describe('mUploadFile is not set', () => {
-                    it('should return false for no upload file being set', () => {
-                        (<any>cmpInstance).mUploadFile = null;
-                        expect(true).toBeTruthy();
+        describe('methods and properties', () => {
+            beforeEach(() => {
+                fixture = TestBed.createComponent(FileUploadErrorComponent);
+                cmpInstance = fixture.debugElement.componentInstance;
+            });
+            it('should create the app', () => {
+                expect(cmpInstance).toBeTruthy();
+            });
+            describe('isValidationError', () => {
+                describe('getter', () => {
+                    describe('mUploadFile is set', () => {
+                        testFiles.forEach((testFile) => {
+                            const testValue: boolean = testFile.error instanceof ValidationError;
+                            it('should return ' + testValue, () => {
+                                (<any>cmpInstance).mUploadFile = testFile;
+                                expect(cmpInstance.isValidationError).toEqual(testValue);
+                            });
+                        });
+                    });
+                    describe('mUploadFile is not set', () => {
+                        it('should return buffer', () => {
+                            (<any>cmpInstance).mUploadFile = null;
+                            expect(cmpInstance.isValidationError).toBeFalsy;
+                        });
                     });
                 });
-                describe('mUploadFile is set', () => {
-                    testFiles.forEach((testFile: UploadFile) => {
-                        it('should run');
+            });
+        });
+        describe('layout', () => {
+            describe('child components', () => {
+                beforeEach(() => {
+                    fixture = TestBed.createComponent(FileUploadErrorComponent);
+                    cmpInstance = fixture.debugElement.componentInstance;
+                });
+                it('should create the app', () => {
+                    expect(cmpInstance).toBeTruthy();
+                });
+                let progressCmp: TestMatProgressBarComponent;
+                it('should set the correct value');
+            });
+            describe('inputs of FileUploadErrorComponent', () => {
+                let parentFixture: ComponentFixture<TestParentComponent>;
+                let parentCmpInstance: TestParentComponent;
+                beforeEach(() => {
+                    parentFixture = TestBed.createComponent(TestParentComponent);
+                    parentCmpInstance = parentFixture.debugElement.componentInstance;
+                    cmpInstance = parentFixture.debugElement
+                        .query(By.directive(FileUploadErrorComponent)).componentInstance;
+                });
+                it('should create the app', () => {
+                    expect(parentCmpInstance).toBeTruthy();
+                    expect(cmpInstance).toBeTruthy();
+                });
+                describe('set the correct uploadFile instance', () => {
+                    testFiles.forEach((testFile) => {
+                        it('should set the correct mode', () => {
+                            parentCmpInstance.testFile = testFile;
+                            parentFixture.detectChanges();
+                            expect((<any>cmpInstance).mUploadFile).toEqual(testFile);
+                        });
                     });
                 });
             });
