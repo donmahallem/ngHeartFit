@@ -102,147 +102,180 @@ describe('app/polar/upload/file-upload-progress.component', () => {
                 ]
             }).compileComponents();
         }));
-        beforeEach(() => {
-            fixture = TestBed.createComponent(FileUploadProgressComponent);
-            cmpInstance = fixture.debugElement.componentInstance;
-        });
-        it('should create the app', () => {
-            expect(cmpInstance).toBeTruthy();
-        });
         beforeAll(() => { sandbox = sinon.createSandbox(); });
         afterEach(() => { sandbox.restore(); });
-        describe('progressBarMode', () => {
-            describe('getter', () => {
-                describe('mUploadFile is set', () => {
-                    testFiles.forEach((testFile) => {
-                        let expectedValue: 'determinate' | 'indeterminate' | 'buffer' | 'query' = 'buffer';
-                        switch (testFile.status) {
-                            case UploadFileStatus.INITIALIZING:
-                                expectedValue = 'query';
-                                break;
-                            case UploadFileStatus.LOADED:
-                            case UploadFileStatus.ERROR:
-                                // already set
-                                break;
-                            case UploadFileStatus.LOADING:
-                                if (testFile.lengthComputable === true) {
-                                    expectedValue = 'determinate';
-                                } else {
-                                    expectedValue = 'indeterminate';
-                                }
-                                break;
+        describe('methods and properties', () => {
+            beforeEach(() => {
+                fixture = TestBed.createComponent(FileUploadProgressComponent);
+                cmpInstance = fixture.debugElement.componentInstance;
+            });
+            it('should create the app', () => {
+                expect(cmpInstance).toBeTruthy();
+            });
+            describe('progressBarMode', () => {
+                describe('getter', () => {
+                    describe('mUploadFile is set', () => {
+                        testFiles.forEach((testFile) => {
+                            let expectedValue: 'determinate' | 'indeterminate' | 'buffer' | 'query' = 'buffer';
+                            switch (testFile.status) {
+                                case UploadFileStatus.INITIALIZING:
+                                    expectedValue = 'query';
+                                    break;
+                                case UploadFileStatus.LOADED:
+                                case UploadFileStatus.ERROR:
+                                    // already set
+                                    break;
+                                case UploadFileStatus.LOADING:
+                                    if (testFile.lengthComputable === true) {
+                                        expectedValue = 'determinate';
+                                    } else {
+                                        expectedValue = 'indeterminate';
+                                    }
+                                    break;
 
-                        }
-                        it('should return ' + expectedValue, () => {
-                            (<any>cmpInstance).mUploadFile = testFile;
-                            expect(cmpInstance.progressBarMode).toEqual(expectedValue);
+                            }
+                            it('should return ' + expectedValue, () => {
+                                (<any>cmpInstance).mUploadFile = testFile;
+                                expect(cmpInstance.progressBarMode).toEqual(expectedValue);
+                            });
+                        });
+                    });
+                    describe('mUploadFile is not set', () => {
+                        it('should return buffer', () => {
+                            (<any>cmpInstance).mUploadFile = null;
+                            expect(cmpInstance.progressBarMode).toEqual('buffer');
                         });
                     });
                 });
-                describe('mUploadFile is not set', () => {
-                    it('should return buffer', () => {
-                        (<any>cmpInstance).mUploadFile = null;
-                        expect(cmpInstance.progressBarMode).toEqual('buffer');
+            });
+            describe('currentProgress', () => {
+                describe('getter', () => {
+                    describe('mUploadFile is set', () => {
+                        testFiles.forEach((testFile) => {
+                            if (testFile.status === UploadFileStatus.LOADING && testFile.lengthComputable === true) {
+                                it('should return ' + testFile.currentBytes, () => {
+                                    (<any>cmpInstance).mUploadFile = testFile;
+                                    expect(cmpInstance.currentProgress).toEqual(testFile.currentBytes);
+                                });
+                            } else {
+                                it('should return 0', () => {
+                                    (<any>cmpInstance).mUploadFile = testFile;
+                                    expect(cmpInstance.currentProgress).toEqual(0);
+                                });
+                            }
+                        });
+                    });
+                    describe('mUploadFile is not set', () => {
+                        it('should return buffer', () => {
+                            (<any>cmpInstance).mUploadFile = null;
+                            expect(cmpInstance.currentProgress).toEqual(0);
+                        });
                     });
                 });
             });
-        });
-        describe('currentProgress', () => {
-            describe('getter', () => {
-                describe('mUploadFile is set', () => {
-                    testFiles.forEach((testFile) => {
-                        if (testFile.status === UploadFileStatus.LOADING && testFile.lengthComputable === true) {
-                            it('should return ' + testFile.currentBytes, () => {
-                                (<any>cmpInstance).mUploadFile = testFile;
-                                expect(cmpInstance.currentProgress).toEqual(testFile.currentBytes);
-                            });
-                        } else {
-                            it('should return 0', () => {
-                                (<any>cmpInstance).mUploadFile = testFile;
-                                expect(cmpInstance.currentProgress).toEqual(0);
-                            });
-                        }
+            describe('totalProgress', () => {
+                describe('getter', () => {
+                    describe('mUploadFile is set', () => {
+                        testFiles.forEach((testFile) => {
+                            if (testFile.status === UploadFileStatus.LOADING && testFile.lengthComputable === true) {
+                                it('should return ' + testFile.totalBytes, () => {
+                                    (<any>cmpInstance).mUploadFile = testFile;
+                                    expect(cmpInstance.totalProgress).toEqual(testFile.totalBytes);
+                                });
+                            } else {
+                                it('should return 0', () => {
+                                    (<any>cmpInstance).mUploadFile = testFile;
+                                    expect(cmpInstance.totalProgress).toEqual(0);
+                                });
+                            }
+                        });
                     });
-                });
-                describe('mUploadFile is not set', () => {
-                    it('should return buffer', () => {
-                        (<any>cmpInstance).mUploadFile = null;
-                        expect(cmpInstance.currentProgress).toEqual(0);
-                    });
-                });
-            });
-        });
-        describe('totalProgress', () => {
-            describe('getter', () => {
-                describe('mUploadFile is set', () => {
-                    testFiles.forEach((testFile) => {
-                        if (testFile.status === UploadFileStatus.LOADING && testFile.lengthComputable === true) {
-                            it('should return ' + testFile.totalBytes, () => {
-                                (<any>cmpInstance).mUploadFile = testFile;
-                                expect(cmpInstance.totalProgress).toEqual(testFile.totalBytes);
-                            });
-                        } else {
-                            it('should return 0', () => {
-                                (<any>cmpInstance).mUploadFile = testFile;
-                                expect(cmpInstance.totalProgress).toEqual(0);
-                            });
-                        }
-                    });
-                });
-                describe('mUploadFile is not set', () => {
-                    it('should return buffer', () => {
-                        (<any>cmpInstance).mUploadFile = null;
-                        expect(cmpInstance.totalProgress).toEqual(0);
+                    describe('mUploadFile is not set', () => {
+                        it('should return buffer', () => {
+                            (<any>cmpInstance).mUploadFile = null;
+                            expect(cmpInstance.totalProgress).toEqual(0);
+                        });
                     });
                 });
             });
-        });
-        describe('progressBarValue', () => {
-            describe('getter', () => {
-                describe('mUploadFile is set', () => {
-                    testFiles.forEach((testFile) => {
-                        if (testFile.status === UploadFileStatus.LOADING &&
-                            testFile.lengthComputable === true &&
-                            testFile.totalBytes > 0) {
-                            const testValue: number = 100 * testFile.currentBytes / testFile.totalBytes;
-                            it('should return ' + testValue, () => {
-                                (<any>cmpInstance).mUploadFile = testFile;
-                                expect(cmpInstance.progressBarValue).toEqual(testValue);
-                            });
-                        } else {
-                            it('should return 0', () => {
-                                (<any>cmpInstance).mUploadFile = testFile;
-                                expect(cmpInstance.progressBarValue).toEqual(0);
-                            });
-                        }
+            describe('progressBarValue', () => {
+                describe('getter', () => {
+                    describe('mUploadFile is set', () => {
+                        testFiles.forEach((testFile) => {
+                            if (testFile.status === UploadFileStatus.LOADING &&
+                                testFile.lengthComputable === true &&
+                                testFile.totalBytes > 0) {
+                                const testValue: number = 100 * testFile.currentBytes / testFile.totalBytes;
+                                it('should return ' + testValue, () => {
+                                    (<any>cmpInstance).mUploadFile = testFile;
+                                    expect(cmpInstance.progressBarValue).toEqual(testValue);
+                                });
+                            } else {
+                                it('should return 0', () => {
+                                    (<any>cmpInstance).mUploadFile = testFile;
+                                    expect(cmpInstance.progressBarValue).toEqual(0);
+                                });
+                            }
+                        });
                     });
-                });
-                describe('mUploadFile is not set', () => {
-                    it('should return buffer', () => {
-                        (<any>cmpInstance).mUploadFile = null;
-                        expect(cmpInstance.progressBarValue).toEqual(0);
+                    describe('mUploadFile is not set', () => {
+                        it('should return buffer', () => {
+                            (<any>cmpInstance).mUploadFile = null;
+                            expect(cmpInstance.progressBarValue).toEqual(0);
+                        });
                     });
                 });
             });
         });
         describe('layout', () => {
-            let progressCmp: TestMatProgressBarComponent;
-            describe('set properties correcly on progress bar component', () => {
+            describe('child components', () => {
                 beforeEach(() => {
-                    progressCmp = fixture.debugElement.query(By.directive(TestMatProgressBarComponent)).componentInstance;
+                    fixture = TestBed.createComponent(FileUploadProgressComponent);
+                    cmpInstance = fixture.debugElement.componentInstance;
                 });
-                testFiles.forEach((testFile) => {
-                    it('should set the correct mode', () => {
-                        (<any>cmpInstance).mUploadFile = testFile;
-                        fixture.detectChanges();
-                        expect(progressCmp.mode).toEqual(cmpInstance.progressBarMode);
+                it('should create the app', () => {
+                    expect(cmpInstance).toBeTruthy();
+                });
+                let progressCmp: TestMatProgressBarComponent;
+                describe('set properties correcly on progress bar component', () => {
+                    beforeEach(() => {
+                        progressCmp = fixture.debugElement.query(By.directive(TestMatProgressBarComponent)).componentInstance;
+                    });
+                    testFiles.forEach((testFile) => {
+                        it('should set the correct mode', () => {
+                            (<any>cmpInstance).mUploadFile = testFile;
+                            fixture.detectChanges();
+                            expect(progressCmp.mode).toEqual(cmpInstance.progressBarMode);
+                        });
+                    });
+                    testFiles.forEach((testFile) => {
+                        it('should set the correct value', () => {
+                            (<any>cmpInstance).mUploadFile = testFile;
+                            fixture.detectChanges();
+                            expect(progressCmp.value).toEqual(cmpInstance.progressBarValue);
+                        });
                     });
                 });
-                testFiles.forEach((testFile) => {
-                    it('should set the correct value', () => {
-                        (<any>cmpInstance).mUploadFile = testFile;
-                        fixture.detectChanges();
-                        expect(progressCmp.value).toEqual(cmpInstance.progressBarValue);
+            });
+            describe('inputs of FileUploadProgressComponent', () => {
+                let parentFixture: ComponentFixture<TestParentComponent>;
+                let parentCmpInstance: TestParentComponent;
+                beforeEach(() => {
+                    parentFixture = TestBed.createComponent(TestParentComponent);
+                    parentCmpInstance = parentFixture.debugElement.componentInstance;
+                    cmpInstance = parentFixture.debugElement.query(By.directive(FileUploadProgressComponent)).componentInstance;
+                });
+                it('should create the app', () => {
+                    expect(parentCmpInstance).toBeTruthy();
+                    expect(cmpInstance).toBeTruthy();
+                });
+                describe('set the correct uploadFile instance', () => {
+                    testFiles.forEach((testFile) => {
+                        it('should set the correct mode', () => {
+                            parentCmpInstance.testFile = testFile;
+                            parentFixture.detectChanges();
+                            expect((<any>cmpInstance).mUploadFile).toEqual(testFile);
+                        });
                     });
                 });
             });
