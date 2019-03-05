@@ -5,8 +5,8 @@ import {
     Output,
     ViewChild
 } from '@angular/core';
-import { UploadFile, UploadDataService, UploadFileStatus, UploadFiles, UploadFileResult, UploadFileResults, UploadFileProgress } from '../services';
-import { MatCheckboxChange, MatSlideToggle } from '@angular/material';
+import { UploadFile, UploadDataService, UploadFileStatus, UploadFiles, UploadFileResult, UploadFileResults, UploadFileProgress, UploadFileInitializing } from '../services';
+import { MatCheckboxChange, MatSlideToggle, MatProgressBar } from '@angular/material';
 
 @Component({
     selector: 'app-file-upload-progress',
@@ -15,16 +15,49 @@ import { MatCheckboxChange, MatSlideToggle } from '@angular/material';
 })
 export class FileUploadProgressComponent {
     constructor() { }
-    private mUploadFile: UploadFileProgress;
+    private mUploadFile: UploadFileProgress | UploadFileInitializing;
 
 
     @Input('uploadFile')
-    public set uploadFile(upload: UploadFileProgress) {
+    public set uploadFile(upload: UploadFileProgress | UploadFileInitializing) {
         this.mUploadFile = upload;
     }
 
 
-    public get uploadFile(): UploadFileProgress {
+    public get uploadFile(): UploadFileProgress | UploadFileInitializing {
         return this.mUploadFile;
+    }
+
+    public get currentProgress(): number {
+        if (this.mUploadFile &&
+            this.mUploadFile.status === UploadFileStatus.LOADING &&
+            this.mUploadFile.lengthComputable === true) {
+            return this.mUploadFile.currentBytes;
+        }
+        return 0;
+    }
+
+    public get totalProgress(): number {
+        if (this.mUploadFile &&
+            this.mUploadFile.status === UploadFileStatus.LOADING &&
+            this.mUploadFile.lengthComputable === true) {
+            return this.mUploadFile.totalBytes;
+        }
+        return 0;
+    }
+
+    public get progressBarMode(): 'determinate' | 'indeterminate' | 'buffer' | 'query' {
+        if (this.mUploadFile) {
+            if (this.mUploadFile.status === UploadFileStatus.INITIALIZING) {
+                return 'query';
+            } else if (this.mUploadFile.status === UploadFileStatus.LOADING) {
+                if (this.mUploadFile.lengthComputable === true) {
+                    return 'determinate';
+                } else {
+                    return 'indeterminate';
+                }
+            }
+        }
+        return 'buffer'
     }
 }

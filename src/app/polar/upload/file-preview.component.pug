@@ -1,4 +1,4 @@
 mat-slide-toggle([checked]="isSelected",[disabled]="!isValidFile",labelPosition="after",(change)="onChangeSelection($event)")
 h3 {{uploadFile?.filename}}
-app-file-upload-progress(*ngIf="uploadFile?.status===2")
-app-file-upload-error(*ngIf="uploadFile?.status===1")
+app-file-upload-progress(*ngIf="isFileProcessing")
+app-file-upload-error(*ngIf="isFileErrored")

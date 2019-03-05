@@ -13,7 +13,7 @@ import { MatCheckboxChange, MatSlideToggle } from '@angular/material';
     templateUrl: './file-upload-error.component.pug',
     styleUrls: ['./file-upload-error.component.scss']
 })
-export class FilePreviewComponent {
+export class FileUploadErrorComponent {
     constructor() { }
     private mUploadFile: UploadFileError;
 

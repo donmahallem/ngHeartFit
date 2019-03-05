@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { FlowApiValidator } from '@donmahallem/flow-api-types';
 import { ValidatorResult, ValidationError } from 'jsonschema';
-import { FileUtil, FileLoadEvents, FileLoadEventType } from 'src/app/util';
+import { FileUtil, FileLoadEvents, FileLoadEventType, FileLoadResultEvent } from 'src/app/util';
 
 @Injectable()
 class TestUploadDataService {
@@ -98,7 +98,7 @@ describe('app/polar/upload/upload.component', () => {
 
         describe('createConvertUploadFileAndCheckValidity()', () => {
             let validatorStub: sinon.SinonStub;
-            const testEvents: FileLoadEvents<any>[] = [{
+            const testEvents: FileLoadEvents<string>[] = [{
                 key: 'testkey',
                 type: FileLoadEventType.START
             }, {
@@ -136,7 +136,8 @@ describe('app/polar/upload/upload.component', () => {
                             result: {
                                 type: UploadFileType.DAY_SUMMARY,
                                 data: (<any>testEvents[2]).result
-                            }
+                            },
+                            filesize: (<FileLoadResultEvent<string>>testEvents[2]).filesize
                         });
                         done();
                     });
@@ -218,34 +219,7 @@ describe('app/polar/upload/upload.component', () => {
                     return map(convertValidityInnerStub);
                 });
             });
-            it('should test fine', (done) => {
-                const testData: HTMLInputElement = <any>{
-                    files: [
-                        { test: 1 },
-                        { test: 2 },
-                        null,
-                        { test: 3 }
-                    ]
-                };
-                const observable: Observable<FileLoadEvents<any>> = cmpInstance.validateFiles(testData);
-                expect(uploadDataServiceClearStub.callCount).toEqual(1, 'the database should be cleared before new data is added');
-                observable
-                    .subscribe(nextSpy, done, () => {
-                        expect(nextSpy.callCount).toEqual(3, 'the observable should create three results');
-                        expect(convertValidityInnerStub.callCount).toEqual(3, 'the inner map should be called three times');
-                        expect(convertValidityStub.callCount).toEqual(1);
-                        expect(nextSpy.getCall(0).args).toEqual([{
-                            inp: testData.files[0]
-                        }]);
-                        expect(nextSpy.getCall(1).args).toEqual([{
-                            inp: testData.files[1]
-                        }]);
-                        expect(nextSpy.getCall(2).args).toEqual([{
-                            inp: testData.files[3]
-                        }]);
-                        done();
-                    });
-            });
+            it('should test fine');
         });
     });
 });

@@ -36,12 +36,29 @@ class TestUploadDataService {
 
 
 @Component({
+    selector: 'app-file-upload-error',
+    template: '<div></div>'
+})
+class TestFileUploadErrorComponent {
+    public testFile: UploadFile;
+}
+
+@Component({
+    selector: 'app-file-upload-progress',
+    template: '<div></div>'
+})
+class TestFileUploadProgressComponent {
+    public testFile: UploadFile;
+}
+
+@Component({
     selector: 'app-test-parent',
     template: '<app-file-preview [uploadFile]="testFile"></app-file-preview>'
 })
 class TestParentComponent {
     public testFile: UploadFile;
 }
+
 @Component({
     // tslint:disable-next-line
     selector: 'mat-slide-toggle',
@@ -144,7 +161,9 @@ describe('app/polar/upload/file-preview.component', () => {
                 declarations: [
                     FilePreviewComponent,
                     TestParentComponent,
-                    TestSlideToggleComponent
+                    TestSlideToggleComponent,
+                    TestFileUploadProgressComponent,
+                    TestFileUploadErrorComponent
                 ],
                 providers: [
                     { provide: UploadDataService, useValue: new TestUploadDataService() }

@@ -38,4 +38,15 @@ export class FilePreviewComponent {
     public get uploadFile(): UploadFiles {
         return this.mUploadFile;
     }
+
+    public get isFileLoaded(): boolean {
+        return this.mUploadFile.status === UploadFileStatus.LOADED;
+    }
+    public get isFileErrored(): boolean {
+        return this.mUploadFile.status === UploadFileStatus.ERROR;
+    }
+    public get isFileProcessing(): boolean {
+        return this.mUploadFile.status === UploadFileStatus.LOADING ||
+            this.mUploadFile.status === UploadFileStatus.INITIALIZING;
+    }
 }
