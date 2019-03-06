@@ -40,7 +40,8 @@ class TestUploadDataService {
     template: '<div></div>'
 })
 class TestFileUploadErrorComponent {
-    public testFile: UploadFile;
+    @Input()
+    public uploadFile: UploadFile;
 }
 
 @Component({
@@ -48,7 +49,16 @@ class TestFileUploadErrorComponent {
     template: '<div></div>'
 })
 class TestFileUploadProgressComponent {
-    public testFile: UploadFile;
+    @Input()
+    public uploadFile: UploadFile;
+}
+@Component({
+    selector: 'app-file-upload-loaded',
+    template: '<div></div>'
+})
+class TestFileUploadLoadedComponent {
+    @Input()
+    public uploadFile: UploadFile;
 }
 
 @Component({
@@ -163,7 +173,8 @@ describe('app/polar/upload/file-preview.component', () => {
                     TestParentComponent,
                     TestSlideToggleComponent,
                     TestFileUploadProgressComponent,
-                    TestFileUploadErrorComponent
+                    TestFileUploadErrorComponent,
+                    TestFileUploadLoadedComponent
                 ],
                 providers: [
                     { provide: UploadDataService, useValue: new TestUploadDataService() }

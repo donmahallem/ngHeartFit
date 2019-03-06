@@ -46,6 +46,13 @@ class TestMatSlideToggleComponent {
     @Input()
     public checked: boolean;
 }
+@Component({
+    // tslint:disable-next-line
+    selector: 'mat-icon',
+    template: '<div></div>'
+})
+class TestMatIconComponent {
+}
 
 describe('app/polar/upload/file-upload-loaded.component', () => {
     let sandbox: sinon.SinonSandbox;
@@ -85,6 +92,14 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
                 type: UploadFileType.SLEEP_DATA,
                 selected: true,
                 status: UploadFileStatus.LOADED
+            }, {
+                key: 'testFile06.json',
+                filename: 'testFile06.json',
+                data: <any>'test data to do some stuff two',
+                filesize: 8452,
+                type: null,
+                selected: true,
+                status: UploadFileStatus.LOADED
             }
         ];
         beforeEach(async(() => {
@@ -94,7 +109,8 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
                 declarations: [
                     FileUploadLoadedComponent,
                     TestParentComponent,
-                    TestMatSlideToggleComponent
+                    TestMatSlideToggleComponent,
+                    TestMatIconComponent
                 ],
                 providers: [
                     { provide: UploadDataService, useValue: new TestUploadDataService() }
@@ -133,10 +149,17 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
                 describe('getter', () => {
                     describe('mUploadFile is set', () => {
                         testFiles.forEach((testFile) => {
-                            it('should return ' + testFile.type, () => {
-                                (<any>cmpInstance).mUploadFile = testFile;
-                                expect(cmpInstance.type).toEqual(testFile.type);
-                            });
+                            if (testFile.type) {
+                                it('should return ' + testFile.type, () => {
+                                    (<any>cmpInstance).mUploadFile = testFile;
+                                    expect(cmpInstance.type).toEqual(testFile.type);
+                                });
+                            } else {
+                                it('should return UploadFileType.UNKNOWN', () => {
+                                    (<any>cmpInstance).mUploadFile = testFile;
+                                    expect(cmpInstance.type).toEqual(UploadFileType.UNKNOWN);
+                                });
+                            }
                         });
                     });
                     describe('mUploadFile is not set', () => {
@@ -161,6 +184,36 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
                         it('should return false', () => {
                             (<any>cmpInstance).mUploadFile = null;
                             expect(cmpInstance.selected).toEqual(false);
+                        });
+                    });
+                });
+            });
+            describe('typeIcon', () => {
+                describe('getter', () => {
+                    describe('mUploadFile is set', () => {
+                        testFiles.forEach((testFile) => {
+                            if (testFile.type === UploadFileType.DAY_SUMMARY) {
+                                it('should return "favorite_border"', () => {
+                                    (<any>cmpInstance).mUploadFile = testFile;
+                                    expect(cmpInstance.typeIcon).toEqual('favorite_border');
+                                });
+                            } else if (testFile.type === UploadFileType.SLEEP_DATA) {
+                                it('should return "brightness_2"', () => {
+                                    (<any>cmpInstance).mUploadFile = testFile;
+                                    expect(cmpInstance.typeIcon).toEqual('brightness_2');
+                                });
+                            } else {
+                                it('should return "help_outline"', () => {
+                                    (<any>cmpInstance).mUploadFile = testFile;
+                                    expect(cmpInstance.typeIcon).toEqual('help_outline');
+                                });
+                            }
+                        });
+                    });
+                    describe('mUploadFile is not set', () => {
+                        it('should return false', () => {
+                            (<any>cmpInstance).mUploadFile = null;
+                            expect(cmpInstance.typeIcon).toEqual('help_outline');
                         });
                     });
                 });

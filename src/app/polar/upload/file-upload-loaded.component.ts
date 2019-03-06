@@ -28,7 +28,7 @@ export class FileUploadLoadedComponent extends FileUploadBaseComponent<UploadFil
     }
 
     public get type(): UploadFileType {
-        if (this.mUploadFile) {
+        if (this.mUploadFile && this.mUploadFile.type) {
             return this.mUploadFile.type;
         }
         return UploadFileType.UNKNOWN;
@@ -39,6 +39,18 @@ export class FileUploadLoadedComponent extends FileUploadBaseComponent<UploadFil
             return this.mUploadFile.selected !== false;
         }
         return false;
+    }
+
+    public get typeIcon(): string {
+        if (this.mUploadFile) {
+            switch (this.type) {
+                case UploadFileType.DAY_SUMMARY:
+                    return 'favorite_border';
+                case UploadFileType.SLEEP_DATA:
+                    return 'brightness_2';
+            }
+        }
+        return 'help_outline'
     }
 
     public onCheckChange(ev: MatSlideToggleChange): void {
