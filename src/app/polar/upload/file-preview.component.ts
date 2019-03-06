@@ -9,6 +9,7 @@ import { UploadFile, UploadDataService, UploadFileStatus, UploadFiles, UploadFil
 import { MatCheckboxChange, MatSlideToggle } from '@angular/material';
 import { FileUploadErrorComponent } from './file-upload-error.component';
 import { FileUploadProgressComponent } from './file-upload-progress.component';
+import { FileUploadBaseComponent } from './file-upload-base.component';
 
 @Component({
     selector: 'app-file-preview',
@@ -19,24 +20,16 @@ import { FileUploadProgressComponent } from './file-upload-progress.component';
         FileUploadProgressComponent
     ]
 })
-export class FilePreviewComponent {
-    constructor(private uploadDataService: UploadDataService) { }
-    private mUploadFile: UploadFiles;
+export class FilePreviewComponent extends FileUploadBaseComponent<UploadFiles>{
+    constructor(private uploadDataService: UploadDataService) {
+        super();
+    }
 
     public get filename(): string {
         if (this.mUploadFile && this.mUploadFile.filename) {
             return this.mUploadFile.filename;
         }
         return 'Unknown';
-    }
-
-    @Input('uploadFile')
-    public set uploadFile(upload: UploadFiles) {
-        this.mUploadFile = upload;
-    }
-
-    public get uploadFile(): UploadFiles {
-        return this.mUploadFile;
     }
 
     public get isFileLoaded(): boolean {

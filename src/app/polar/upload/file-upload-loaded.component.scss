@@ -1,0 +1,34 @@
+:host {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: stretch;
+}
+
+div.content{
+    display:flex;
+    flex-direction:column;
+    align-items: stretch;
+    padding-left:20px;
+    flex: 1;
+}
+div.title-bar h3.filename{
+    float:left;
+}
+
+div.title-bar span.right-title{
+    float:right;
+}
+
+span.filesize {
+    font-family: monospace;
+    font-style: italic;
+}
+
+h3.filename {
+    font-size: 16px;
+}
+
+div.errors h4{
+    color:red;
+}

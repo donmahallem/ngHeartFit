@@ -6,7 +6,7 @@ import {
     ViewChild
 } from '@angular/core';
 import { UploadFile, UploadDataService, UploadFileStatus, UploadFiles, UploadFileResult, UploadFileResults, UploadFileProgress, UploadFileError, UploadFileType } from '../services';
-import { MatCheckboxChange, MatSlideToggle } from '@angular/material';
+import { MatCheckboxChange, MatSlideToggle, MatSlideToggleChange } from '@angular/material';
 import { FileUploadBaseComponent } from './file-upload-base.component';
 import { ValidationError } from 'jsonschema';
 
@@ -17,6 +17,9 @@ import { ValidationError } from 'jsonschema';
 })
 export class FileUploadLoadedComponent extends FileUploadBaseComponent<UploadFileResults> {
 
+    constructor(private uploadDataService: UploadDataService) {
+        super();
+    }
     public get filesize(): number {
         if (this.mUploadFile) {
             return this.mUploadFile.filesize;
@@ -36,5 +39,11 @@ export class FileUploadLoadedComponent extends FileUploadBaseComponent<UploadFil
             return this.mUploadFile.selected !== false;
         }
         return false;
+    }
+
+    public onCheckChange(ev: MatSlideToggleChange): void {
+        if (this.mUploadFile) {
+            this.uploadDataService.setSelected(this.mUploadFile.key, ev.checked);
+        }
     }
 }

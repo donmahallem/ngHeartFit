@@ -6,24 +6,30 @@ import { FileLoadEvents, FileLoadEventType } from 'src/app/util';
 @Injectable()
 export class UploadDataService {
     private uploadFilesSubject: BehaviorSubject<UploadFile[]> = new BehaviorSubject([]);
-    private hasUploadableFiles: BehaviorSubject<boolean> = new BehaviorSubject(false);
-    private mData: { [key: string]: UploadFile } = {};
+    private filesSelectedSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    private mData: { [key: string]: UploadFiles } = {};
     public update(): void {
-        for (const upFile of this.uploadedFiles) {
+        const lst: UploadFiles[] = [];
+        let filesSelected: boolean = false;
+        for (const key in this.mData) {
+            if (key) {
+                lst.push(this.mData[key]);
+            }
         }
-        this.hasUploadableFiles.next(false);
+        this.uploadFilesSubject.next(lst);
+        this.filesSelectedSubject.next(false);
     }
 
     public updateFile(fileEvent: UploadFiles) {
-        if (this.mData[fileEvent.key]) {
-
-        } else {
-            this.updateFile(fileEvent);
-        }
+        this.mData[fileEvent.key] = fileEvent;
+        this.update();
     }
 
     public setSelected(key: string, selected: boolean): void {
-
+        if (this.mData[key] && this.mData[key].status === UploadFileStatus.LOADED) {
+            (<any>this.mData[key]).selected = selected;
+            this.update();
+        }
     }
 
     public set uploadedFiles(files: UploadFile[]) {
@@ -38,8 +44,8 @@ export class UploadDataService {
         return this.uploadFilesSubject.asObservable();
     }
 
-    public get uploadableFilesObservable(): Observable<boolean> {
-        return this.hasUploadableFiles.asObservable();
+    public get hasSelectedFilesObservable(): Observable<boolean> {
+        return this.filesSelectedSubject.asObservable();
     }
 
     public addUploadFile(f: UploadFile): void {

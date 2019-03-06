@@ -21,6 +21,7 @@ import { FilePreviewComponent } from './upload/file-preview.component';
 import { AnalyzeDataService } from './services/analyze-data.service';
 import { FileUploadErrorComponent } from './upload/file-upload-error.component';
 import { FileUploadProgressComponent } from './upload/file-upload-progress.component';
+import { FileUploadLoadedComponent } from './upload/file-upload-loaded.component';
 
 @NgModule({
     declarations: [
@@ -30,7 +31,8 @@ import { FileUploadProgressComponent } from './upload/file-upload-progress.compo
         UploadToFitComponent,
         FilePreviewComponent,
         FileUploadErrorComponent,
-        FileUploadProgressComponent
+        FileUploadProgressComponent,
+        FileUploadLoadedComponent
     ],
     imports: [
         CommonModule,
