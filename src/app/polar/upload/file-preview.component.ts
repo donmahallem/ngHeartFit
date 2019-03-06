@@ -20,7 +20,7 @@ import { FileUploadBaseComponent } from './file-upload-base.component';
         FileUploadProgressComponent
     ]
 })
-export class FilePreviewComponent extends FileUploadBaseComponent<UploadFiles>{
+export class FilePreviewComponent extends FileUploadBaseComponent<UploadFiles> {
     constructor(private uploadDataService: UploadDataService) {
         super();
     }

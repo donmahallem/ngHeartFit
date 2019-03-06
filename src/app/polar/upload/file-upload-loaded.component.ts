@@ -50,7 +50,7 @@ export class FileUploadLoadedComponent extends FileUploadBaseComponent<UploadFil
                     return 'brightness_2';
             }
         }
-        return 'help_outline'
+        return 'help_outline';
     }
 
     public onCheckChange(ev: MatSlideToggleChange): void {

@@ -1,10 +1,10 @@
-import { Observer } from "rxjs";
-import { TypedFile, TypedFiles, UploadDataService, UploadFileStatus, UploadFileType } from "../services";
-import { FileLoadEvents, FileLoadEventType, FileLoadProgressEvent, FileLoadResultEvent, FileLoadStartEvent } from "src/app/util";
+import { Observer } from 'rxjs';
+import { TypedFile, TypedFiles, UploadDataService, UploadFileStatus, UploadFileType } from '../services';
+import { FileLoadEvents, FileLoadEventType, FileLoadProgressEvent, FileLoadResultEvent, FileLoadStartEvent } from 'src/app/util';
 
-export class FileUploadObserver implements Observer<FileLoadEvents<TypedFiles>>{
+export class FileUploadObserver implements Observer<FileLoadEvents<TypedFiles>> {
     constructor(private readonly uploadDataService: UploadDataService,
-        private readonly sourceFile: File) { };
+        private readonly sourceFile: File) { }
     public updateProgress(ev: FileLoadProgressEvent): void {
         this.uploadDataService.updateFile({
             status: UploadFileStatus.LOADING,
@@ -64,9 +64,9 @@ export class FileUploadObserver implements Observer<FileLoadEvents<TypedFiles>>{
                 this.updateInit(ev);
                 return;
             default:
-                throw new Error("Unknown File");
+                throw new Error('Unknown File');
         }
-    };
+    }
     public error(err: any) {
         this.uploadDataService
             .updateFile({
@@ -75,8 +75,8 @@ export class FileUploadObserver implements Observer<FileLoadEvents<TypedFiles>>{
                 key: this.sourceFile.name,
                 filename: this.sourceFile.name
             });
-    };
+    }
     public complete() {
 
-    };
-};
+    }
+}

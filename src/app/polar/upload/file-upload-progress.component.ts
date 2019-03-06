@@ -14,7 +14,7 @@ import { FileUploadBaseComponent } from './file-upload-base.component';
     templateUrl: './file-upload-progress.component.pug',
     styleUrls: ['./file-upload-progress.component.scss']
 })
-export class FileUploadProgressComponent extends FileUploadBaseComponent<UploadFileProgress | UploadFileInitializing>{
+export class FileUploadProgressComponent extends FileUploadBaseComponent<UploadFileProgress | UploadFileInitializing> {
 
     public get currentProgress(): number {
         if (this.mUploadFile &&
@@ -56,6 +56,6 @@ export class FileUploadProgressComponent extends FileUploadBaseComponent<UploadF
                 }
             }
         }
-        return 'buffer'
+        return 'buffer';
     }
 }

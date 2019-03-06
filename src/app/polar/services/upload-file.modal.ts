@@ -12,7 +12,7 @@ export enum UploadFileStatus {
     LOADING = 2,
     LOADED = 3,
     ERROR = 4
-};
+}
 export interface UploadFile {
     key: string;
     filename: string;

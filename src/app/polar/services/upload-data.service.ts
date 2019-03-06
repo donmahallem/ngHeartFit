@@ -10,7 +10,7 @@ export class UploadDataService {
     private mData: { [key: string]: UploadFiles } = {};
     public update(): void {
         const lst: UploadFiles[] = [];
-        let filesSelected: boolean = false;
+        const filesSelected = false;
         for (const key in this.mData) {
             if (key) {
                 lst.push(this.mData[key]);

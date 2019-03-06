@@ -55,12 +55,12 @@ describe('app/polar/upload/file-upload-error.component', () => {
         const testFiles: UploadFileError[] = [{
             key: 'testFile07.json',
             filename: 'testFile07.json',
-            error: new ValidationError("a random test error"),
+            error: new ValidationError('a random test error'),
             status: UploadFileStatus.ERROR
         }, {
             key: 'testFile08.json',
             filename: 'testFile08.json',
-            error: new Error("a random test error"),
+            error: new Error('a random test error'),
             status: UploadFileStatus.ERROR
         }
         ];
