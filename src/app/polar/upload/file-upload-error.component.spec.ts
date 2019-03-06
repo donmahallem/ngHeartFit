@@ -102,7 +102,7 @@ describe('app/polar/upload/file-upload-error.component', () => {
                     describe('mUploadFile is not set', () => {
                         it('should return buffer', () => {
                             (<any>cmpInstance).mUploadFile = null;
-                            expect(cmpInstance.isValidationError).toBeFalsy;
+                            expect(cmpInstance.isValidationError).toBeFalsy();
                         });
                     });
                 });
