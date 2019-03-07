@@ -26,6 +26,7 @@ import { FileUploadLoadedComponent } from './file-upload-loaded.component';
 class TestUploadDataService {
     public update(): void {
 
+    } public setSelected(key: string, selected: boolean): void {
     }
 }
 
@@ -59,6 +60,7 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
     describe('FileUploadLoadedComponent', () => {
         let fixture: ComponentFixture<FileUploadLoadedComponent>;
         let cmpInstance: FileUploadLoadedComponent;
+        let uploadDataService: UploadDataService;
         const testFiles: UploadFileResults[] = [
             {
                 key: 'testFile05.json',
@@ -123,6 +125,7 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
             beforeEach(() => {
                 fixture = TestBed.createComponent(FileUploadLoadedComponent);
                 cmpInstance = fixture.debugElement.componentInstance;
+                uploadDataService = fixture.debugElement.injector.get(UploadDataService);
             });
             it('should create the app', () => {
                 expect(cmpInstance).toBeTruthy();
@@ -215,6 +218,31 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
                             (<any>cmpInstance).mUploadFile = null;
                             expect(cmpInstance.typeIcon).toEqual('help_outline');
                         });
+                    });
+                });
+            });
+            describe('onCheckChange(ev: MatSlideToggleChange)', () => {
+                let setSelectedStub: sinon.SinonStub;
+                beforeEach(() => {
+                    setSelectedStub = sandbox.stub(uploadDataService, 'setSelected');
+                })
+                describe('element was checked', () => {
+                    testFiles.forEach((testFile) => {
+                        [true, false].forEach((testCheck) => {
+                            it('should call setSelected("' + testFile.key + '",' + testCheck + ')', () => {
+                                (<any>cmpInstance).mUploadFile = testFile;
+                                cmpInstance.onCheckChange(<any>{ checked: testCheck });
+                                expect(setSelectedStub.callCount).toEqual(1);
+                                expect(setSelectedStub.getCall(0).args).toEqual([testFile.key, testCheck]);
+                            });
+                        });
+                    });
+                });
+                describe('mUploadFile is not set', () => {
+                    it('should return false', () => {
+                        (<any>cmpInstance).mUploadFile = null;
+                        cmpInstance.onCheckChange(<any>{ checked: true });
+                        expect(setSelectedStub.callCount).toEqual(0);
                     });
                 });
             });
