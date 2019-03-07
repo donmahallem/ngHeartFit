@@ -190,10 +190,124 @@ describe('app/polar/upload/file-preview.component', () => {
         });
         beforeAll(() => { sandbox = sinon.createSandbox(); });
         afterEach(() => { sandbox.restore(); });
-        describe('isValidFile', () => {
-            describe('getter', () => {
-                describe('mUploadFile is not set', () => {
-                    it('should return false for no upload file being set');
+        describe('methods and properties', () => {
+            beforeEach(() => {
+                fixture = TestBed.createComponent(FilePreviewComponent);
+                cmpInstance = fixture.debugElement.componentInstance;
+            });
+            it('should create the app', () => {
+                expect(cmpInstance).toBeTruthy();
+            });
+            describe('filename', () => {
+                describe('getter', () => {
+                    describe('mUploadFile is set', () => {
+                        testFiles.forEach((testFile) => {
+                            const testValue: string = testFile.filename ? testFile.filename : 'Unknown';
+                            it('should return ' + testValue, () => {
+                                (<any>cmpInstance).mUploadFile = testFile;
+                                expect(cmpInstance.filename).toEqual(testValue);
+                            });
+                        });
+                    });
+                    describe('mUploadFile is not set', () => {
+                        it('should return "Unknown"', () => {
+                            (<any>cmpInstance).mUploadFile = null;
+                            expect(cmpInstance.filename).toEqual('Unknown');
+                        });
+                    });
+                });
+            });
+            describe('isFileLoaded', () => {
+                describe('getter', () => {
+                    describe('mUploadFile is set', () => {
+                        testFiles.forEach((testFile) => {
+                            const testValue: boolean = testFile.status === UploadFileStatus.LOADED;
+                            it('should return ' + testValue, () => {
+                                (<any>cmpInstance).mUploadFile = testFile;
+                                expect(cmpInstance.isFileLoaded).toEqual(testValue);
+                            });
+                        });
+                    });
+                    describe('mUploadFile is not set', () => {
+                        it('should return false', () => {
+                            (<any>cmpInstance).mUploadFile = null;
+                            expect(cmpInstance.isFileLoaded).toBeFalsy();
+                        });
+                    });
+                });
+            });
+            describe('isFileErrored', () => {
+                describe('getter', () => {
+                    describe('mUploadFile is set', () => {
+                        testFiles.forEach((testFile) => {
+                            const testValue: boolean = testFile.status === UploadFileStatus.ERROR;
+                            it('should return ' + testValue, () => {
+                                (<any>cmpInstance).mUploadFile = testFile;
+                                expect(cmpInstance.isFileErrored).toEqual(testValue);
+                            });
+                        });
+                    });
+                    describe('mUploadFile is not set', () => {
+                        it('should return false', () => {
+                            (<any>cmpInstance).mUploadFile = null;
+                            expect(cmpInstance.isFileErrored).toBeFalsy();
+                        });
+                    });
+                });
+            });
+            describe('isFileProcessing', () => {
+                describe('getter', () => {
+                    describe('mUploadFile is set', () => {
+                        testFiles.forEach((testFile) => {
+                            const testValue: boolean = testFile.status === UploadFileStatus.LOADING ||
+                                testFile.status === UploadFileStatus.INITIALIZING;
+                            it('should return ' + testValue, () => {
+                                (<any>cmpInstance).mUploadFile = testFile;
+                                expect(cmpInstance.isFileProcessing).toEqual(testValue);
+                            });
+                        });
+                    });
+                    describe('mUploadFile is not set', () => {
+                        it('should return false', () => {
+                            (<any>cmpInstance).mUploadFile = null;
+                            expect(cmpInstance.isFileProcessing).toBeFalsy();
+                        });
+                    });
+                });
+            });
+        });
+        describe('layout', () => {
+            describe('child components', () => {
+                beforeEach(() => {
+                    fixture = TestBed.createComponent(FilePreviewComponent);
+                    cmpInstance = fixture.debugElement.componentInstance;
+                });
+                it('should create the app', () => {
+                    expect(cmpInstance).toBeTruthy();
+                });
+                it('should set the correct value');
+            });
+            describe('inputs of FilePreviewComponent', () => {
+                let parentFixture: ComponentFixture<TestParentComponent>;
+                let parentCmpInstance: TestParentComponent;
+                beforeEach(() => {
+                    parentFixture = TestBed.createComponent(TestParentComponent);
+                    parentCmpInstance = parentFixture.debugElement.componentInstance;
+                    cmpInstance = parentFixture.debugElement
+                        .query(By.directive(FilePreviewComponent)).componentInstance;
+                });
+                it('should create the app', () => {
+                    expect(parentCmpInstance).toBeTruthy();
+                    expect(cmpInstance).toBeTruthy();
+                });
+                describe('set the correct uploadFile instance', () => {
+                    testFiles.forEach((testFile) => {
+                        it('should set the correct mode', () => {
+                            parentCmpInstance.testFile = testFile;
+                            parentFixture.detectChanges();
+                            expect((<any>cmpInstance).mUploadFile).toEqual(testFile);
+                        });
+                    });
                 });
             });
         });

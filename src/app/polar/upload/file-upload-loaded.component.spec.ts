@@ -225,7 +225,7 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
                 let setSelectedStub: sinon.SinonStub;
                 beforeEach(() => {
                     setSelectedStub = sandbox.stub(uploadDataService, 'setSelected');
-                })
+                });
                 describe('element was checked', () => {
                     testFiles.forEach((testFile) => {
                         [true, false].forEach((testCheck) => {

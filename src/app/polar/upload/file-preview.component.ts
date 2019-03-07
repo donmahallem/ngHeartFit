@@ -21,7 +21,7 @@ import { FileUploadBaseComponent } from './file-upload-base.component';
     ]
 })
 export class FilePreviewComponent extends FileUploadBaseComponent<UploadFiles> {
-    constructor(private uploadDataService: UploadDataService) {
+    constructor() {
         super();
     }
 
@@ -33,13 +33,13 @@ export class FilePreviewComponent extends FileUploadBaseComponent<UploadFiles> {
     }
 
     public get isFileLoaded(): boolean {
-        return this.mUploadFile.status === UploadFileStatus.LOADED;
+        return this.mUploadFile && this.mUploadFile.status === UploadFileStatus.LOADED;
     }
     public get isFileErrored(): boolean {
-        return this.mUploadFile.status === UploadFileStatus.ERROR;
+        return this.mUploadFile && this.mUploadFile.status === UploadFileStatus.ERROR;
     }
     public get isFileProcessing(): boolean {
-        return this.mUploadFile.status === UploadFileStatus.LOADING ||
-            this.mUploadFile.status === UploadFileStatus.INITIALIZING;
+        return this.mUploadFile && (this.mUploadFile.status === UploadFileStatus.LOADING ||
+            this.mUploadFile.status === UploadFileStatus.INITIALIZING);
     }
 }
