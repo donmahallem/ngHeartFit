@@ -1,4 +1,4 @@
-h3 {{uploadFile?.filename}}
+h3.filename {{uploadFile?.filename}}
 app-file-upload-progress(*ngIf="isFileProcessing",[uploadFile]="uploadFile")
 app-file-upload-error(*ngIf="isFileErrored",[uploadFile]="uploadFile")
 app-file-upload-loaded(*ngIf="isFileLoaded",[uploadFile]="uploadFile")

@@ -285,7 +285,19 @@ describe('app/polar/upload/file-preview.component', () => {
                 it('should create the app', () => {
                     expect(cmpInstance).toBeTruthy();
                 });
-                it('should set the correct value');
+                describe('set the filename in the layout', () => {
+                    let filenameNode: HTMLElement;
+                    beforeEach(() => {
+                        filenameNode = fixture.debugElement.query(By.css('h3.filename')).nativeElement;
+                    });
+                    testFiles.forEach((testFile) => {
+                        it('should set the correct filename "' + testFile.filename + '"', () => {
+                            (<any>cmpInstance).mUploadFile = testFile;
+                            fixture.detectChanges();
+                            expect(filenameNode.innerText).toEqual(testFile.filename);
+                        });
+                    });
+                });
             });
             describe('inputs of FilePreviewComponent', () => {
                 let parentFixture: ComponentFixture<TestParentComponent>;
