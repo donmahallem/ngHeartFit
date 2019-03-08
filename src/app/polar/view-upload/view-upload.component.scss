@@ -1,7 +1,12 @@
 :host {
-    background: blue;
     height: 100%;
     width: 100%;
+    display:flex;
+    justify-content: stretch;
+    align-content: stretch;
+    flex-direction: column;
 }
 
-weight-chart {}
+weight-chart {
+    height:300px;
+}
