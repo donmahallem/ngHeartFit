@@ -27,6 +27,7 @@ import {
 import * as sinon from 'sinon';
 import { By } from '@angular/platform-browser';
 import { ValidationError } from 'jsonschema';
+import { FileUploadErrorComponent } from './file-upload-error.component';
 @Injectable()
 class TestUploadDataService {
     public update(): void {
@@ -295,6 +296,83 @@ describe('app/polar/upload/file-preview.component', () => {
                             (<any>cmpInstance).mUploadFile = testFile;
                             fixture.detectChanges();
                             expect(filenameNode.innerText).toEqual(testFile.filename);
+                        });
+                    });
+                });
+                describe('show UploadFile details', () => {
+                    let isFileLoadedStub: sinon.SinonStub;
+                    let isFileErroredStub: sinon.SinonStub;
+                    let isFileProcessingStub: sinon.SinonStub;
+                    beforeEach(() => {
+                        isFileLoadedStub = sandbox.stub(cmpInstance, 'isFileLoaded');
+                        isFileErroredStub = sandbox.stub(cmpInstance, 'isFileErrored');
+                        isFileProcessingStub = sandbox.stub(cmpInstance, 'isFileProcessing');
+                    });
+                    [true, false].forEach((isFileLoadedResponse) => {
+                        [true, false].forEach((isFileProcessingResponse) => {
+                            [true, false].forEach((isFileErroredResponse) => {
+                                describe('isLoaded(' + isFileLoadedResponse + ') isErrored(' + isFileErroredResponse + ') isProcessing(' + isFileProcessingResponse + ')', () => {
+                                    let errorCmp: TestFileUploadErrorComponent;
+                                    let processCmp: TestFileUploadProgressComponent;
+                                    let loadedCmp: TestFileUploadLoadedComponent;
+                                    beforeEach(() => {
+                                        isFileLoadedStub.get(() => isFileLoadedResponse);
+                                        isFileErroredStub.get(() => isFileErroredResponse);
+                                        isFileProcessingStub.get(() => isFileProcessingResponse);
+                                        (<any>cmpInstance).mUploadFile = testFiles[0];
+                                        fixture.detectChanges();
+                                        const errorDebugElement: DebugElement = fixture.debugElement
+                                            .query(By.directive(TestFileUploadErrorComponent));
+                                        errorCmp = errorDebugElement ? errorDebugElement.componentInstance : null;
+                                        const loadedDebugElement: DebugElement = fixture.debugElement
+                                            .query(By.directive(TestFileUploadLoadedComponent));
+                                        loadedCmp = loadedDebugElement ? loadedDebugElement.componentInstance : null;
+                                        const progressDebugElement: DebugElement = fixture.debugElement
+                                            .query(By.directive(TestFileUploadProgressComponent));
+                                        processCmp = progressDebugElement ? progressDebugElement.componentInstance : null;
+                                    });
+                                    it('should return the correct boolean flags for the layout', () => {
+                                        expect(cmpInstance.isFileErrored)
+                                            .toEqual(isFileErroredResponse, 'should get ' + cmpInstance.isFileErrored);
+                                        expect(cmpInstance.isFileLoaded)
+                                            .toEqual(isFileLoadedResponse, 'should get ' + cmpInstance.isFileLoaded);
+                                        expect(cmpInstance.isFileProcessing)
+                                            .toEqual(isFileProcessingResponse, 'should get ' + cmpInstance.isFileProcessing);
+                                    });
+                                    it('should ' + (isFileLoadedResponse ? '' : 'not ') + 'display FileUploadLoadedComponent', () => {
+                                        if (isFileLoadedResponse) {
+                                            expect(loadedCmp).toBeTruthy('error component should be rendered');
+                                            expect(loadedCmp.uploadFile).toEqual(testFiles[0]);
+                                        } else {
+                                            expect(loadedCmp).toBeNull('component should not be rendered');
+                                        }
+                                    });
+                                    it('should ' + (isFileErroredResponse ? '' : 'not ') + 'display FileUploadErrorComponent', () => {
+                                        if (isFileErroredResponse) {
+                                            expect(errorCmp).toBeTruthy('error component should be rendered');
+                                            expect(errorCmp.uploadFile).toEqual(testFiles[0]);
+                                        } else {
+                                            expect(errorCmp).toBeNull('component should not be rendered');
+                                        }
+                                    });
+                                    it('should ' + (isFileProcessingResponse ? '' : 'not ') + 'display FileUploadProcessingComponent', () => {
+                                        if (isFileProcessingResponse) {
+                                            expect(processCmp).toBeTruthy('error component should be rendered');
+                                            expect(processCmp.uploadFile).toEqual(testFiles[0]);
+                                        } else {
+                                            expect(processCmp).toBeNull('component should not be rendered');
+                                        }
+                                    });
+                                });
+                            });
+                        });
+                    });
+                    testFiles.forEach((testFile) => {
+                        if (testFile.status === UploadFileStatus.LOADED) {
+
+                        }
+                        describe('set the filename in the layout', () => {
+
                         });
                     });
                 });
