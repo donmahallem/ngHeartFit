@@ -5,5 +5,5 @@ ng-container(*ngIf="uploadFiles.length>0")
     h3 Contents of the file:
     app-file-preview(*ngFor="let uploadFile of uploadFiles",[uploadFile]="uploadFile")
     h3 Import Files
-    p(*ngIf="!validFiles") No valid files provided and import is disabled
-    button(mat-flat-button,color="primary",(click)="clickImport($event)",[disabled]="!validFiles") Import
+    p(*ngIf="!hasSelectedFiles") No valid files provided and import is disabled
+    button(mat-flat-button,color="primary",(click)="clickImport($event)",[disabled]="hasSelectedFiles") Import

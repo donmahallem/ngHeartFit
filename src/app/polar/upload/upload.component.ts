@@ -6,7 +6,7 @@ import {
 import { UploadDataService } from '../services/upload-data.service';
 import { from, Observable, Observer, of, OperatorFunction, Subscriber } from 'rxjs';
 import { filter, flatMap, map, catchError, startWith, debounce, debounceTime } from 'rxjs/operators';
-import { UploadFile, UploadFileType, TypedFiles, UploadFileStatus, UploadFileError, UploadFiles, UploadFileResult } from '../services';
+import { UploadFile, UploadFileType, TypedFiles, UploadFileStatus, UploadFileError, UploadFiles, UploadFileResult, UploadFileResults, UploadFileDaySummaryResult } from '../services';
 import { AnalyzeDataService } from '../services/analyze-data.service';
 import { Router } from '@angular/router';
 import { FlowApiValidator, IDaySummary, IDayData } from '@donmahallem/flow-api-types';
@@ -35,12 +35,8 @@ export class UploadComponent implements OnInit {
         return this.uploadDataService.uploadedFiles;
     }
 
-    public get validFiles(): boolean {
-        if (this.uploadFiles.length > 0) {
-            for (const upFile of this.uploadFiles) {
-            }
-        }
-        return false;
+    public get hasSelectedFiles(): boolean {
+        return this.uploadDataService.hasSelectedFiles;
     }
 
     public createConvertUploadFileAndCheckValidity(): OperatorFunction<FileLoadEvents<any>, FileLoadEvents<TypedFiles>> {
@@ -75,32 +71,33 @@ export class UploadComponent implements OnInit {
         this.importFiles().subscribe((result) => {
             console.log('res', result);
         }, (err: Error) => {
+            console.error(err);
         }, () => {
             console.log('Complete');
-            this.router.navigate(['analyze', 'view']);
+            this.router.navigate(['polar', 'view']);
         });
 
     }
 
     public importFiles(): Observable<number> {
-        return null;
-        /*
         return this.analyzeDataService.clear()
             .pipe(flatMap((result) => {
                 return from(this.uploadFiles);
-            }), filter((upload: UploadFile) => {
-                return upload.valid && (upload.selected || upload.selected === undefined);
-            }), map((upload: UploadFile): TypedFiles => {
+            }), filter((upload: UploadFile): boolean => {
+                return upload.status === UploadFileStatus.LOADED;
+            }), filter((upload: UploadFileResults): boolean => {
+                return upload.type === UploadFileType.DAY_SUMMARY && upload.selected !== false;
+            }), map((upload: UploadFileDaySummaryResult): IDaySummary => {
                 return upload.data;
-            }), flatMap((summary: TypedFiles) => {
+            }), flatMap((summary: IDaySummary): Observable<IDayData> => {
                 const summaries: IDayData[] = [];
                 for (const key of Object.keys(summary)) {
                     summaries.push(summary[key]);
                 }
                 return from(summaries);
             }), flatMap((data: IDayData) => {
-                return this.analyzeDataService.insert(data.activityGraphData);
-            }));*/
+                return this.analyzeDataService.insertActivityGraphData(data.activityGraphData);
+            }));
     }
 
     public validateFiles(e: HTMLInputElement): void {

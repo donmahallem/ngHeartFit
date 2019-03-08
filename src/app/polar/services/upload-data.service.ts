@@ -48,6 +48,10 @@ export class UploadDataService {
         return this.filesSelectedSubject.asObservable();
     }
 
+    public get hasSelectedFiles(): boolean {
+        return this.filesSelectedSubject.value;
+    }
+
     public addUploadFile(f: UploadFile): void {
         const lst: UploadFile[] = this.uploadFilesSubject.value;
         lst.push(f);
