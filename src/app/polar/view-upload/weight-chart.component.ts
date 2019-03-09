@@ -71,6 +71,10 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
         });
     }
     public ngAfterViewInit(): void {
+        this.resizeSubject.next({
+            height: this.elRef.nativeElement.offsetHeight,
+            width: this.elRef.nativeElement.offsetWidth,
+        });
         let dataset = d3.range(0).map(function (d) { return { x: new Date(d), 'y': d3.randomUniform(1)() }; });
         const container = d3.select(this.mySpan.nativeElement).append('g')
             .attr('transform',
@@ -91,7 +95,8 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
             .attr("fill-opacity", 0);
         this.xAxis = container.append('g')
             .attr('transform', 'translate(0,' + (300 - this.margin.top - this.margin.bottom) + ')')
-            .call(d3.axisBottom(this.xScale));
+            .call(d3.axisBottom(this.xScale)
+                .tickFormat(d3.timeFormat("%Y-%m-%d HH:MM")));
         this.yAxis = container.append('g')
             .call(d3.axisLeft(this.yScale));
         const yAxisText = this.yAxis
@@ -105,14 +110,13 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
         this.chartDataSubject.asObservable().subscribe((data) => {
             if (data) {
                 this.zone.run(() => {
-                    console.log('DATAAA', data.length);
                     this.data = data;
                     this.xScale.domain(d3.extent(data, (d) => d.x));
                     this.yScale.domain(d3.extent(data, (d) => d.y));
                     this.yAxis
                         .call(d3.axisLeft(this.yScale));
                     this.xAxis
-                        .call(d3.axisBottom(this.xScale));
+                        .call(d3.axisBottom(this.xScale).tickFormat(d3.timeFormat("%Y-%m-%d %H:%M")));
                     this.chartPath.datum(data)
                         .attr('d', this.line);
                 });

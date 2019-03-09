@@ -6,7 +6,11 @@
     align-content: stretch;
     flex-direction: column;
 }
-
+h3.title{
+}
+:host > * {
+    margin:0px 30px 0px 30px;
+}
 weight-chart {
     height:500px;
 }
