@@ -63,7 +63,8 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
             this.yScale
                 .range([innerHeight, 0])
             this.xAxis
-                .call(d3.axisBottom(this.xScale));
+                .call(d3.axisBottom(this.xScale))
+                .attr('transform', 'translate(0,' + (innerHeight) + ')');
             this.yAxis
                 .call(d3.axisLeft(this.yScale));
             this.chartPath
@@ -116,7 +117,7 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
                     this.yAxis
                         .call(d3.axisLeft(this.yScale));
                     this.xAxis
-                        .call(d3.axisBottom(this.xScale).tickFormat(d3.timeFormat("%Y-%m-%d %H:%M")));
+                        .call(d3.axisBottom(this.xScale).tickFormat(d3.timeFormat("%Y-%m-%d %H:%M")))
                     this.chartPath.datum(data)
                         .attr('d', this.line);
                 });

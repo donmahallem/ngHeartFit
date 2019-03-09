@@ -40,7 +40,7 @@ export class UploadToFitComponent implements
     public ngAfterViewInit(): void {
         // this.idSubscription = this.router.
         this.subscriptions.push(this.dataPointsSubject.subscribe((dataPoints) => {
-            this.numOfItems = dataPoints.length;
+            this.numOfItems = dataPoints ? dataPoints.length : -1;
         }));
     }
 
