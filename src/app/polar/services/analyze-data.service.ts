@@ -28,7 +28,6 @@ export class AnalyzeDataService {
                 bpm: pair.value
             });
         }
-        console.log("JAJJAJ", lst.length);
         return from(this.database.heartrate.bulkAdd(lst));
     }
 
