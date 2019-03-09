@@ -3,13 +3,15 @@ import { Chart } from 'chart.js';
 import { BehaviorSubject } from 'rxjs';
 import { DataPoint } from './data-point';
 import * as d3 from 'd3';
+import { debounce, debounceTime } from 'rxjs/operators';
 @Component({
     selector: 'weight-chart',
     templateUrl: './weight-chart.component.pug',
     styleUrls: ['./weight-chart.component.scss']
 })
 export class WeightChartComponent implements OnInit, AfterViewInit {
-    constructor(private zone: NgZone) {
+    constructor(private zone: NgZone,
+        private elRef: ElementRef) {
         this.init();
     }
     @Input('chartData')
@@ -37,6 +39,7 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
     public chartPath: any;
     public xAxis: any;
     public yAxis: any;
+    private resizeSubject: BehaviorSubject<{ width: number, height: number }> = new BehaviorSubject<{ width: number, height: number }>({ width: 1, height: 1 });
     public init(): void {
         this.xScale = d3.scaleUtc()
             .domain([0, 125]) // input
@@ -52,9 +55,23 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
             .x((d, i) => this.xScale(d.x)) // set the x values for the line generator
             .y((d) => this.yScale(d.y)) // set the y values for the line generator
             .curve(d3.curveMonotoneX);
+        this.resizeSubject.pipe(debounceTime(100)).subscribe((value) => {
+            const innerWidth: number = value.width - this.margin.left - this.margin.right;
+            const innerHeight: number = value.height - this.margin.top - this.margin.bottom;
+            this.xScale
+                .range([0, innerWidth]);
+            this.yScale
+                .range([innerHeight, 0])
+            this.xAxis
+                .call(d3.axisBottom(this.xScale));
+            this.yAxis
+                .call(d3.axisLeft(this.yScale));
+            this.chartPath
+                .attr('d', this.line);
+        });
     }
     public ngAfterViewInit(): void {
-        let dataset = d3.range(10).map(function (d) { return { x: new Date(d), 'y': d3.randomUniform(1)() }; });
+        let dataset = d3.range(0).map(function (d) { return { x: new Date(d), 'y': d3.randomUniform(1)() }; });
         const container = d3.select(this.mySpan.nativeElement).append('g')
             .attr('transform',
                 'translate(' + this.margin.left + ',' + this.margin.top + ')'
@@ -70,7 +87,8 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
             .attr('d', this.line)
             .attr('stroke', 'black')
             .attr('stroke-width', '2')
-            .attr('fill', 'red');
+            .attr('fill', '#00000000')
+            .attr("fill-opacity", 0);
         this.xAxis = container.append('g')
             .attr('transform', 'translate(0,' + (300 - this.margin.top - this.margin.bottom) + ')')
             .call(d3.axisBottom(this.xScale));
@@ -83,7 +101,7 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
             .attr('y', 6)
             .attr('dy', '0.71em')
             .attr('text-anchor', 'end')
-            .text('Price ($)');
+            .text('Heartrate (BPM)');
         this.chartDataSubject.asObservable().subscribe((data) => {
             if (data) {
                 this.zone.run(() => {
@@ -100,6 +118,13 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
                 });
             }
         });
+    }
+
+    public onResize(ev: any) {
+        this.resizeSubject.next({
+            height: this.elRef.nativeElement.offsetHeight,
+            width: this.elRef.nativeElement.offsetWidth,
+        })
     }
     public ngOnInit(): void {
         /*
