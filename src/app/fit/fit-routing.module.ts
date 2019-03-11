@@ -4,6 +4,8 @@ import { DatasourcesComponent } from './datasources/datasources.component';
 import { SessionsComponent } from './sessions/sessions.component';
 import { SessionDetailComponent } from './session-detail/session-detail.component';
 import { DatasourceDetailComponent } from './datasource-detail';
+import { NotFoundComponent } from '../not-found.component';
+import { NotFoundModule } from '../not-found.module';
 
 const routes: Routes = [
     {
@@ -21,11 +23,18 @@ const routes: Routes = [
     {
         path: 'session/:id',
         component: SessionDetailComponent
+    },
+    {
+        path: '**',
+        component: NotFoundComponent
     }
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
+    imports: [
+        RouterModule.forChild(routes),
+        NotFoundModule
+    ],
     exports: [RouterModule],
     providers: [
     ]

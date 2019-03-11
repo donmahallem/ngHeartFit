@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginGoogleComponent } from './components/login-google/login-google.component';
 import { RouteGuardService } from './service/route-guard.service';
+import { NotFoundComponent } from './not-found.component';
+import { NotFoundModule } from './not-found.module';
 
 const routes: Routes = [
     {
@@ -49,12 +51,18 @@ const routes: Routes = [
                 children: []
             }
         ]
+    }, {
+        path: '**',
+        component: NotFoundComponent
     }
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes,
-        { enableTracing: false })],
+    imports: [
+        RouterModule
+            .forRoot(routes, { enableTracing: false }),
+        NotFoundModule
+    ],
     exports: [RouterModule]
 })
 export class AppRoutingModule { }

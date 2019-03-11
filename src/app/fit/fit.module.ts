@@ -23,6 +23,7 @@ import { SessionComponent } from './sessions/session.component';
 import { SessionDetailComponent } from './session-detail/session-detail.component';
 import { DatasourcesModule } from './datasources/datasources.module';
 import { DatasourceDetailModule } from './datasource-detail';
+import { NotFoundComponent } from '../not-found.component';
 
 @NgModule({
     declarations: [

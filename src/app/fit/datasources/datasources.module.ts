@@ -3,12 +3,14 @@ import { CommonModule } from "@angular/common";
 import { DatasourceListComponent } from "./datasource-list.component";
 import { DatasourceListItemComponent } from "./datasource-list-item.component";
 import { DatasourcesComponent } from "./datasources.component";
-import { MatProgressBarModule } from "@angular/material";
+import { MatProgressBarModule, MatIconModule } from "@angular/material";
 
 
 @NgModule({
-    imports: [CommonModule,
-        MatProgressBarModule
+    imports: [
+        CommonModule,
+        MatProgressBarModule,
+        MatIconModule
     ],
     declarations: [
         DatasourcesComponent,
@@ -19,7 +21,8 @@ import { MatProgressBarModule } from "@angular/material";
         DatasourceListItemComponent,
         DatasourceListComponent,
         CommonModule,
-        MatProgressBarModule
+        MatProgressBarModule,
+        MatIconModule
     ]
 })
 export class DatasourcesModule { }

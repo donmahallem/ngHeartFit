@@ -7,10 +7,11 @@ import { AppComponent } from './app.component';
 import { ProfileComponent } from './components/profile.component';
 import { environment } from 'src/environments/environment';
 import { MatButtonModule, MatSidenavModule, MatToolbarModule, MatTabsModule } from '@angular/material';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { LoginGoogleComponent } from './components/login-google/login-google.component';
 import { NgGapiConfigModule } from './nggapi-config.module';
 import { RouteGuardService } from './service/route-guard.service';
+import { NotFoundComponent } from './not-found.component';
 
 @NgModule({
     declarations: [
