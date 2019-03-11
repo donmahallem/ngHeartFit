@@ -1,14 +1,14 @@
 import { Component, OnInit, NgZone, ElementRef, AfterViewInit, ViewChild, Input, DoCheck } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { DataPoint } from './data-point';
 import * as d3 from 'd3';
 import { debounce, debounceTime } from 'rxjs/operators';
+import { DataPoint } from '../polar/view-upload/data-point';
 @Component({
-    selector: 'weight-chart',
-    templateUrl: './weight-chart.component.pug',
-    styleUrls: ['./weight-chart.component.scss']
+    selector: 'app-line-chart',
+    templateUrl: './line-chart.component.pug',
+    styleUrls: ['./line-chart.component.scss']
 })
-export class WeightChartComponent implements OnInit, AfterViewInit {
+export class LineChartComponent implements OnInit, AfterViewInit {
     constructor(private zone: NgZone,
         private elRef: ElementRef) {
         this.init();

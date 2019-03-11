@@ -1,7 +1,7 @@
 
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { HttpParams, HttpRequest } from '@angular/common/http';
+import { HttpParams, HttpRequest, HttpEvent } from '@angular/common/http';
 
 import { FitApiBaseService } from './fit-api-base.service';
 import { map, flatMap } from 'rxjs/operators';
@@ -22,11 +22,11 @@ export class FitApiSessionService {
 
     }
 
-    public getSession(id: string): Observable<FitSession> {
+    public getSession(id: string): Observable<HttpEvent<FitSession>> {
         return this.fitApiBaseService.getRequest(FitApiBaseService.ENDPOINT + '/users/me/sessions/' + id);
     }
 
-    public getSessions(): Observable<ListSessionsResponse> {
+    public getSessions(): Observable<HttpEvent<ListSessionsResponse>> {
         return this.fitApiBaseService.getRequest(FitApiBaseService.ENDPOINT + '/users/me/sessions/');
     }
 }

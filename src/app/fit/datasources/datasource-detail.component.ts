@@ -44,7 +44,7 @@ export class DatasourceDetailComponent implements OnDestroy, AfterViewInit {
         return this.mDataSource;
     }
 
-    public ngAfterViewInit() {
+    public ngAfterViewInit() {/*
         this.activatedRoute
             .paramMap
             .pipe(flatMap((params: ParamMap): Observable<FitDataSource> => {
@@ -57,7 +57,7 @@ export class DatasourceDetailComponent implements OnDestroy, AfterViewInit {
                 });
                 this.displayedColumns = ['date'].concat(cols);
             }, console.error);
-
+*/
         this.activatedRoute
             .paramMap
             .pipe(flatMap((value) => {

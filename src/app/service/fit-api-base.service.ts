@@ -11,7 +11,6 @@ import { GoogleApiService } from 'ng-gapi';
 @Injectable()
 export class FitApiBaseService {
     public static readonly ENDPOINT: string = 'https://www.googleapis.com/fitness/v1';
-    private observable: Observable<void>;
     constructor(private httpService: HttpClient,
         private nggapi: NgGapiService,
         private gapiUser: GapiUserService) {
@@ -148,41 +147,42 @@ export class FitApiBaseService {
         return body;
     }
 
-    public getRequest<T>(url: string, params: HttpParams | {
+    public getRequest<RESP_BODY>(url: string, params: HttpParams | {
         [param: string]: string | string[];
-    } = null): Observable<T> {
-        return this.observable
-            .pipe(flatMap(() => {
-                const httpReq: gapi.client.HttpRequest<T> = gapi.client.request({
-                    path: url,
-                    params: params,
-                    method: 'get'
+    } = null): Observable<HttpEvent<RESP_BODY>> {
+        return this.base()
+            .pipe(flatMap((): Observable<HttpEvent<RESP_BODY>> => {
+                const request = new HttpRequest('GET', url, {
+                    headers: new HttpHeaders({
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + this.gapiUser.getToken(),
+                    }),
+                    responseType: 'json',
+                    reportProgress: false
                 });
-                return from(httpReq);
-            }), map((resp: gapi.client.HttpRequestFulfilled<T>) => {
-                return resp.result;
+                return this.request(request);
             }));
     }
 
-    public postRequest<T>(url: string, body: any, params: HttpParams | {
+    public postRequest<REQ_BODY, RESP_BODY>(url: string, body: REQ_BODY, params: HttpParams | {
         [param: string]: string | string[];
-    } = null): Observable<T> {
-        return this.observable
-            .pipe(flatMap(() => {
-                const httpReq: gapi.client.HttpRequest<T> = gapi.client.request({
-                    path: url,
-                    params: params,
-                    method: 'post',
-                    body: body
+    } = null): Observable<HttpEvent<RESP_BODY>> {
+        return this.base()
+            .pipe(flatMap((): Observable<HttpEvent<RESP_BODY>> => {
+                const request = new HttpRequest<REQ_BODY>('POST', url, body, {
+                    headers: new HttpHeaders({
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + this.gapiUser.getToken(),
+                    }),
+                    responseType: 'json',
+                    reportProgress: false
                 });
-                return from(httpReq);
-            }), map((resp: gapi.client.HttpRequestFulfilled<T>) => {
-                return resp.result;
+                return this.request(request);
             }));
     }
 
-    public request<T>(req: HttpRequest<T>): Observable<HttpResponse<T>> {
-        return <any>this.httpService.request(req);
+    public request<REQ_BODY, RESP_BODY>(req: HttpRequest<REQ_BODY>): Observable<HttpEvent<RESP_BODY>> {
+        return this.httpService.request(req);
     }
 }
 

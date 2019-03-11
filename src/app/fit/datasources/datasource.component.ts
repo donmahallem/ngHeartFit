@@ -2,17 +2,19 @@ import {
     Component,
     AfterViewInit,
     OnDestroy,
-    Input
+    Input,
+    HostListener
 } from '@angular/core';
 import { FitDataSource } from 'src/app/service/fit-data-source.service';
+import { Router } from '@angular/router';
 @Component({
     selector: 'datasource',
     templateUrl: './datasource.component.pug',
     styleUrls: ['./datasource.component.scss']
 })
-export class DatasourceComponent implements OnDestroy, AfterViewInit {
+export class DatasourceComponent {
     private mDataSource: FitDataSource;
-    constructor() {
+    constructor(private router: Router) {
     }
 
     @Input('dataSource')
@@ -24,9 +26,8 @@ export class DatasourceComponent implements OnDestroy, AfterViewInit {
         return this.mDataSource;
     }
 
-    public ngAfterViewInit() {
-    }
-
-    public ngOnDestroy() {
+    @HostListener('click', ['$event'])
+    public onHostClicked(event: MouseEvent): void {
+        this.router.navigate(['/fit/datasource', this.dataSource.dataStreamId]);
     }
 }

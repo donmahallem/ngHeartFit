@@ -5,16 +5,15 @@ import {
     ViewChild,
     OnDestroy
 } from '@angular/core';
-import { ChartComponent } from 'src/app/common-components/chart.component';
+import { LineChartComponent } from 'src/app/common-components/line-chart.component';
 import * as moment from 'moment';
-import { ChartPoint, ChartConfiguration } from 'chart.js';
-import { flatMap, debounceTime, delay } from 'rxjs/operators';
+import { flatMap, debounceTime, delay, filter } from 'rxjs/operators';
 import { BucketResponse } from 'src/app/service/fit-api-modals';
 import { WeightChartService } from '../services/weight-chart.service';
 import { Subscription } from 'rxjs';
-import { chartConfig } from './weight-chart.config';
-import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
+import { FitApiDataSourceService, FitDataSourceList } from 'src/app/service/fit-data-source.service';
 import { AggregateByFilter, FitApiAggregateService } from 'src/app/service/fit-aggregate.service';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
 
 @Component({
     selector: 'weight-chart',
@@ -27,11 +26,10 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
         private fitApiAggregateService: FitApiAggregateService,
         private chartService: WeightChartService) {
     }
-    @ViewChild(ChartComponent)
-    chart: ChartComponent;
+    @ViewChild(LineChartComponent)
+    chart: LineChartComponent;
     private mSubscriptions: Subscription[] = [];
 
-    public chartConfig: ChartConfiguration = chartConfig;
 
     public onSubmit(): void {
 
@@ -54,14 +52,16 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
             .pipe(debounceTime(100),
                 flatMap((moments: [moment.Moment, moment.Moment]) => {
                     return this.fitApiDataSource.getDataSources(['com.google.body.fat.percentage'])
-                        .pipe(flatMap((sources) => {
+                        .pipe(filter((event) => {
+                            return event.type === HttpEventType.Response;
+                        }), flatMap((sources: HttpResponse<FitDataSourceList>) => {
                             const diff: number = 24 * 3600 * 1000;
                             const types: AggregateByFilter[] = [
                                 {
                                     dataTypeName: 'com.google.weight'
                                 }
                             ];
-                            for (const datasource of sources.dataSource) {
+                            for (const datasource of sources.body.dataSource) {
                                 types.push({
                                     dataTypeName: 'com.google.body.fat.percentage',
                                     dataSourceId: datasource.dataStreamId
@@ -73,7 +73,7 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
             .subscribe(this.updateData.bind(this), console.error));
     }
 
-    public updateData(bucketResponse: BucketResponse): void {
+    public updateData(bucketResponse: BucketResponse): void {/*
         const weightDatapoints: ChartPoint[] = [];
         const fatDatapoints: ChartPoint[] = [];
         for (const bucket of bucketResponse.bucket) {
@@ -106,10 +106,7 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
             }
         }
         this.chart.chart.data.datasets[0].data = weightDatapoints;
-        this.chart.chart.data.datasets[1].data = fatDatapoints;
+        this.chart.chart.data.datasets[1].data = fatDatapoints;*/
         // this.chart.chart.config.options.scales.xAxes[0].
-        this.zone.run(() => {
-            this.chart.chart.update(this.chart.chart.config.options);
-        });
     }
 }
