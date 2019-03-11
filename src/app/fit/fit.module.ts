@@ -17,19 +17,15 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgGapiConfigModule } from '../nggapi-config.module';
-import { DatasourcesComponent } from './datasources/datasources.component';
 import { FitRoutingModule } from './fit-routing.module';
-import { DatasourceDetailComponent } from './datasources/datasource-detail.component';
-import { DatasourceComponent } from './datasources/datasource.component';
 import { SessionsComponent } from './sessions/sessions.component';
 import { SessionComponent } from './sessions/session.component';
 import { SessionDetailComponent } from './session-detail/session-detail.component';
+import { DatasourcesModule } from './datasources/datasources.module';
+import { DatasourceDetailModule } from './datasource-detail';
 
 @NgModule({
     declarations: [
-        DatasourcesComponent,
-        DatasourceDetailComponent,
-        DatasourceComponent,
         SessionsComponent,
         SessionComponent,
         SessionDetailComponent
@@ -49,7 +45,9 @@ import { SessionDetailComponent } from './session-detail/session-detail.componen
         MatDatepickerModule,
         NgGapiConfigModule,
         MatTableModule,
-        MatProgressBarModule
+        MatProgressBarModule,
+        DatasourcesModule,
+        DatasourceDetailModule
     ],
     providers: [
         { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },

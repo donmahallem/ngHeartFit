@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DatasourcesComponent } from './datasources/datasources.component';
-import { DatasourceDetailComponent } from './datasources/datasource-detail.component';
 import { SessionsComponent } from './sessions/sessions.component';
 import { SessionDetailComponent } from './session-detail/session-detail.component';
+import { DatasourceDetailComponent } from './datasource-detail';
 
 const routes: Routes = [
     {

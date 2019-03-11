@@ -8,11 +8,11 @@ import {
 import { FitDataSource } from 'src/app/service/fit-data-source.service';
 import { Router } from '@angular/router';
 @Component({
-    selector: 'datasource',
-    templateUrl: './datasource.component.pug',
-    styleUrls: ['./datasource.component.scss']
+    selector: 'app-datasource-li',
+    templateUrl: './datasource-list-item.component.pug',
+    styleUrls: ['./datasource-list-item.component.scss']
 })
-export class DatasourceComponent {
+export class DatasourceListItemComponent {
     private mDataSource: FitDataSource;
     constructor(private router: Router) {
     }
