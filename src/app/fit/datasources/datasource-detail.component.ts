@@ -9,6 +9,7 @@ import { flatMap } from 'rxjs/operators';
 import * as moment from 'moment';
 import { FitDataSource, FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 import { FitApiDataSetService } from 'src/app/service/fit-data-set.service';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
 
 
 const ELEMENT_DATA: any[] = [
@@ -34,7 +35,7 @@ export class DatasourceDetailComponent implements OnDestroy, AfterViewInit {
     displayedColumns: string[] = ['position', 'name'];
     dataSource2 = ELEMENT_DATA;
     private mDataSource: FitDataSource = null;
-    private mSubscriptions: Subscription[] = [];
+    private mSubscription: Subscription;
     constructor(private fitDataSourceService: FitApiDataSourceService,
         private fitDataSetService: FitApiDataSetService,
         private activatedRoute: ActivatedRoute) {
@@ -44,20 +45,22 @@ export class DatasourceDetailComponent implements OnDestroy, AfterViewInit {
         return this.mDataSource;
     }
 
-    public ngAfterViewInit() {/*
-        this.activatedRoute
-            .paramMap
-            .pipe(flatMap((params: ParamMap): Observable<FitDataSource> => {
-                console.log(params);
-                return this.fitDataSourceService.getDataSource(params.get('id'));
-            })).subscribe((dataSource) => {
-                this.mDataSource = dataSource;
-                const cols: string[] = dataSource.dataType.field.map((val) => {
-                    return val.name;
-                });
-                this.displayedColumns = ['date'].concat(cols);
-            }, console.error);
-*/
+    public ngAfterViewInit() {
+        this.mSubscription =
+            this.activatedRoute
+                .paramMap
+                .pipe(flatMap((params: ParamMap): Observable<HttpEvent<FitDataSource>> => {
+                    console.log(params);
+                    return this.fitDataSourceService.getDataSource(params.get('id'));
+                })).subscribe((event: HttpEvent<FitDataSource>) => {
+                    if (event.type === HttpEventType.Response) {
+                        this.mDataSource = event.body;
+                        const cols: string[] = this.mDataSource.dataType.field.map((val) => {
+                            return val.name;
+                        });
+                        this.displayedColumns = ['date'].concat(cols);
+                    }
+                }, console.error);
         this.activatedRoute
             .paramMap
             .pipe(flatMap((value) => {
