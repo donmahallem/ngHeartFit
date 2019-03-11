@@ -6,7 +6,7 @@ export interface DataPoint {
 export class MinMaxDataPoint implements DataPoint {
 
 
-    private mY: number = 0;
+    private mY = 0;
     private mX: Date = new Date();
     private mDataPoints: DataPoint[] = [];
 
@@ -29,8 +29,9 @@ export class MinMaxDataPoint implements DataPoint {
                     min: (prev.min >= cur.min) ? cur.min : prev.min,
                     max: (prev.max <= cur.max) ? cur.max : prev.max
                 };
-            } else
+            } else {
                 return cur;
+            }
         }, null);
     }
 

@@ -13,7 +13,7 @@ import { FitApiSessionService } from 'src/app/service/fit-session.service';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { Subscriber, Subscription, Observable } from 'rxjs';
 
-export class LoadableListSubscriber<T> extends Subscriber<HttpEvent<T>>{
+export class LoadableListSubscriber<T> extends Subscriber<HttpEvent<T>> {
 
     constructor(private sessionCmp: LoadableListComponent<T>) {
         super();
@@ -33,7 +33,7 @@ export class LoadableListSubscriber<T> extends Subscriber<HttpEvent<T>>{
     }
     complete(): void {
         this.sessionCmp.loadingStatus = LoadingStatus.LOADED;
-    };
+    }
 }
 
 export enum LoadingStatus {
@@ -65,8 +65,9 @@ export abstract class LoadableListComponent<T> implements OnDestroy, AfterViewIn
     }
 
     public update(): void {
-        if (this.mLoadingStatus === LoadingStatus.LOADING)
+        if (this.mLoadingStatus === LoadingStatus.LOADING) {
             return;
+        }
         this.mLoadingSubscription = this.createLoadObservable()
             .subscribe(new LoadableListSubscriber(this));
     }

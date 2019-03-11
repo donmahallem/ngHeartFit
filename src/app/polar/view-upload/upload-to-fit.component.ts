@@ -16,7 +16,7 @@ import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service
 export class UploadToFitComponent {
     private dataPointsSubject: BehaviorSubject<DataPoint[]> = new BehaviorSubject<DataPoint[]>([]);
     private subscriptions: Subscription[] = [];
-    private mNumberOfItems: number = 0;
+    private mNumberOfItems = 0;
 
     constructor(private fitDataSourceService: FitApiDataSourceService) {
     }
