@@ -1,10 +1,10 @@
 
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { HttpParams, HttpRequest } from '@angular/common/http';
+import { HttpParams, HttpRequest, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 
 import { FitApiBaseService } from './fit-api-base.service';
-import { map, flatMap } from 'rxjs/operators';
+import { map, flatMap, filter } from 'rxjs/operators';
 import { FitApiDataSetService } from './fit-data-set.service';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class FitApiDataSourceService {
         return null;
     }
 
-    public getDataSources(dataTypeName?: string[] | string): Observable<FitDataSourceList> {
+    public getDataSources(dataTypeName?: string[] | string): Observable<HttpEvent<FitDataSourceList>> {
         const params: HttpParams | {
             [param: string]: string | string[];
         } = {};
@@ -31,7 +31,7 @@ export class FitApiDataSourceService {
         return this.fitApiBaseService.getRequest(FitApiBaseService.ENDPOINT + '/users/me/dataSources', params);
     }
 
-    public getDataSource(id: string): Observable<FitDataSource> {
+    public getDataSource(id: string): Observable<HttpEvent<FitDataSource>> {
         return this.fitApiBaseService.getRequest(FitApiBaseService.ENDPOINT + '/users/me/dataSources/' + id);
     }
 
@@ -67,7 +67,7 @@ export class FitApiDataSourceService {
         }, FitApiDataSourceService.WEIGHT_NAME));
     }
 
-    public createBodyFatPercentageDatasource(): Observable<any> {
+    public createBodyFatPercentageDatasource(): Observable<HttpEvent<any>> {
         return this.createDataSource(this.createDataSourceMetaData({
             'field': [
                 {
@@ -79,31 +79,51 @@ export class FitApiDataSourceService {
         }, FitApiDataSourceService.BODY_FAT_PERCENTAGE_NAME));
     }
 
-    public createDataSource(datasource: CreateDataSourceRequest): Observable<any> {
+    public createDataSource(datasource: CreateDataSourceRequest): Observable<HttpEvent<any>> {
         return this.fitApiBaseService.postRequest(FitApiBaseService.ENDPOINT + '/users/me/dataSources', datasource);
     }
 
-    public getOrCreateBodyFatPercentageDataSource(): Observable<FitDataSource> {
+    public getOrCreateBodyFatPercentageDataSource(): Observable<HttpEvent<FitDataSource>> {
         return this.getDataSources(FitApiDataSourceService.DATA_TYPE_BODY_FAT_PERCENTAGE)
-            .pipe(flatMap((dataSources: FitDataSourceList) => {
-                for (const source of dataSources.dataSource) {
-                    if (source.dataStreamName === FitApiDataSourceService.BODY_FAT_PERCENTAGE_NAME && source.device.uid === navigator.userAgent) {
-                        return of(source);
+            .pipe(flatMap((event: HttpEvent<FitDataSourceList>): Observable<HttpEvent<FitDataSource>> => {
+                if (event.type === HttpEventType.Response) {
+                    for (const source of event.body.dataSource) {
+                        if (source.dataStreamName === FitApiDataSourceService.BODY_FAT_PERCENTAGE_NAME && source.device.uid === navigator.userAgent) {
+                            const modified: HttpResponse<FitDataSource> = event.clone({
+                                body: source
+                            });
+                            return of(modified);
+                        }
                     }
+                    return this.createBodyFatPercentageDatasource()
+                        .pipe(filter((ev: HttpEvent<any>): boolean => {
+                            return ev.type >= HttpEventType.Response;
+                        }));
+                } else {
+                    return of(event);
                 }
-                return this.createBodyFatPercentageDatasource();
             }));
     }
 
-    public getOrCreateWeightDataSource(): Observable<FitDataSource> {
+    public getOrCreateWeightDataSource(): Observable<HttpEvent<FitDataSource>> {
         return this.getDataSources(FitApiDataSourceService.DATA_TYPE_WEIGHT)
-            .pipe(flatMap((dataSources: FitDataSourceList) => {
-                for (const source of dataSources.dataSource) {
-                    if (source.dataStreamName === FitApiDataSourceService.WEIGHT_NAME && source.device.uid === navigator.userAgent) {
-                        return of(source);
+            .pipe(flatMap((event: HttpEvent<FitDataSourceList>): Observable<HttpEvent<FitDataSource>> => {
+                if (event.type === HttpEventType.Response) {
+                    for (const source of event.body.dataSource) {
+                        if (source.dataStreamName === FitApiDataSourceService.WEIGHT_NAME && source.device.uid === navigator.userAgent) {
+                            const modified: HttpResponse<FitDataSource> = event.clone({
+                                body: source
+                            });
+                            return of(modified);
+                        }
                     }
+                    return this.createWeightDatasource()
+                        .pipe(filter((ev: HttpEvent<any>): boolean => {
+                            return ev.type >= HttpEventType.Response;
+                        }));
+                } else {
+                    return of(event);
                 }
-                return this.createWeightDatasource();
             }));
     }
     public getOrCreateWeightDataSource2(): Observable<FitDataSource> {

@@ -7,12 +7,13 @@ import {
 } from '@angular/core';
 import { LineChartComponent } from 'src/app/common-components/line-chart.component';
 import * as moment from 'moment';
-import { flatMap, debounceTime, delay } from 'rxjs/operators';
+import { flatMap, debounceTime, delay, filter } from 'rxjs/operators';
 import { BucketResponse } from 'src/app/service/fit-api-modals';
 import { WeightChartService } from '../services/weight-chart.service';
 import { Subscription } from 'rxjs';
-import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
+import { FitApiDataSourceService, FitDataSourceList } from 'src/app/service/fit-data-source.service';
 import { AggregateByFilter, FitApiAggregateService } from 'src/app/service/fit-aggregate.service';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
 
 @Component({
     selector: 'weight-chart',
@@ -51,14 +52,16 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
             .pipe(debounceTime(100),
                 flatMap((moments: [moment.Moment, moment.Moment]) => {
                     return this.fitApiDataSource.getDataSources(['com.google.body.fat.percentage'])
-                        .pipe(flatMap((sources) => {
+                        .pipe(filter((event) => {
+                            return event.type === HttpEventType.Response;
+                        }), flatMap((sources: HttpResponse<FitDataSourceList>) => {
                             const diff: number = 24 * 3600 * 1000;
                             const types: AggregateByFilter[] = [
                                 {
                                     dataTypeName: 'com.google.weight'
                                 }
                             ];
-                            for (const datasource of sources.dataSource) {
+                            for (const datasource of sources.body.dataSource) {
                                 types.push({
                                     dataTypeName: 'com.google.body.fat.percentage',
                                     dataSourceId: datasource.dataStreamId
