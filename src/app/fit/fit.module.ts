@@ -8,7 +8,8 @@ import {
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatTableModule
+    MatTableModule,
+    MatProgressBarModule
 } from '@angular/material';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -47,7 +48,8 @@ import { SessionDetailComponent } from './session-detail/session-detail.componen
         MatSelectModule,
         MatDatepickerModule,
         NgGapiConfigModule,
-        MatTableModule
+        MatTableModule,
+        MatProgressBarModule
     ],
     providers: [
         { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },

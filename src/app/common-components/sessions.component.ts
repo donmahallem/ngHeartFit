@@ -12,6 +12,7 @@ import * as moment from 'moment';
 import { FitApiSessionService } from 'src/app/service/fit-session.service';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { Subscriber, Subscription, Observable } from 'rxjs';
+import { MatProgressBar } from '@angular/material';
 
 export class LoadableListSubscriber<T> extends Subscriber<HttpEvent<T>> {
 
@@ -72,6 +73,12 @@ export abstract class LoadableListComponent<T> implements OnDestroy, AfterViewIn
             .subscribe(new LoadableListSubscriber(this));
     }
 
+    public get progressBarMode(): 'determinate' | 'indeterminate' | 'buffer' | 'query' {
+        if (this.loadingStatus === LoadingStatus.INITIALIZING) {
+            return 'query';
+        }
+        return 'indeterminate';
+    }
 
     public ngOnDestroy() {
         if (this.mLoadingSubscription) {
