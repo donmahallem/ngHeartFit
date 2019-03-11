@@ -32,6 +32,10 @@ export class UploadToFitComponent {
         this.mNumberOfItems = 0;
     }
 
+    public get numberOfItems(): number {
+        return this.mNumberOfItems;
+    }
+
     public get dataPoints(): DataPoint[] {
         return this.dataPointsSubject.value;
     }
