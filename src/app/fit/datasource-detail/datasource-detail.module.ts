@@ -1,13 +1,15 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { MatProgressBarModule } from "@angular/material";
+import { MatProgressBarModule, MatTableModule, MatIconModule } from "@angular/material";
 import { DatasourceDetailComponent } from "./datasource-detail.component";
 
 
 @NgModule({
     imports: [
         CommonModule,
-        MatProgressBarModule
+        MatProgressBarModule,
+        MatTableModule,
+        MatIconModule
     ],
     declarations: [
         DatasourceDetailComponent
@@ -15,7 +17,9 @@ import { DatasourceDetailComponent } from "./datasource-detail.component";
     exports: [
         DatasourceDetailComponent,
         CommonModule,
-        MatProgressBarModule
+        MatProgressBarModule,
+        MatTableModule,
+        MatIconModule
     ]
 })
 export class DatasourceDetailModule { }
