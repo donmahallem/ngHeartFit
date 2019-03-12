@@ -1,4 +1,4 @@
-div(*ngIf="dataSource!==null")
+ng-container(*ngIf="dataSource!==null")
     h3 {{dataSource.dataStreamName}}
     p DataStreamId: {{dataSource.dataStreamId}}
     p DataType: {{dataSource.dataType.name}}
@@ -21,6 +21,6 @@ div(*ngIf="dataSource!==null")
             td(mat-cell,*matCellDef="let element") {{element.position}}
         tr(mat-header-row,*matHeaderRowDef="displayedColumns")
         tr(mat-row,*matRowDef="let row; columns: displayedColumns;")
-div(*ngIf="dataSource===null")
+ng-container(*ngIf="dataSource===null")
     p Loading
 
