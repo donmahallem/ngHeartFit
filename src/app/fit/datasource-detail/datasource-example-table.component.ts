@@ -3,16 +3,19 @@ import {
     AfterViewInit,
     OnDestroy,
     NgZone,
-    OnInit
+    OnInit,
+    Input
 } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, BehaviorSubject } from 'rxjs';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { flatMap, debounceTime } from 'rxjs/operators';
 import * as moment from 'moment';
 import { FitDataSource, FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
-import { FitApiDataSetService } from 'src/app/service/fit-data-set.service';
+import { FitApiDataSetService, FitDatasetResponse, FitDatasetPoints } from 'src/app/service/fit-data-set.service';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { MatProgressBar } from '@angular/material';
+import { LoadableListComponent } from 'src/app/common-components/sessions.component';
+import { LoadableComponent } from 'src/app/common-components/loadable.component';
 
 
 const ELEMENT_DATA: any[] = [
@@ -29,44 +32,47 @@ const ELEMENT_DATA: any[] = [
 ];
 
 @Component({
-    selector: 'datasource-detail',
-    templateUrl: './datasource-detail.component.pug',
-    styleUrls: ['./datasource-detail.component.scss']
+    selector: 'datasource-example-table',
+    templateUrl: './datasource-example-table.component.pug',
+    styleUrls: ['./datasource-example-table.component.scss']
 })
-export class DatasourceDetailComponent implements OnDestroy, AfterViewInit, OnInit {
+export class DatasourceExampleTableComponent<T> extends LoadableComponent<FitDatasetResponse<FitDatasetPoints>> {
 
-    displayedColumns: string[] = ['position', 'name'];
+    displayedColumns: string[] = ['position', 'name', 'date'];
     dataSource2 = ELEMENT_DATA;
-    private mDataSource: FitDataSource = null;
+    private mDataSourceSubject: BehaviorSubject<FitDataSource> = new BehaviorSubject(null);
     private mRouteDataSubscription: Subscription;
     constructor(private zone: NgZone,
         private fitDataSetService: FitApiDataSetService,
         private activatedRoute: ActivatedRoute) {
+        super();
+        this.mDataSourceSubject.subscribe((val) => {
+            const vals: string[] = val.dataType.field
+                .map((val) => {
+                    return val.name;
+                });
+            this.displayedColumns.concat(vals)
+        });
     }
 
     public get dataSource(): FitDataSource {
-        return this.mDataSource;
+        return this.mDataSourceSubject.value;
     }
 
-    public get hasDataSource(): boolean {
-        return (typeof this.mDataSource !== 'undefined');
+    @Input('dataSource')
+    public set dataSource(source: FitDataSource) {
+        this.mDataSourceSubject.next(source);
     }
-
-    public ngOnInit() {
-        this.mRouteDataSubscription = this.activatedRoute.data
-            .subscribe((data: { dataSource: FitDataSource }) => {
-                this.zone.run(() => {
-                    this.mDataSource = data.dataSource;
-                });
-            });
-        this.activatedRoute
+    public onResult(result: FitDatasetResponse<FitDatasetPoints>) {
+        console.log("rekanrf", result);
+    }
+    public createLoadObservable(): Observable<HttpEvent<FitDatasetResponse<FitDatasetPoints>>> {
+        return this.activatedRoute
             .paramMap
-            .pipe(flatMap((value) => {
+            .pipe(flatMap((value: ParamMap): Observable<HttpEvent<FitDatasetResponse<FitDatasetPoints>>> => {
                 return this.fitDataSetService.getDataSetData(value.get('id'), moment().subtract(30, 'day'), moment());
-            })).subscribe(console.log, console.error);
-    }
-    public ngAfterViewInit() {
-    }
+            }));
+    };
 
     public get progressBarMode(): 'indeterminate' | 'query' {
         return 'query';

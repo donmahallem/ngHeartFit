@@ -1,26 +1,14 @@
-ng-container(*ngIf="dataSource!==null")
-    h3 {{dataSource.dataStreamName}}
+ng-container(*ngIf="hasDataSource")
+    .title-bar
+        mat-icon favorite
+        span {{dataSource.dataStreamName}}
     p DataStreamId: {{dataSource.dataStreamId}}
     p DataType: {{dataSource.dataType.name}}
     ul
         li(*ngFor="let field of dataSource.dataType.field") {{field.name}} - {{field.format}}
     p Type: {{dataSource.type}}
     p Device: {{dataSource.device | json}}
-    table(mat-table,[dataSource]="dataSource2")
-        ng-container(matColumnDef="date")
-            th(mat-header-cell,*matHeaderCellDef) Date
-            td(mat-cell,*matCellDef="let element") {{element.position}}
-        ng-container(*ngFor="let field of dataSource.dataType.field",[matColumnDef]="field.name")
-            th(mat-header-cell,*matHeaderCellDef) {{field.name}}
-            td(mat-cell,*matCellDef="let element") {{element.position}}
-        ng-container(matColumnDef="position")
-            th(mat-header-cell,*matHeaderCellDef) No.
-            td(mat-cell,*matCellDef="let element") {{element.position}}
-        ng-container(matColumnDef="name")
-            th(mat-header-cell,*matHeaderCellDef) No2.
-            td(mat-cell,*matCellDef="let element") {{element.position}}
-        tr(mat-header-row,*matHeaderRowDef="displayedColumns")
-        tr(mat-row,*matRowDef="let row; columns: displayedColumns;")
-ng-container(*ngIf="dataSource===null")
+    datasource-example-table([dataSource]="dataSource")
+ng-container(*ngIf="!hasDataSource")
     p Loading
     mat-progress-bar([mode]="progressBarMode")
