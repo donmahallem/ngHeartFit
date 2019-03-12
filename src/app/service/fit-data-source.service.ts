@@ -160,8 +160,9 @@ export interface FitDataSource {
     dataType: {
         name: string,
         field: {
-            name: string,
-            format: 'blob' | 'floatList' | 'floatPoint' | 'integer' | 'integerList' | 'map' | 'string'
+            name: string;
+            format: 'blob' | 'floatList' | 'floatPoint' | 'integer' | 'integerList' | 'map' | 'string';
+            optional?: boolean;
         }[]
     };
     device: {

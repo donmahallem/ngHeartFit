@@ -4,8 +4,7 @@ import { DatasourcesComponent } from './datasources/datasources.component';
 import { SessionsComponent } from './sessions/sessions.component';
 import { SessionDetailComponent } from './session-detail/session-detail.component';
 import { DatasourceDetailComponent } from './datasource-detail';
-import { NotFoundComponent } from '../not-found.component';
-import { NotFoundModule } from '../not-found.module';
+import { FitDataSourceDetailResolver } from './datasource-detail/fit-data-source-detail.resolver';
 
 const routes: Routes = [
     {
@@ -14,7 +13,10 @@ const routes: Routes = [
     },
     {
         path: 'datasource/:id',
-        component: DatasourceDetailComponent
+        component: DatasourceDetailComponent,
+        resolve: {
+            dataSource: FitDataSourceDetailResolver
+        }
     },
     {
         path: 'sessions',
@@ -23,17 +25,12 @@ const routes: Routes = [
     {
         path: 'session/:id',
         component: SessionDetailComponent
-    },
-    {
-        path: '**',
-        component: NotFoundComponent
     }
 ];
 
 @NgModule({
     imports: [
-        RouterModule.forChild(routes),
-        NotFoundModule
+        RouterModule.forChild(routes)
     ],
     exports: [RouterModule],
     providers: [
