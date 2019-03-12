@@ -4,6 +4,7 @@ import { DatasourcesComponent } from './datasources/datasources.component';
 import { SessionsComponent } from './sessions/sessions.component';
 import { SessionDetailComponent } from './session-detail/session-detail.component';
 import { DatasourceDetailComponent } from './datasource-detail';
+import { FitDataSourceDetailResolver } from './datasource-detail/fit-data-source-detail.resolver';
 
 const routes: Routes = [
     {
@@ -12,7 +13,10 @@ const routes: Routes = [
     },
     {
         path: 'datasource/:id',
-        component: DatasourceDetailComponent
+        component: DatasourceDetailComponent,
+        resolve: {
+            dataSource: FitDataSourceDetailResolver
+        }
     },
     {
         path: 'sessions',

@@ -1,15 +1,18 @@
 import {
     Component,
     AfterViewInit,
-    OnDestroy
+    OnDestroy,
+    NgZone,
+    OnInit
 } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { flatMap } from 'rxjs/operators';
+import { flatMap, debounceTime } from 'rxjs/operators';
 import * as moment from 'moment';
 import { FitDataSource, FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 import { FitApiDataSetService } from 'src/app/service/fit-data-set.service';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
+import { MatProgressBar } from '@angular/material';
 
 
 const ELEMENT_DATA: any[] = [
@@ -30,13 +33,13 @@ const ELEMENT_DATA: any[] = [
     templateUrl: './datasource-detail.component.pug',
     styleUrls: ['./datasource-detail.component.scss']
 })
-export class DatasourceDetailComponent implements OnDestroy, AfterViewInit {
+export class DatasourceDetailComponent implements OnDestroy, AfterViewInit, OnInit {
 
     displayedColumns: string[] = ['position', 'name'];
     dataSource2 = ELEMENT_DATA;
     private mDataSource: FitDataSource = null;
-    private mSubscription: Subscription;
-    constructor(private fitDataSourceService: FitApiDataSourceService,
+    private mRouteDataSubscription: Subscription;
+    constructor(private zone: NgZone,
         private fitDataSetService: FitApiDataSetService,
         private activatedRoute: ActivatedRoute) {
     }
@@ -45,29 +48,29 @@ export class DatasourceDetailComponent implements OnDestroy, AfterViewInit {
         return this.mDataSource;
     }
 
-    public ngAfterViewInit() {
-        this.mSubscription =
-            this.activatedRoute
-                .paramMap
-                .pipe(flatMap((params: ParamMap): Observable<HttpEvent<FitDataSource>> => {
-                    console.log(params);
-                    return this.fitDataSourceService.getDataSource(params.get('id'));
-                })).subscribe((event: HttpEvent<FitDataSource>) => {
-                    if (event.type === HttpEventType.Response) {
-                        this.mDataSource = event.body;
-                        const cols: string[] = this.mDataSource.dataType.field.map((val) => {
-                            return val.name;
-                        });
-                        this.displayedColumns = ['date'].concat(cols);
-                    }
-                }, console.error);
+    public ngOnInit() {
+        this.mRouteDataSubscription = this.activatedRoute.data
+            .subscribe((data: { dataSource: FitDataSource }) => {
+                this.zone.run(() => {
+                    this.mDataSource = data.dataSource;
+                });
+            });
         this.activatedRoute
             .paramMap
             .pipe(flatMap((value) => {
                 return this.fitDataSetService.getDataSetData(value.get('id'), moment().subtract(30, 'day'), moment());
             })).subscribe(console.log, console.error);
     }
+    public ngAfterViewInit() {
+    }
+
+    public get progressBarMode(): 'indeterminate' | 'query' {
+        return 'query';
+    }
 
     public ngOnDestroy() {
+        if (this.mRouteDataSubscription) {
+            this.mRouteDataSubscription.unsubscribe();
+        }
     }
 }

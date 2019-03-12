@@ -23,4 +23,4 @@ ng-container(*ngIf="dataSource!==null")
         tr(mat-row,*matRowDef="let row; columns: displayedColumns;")
 ng-container(*ngIf="dataSource===null")
     p Loading
-
+    mat-progress-bar([mode]="progressBarMode")
