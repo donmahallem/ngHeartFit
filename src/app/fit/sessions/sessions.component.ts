@@ -32,7 +32,7 @@ export class SessionsComponent extends LoadableListComponent<ListSessionsRespons
     }
 
     public createLoadObservable(): Observable<HttpEvent<ListSessionsResponse>> {
-        return this.sessionService.getSessions();
+        return this.sessionService.getSessions(moment().subtract(120, 'days').toISOString(), moment().toISOString());
     }
     public get sessions(): FitSession[] {
         return this.mSessions;

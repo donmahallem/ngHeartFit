@@ -26,7 +26,20 @@ export class FitApiSessionService {
         return this.fitApiBaseService.getRequest(FitApiBaseService.ENDPOINT + '/users/me/sessions/' + id);
     }
 
-    public getSessions(): Observable<HttpEvent<ListSessionsResponse>> {
-        return this.fitApiBaseService.getRequest(FitApiBaseService.ENDPOINT + '/users/me/sessions/');
+    public getSessions(): Observable<HttpEvent<ListSessionsResponse>>;
+    public getSessions(startTime: string | null, endTime: string | null, includeDeleted?: boolean): Observable<HttpEvent<ListSessionsResponse>>;
+    public getSessions(startTime: string | null = undefined, endTime: string | null = undefined, includeDeleted: boolean = false, pageToken: string = undefined): Observable<HttpEvent<ListSessionsResponse>> {
+        const params: any = {};
+        if (startTime) {
+            params.startTime = startTime;
+        }
+        if (endTime) {
+            params.endTime = endTime;
+        }
+        params.includeDeleted = includeDeleted === true;
+        if (pageToken) {
+            params.pageToken = pageToken;
+        }
+        return this.fitApiBaseService.getRequest(FitApiBaseService.ENDPOINT + '/users/me/sessions/', params);
     }
 }
