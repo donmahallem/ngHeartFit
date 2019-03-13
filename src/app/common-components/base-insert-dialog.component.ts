@@ -1,9 +1,10 @@
 import {
     Component,
-    OnInit
+    OnInit,
+    Inject
 } from '@angular/core';
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl, ValidationErrors, FormBuilder } from '@angular/forms';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import * as moment from 'moment';
 import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 
@@ -38,10 +39,20 @@ export interface BodyMetricsFormData {
     date: moment.Moment;
     time: string;
 }
+export interface DialogParameter {
+    selectableUnits?: SelectableUnit[];
+    minValue?: number;
+    maxValue?: number;
+    title: string;
+}
+
+export interface SelectableUnit {
+    key: string;
+    value: string;
+}
 @Component({
-    selector: 'bodymetrics-form-cmp',
-    templateUrl: './bodymetrics-form.component.pug',
-    styleUrls: ['./bodymetrics-form.component.scss']
+    templateUrl: './base-insert-dialog.component.pug',
+    styleUrls: ['./base-insert-dialog.component.scss']
 })
 export class BodyMetricsFormComponent {
 
@@ -52,51 +63,31 @@ export class BodyMetricsFormComponent {
     public metricsForm: FormGroup;
     constructor(private fitApi: FitApiDataSourceService,
         private fb: FormBuilder,
-        private dialog: MatDialog) {
+        private dialogRef: MatDialogRef<BodyMetricsFormComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: DialogParameter) {
         this.metricsForm = this.fb
             .group({
-                bodyweight: [0, Validators.min(0)],
-                bodyfat: [0, [Validators.min(0), Validators.max(100)]],
-                bodyheight: [0, Validators.min(0)],
-                bodyweightunit: ['kilogram', Validators.required],
-                bodyheightunit: ['meter', Validators.required],
+                value: [0, [Validators.min(0), Validators.max(100)]],
+                unit: [0, Validators.required],
                 date: [moment.utc().local(), Validators.required],
                 time: ['12:12', Validators.required]
             });
     }
 
-    public onSubmit(): void {
-        if (this.metricsForm.valid === true) {
-            const bodyWeightUnit: string = this.metricsForm.get('bodyweightunit').value;
-            const bodyHeightUnit: string = this.metricsForm.get('bodyheightunit').value;
-            let bodyWeightMultiplicator = 1;
-            if (bodyWeightUnit === 'pound') {
-                bodyWeightMultiplicator = BodyMetricsFormComponent.POUND_TO_KILOGRAM;
-            } else if (bodyWeightUnit === 'stone') {
-                bodyWeightMultiplicator = BodyMetricsFormComponent.STONE_TO_KILOGRAM;
-            }
-            let bodyHeightMultiplicator = 1;
-            if (bodyHeightUnit === 'inch') {
-                bodyHeightMultiplicator = BodyMetricsFormComponent.INCH_TO_METER;
-            } else if (bodyHeightUnit === 'foot') {
-                bodyHeightMultiplicator = BodyMetricsFormComponent.FOOT_TO_METER;
-            }
-            const timestamp: moment.Moment = this.metricsForm.get('timestamp').value;
-            const submitObject: any = {
-                timestamp: timestamp.unix()
-            };
-            submitObject.bodyweight = this.metricsForm.get('bodyweight').value * bodyWeightMultiplicator;
-            submitObject.bodyheight = this.metricsForm.get('bodyheight').value * bodyHeightMultiplicator;
-            submitObject.bodyfat = this.metricsForm.get('bodyfat').value * 1;
-            this.submitData(submitObject);
-        } else {
-            // console.log(this.metricsForm.errors);
-        }
+    private mSelectableUnits: SelectableUnit[] = [];
+    public get selectableUnits(): SelectableUnit[] {
+        return this.mSelectableUnits;
     }
 
-    public submitData(data: any): void {
-        /*
-        this.fitApi.submitBodyMetrics(submitObject)
-        .subscribe(console.log, console.error);*/
+    public set selectableUnits(units: SelectableUnit[]) {
+        if (Array.isArray(units)) {
+            this.mSelectableUnits = units;
+        }
+        this.mSelectableUnits = [];
     }
+
+    public get hasSelectableUnits(): boolean {
+        return this.mSelectableUnits.length > 0;
+    }
+
 }

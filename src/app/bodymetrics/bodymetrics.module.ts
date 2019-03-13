@@ -23,19 +23,13 @@ import { NgGapiConfigModule } from '../nggapi-config.module';
 import { SelectTimeRangeComponent } from './components/select-time-range.component';
 import { WeightChartService } from './services/weight-chart.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { SelectDateTimeDialogComponent } from './components/select-date-time-dialog.component';
 
 @NgModule({
     declarations: [
         BodyMetricsFormComponent,
         WeightChartComponent,
         LineChartComponent,
-        SelectTimeRangeComponent,
-        SelectDateTimeDialogComponent
-    ],
-    entryComponents: [
-        SelectDateTimeDialogComponent
-
+        SelectTimeRangeComponent
     ],
     imports: [
         CommonModule,
