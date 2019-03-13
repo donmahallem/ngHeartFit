@@ -21,6 +21,8 @@ export class FitApiDataSetService {
 
 export interface FitDatasetResponse<T extends FitDatasetPoints> {
     dataSourceId: string,
+    dataTypeName: string,
+    modifiedTimeMillis: string,
     maxEndTimeNs: string,
     minStartTimeNs: string,
     point: T[]

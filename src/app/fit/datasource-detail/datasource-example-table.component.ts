@@ -18,18 +18,6 @@ import { LoadableListComponent } from 'src/app/common-components/sessions.compon
 import { LoadableComponent } from 'src/app/common-components/loadable.component';
 
 
-const ELEMENT_DATA: any[] = [
-    { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-    { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-    { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-    { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-    { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-    { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-    { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-    { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-    { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-    { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
-];
 
 @Component({
     selector: 'datasource-example-table',
@@ -39,7 +27,7 @@ const ELEMENT_DATA: any[] = [
 export class DatasourceExampleTableComponent<T> extends LoadableComponent<FitDatasetResponse<FitDatasetPoints>> {
 
     displayedColumns: string[] = ['position', 'name', 'date'];
-    dataSource2 = ELEMENT_DATA;
+    dataSource2: any = [];
     private mDataSourceSubject: BehaviorSubject<FitDataSource> = new BehaviorSubject(null);
     private mRouteDataSubscription: Subscription;
     constructor(private zone: NgZone,
@@ -47,11 +35,15 @@ export class DatasourceExampleTableComponent<T> extends LoadableComponent<FitDat
         private activatedRoute: ActivatedRoute) {
         super();
         this.mDataSourceSubject.subscribe((val) => {
-            const vals: string[] = val.dataType.field
-                .map((val) => {
-                    return val.name;
-                });
-            this.displayedColumns.concat(vals)
+            if (val) {
+                const vals: string[] = ['startTime', 'endTime', 'modifiedTime'].concat(val.dataType.field
+                    .map((val) => {
+                        return val.name;
+                    }));
+                this.displayedColumns = vals;
+                return;
+            }
+            this.displayedColumns = ['startTime', 'endTime', 'modifiedTime'];
         });
     }
 
@@ -64,7 +56,16 @@ export class DatasourceExampleTableComponent<T> extends LoadableComponent<FitDat
         this.mDataSourceSubject.next(source);
     }
     public onResult(result: FitDatasetResponse<FitDatasetPoints>) {
-        console.log("rekanrf", result);
+        const res: any[] = [];
+        for (let a of result.point) {
+            res.push({
+                startTime: moment.unix(parseInt(a.startTimeNanos.substr(0, a.startTimeNanos.length - 9))),
+                endTime: moment.unix(parseInt(a.endTimeNanos.substr(0, a.endTimeNanos.length - 9))),
+                modifiedTime: moment.unix(parseInt(a.modifiedTimeMillis.substr(0, a.modifiedTimeMillis.length - 3))),
+                weight: a.value[0].fpVal
+            })
+        }
+        this.dataSource2 = res;
     }
     public createLoadObservable(): Observable<HttpEvent<FitDatasetResponse<FitDatasetPoints>>> {
         return this.activatedRoute
