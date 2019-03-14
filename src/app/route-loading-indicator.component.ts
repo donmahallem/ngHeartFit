@@ -47,6 +47,8 @@ export class RouteLoadingIndicatorComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy(): void {
-
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
     }
 }
