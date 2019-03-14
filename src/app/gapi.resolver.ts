@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { catchError, filter, map, take } from 'rxjs/operators';
+import { catchError, filter, map, take, delay } from 'rxjs/operators';
 import { NgGapiService, GapiStatus } from './service/nggapi-base.service';
 
 @Injectable()
