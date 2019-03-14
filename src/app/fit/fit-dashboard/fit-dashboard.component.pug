@@ -1,14 +1,3 @@
-ng-container(*ngIf="hasDataSource")
-    .title-bar
-        mat-icon favorite
-        span {{dataSource.dataStreamName}}
-    p DataStreamId: {{dataSource.dataStreamId}}
-    p DataType: {{dataSource.dataType.name}}
-    ul
-        li(*ngFor="let field of dataSource.dataType.field") {{field.name}} - {{field.format}}
-    p Type: {{dataSource.type}}
-    p Device: {{dataSource.device | json}}
-    datasource-example-table([dataSource]="dataSource")
-ng-container(*ngIf="!hasDataSource")
-    p Loading
-    mat-progress-bar([mode]="progressBarMode")
+app-line-chart
+
+button.fab(mat-button) asdf

@@ -150,29 +150,26 @@ export class FitApiBaseService {
     public getRequest<RESP_BODY>(url: string, params: HttpParams | {
         [param: string]: string | string[];
     } = null): Observable<HttpEvent<RESP_BODY>> {
-        return this.base()
-            .pipe(flatMap((): Observable<HttpEvent<RESP_BODY>> => {
-                let convertedParams: HttpParams = null;
-                if (params) {
-                    if (params instanceof HttpParams) {
-                        convertedParams = params;
-                    } else {
-                        convertedParams = new HttpParams({
-                            fromObject: params
-                        });
-                    }
-                }
-                const request = new HttpRequest('GET', url, {
-                    headers: new HttpHeaders({
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + this.gapiUser.getToken(),
-                    }),
-                    responseType: 'json',
-                    reportProgress: false,
-                    params: convertedParams
+        let convertedParams: HttpParams = null;
+        if (params) {
+            if (params instanceof HttpParams) {
+                convertedParams = params;
+            } else {
+                convertedParams = new HttpParams({
+                    fromObject: params
                 });
-                return this.request(request);
-            }));
+            }
+        }
+        const request = new HttpRequest('GET', url, {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + this.gapiUser.getToken(),
+            }),
+            responseType: 'json',
+            reportProgress: false,
+            params: convertedParams
+        });
+        return this.request(request);
     }
 
     public postRequest<REQ_BODY, RESP_BODY>(url: string, body: REQ_BODY, params: HttpParams | {

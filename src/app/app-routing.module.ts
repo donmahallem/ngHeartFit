@@ -4,6 +4,7 @@ import { LoginGoogleComponent } from './components/login-google/login-google.com
 import { RouteGuardService } from './service/route-guard.service';
 import { NotFoundComponent } from './not-found.component';
 import { NotFoundModule } from './not-found.module';
+import { NgGapiResolver } from './gapi.resolver';
 
 const routes: Routes = [
     {
@@ -23,7 +24,12 @@ const routes: Routes = [
         data: {
             requiresLogin: true
         },
-        loadChildren: './fit/fit.module#FitModule'
+        canActivate: [RouteGuardService],
+        canActivateChild: [RouteGuardService],
+        loadChildren: './fit/fit.module#FitModule',
+        resolve: {
+            gapi: NgGapiResolver
+        }
     }, {
         path: 'bodymetrics',
         data: {

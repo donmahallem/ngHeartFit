@@ -17,6 +17,7 @@ import { FitApiDataSetService } from './service/fit-data-set.service';
 import { FitApiDataSourceService } from './service/fit-data-source.service';
 import { FitApiSessionService } from './service/fit-session.service';
 import { FitApiAggregateService } from './service/fit-aggregate.service';
+import { NgGapiResolver } from './gapi.resolver';
 
 const gapiClientConfig: NgGapiClientConfig = {
     client_id: environment.gapi.client_id,
@@ -46,7 +47,8 @@ export class NgGapiConfigModule {
                 FitApiDataSetService,
                 FitApiDataSourceService,
                 FitApiAggregateService,
-                FitApiSessionService
+                FitApiSessionService,
+                NgGapiResolver
             ]
         };
     }
