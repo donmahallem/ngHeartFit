@@ -16,8 +16,29 @@ export class FitApiDataSetService {
         const url = FitApiBaseService.ENDPOINT + '/users/me/dataSources/' + dataSource + '/datasets/' + from.valueOf() + '000000-' + to.valueOf() + '000000';
         return this.fitApiBaseService.getRequest<FitDatasetResponse<T>>(url);
     }
+
+    public insertData(dataSourceId: string, from: moment.Moment, to: moment.Moment, points: InsertDataPoint[]): Observable<HttpEvent<any>> {
+
+        const requestBody: any = {
+            "minStartTimeNs": from.valueOf() * 1000000,
+            "maxEndTimeNs": to.valueOf() * 1000000,
+            "dataSourceId": dataSourceId,
+            "point": points
+        };
+        const url = FitApiBaseService.ENDPOINT + '/users/me/dataSources/' + dataSourceId + '/datasets/' + from.valueOf() + '000000-' + to.valueOf() + '000000';
+
+        return this.fitApiBaseService.patchRequest(url, requestBody);
+    }
 }
 
+export interface InsertDataPoint {
+    "startTimeNanos": number;
+    "endTimeNanos": number;
+    "dataTypeName": string;
+    "value": {
+        "fpVal": number;
+    }[];
+};
 
 export interface FitDatasetResponse<T extends FitDatasetPoints> {
     dataSourceId: string,
