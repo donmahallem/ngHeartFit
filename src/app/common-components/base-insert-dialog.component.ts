@@ -54,7 +54,7 @@ export interface SelectableUnit {
     templateUrl: './base-insert-dialog.component.pug',
     styleUrls: ['./base-insert-dialog.component.scss']
 })
-export class BodyMetricsFormComponent {
+export class BaseInsertDialogComponent {
 
     public static readonly FOOT_TO_METER: number = 0.3048;
     public static readonly INCH_TO_METER: number = 0.0254;
@@ -63,7 +63,7 @@ export class BodyMetricsFormComponent {
     public metricsForm: FormGroup;
     constructor(private fitApi: FitApiDataSourceService,
         private fb: FormBuilder,
-        private dialogRef: MatDialogRef<BodyMetricsFormComponent>,
+        private dialogRef: MatDialogRef<BaseInsertDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: DialogParameter) {
         this.metricsForm = this.fb
             .group({

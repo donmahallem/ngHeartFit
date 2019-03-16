@@ -23,12 +23,14 @@ import { SelectTimeRangeComponent } from './components/select-time-range.compone
 import { WeightChartService } from './services/weight-chart.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { LineChartModule } from '../common-components/line-chart';
+import { BaseInsertDialogComponent } from '../common-components/base-insert-dialog.component';
 
 @NgModule({
     declarations: [
         BodyMetricsFormComponent,
         WeightChartComponent,
-        SelectTimeRangeComponent
+        SelectTimeRangeComponent,
+        BaseInsertDialogComponent
     ],
     imports: [
         CommonModule,

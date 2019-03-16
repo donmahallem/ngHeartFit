@@ -1,13 +1,13 @@
 h2(mat-dialog-title) Delete all
 mat-dialog-content
-    form([formGroup]="metricsForm",(ngSubmit)="onSubmit()")
+    form([formGroup]="metricsForm")
         mat-form-field.col1(appearance="outline")
             mat-label Weight
             input.inputbodyweight(matInput,placeholder="Weight",type="number", formControlName="bodyweight")
             mat-hint Hint
         mat-form-field.col2(*ngIf="hasSelectableUnits",appearance="outline")
             select.inputbodyheightunit(matNativeControl,required,formControlName="unit")
-                option(*ngFor="const val of selectableUnits",[value]="val.key") {{val.value}}
+                option(*ngFor="let val of selectableUnits",[value]="val.key") {{val.value}}
         mat-form-field.col1(appearance="outline")
             mat-label Date
             input.inputdate(matInput,[matDatepicker]="picker1",placeholder="Date",formControlName="date")
