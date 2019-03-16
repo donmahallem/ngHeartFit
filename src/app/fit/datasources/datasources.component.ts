@@ -23,6 +23,7 @@ export class DatasourcesComponent extends LoadableListComponent<FitDataSourceLis
         return this.mDataSources;
     }
     public onResult(result: FitDataSourceList) {
+        console.log("in zone", NgZone.isInAngularZone());
         this.mDataSources = result.dataSource;
     }
 

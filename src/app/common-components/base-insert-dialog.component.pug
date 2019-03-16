@@ -1,0 +1,25 @@
+h2(mat-dialog-title) Delete all
+mat-dialog-content
+    form([formGroup]="metricsForm")
+        mat-form-field.col1(appearance="outline")
+            mat-label Weight
+            input.inputbodyweight(matInput,placeholder="Weight",type="number", formControlName="bodyweight")
+            mat-hint Hint
+        mat-form-field.col2(*ngIf="hasSelectableUnits",appearance="outline")
+            select.inputbodyheightunit(matNativeControl,required,formControlName="unit")
+                option(*ngFor="let val of selectableUnits",[value]="val.key") {{val.value}}
+        mat-form-field.col1(appearance="outline")
+            mat-label Date
+            input.inputdate(matInput,[matDatepicker]="picker1",placeholder="Date",formControlName="date")
+            mat-datepicker-toggle(matSuffix,[for]="picker1")
+            mat-datepicker(#picker1)
+            mat-hint Date of occurance
+        mat-form-field.col2(appearance="outline")
+            mat-label Time
+            input.inputbodyfat(matInput,placeholder="Time",type="time", formControlName="time")
+            mat-hint HH:mm 
+            mat-error(*ngIf="metricsForm.get('time').invalid") The value must be formated in 24h format
+        button(mat-raised-button,color="primary",[disabled]="metricsForm.invalid",type="submit") Send
+mat-dialog-actions
+    button(mat-button,mat-dialog-close) No
+    button(mat-button,[mat-dialog-close]="true") Yes

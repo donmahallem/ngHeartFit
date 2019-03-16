@@ -24,6 +24,7 @@ import { SessionDetailComponent } from './session-detail/session-detail.componen
 import { DatasourcesModule } from './datasources/datasources.module';
 import { DatasourceDetailModule } from './datasource-detail';
 import { NotFoundComponent } from '../not-found.component';
+import { FitDashboardComponent, FitDashboardModule } from './fit-dashboard';
 
 @NgModule({
     declarations: [
@@ -48,7 +49,8 @@ import { NotFoundComponent } from '../not-found.component';
         MatTableModule,
         MatProgressBarModule,
         DatasourcesModule,
-        DatasourceDetailModule
+        DatasourceDetailModule,
+        FitDashboardModule
     ],
     providers: [
         { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },

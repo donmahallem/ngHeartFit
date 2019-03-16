@@ -6,7 +6,6 @@ import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl, Valid
 import { MatDialog } from '@angular/material';
 import * as moment from 'moment';
 import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
-import { SelectDateTimeDialogComponent } from './select-date-time-dialog.component';
 
 
 export function forbiddenNameValidator(): ValidatorFn {
@@ -36,7 +35,8 @@ export interface BodyMetricsFormData {
     bodyheight: number;
     bodyweightunit: string | 'stone' | 'kg';
     bodyheightunit: string | 'meter' | 'foot' | 'inch';
-    timestamp: moment.Moment;
+    date: moment.Moment;
+    time: string;
 }
 @Component({
     selector: 'bodymetrics-form-cmp',
@@ -60,16 +60,9 @@ export class BodyMetricsFormComponent {
                 bodyheight: [0, Validators.min(0)],
                 bodyweightunit: ['kilogram', Validators.required],
                 bodyheightunit: ['meter', Validators.required],
-                timestamp: [moment.utc().local(), Validators.required]
+                date: [moment.utc().local(), Validators.required],
+                time: ['12:12', Validators.required]
             });
-    }
-
-    public onPickTimestamp(ev: MouseEvent): void {
-        this.dialog.open(SelectDateTimeDialogComponent, {
-            data: {
-                animal: 'panda'
-            }
-        });
     }
 
     public onSubmit(): void {
@@ -88,7 +81,11 @@ export class BodyMetricsFormComponent {
             } else if (bodyHeightUnit === 'foot') {
                 bodyHeightMultiplicator = BodyMetricsFormComponent.FOOT_TO_METER;
             }
-            const timestamp: moment.Moment = this.metricsForm.get('timestamp').value;
+            const timestamp: moment.Moment = this.metricsForm.get('date').value;
+            const timeString: string = this.metricsForm.get('time').value;
+            const timeSplit: string[] = timeString.split(":").map((val) => val.trim());
+            timestamp.hours(parseInt(timeSplit[0]));
+            timestamp.minutes(parseInt(timeSplit[1]));
             const submitObject: any = {
                 timestamp: timestamp.unix()
             };

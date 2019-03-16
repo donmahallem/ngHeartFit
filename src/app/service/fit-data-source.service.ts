@@ -32,7 +32,7 @@ export class FitApiDataSourceService {
     }
 
     public getDataSource(id: string): Observable<HttpEvent<FitDataSource>> {
-        return this.fitApiBaseService.getRequest(FitApiBaseService.ENDPOINT + '/users/me/dataSources/' + id);
+        return this.fitApiBaseService.getRequest(FitApiBaseService.ENDPOINT + '/users/me/dataSources/' + encodeURI(id.replace(' ', '\ ')));
     }
 
     public createDataSourceMetaData(dataType: DataType, dataStreamName?: string): CreateDataSourceRequest {
@@ -46,11 +46,11 @@ export class FitApiDataSourceService {
             },
             'dataType': dataType,
             'device': {
-                'manufacturer': navigator.appCodeName,
-                'model': navigator.appName,
+                'manufacturer': navigator.appCodeName.replace(/[^\w]/gi, ''),
+                'model': navigator.appName.replace(/[^\w]/gi, ''),
                 'type': 'unknown',
-                'uid': navigator.userAgent,
-                'version': navigator.appVersion
+                'uid': navigator.userAgent.replace(/[^\w]/gi, ''),
+                'version': navigator.appVersion.replace(/[^\w]/gi, '')
             }
         };
     }
@@ -88,7 +88,7 @@ export class FitApiDataSourceService {
             .pipe(flatMap((event: HttpEvent<FitDataSourceList>): Observable<HttpEvent<FitDataSource>> => {
                 if (event.type === HttpEventType.Response) {
                     for (const source of event.body.dataSource) {
-                        if (source.dataStreamName === FitApiDataSourceService.BODY_FAT_PERCENTAGE_NAME && source.device.uid === navigator.userAgent) {
+                        if (source.dataStreamName === FitApiDataSourceService.BODY_FAT_PERCENTAGE_NAME && source.device.uid === navigator.userAgent.replace(/[^\w]/gi, '')) {
                             const modified: HttpResponse<FitDataSource> = event.clone({
                                 body: source
                             });
@@ -110,7 +110,7 @@ export class FitApiDataSourceService {
             .pipe(flatMap((event: HttpEvent<FitDataSourceList>): Observable<HttpEvent<FitDataSource>> => {
                 if (event.type === HttpEventType.Response) {
                     for (const source of event.body.dataSource) {
-                        if (source.dataStreamName === FitApiDataSourceService.WEIGHT_NAME && source.device.uid === navigator.userAgent) {
+                        if (source.dataStreamName === FitApiDataSourceService.WEIGHT_NAME && source.device.uid === navigator.userAgent.replace(/[^\w]/gi, '')) {
                             const modified: HttpResponse<FitDataSource> = event.clone({
                                 body: source
                             });

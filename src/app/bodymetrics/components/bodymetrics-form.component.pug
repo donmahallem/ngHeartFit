@@ -1,32 +1,37 @@
 form([formGroup]="metricsForm",(ngSubmit)="onSubmit()")
-    mat-form-field(appearance="outline")
+    mat-form-field.col1(appearance="outline")
         mat-label Weight
         input.inputbodyweight(matInput,placeholder="Weight",type="number", formControlName="bodyweight")
         mat-hint Hint
-    mat-form-field
+    mat-form-field.col2(appearance="outline")
         select.inputbodyweightunit(matNativeControl,required,formControlName="bodyweightunit")
             option(value="kilogram") KG
             option(value="stone") Stone
             option(value="pound") lbs
-    br
-    mat-form-field(appearance="outline")
+    mat-form-field.col1(appearance="outline")
         mat-label Height
         input.inputbodyheight(matInput,placeholder="Height",type="number",formControlName="bodyheight")
         mat-hint Hint
-    mat-form-field
+    mat-form-field.col2(appearance="outline")
         select.inputbodyheightunit(matNativeControl,required,formControlName="bodyheightunit")
             option(value="meter") Meter
             option(value="inch") Inch
             option(value="foot") Feet
-    br
-    mat-form-field(appearance="outline")
+    mat-form-field.col12(appearance="outline")
         mat-label Body Fat Percentage
         input.inputbodyfat(matInput,placeholder="Body Fat",type="number", formControlName="bodyfat")
         mat-icon(matSuffix) sentiment_very_satisfied
         mat-hint Hint 
         mat-error(*ngIf="metricsForm.get('bodyfat').invalid") The value must be between 0 and 100
-    br
-    input.inputtimestamp(type="hidden",formControlName="timestamp")
-    button(mat-stroked-button,(click)="onPickTimestamp($event)") {{metricsForm.get('timestamp').value?.format('LLLL')}}
-    br
+    mat-form-field.col1(appearance="outline")
+        mat-label Date
+        input.inputdate(matInput,[matDatepicker]="picker1",placeholder="Date",formControlName="date")
+        mat-datepicker-toggle(matSuffix,[for]="picker1")
+        mat-datepicker(#picker1)
+        mat-hint Date of occurance
+    mat-form-field.col2(appearance="outline")
+        mat-label Time
+        input.inputbodyfat(matInput,placeholder="Time",type="time", formControlName="time")
+        mat-hint HH:mm 
+        mat-error(*ngIf="metricsForm.get('time').invalid") The value must be formated in 24h format
     button(mat-raised-button,color="primary",[disabled]="metricsForm.invalid",type="submit") Send
