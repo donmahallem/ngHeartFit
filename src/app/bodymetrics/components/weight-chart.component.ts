@@ -5,7 +5,6 @@ import {
     ViewChild,
     OnDestroy
 } from '@angular/core';
-import { LineChartComponent } from 'src/app/common-components/line-chart.component';
 import * as moment from 'moment';
 import { flatMap, debounceTime, delay, filter } from 'rxjs/operators';
 import { BucketResponse } from 'src/app/service/fit-api-modals';
@@ -14,6 +13,7 @@ import { Subscription } from 'rxjs';
 import { FitApiDataSourceService, FitDataSourceList } from 'src/app/service/fit-data-source.service';
 import { AggregateByFilter, FitApiAggregateService } from 'src/app/service/fit-aggregate.service';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
+import { LineChartComponent } from 'src/app/common-components/line-chart';
 
 @Component({
     selector: 'weight-chart',
