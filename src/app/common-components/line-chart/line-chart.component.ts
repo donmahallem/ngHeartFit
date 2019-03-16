@@ -1,8 +1,11 @@
 import { Component, OnInit, NgZone, ElementRef, AfterViewInit, ViewChild, Input, DoCheck } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import * as d3 from 'd3';
-import { debounce, debounceTime } from 'rxjs/operators';
-import { DataPoint } from '../polar/view-upload/data-point';
+import { debounceTime } from 'rxjs/operators';
+export interface DataPoint {
+    x: Date;
+    y: number;
+}
 @Component({
     selector: 'app-line-chart',
     templateUrl: './line-chart.component.pug',

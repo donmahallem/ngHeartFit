@@ -120,7 +120,8 @@ describe('BodyMetricsComponent', () => {
                     bodyweight: 78,
                     bodyheightunit: 'inch',
                     bodyweightunit: 'kilogram',
-                    timestamp: moment.unix(testTimestamp).local()
+                    date: moment.unix(testTimestamp).local(),
+                    time: moment.unix(testTimestamp).local().format("HH:mm")
                 };
                 component.metricsForm.patchValue(testData);
                 fixture.detectChanges();
@@ -138,7 +139,8 @@ describe('BodyMetricsComponent', () => {
                     bodyweight: 78,
                     bodyheightunit: 'inch',
                     bodyweightunit: 'pound',
-                    timestamp: moment.unix(testTimestamp).local(),
+                    date: moment.unix(testTimestamp).local(),
+                    time: moment.unix(testTimestamp).local().format("HH:mm")
                 };
                 component.metricsForm.setValue(testData);
                 fixture.detectChanges();
@@ -159,7 +161,8 @@ describe('BodyMetricsComponent', () => {
                     bodyweight: 78,
                     bodyheightunit: 'foot',
                     bodyweightunit: 'stone',
-                    timestamp: moment.unix(testTimestamp).local()
+                    date: moment.unix(testTimestamp).local(),
+                    time: moment.unix(testTimestamp).local().format("HH:mm")
                 };
                 component.metricsForm.patchValue(testData);
                 fixture.detectChanges();
@@ -180,7 +183,8 @@ describe('BodyMetricsComponent', () => {
                     bodyweight: 78,
                     bodyheightunit: 'meter',
                     bodyweightunit: 'kilogram',
-                    timestamp: moment.unix(testTimestamp).local()
+                    date: moment.unix(testTimestamp).local(),
+                    time: moment.unix(testTimestamp).local().format("HH:mm")
                 };
                 component.metricsForm.patchValue(testData);
                 fixture.detectChanges();

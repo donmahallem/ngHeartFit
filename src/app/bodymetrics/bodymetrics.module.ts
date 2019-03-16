@@ -18,17 +18,16 @@ import { BodyMetricsRoutingModule } from './bodymetrics-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BodyMetricsFormComponent } from './components/bodymetrics-form.component';
 import { WeightChartComponent } from './components/weight-chart.component';
-import { LineChartComponent } from '../common-components/line-chart.component';
 import { NgGapiConfigModule } from '../nggapi-config.module';
 import { SelectTimeRangeComponent } from './components/select-time-range.component';
 import { WeightChartService } from './services/weight-chart.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { LineChartModule } from '../common-components/line-chart';
 
 @NgModule({
     declarations: [
         BodyMetricsFormComponent,
         WeightChartComponent,
-        LineChartComponent,
         SelectTimeRangeComponent
     ],
     imports: [
@@ -46,7 +45,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         MatDatepickerModule,
         NgGapiConfigModule,
         FlexLayoutModule,
-        MatDialogModule
+        MatDialogModule,
+        LineChartModule
     ],
     providers: [
         WeightChartService,

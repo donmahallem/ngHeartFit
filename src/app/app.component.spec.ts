@@ -4,13 +4,21 @@ import { AppComponent } from './app.component';
 import { MatButtonModule, MatToolbarModule } from '@angular/material';
 import { ProfileComponent } from './components/profile.component';
 import { Observable, from } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { Injectable, Component } from '@angular/core';
 
 @Injectable()
 class GUserService {
     public isSignedInObservable(): Observable<boolean> {
         return from([true, false, true]);
     }
+}
+
+@Component({
+    selector: 'app-route-loading-indicator',
+    template: '<div></div>'
+})
+class TestRouteLoadingIndicator {
+
 }
 
 describe('AppComponent', () => {
@@ -23,7 +31,8 @@ describe('AppComponent', () => {
             ],
             declarations: [
                 AppComponent,
-                ProfileComponent
+                ProfileComponent,
+                TestRouteLoadingIndicator
             ],
             providers: [
             ]

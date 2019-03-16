@@ -46,7 +46,7 @@ export class FitDashboardComponent implements OnDestroy, AfterViewInit {
                 dataTypeName: 'com.google.weight'
             }, {
                 dataTypeName: 'com.google.body.fat.percentage'
-            }, {
+            },  {
                 dataTypeName: 'com.google.hydration'
             }], moment().subtract(30, 'days'), moment(), 1000 * 3600 * 24)
             .subscribe(console.log, console.error);
@@ -58,7 +58,7 @@ export class FitDashboardComponent implements OnDestroy, AfterViewInit {
 
     public insertBodyFat(): void {
         this.datasourceService
-            .getOrCreateWeightDataSource()
+            .getOrCreateBodyFatPercentageDataSource()
             .pipe(
                 filter((val) => {
                     return val.type === HttpEventType.Response;
@@ -73,7 +73,7 @@ export class FitDashboardComponent implements OnDestroy, AfterViewInit {
                         ps.push({
                             startTimeNanos: ts * 1000000,
                             endTimeNanos: ts * 1000000,
-                            dataTypeName: 'com.google.weight',
+                            dataTypeName: 'com.google.body.fat.percentage',
                             value: [{ fpVal: Math.random() * 100 }]
                         })
                     }

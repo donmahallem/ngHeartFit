@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { MatProgressBarModule, MatTableModule, MatIconModule, MatToolbarModule } from "@angular/material";
 import { FitDashboardComponent } from "./fit-dashboard.component";
-import { LineChartComponent } from "src/app/common-components/line-chart.component";
+import { LineChartModule } from "src/app/common-components/line-chart";
 
 
 @NgModule({
@@ -11,11 +11,11 @@ import { LineChartComponent } from "src/app/common-components/line-chart.compone
         MatProgressBarModule,
         MatTableModule,
         MatIconModule,
-        MatToolbarModule
+        MatToolbarModule,
+        LineChartModule
     ],
     declarations: [
-        FitDashboardComponent,
-        LineChartComponent
+        FitDashboardComponent
     ],
     exports: [
         FitDashboardComponent,
@@ -24,7 +24,7 @@ import { LineChartComponent } from "src/app/common-components/line-chart.compone
         MatTableModule,
         MatIconModule,
         MatToolbarModule,
-        LineChartComponent
+        LineChartModule
     ],
     providers: [
     ]
