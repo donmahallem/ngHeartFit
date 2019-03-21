@@ -38,7 +38,7 @@ export class NotFoundComponent {
             }
 
             if (route.loadChildren && route.loadChildren.length > 0) {
-                var routerConfig = <LoadedRouterConfig>(<any>route)['_loadedConfig'];
+                const routerConfig = <LoadedRouterConfig>(<any>route)['_loadedConfig'];
                 if (routerConfig) {
                     this.printpath(fullPath, routerConfig.routes);
                 }

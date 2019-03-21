@@ -1,9 +1,9 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { MatProgressBarModule, MatTableModule, MatIconModule, MatToolbarModule } from "@angular/material";
-import { DatasourceDetailComponent } from "./datasource-detail.component";
-import { FitDataSourceDetailResolver } from "./fit-data-source-detail.resolver";
-import { DatasourceExampleTableComponent } from "./datasource-example-table.component";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatProgressBarModule, MatTableModule, MatIconModule, MatToolbarModule } from '@angular/material';
+import { DatasourceDetailComponent } from './datasource-detail.component';
+import { FitDataSourceDetailResolver } from './fit-data-source-detail.resolver';
+import { DatasourceExampleTableComponent } from './datasource-example-table.component';
 
 
 @NgModule({

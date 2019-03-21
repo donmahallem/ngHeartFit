@@ -21,7 +21,7 @@ export class NgGapiResolver implements Resolve<boolean> {
             }),
                 take(1),
                 catchError((err: any): Observable<null> => {
-                    this.router.navigate(["/error"]);
+                    this.router.navigate(['/error']);
                     return of(null);
                 }));
     }

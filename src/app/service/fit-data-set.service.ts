@@ -20,10 +20,10 @@ export class FitApiDataSetService {
     public insertData(dataSourceId: string, from: moment.Moment, to: moment.Moment, points: InsertDataPoint[]): Observable<HttpEvent<any>> {
 
         const requestBody: any = {
-            "minStartTimeNs": from.valueOf() * 1000000,
-            "maxEndTimeNs": to.valueOf() * 1000000,
-            "dataSourceId": dataSourceId,
-            "point": points
+            'minStartTimeNs': from.valueOf() * 1000000,
+            'maxEndTimeNs': to.valueOf() * 1000000,
+            'dataSourceId': dataSourceId,
+            'point': points
         };
         const url = FitApiBaseService.ENDPOINT + '/users/me/dataSources/' + dataSourceId + '/datasets/' + from.valueOf() + '000000-' + to.valueOf() + '000000';
 
@@ -32,21 +32,21 @@ export class FitApiDataSetService {
 }
 
 export interface InsertDataPoint {
-    "startTimeNanos": number;
-    "endTimeNanos": number;
-    "dataTypeName": string;
-    "value": {
-        "fpVal": number;
+    'startTimeNanos': number;
+    'endTimeNanos': number;
+    'dataTypeName': string;
+    'value': {
+        'fpVal': number;
     }[];
-};
+}
 
 export interface FitDatasetResponse<T extends FitDatasetPoints> {
-    dataSourceId: string,
-    dataTypeName: string,
-    modifiedTimeMillis: string,
-    maxEndTimeNs: string,
-    minStartTimeNs: string,
-    point: T[]
+    dataSourceId: string;
+    dataTypeName: string;
+    modifiedTimeMillis: string;
+    maxEndTimeNs: string;
+    minStartTimeNs: string;
+    point: T[];
 }
 export interface FitDatasetPointValue {
 
@@ -67,11 +67,11 @@ export interface FitDatasetPoint {
 }
 
 export interface FitDatasetPointWeight extends FitDatasetPoint {
-    dataTypeName: "com.google.weight";
+    dataTypeName: 'com.google.weight';
     value: FitDatasetPointFloatValue[];
 }
 export interface FitDatasetPointBodyFatPercentage extends FitDatasetPoint {
-    dataTypeName: "com.google.body.fat.percentage";
+    dataTypeName: 'com.google.body.fat.percentage';
     value: FitDatasetPointFloatValue[];
 }
 export type FitDatasetPoints = FitDatasetPoint | FitDatasetPointWeight | FitDatasetPointBodyFatPercentage;

@@ -1,9 +1,9 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { DatasourceListComponent } from "./datasource-list.component";
-import { DatasourceListItemComponent } from "./datasource-list-item.component";
-import { DatasourcesComponent } from "./datasources.component";
-import { MatProgressBarModule, MatIconModule } from "@angular/material";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { DatasourceListComponent } from './datasource-list.component';
+import { DatasourceListItemComponent } from './datasource-list-item.component';
+import { DatasourcesComponent } from './datasources.component';
+import { MatProgressBarModule, MatIconModule } from '@angular/material';
 
 
 @NgModule({

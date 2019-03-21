@@ -57,13 +57,13 @@ export class DatasourceExampleTableComponent<T> extends LoadableComponent<FitDat
     }
     public onResult(result: FitDatasetResponse<FitDatasetPoints>) {
         const res: any[] = [];
-        for (let a of result.point) {
+        for (const a of result.point) {
             res.push({
-                startTime: moment.unix(parseInt(a.startTimeNanos.substr(0, a.startTimeNanos.length - 9))),
-                endTime: moment.unix(parseInt(a.endTimeNanos.substr(0, a.endTimeNanos.length - 9))),
-                modifiedTime: moment.unix(parseInt(a.modifiedTimeMillis.substr(0, a.modifiedTimeMillis.length - 3))),
+                startTime: moment.unix(parseInt(a.startTimeNanos.substr(0, a.startTimeNanos.length - 9), 10)),
+                endTime: moment.unix(parseInt(a.endTimeNanos.substr(0, a.endTimeNanos.length - 9), 10)),
+                modifiedTime: moment.unix(parseInt(a.modifiedTimeMillis.substr(0, a.modifiedTimeMillis.length - 3), 10)),
                 weight: a.value[0].fpVal
-            })
+            });
         }
         this.dataSource2 = res;
     }
@@ -73,7 +73,7 @@ export class DatasourceExampleTableComponent<T> extends LoadableComponent<FitDat
             .pipe(flatMap((value: ParamMap): Observable<HttpEvent<FitDatasetResponse<FitDatasetPoints>>> => {
                 return this.fitDataSetService.getDataSetData(value.get('id'), moment().subtract(30, 'day'), moment());
             }));
-    };
+    }
 
     public get progressBarMode(): 'indeterminate' | 'query' {
         return 'query';

@@ -83,7 +83,7 @@ export class BodyMetricsFormComponent {
             }
             const timestamp: moment.Moment = this.metricsForm.get('date').value;
             const timeString: string = this.metricsForm.get('time').value;
-            const timeSplit: string[] = timeString.split(":").map((val) => val.trim());
+            const timeSplit: string[] = timeString.split(':').map((val) => val.trim());
             timestamp.hours(parseInt(timeSplit[0]));
             timestamp.minutes(parseInt(timeSplit[1]));
             const submitObject: any = {

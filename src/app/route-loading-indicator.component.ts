@@ -9,7 +9,7 @@ import {
 } from '@angular/router';
 import { Subscription, Subscriber } from 'rxjs';
 
-export class RouteLoadingSubscriber extends Subscriber<Event>{
+export class RouteLoadingSubscriber extends Subscriber<Event> {
 
     constructor(private indicatorCmp: RouteLoadingIndicatorComponent) {
         super();
@@ -36,14 +36,14 @@ export class RouteLoadingSubscriber extends Subscriber<Event>{
 export class RouteLoadingIndicatorComponent implements OnInit, OnDestroy {
     private subscription: Subscription;
 
-    public loading: boolean = false;
+    public loading = false;
     constructor(private router: Router) {
 
     }
     public ngOnInit(): void {
         this.subscription = this.router
             .events
-            .subscribe(new RouteLoadingSubscriber(this))
+            .subscribe(new RouteLoadingSubscriber(this));
     }
 
     public ngOnDestroy(): void {

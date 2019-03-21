@@ -67,7 +67,7 @@ export class FitDashboardComponent implements OnDestroy, AfterViewInit {
                     const end: moment.Moment = moment();
                     const endTimestamp: number = end.valueOf();
                     const ps: InsertDataPoint[] = [];
-                    const windowSize: number = 12345678;
+                    const windowSize = 12345678;
                     for (let i = 0; i < 100; i++) {
                         const ts: number = endTimestamp - (windowSize * i);
                         ps.push({
@@ -75,7 +75,7 @@ export class FitDashboardComponent implements OnDestroy, AfterViewInit {
                             endTimeNanos: ts * 1000000,
                             dataTypeName: 'com.google.body.fat.percentage',
                             value: [{ fpVal: Math.random() * 100 }]
-                        })
+                        });
                     }
                     const start: moment.Moment = moment(endTimestamp - (windowSize * 99));
 

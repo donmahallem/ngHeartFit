@@ -173,7 +173,6 @@ describe('app/polar/upload/upload.component', () => {
             describe('getter', () => {
                 let upDataService: UploadDataService;
                 let uploadedFilesStub: sinon.SinonStub;
-                let readFileStub: sinon.SinonStub;
                 const testValues: any[] = [
                     { test: 1 },
                     { test: 2 },

@@ -121,7 +121,7 @@ describe('BodyMetricsComponent', () => {
                     bodyheightunit: 'inch',
                     bodyweightunit: 'kilogram',
                     date: moment.unix(testTimestamp).local(),
-                    time: moment.unix(testTimestamp).local().format("HH:mm")
+                    time: moment.unix(testTimestamp).local().format('HH:mm')
                 };
                 component.metricsForm.patchValue(testData);
                 fixture.detectChanges();
@@ -140,7 +140,7 @@ describe('BodyMetricsComponent', () => {
                     bodyheightunit: 'inch',
                     bodyweightunit: 'pound',
                     date: moment.unix(testTimestamp).local(),
-                    time: moment.unix(testTimestamp).local().format("HH:mm")
+                    time: moment.unix(testTimestamp).local().format('HH:mm')
                 };
                 component.metricsForm.setValue(testData);
                 fixture.detectChanges();
@@ -162,7 +162,7 @@ describe('BodyMetricsComponent', () => {
                     bodyheightunit: 'foot',
                     bodyweightunit: 'stone',
                     date: moment.unix(testTimestamp).local(),
-                    time: moment.unix(testTimestamp).local().format("HH:mm")
+                    time: moment.unix(testTimestamp).local().format('HH:mm')
                 };
                 component.metricsForm.patchValue(testData);
                 fixture.detectChanges();
@@ -184,7 +184,7 @@ describe('BodyMetricsComponent', () => {
                     bodyheightunit: 'meter',
                     bodyweightunit: 'kilogram',
                     date: moment.unix(testTimestamp).local(),
-                    time: moment.unix(testTimestamp).local().format("HH:mm")
+                    time: moment.unix(testTimestamp).local().format('HH:mm')
                 };
                 component.metricsForm.patchValue(testData);
                 fixture.detectChanges();
