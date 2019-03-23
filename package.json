@@ -59,7 +59,7 @@
         "karma-coverage-istanbul-reporter": "^2.0.5",
         "karma-jasmine": "^2.0.1",
         "karma-jasmine-html-reporter": "^1.4.0",
-        "protractor": "^5.4.2",
+        "protractor": "^6.0.0",
         "pug": "^2.0.3",
         "pug-loader": "^2.4.0",
         "sinon": "^7.3.0",
