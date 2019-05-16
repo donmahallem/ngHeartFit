@@ -2,7 +2,8 @@ language: node_js
 addons:
   chrome: stable
 node_js:
-- 11
+- 10
+- stable
 cache:
   directories:
   - node_modules
