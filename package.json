@@ -60,7 +60,7 @@
         "karma-jasmine": "~2.0.1",
         "karma-jasmine-html-reporter": "~1.4.2",
         "protractor": "~6.0.0",
-        "pug": "~2.0.3",
+        "pug": "~2.0.4",
         "pug-loader": "~2.4.0",
         "sinon": "~7.3.2",
         "ts-node": "~8.3.0",
