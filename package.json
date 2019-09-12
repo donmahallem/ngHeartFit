@@ -10,7 +10,9 @@
         "lint": "ng lint",
         "e2e": "ng e2e",
         "postinstall": "node ./ng-add-pug-loader.js",
-        "test-headless": "ng test --watch=false --browsers=ChromeHeadless --code-coverage"
+        "test-headless": "ng test --watch=false --browsers=ChromeHeadless --code-coverage",
+        "test:unit": "npm run test-headless",
+        "test:build": "ng build --prod --aot --base-href ./"
     },
     "private": true,
     "dependencies": {
