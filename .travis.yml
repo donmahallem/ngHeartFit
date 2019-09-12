@@ -2,12 +2,14 @@ language: node_js
 addons:
   chrome: stable
 env:
+  global:
+    secure: B73ftFMUkCnVwVSaWWHQZVvIcgOeygDDnjntYn/frCsl8ER64Lme6Gn8cgq+y8VPlJz+tjzym9c67QvgrTE4F68JLrFWYqva2n0rb3aYnpgRJ4XIUCp8Jtc4ZLYX95SgiKepW7mV6JVJ+2WyChkMSBS4vjyqeIJfpeSMvOf+UGYfpZ/TWuU+O+x8kgSPqgx0b9Y7yMTNpkqYezY4pI8Iee27X7hR3H/9YNNmPd0YUhsJIEeVuZxalbobSy7TveEiSHHv1/LxEiFsR3UFoTium/LT92ojUApAijhb77ntshrbtghg5s814vRbe4Cb+O/P89Icbc/60UFDQr9CbNg3EHyqUOMlciTkswFpXfwLVS7O48esD1OxcNVAMAez+pHQ18QILjOAj/FhhMVNMYuECuzLuZoTjWDdZD/xAmG0emPlhaAlSY3GQPgCrfv4do771TMD+owwMvHj43sHMNj6ww5lbhEEhu1bHWfb1lwXnQ4WDhb9Bqi/gP8WBj/s45w1UAYzYEbhUGE7QFpE6TxBHFZK3ZpwWbiRWijCncRNMsh81ikls2NnbLfBqYCWpVyKHVEWDipkL7gBfdaNRl4URr6Uyl019yRCsLVqMQraqmqAE3DZjZ7gqp7hxZ6g1QfSjghdIlRuC8kMShXTbFw7jhWtMOp06RhW9Lwi+tVcok4=
   matrix:
-  - TEST_SUITE=build
-  - TEST_SUITE=unit
+    - TEST_SUITE=build
+    - TEST_SUITE=unit
 node_js:
-- 10
-- stable
+  - 10
+  - stable
 cache:
   directories:
   - node_modules
@@ -29,6 +31,3 @@ deploy:
   local_dir: dist/fitclient
   on:
     branch: master
-env:
-  global:
-    secure: B73ftFMUkCnVwVSaWWHQZVvIcgOeygDDnjntYn/frCsl8ER64Lme6Gn8cgq+y8VPlJz+tjzym9c67QvgrTE4F68JLrFWYqva2n0rb3aYnpgRJ4XIUCp8Jtc4ZLYX95SgiKepW7mV6JVJ+2WyChkMSBS4vjyqeIJfpeSMvOf+UGYfpZ/TWuU+O+x8kgSPqgx0b9Y7yMTNpkqYezY4pI8Iee27X7hR3H/9YNNmPd0YUhsJIEeVuZxalbobSy7TveEiSHHv1/LxEiFsR3UFoTium/LT92ojUApAijhb77ntshrbtghg5s814vRbe4Cb+O/P89Icbc/60UFDQr9CbNg3EHyqUOMlciTkswFpXfwLVS7O48esD1OxcNVAMAez+pHQ18QILjOAj/FhhMVNMYuECuzLuZoTjWDdZD/xAmG0emPlhaAlSY3GQPgCrfv4do771TMD+owwMvHj43sHMNj6ww5lbhEEhu1bHWfb1lwXnQ4WDhb9Bqi/gP8WBj/s45w1UAYzYEbhUGE7QFpE6TxBHFZK3ZpwWbiRWijCncRNMsh81ikls2NnbLfBqYCWpVyKHVEWDipkL7gBfdaNRl4URr6Uyl019yRCsLVqMQraqmqAE3DZjZ7gqp7hxZ6g1QfSjghdIlRuC8kMShXTbFw7jhWtMOp06RhW9Lwi+tVcok4=
