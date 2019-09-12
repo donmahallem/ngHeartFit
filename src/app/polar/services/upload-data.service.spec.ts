@@ -1,6 +1,5 @@
 import { UploadDataService } from './upload-data.service';
 import * as sinon from 'sinon';
-import { forEach } from '@angular/router/src/utils/collection';
 
 describe('app/polar/services/upload-data.service', () => {
     let sand: sinon.SinonSandbox;
