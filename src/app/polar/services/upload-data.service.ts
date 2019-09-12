@@ -1,19 +1,35 @@
 import { Injectable } from '@angular/core';
-import { UploadFile } from './upload-file.modal';
+import { UploadFile, TypedFile, TypedFiles, UploadFileType, UploadFileStatus, UploadFiles } from './upload-file.modal';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { FileLoadEvents, FileLoadEventType } from 'src/app/util';
 
 @Injectable()
 export class UploadDataService {
     private uploadFilesSubject: BehaviorSubject<UploadFile[]> = new BehaviorSubject([]);
-    private hasUploadableFiles: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    private filesSelectedSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    private mData: { [key: string]: UploadFiles } = {};
     public update(): void {
-        for (const upFile of this.uploadedFiles) {
-            if (upFile.valid && upFile.selected) {
-                this.hasUploadableFiles.next(true);
-                return;
+        const lst: UploadFiles[] = [];
+        const filesSelected = false;
+        for (const key in this.mData) {
+            if (key) {
+                lst.push(this.mData[key]);
             }
         }
-        this.hasUploadableFiles.next(false);
+        this.uploadFilesSubject.next(lst);
+        this.filesSelectedSubject.next(false);
+    }
+
+    public updateFile(fileEvent: UploadFiles) {
+        this.mData[fileEvent.key] = fileEvent;
+        this.update();
+    }
+
+    public setSelected(key: string, selected: boolean): void {
+        if (this.mData[key] && this.mData[key].status === UploadFileStatus.LOADED) {
+            (<any>this.mData[key]).selected = selected;
+            this.update();
+        }
     }
 
     public set uploadedFiles(files: UploadFile[]) {
@@ -28,8 +44,12 @@ export class UploadDataService {
         return this.uploadFilesSubject.asObservable();
     }
 
-    public get uploadableFilesObservable(): Observable<boolean> {
-        return this.hasUploadableFiles.asObservable();
+    public get hasSelectedFilesObservable(): Observable<boolean> {
+        return this.filesSelectedSubject.asObservable();
+    }
+
+    public get hasSelectedFiles(): boolean {
+        return this.filesSelectedSubject.value;
     }
 
     public addUploadFile(f: UploadFile): void {

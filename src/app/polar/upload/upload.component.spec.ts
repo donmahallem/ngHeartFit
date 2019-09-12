@@ -5,7 +5,7 @@ import { Observable, from, Subscriber } from 'rxjs';
 import { Injectable, Component, Input } from '@angular/core';
 import * as testObject from './upload.component';
 import { FilePreviewComponent } from './file-preview.component';
-import { UploadDataService, UploadFile, UploadFileType } from '../services';
+import { UploadDataService, UploadFile, UploadFileType, TypedFiles } from '../services';
 
 import * as sinon from 'sinon';
 import { AnalyzeDataService } from '../services/analyze-data.service';
@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { FlowApiValidator } from '@donmahallem/flow-api-types';
 import { ValidatorResult, ValidationError } from 'jsonschema';
+import { FileUtil, FileLoadEvents, FileLoadEventType, FileLoadResultEvent } from 'src/app/util';
 
 @Injectable()
 class TestUploadDataService {
@@ -97,37 +98,51 @@ describe('app/polar/upload/upload.component', () => {
 
         describe('createConvertUploadFileAndCheckValidity()', () => {
             let validatorStub: sinon.SinonStub;
+            const testEvents: FileLoadEvents<string>[] = [{
+                key: 'testkey',
+                type: FileLoadEventType.START
+            }, {
+                key: 'testkey',
+                type: FileLoadEventType.PROGRESS,
+                lengthComputable: true,
+                loaded: 129,
+                total: 9219
+            }, {
+                result: 'jasdf;dsf',
+                key: 'testkey',
+                type: FileLoadEventType.RESULT,
+                filesize: 2392
+            }];
             beforeEach(() => {
                 validatorStub = sandbox.stub(FlowApiValidator, 'validateTimelineSummary');
             });
-            it('should test for the case JSON.parse fails', (done) => {
-                const testFile: UploadFile = {
-                    valid: false,
-                    data: 'jasdf;dsf',
-                    filename: 'asdf',
-                    type: UploadFileType.UNKNOWN
-                };
+            it('should test successful for conforming json', (done) => {
                 const nextSpy: sinon.SinonSpy = sinon.spy();
-                from([testFile])
+                const validatorRes: ValidatorResult = <any>{
+                    valid: true
+                };
+                validatorStub.returns(validatorRes);
+                from(testEvents)
                     .pipe(cmpInstance.createConvertUploadFileAndCheckValidity())
                     .subscribe(nextSpy, done, () => {
-                        expect(nextSpy.callCount).toEqual(1);
-                        const parsedFile: UploadFile = nextSpy.getCall(0).args[0];
-                        expect(parsedFile).toEqual(jasmine.objectContaining(testFile));
-                        expect(parsedFile.errors).not.toBeUndefined('it should exist');
-                        expect(parsedFile.errors.length).toEqual(1);
-                        expect(validatorStub.callCount).toEqual(0, 'Should not be called as JSON parse throws');
-                        // expect(parsedFile.errors[0]).toHaveClass(SyntaxError);
+                        expect(nextSpy.callCount).toEqual(3);
+                        expect(nextSpy.getCall(0).args).toEqual([testEvents[0]]);
+                        expect(nextSpy.getCall(1).args).toEqual([testEvents[1]]);
+                        expect(validatorStub.callCount).toEqual(1, 'Should be called once');
+                        const parsedFile: FileLoadEvents<TypedFiles> = nextSpy.getCall(2).args[0];
+                        expect(parsedFile).toEqual({
+                            type: FileLoadEventType.RESULT,
+                            key: testEvents[2].key,
+                            result: {
+                                type: UploadFileType.DAY_SUMMARY,
+                                data: (<any>testEvents[2]).result
+                            },
+                            filesize: (<FileLoadResultEvent<string>>testEvents[2]).filesize
+                        });
                         done();
                     });
             });
             it('should test that there is non conforming json', (done) => {
-                const testFile: UploadFile = {
-                    valid: false,
-                    data: '{"test":2}',
-                    filename: 'asdf',
-                    type: UploadFileType.UNKNOWN
-                };
                 const validatorErrors: ValidationError[] = [
                     <any>{
                         test: 1
@@ -141,49 +156,16 @@ describe('app/polar/upload/upload.component', () => {
                 };
                 validatorStub.returns(validatorRes);
                 const nextSpy: sinon.SinonSpy = sinon.spy();
-                from([testFile])
+                from(testEvents)
                     .pipe(cmpInstance.createConvertUploadFileAndCheckValidity())
-                    .subscribe(nextSpy, done, () => {
-                        expect(nextSpy.callCount).toEqual(1);
-                        expect(validatorStub.callCount).toEqual(1, 'Should not be called as JSON parse throws');
-                        const parsedFile: UploadFile = nextSpy.getCall(0).args[0];
-                        expect(parsedFile).toEqual(jasmine.objectContaining(testFile));
-                        expect(parsedFile.errors).toEqual(validatorRes.errors);
-                        // expect(parsedFile.errors[0]).toHaveClass(SyntaxError);
+                    .subscribe(nextSpy, (err) => {
+                        expect(nextSpy.callCount).toEqual(2);
+                        expect(nextSpy.getCall(0).args).toEqual([testEvents[0]]);
+                        expect(nextSpy.getCall(1).args).toEqual([testEvents[1]]);
+                        expect(validatorStub.callCount).toEqual(1, 'Should be called once');
+                        expect(err).toEqual(validatorErrors[0]);
                         done();
-                    });
-            });
-            it('should test for conforming json', (done) => {
-                const testFile: UploadFile = {
-                    valid: false,
-                    data: '{"test":2}',
-                    filename: 'asdf',
-                    type: UploadFileType.UNKNOWN
-                };
-                const validatorErrors: ValidationError[] = [
-                    <any>{
-                        test: 1
-                    }, <any>{
-                        test: 2
-                    }
-                ];
-                const validatorRes: ValidatorResult = <any>{
-                    valid: true
-                };
-                validatorStub.returns(validatorRes);
-                const nextSpy: sinon.SinonSpy = sinon.spy();
-                from([testFile])
-                    .pipe(cmpInstance.createConvertUploadFileAndCheckValidity())
-                    .subscribe(nextSpy, done, () => {
-                        expect(nextSpy.callCount).toEqual(1);
-                        expect(validatorStub.callCount).toEqual(1, 'Should not be called as JSON parse throws');
-                        const parsedFile: UploadFile = nextSpy.getCall(0).args[0];
-                        const res: UploadFile = Object.assign({}, testFile);
-                        res.valid = true;
-                        res.type = UploadFileType.DAY_SUMMARY;
-                        expect(parsedFile).toEqual(jasmine.objectContaining(res));
-                        done();
-                    });
+                    }, done);
             });
         });
 
@@ -191,7 +173,6 @@ describe('app/polar/upload/upload.component', () => {
             describe('getter', () => {
                 let upDataService: UploadDataService;
                 let uploadedFilesStub: sinon.SinonStub;
-                let readFileStub: sinon.SinonStub;
                 const testValues: any[] = [
                     { test: 1 },
                     { test: 2 },
@@ -223,7 +204,7 @@ describe('app/polar/upload/upload.component', () => {
             beforeEach(() => {
                 upDataService = fixture.debugElement.injector.get(UploadDataService);
                 uploadDataServiceClearStub = sandbox.stub(upDataService, 'clear');
-                readFileStub = sandbox.stub(cmpInstance, 'readFile');
+                readFileStub = sandbox.stub(FileUtil, 'readFileAsJson');
                 readFileStub.callsFake((inp) => from([inp]));
                 nextSpy = sandbox.spy();
                 convertValidityStub = sandbox.stub(cmpInstance, 'createConvertUploadFileAndCheckValidity');
@@ -237,34 +218,7 @@ describe('app/polar/upload/upload.component', () => {
                     return map(convertValidityInnerStub);
                 });
             });
-            it('should test fine', (done) => {
-                const testData: HTMLInputElement = <any>{
-                    files: [
-                        { test: 1 },
-                        { test: 2 },
-                        null,
-                        { test: 3 }
-                    ]
-                };
-                const observable: Observable<UploadFile> = cmpInstance.validateFiles(testData);
-                expect(uploadDataServiceClearStub.callCount).toEqual(1, 'the database should be cleared before new data is added');
-                observable
-                    .subscribe(nextSpy, done, () => {
-                        expect(nextSpy.callCount).toEqual(3, 'the observable should create three results');
-                        expect(convertValidityInnerStub.callCount).toEqual(3, 'the inner map should be called three times');
-                        expect(convertValidityStub.callCount).toEqual(1);
-                        expect(nextSpy.getCall(0).args).toEqual([{
-                            inp: testData.files[0]
-                        }]);
-                        expect(nextSpy.getCall(1).args).toEqual([{
-                            inp: testData.files[1]
-                        }]);
-                        expect(nextSpy.getCall(2).args).toEqual([{
-                            inp: testData.files[3]
-                        }]);
-                        done();
-                    });
-            });
+            it('should test fine');
         });
     });
 });

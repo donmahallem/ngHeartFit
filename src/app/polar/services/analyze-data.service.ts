@@ -17,7 +17,7 @@ export class AnalyzeDataService {
         this.database = new AnalyzeDatabase();
     }
 
-    public insert(data: IActivityGraphData): Observable<number> {
+    public insertActivityGraphData(data: IActivityGraphData): Observable<number> {
         const lst: Pair[] = [];
         for (const pair of data.heartRateTimelineSamples) {
             if (pair.value < 1) {

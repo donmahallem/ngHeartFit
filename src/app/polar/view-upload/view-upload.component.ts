@@ -21,7 +21,7 @@ export class ViewUploadComponent implements
     AfterViewInit,
     OnDestroy {
     public user: any;
-    public chartData: DataPoint[];
+    public chartData: DataPoint[] = [];
     private idSubscription: Subscription;
     constructor(private analyzeDataService: AnalyzeDataService) {
     }

@@ -1,18 +1,31 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DatasourcesComponent } from './datasources/datasources.component';
-import { DatasourceDetailComponent } from './datasources/datasource-detail.component';
 import { SessionsComponent } from './sessions/sessions.component';
 import { SessionDetailComponent } from './session-detail/session-detail.component';
+import { DatasourceDetailComponent } from './datasource-detail';
+import { FitDataSourceDetailResolver } from './datasource-detail/fit-data-source-detail.resolver';
+import { FitDashboardComponent } from './fit-dashboard';
 
 const routes: Routes = [
+    {
+        path: '',
+        redirectTo: 'dashboard'
+    },
+    {
+        path: 'dashboard',
+        component: FitDashboardComponent
+    },
     {
         path: 'datasources',
         component: DatasourcesComponent
     },
     {
         path: 'datasource/:id',
-        component: DatasourceDetailComponent
+        component: DatasourceDetailComponent,
+        resolve: {
+            dataSource: FitDataSourceDetailResolver
+        }
     },
     {
         path: 'sessions',
@@ -25,7 +38,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
+    imports: [
+        RouterModule.forChild(routes)
+    ],
     exports: [RouterModule],
     providers: [
     ]

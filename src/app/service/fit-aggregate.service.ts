@@ -1,7 +1,7 @@
 
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { HttpParams, HttpRequest } from '@angular/common/http';
+import { HttpParams, HttpRequest, HttpEvent } from '@angular/common/http';
 
 import { FitApiBaseService } from './fit-api-base.service';
 import { map, flatMap } from 'rxjs/operators';
@@ -25,9 +25,9 @@ export class FitApiAggregateService {
     public getAggregateData(source: AggregateByFilter[],
         from: moment.Moment,
         to: moment.Moment,
-        bucketWindowMillis: number): Observable<BucketResponse> {
+        bucketWindowMillis: number): Observable<HttpEvent<BucketResponse>> {
         return this.fitApiBaseService.base()
-            .pipe(flatMap((): Observable<BucketResponse> => {
+            .pipe(flatMap((): Observable<HttpEvent<BucketResponse>> => {
                 const requestBody: any = {
                     'startTimeMillis': from.utc().valueOf(),
                     'endTimeMillis': to.utc().valueOf(),
@@ -37,7 +37,7 @@ export class FitApiAggregateService {
                     }
                 };
                 const url = FitApiBaseService.ENDPOINT + '/users/me/dataset:aggregate';
-                return this.fitApiBaseService.postRequest<BucketResponse>(url, requestBody);
+                return this.fitApiBaseService.postRequest<any, BucketResponse>(url, requestBody);
             }));
     }
 

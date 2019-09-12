@@ -1,0 +1,5 @@
+h4 {{dataSource.dataStreamName}}
+h5 {{dataSource.dataType?.name}}
+mat-icon(aria-label="View Details") info
+ul
+    li(*ngFor="let field of dataSource.dataType.field") {{field | json}}

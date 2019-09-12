@@ -1,7 +1,7 @@
 
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { HttpParams, HttpRequest } from '@angular/common/http';
+import { HttpParams, HttpRequest, HttpEvent } from '@angular/common/http';
 
 import { FitApiBaseService } from './fit-api-base.service';
 import { map, flatMap } from 'rxjs/operators';
@@ -22,11 +22,24 @@ export class FitApiSessionService {
 
     }
 
-    public getSession(id: string): Observable<FitSession> {
+    public getSession(id: string): Observable<HttpEvent<FitSession>> {
         return this.fitApiBaseService.getRequest(FitApiBaseService.ENDPOINT + '/users/me/sessions/' + id);
     }
 
-    public getSessions(): Observable<ListSessionsResponse> {
-        return this.fitApiBaseService.getRequest(FitApiBaseService.ENDPOINT + '/users/me/sessions/');
+    public getSessions(): Observable<HttpEvent<ListSessionsResponse>>;
+    public getSessions(startTime: string | null, endTime: string | null, includeDeleted?: boolean): Observable<HttpEvent<ListSessionsResponse>>;
+    public getSessions(startTime: string | null = undefined, endTime: string | null = undefined, includeDeleted: boolean = false, pageToken: string = undefined): Observable<HttpEvent<ListSessionsResponse>> {
+        const params: any = {};
+        if (startTime) {
+            params.startTime = startTime;
+        }
+        if (endTime) {
+            params.endTime = endTime;
+        }
+        params.includeDeleted = includeDeleted === true;
+        if (pageToken) {
+            params.pageToken = pageToken;
+        }
+        return this.fitApiBaseService.getRequest(FitApiBaseService.ENDPOINT + '/users/me/sessions/', params);
     }
 }

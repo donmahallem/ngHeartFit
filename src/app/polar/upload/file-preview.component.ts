@@ -1,50 +1,45 @@
 import {
     Component,
     Input,
-    HostBinding
+    HostBinding,
+    Output,
+    ViewChild
 } from '@angular/core';
-import { UploadFile, UploadDataService } from '../services';
-import { MatCheckboxChange } from '@angular/material';
+import { UploadFile, UploadDataService, UploadFileStatus, UploadFiles, UploadFileResult, UploadFileResults } from '../services';
+import { MatCheckboxChange, MatSlideToggle } from '@angular/material';
+import { FileUploadErrorComponent } from './file-upload-error.component';
+import { FileUploadProgressComponent } from './file-upload-progress.component';
+import { FileUploadBaseComponent } from './file-upload-base.component';
 
 @Component({
     selector: 'app-file-preview',
     templateUrl: './file-preview.component.pug',
-    styleUrls: ['./file-preview.component.scss']
+    styleUrls: ['./file-preview.component.scss'],
+    viewProviders: [
+        FileUploadErrorComponent,
+        FileUploadProgressComponent
+    ]
 })
-export class FilePreviewComponent {
-    public user: any;
-    constructor(private uploadDataService: UploadDataService) { }
-    private mUploadFile: UploadFile;
-    public get isValidFile(): boolean {
-        if (this.mUploadFile) {
-            return this.mUploadFile.valid;
-        }
-        return false;
+export class FilePreviewComponent extends FileUploadBaseComponent<UploadFiles> {
+    constructor() {
+        super();
     }
 
     public get filename(): string {
-        if (this.mUploadFile) {
+        if (this.mUploadFile && this.mUploadFile.filename) {
             return this.mUploadFile.filename;
         }
         return 'Unknown';
     }
-    public get filesize(): number {
-        if (this.mUploadFile) {
-            return this.mUploadFile.data.length;
-        }
-        return 0;
-    }
-    @Input('uploadFile')
-    public set uploadFile(upload: UploadFile) {
-        this.mUploadFile = upload;
-    }
 
-    public get uploadFile(): UploadFile {
-        return this.mUploadFile;
+    public get isFileLoaded(): boolean {
+        return this.mUploadFile && this.mUploadFile.status === UploadFileStatus.LOADED;
     }
-
-    public onChangeSelection(event: MatCheckboxChange): void {
-        this.mUploadFile.selected = event.checked;
-        this.uploadDataService.update();
+    public get isFileErrored(): boolean {
+        return this.mUploadFile && this.mUploadFile.status === UploadFileStatus.ERROR;
+    }
+    public get isFileProcessing(): boolean {
+        return this.mUploadFile && (this.mUploadFile.status === UploadFileStatus.LOADING ||
+            this.mUploadFile.status === UploadFileStatus.INITIALIZING);
     }
 }

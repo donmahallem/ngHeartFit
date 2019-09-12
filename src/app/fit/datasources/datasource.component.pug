@@ -1,7 +1,0 @@
-h4 {{dataSource.dataStreamName}}
-h5 {{dataSource.dataType?.name}}
-ul
-    li(*ngFor="let field of dataSource.dataType.field") {{field | json}}
-
-button(mat-icon-button,[routerLink]="['/fit/datasource',dataSource.dataStreamId]")
-    mat-icon(aria-label="View Details") info
