@@ -25,7 +25,7 @@ export class LineChartComponent implements OnInit, AfterViewInit {
         return this.chartDataSubject.getValue();
     }
     public user: any;
-    @ViewChild('chart') mySpan: ElementRef;
+    @ViewChild('chart', { static: false }) mySpan: ElementRef;
 
     private chartDataSubject: BehaviorSubject<DataPoint[]> = new BehaviorSubject<DataPoint[]>(null);
     private _chartData: DataPoint[];

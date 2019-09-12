@@ -1,6 +1,5 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { Router, Route } from '@angular/router';
-import { LoadedRouterConfig } from '@angular/router/src/config';
 @Component({
     selector: 'app-not-found-cmp',
     templateUrl: './not-found.component.pug',
@@ -38,7 +37,7 @@ export class NotFoundComponent {
             }
 
             if (route.loadChildren && route.loadChildren.length > 0) {
-                const routerConfig = <LoadedRouterConfig>(<any>route)['_loadedConfig'];
+                const routerConfig = <any>(<any>route)['_loadedConfig'];
                 if (routerConfig) {
                     this.printpath(fullPath, routerConfig.routes);
                 }
