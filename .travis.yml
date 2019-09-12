@@ -1,6 +1,10 @@
 language: node_js
 addons:
   chrome: stable
+env:
+  matrix:
+  - TEST_SUITE=build
+  - TEST_SUITE=unit
 node_js:
 - 10
 - stable
@@ -13,8 +17,7 @@ before_install:
 after_install:
 - npm run postinstall
 script:
-- ng build --prod --aot --base-href /ngHeartFit/
-- npm run test-headless
+- npm run test:$TEST_SUITE
 after_success:
 - ng build --prod --aot --base-href /ngHeartFit/
 - cp ./dist/fitclient/index.html ./dist/fitclient/404.html
