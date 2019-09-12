@@ -6,4 +6,4 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 # NOTICE
 
-If the build fails with errors in connection with .pug files run  `npm run postinstall` and try again.
+If the build fails with errors in connection with .pug files run  `npm run postinstall` and try again. And again.
