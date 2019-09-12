@@ -26,7 +26,7 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
         private fitApiAggregateService: FitApiAggregateService,
         private chartService: WeightChartService) {
     }
-    @ViewChild(LineChartComponent)
+    @ViewChild(LineChartComponent, { static: false })
     chart: LineChartComponent;
     private mSubscriptions: Subscription[] = [];
 

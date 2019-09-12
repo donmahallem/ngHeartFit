@@ -15,7 +15,7 @@ import { Subscription } from 'rxjs';
 })
 export class ProfileComponent implements AfterViewInit, OnDestroy {
     public user: any;
-    @ViewChild('btnSignin')
+    @ViewChild('btnSignin', { static: false })
     public btnSignIn: MatButton;
     private _isSignedIn = false;
     private signinSubscription: Subscription;
