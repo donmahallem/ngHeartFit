@@ -20,6 +20,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: npm install and setup
+      uses: ianwalter/puppeteer@v2.0.0
       run: |
         npm install
         cp ./src/environments/environment.example.ts ./src/environments/environment.ts
@@ -27,6 +28,7 @@ jobs:
       env:
         CI: true
     - name: npm test ${{ matrix.test_suite }}
+      uses: ianwalter/puppeteer@v2.0.0
       run: |
         npm run test:${{ matrix.test_suite }}
       env:
