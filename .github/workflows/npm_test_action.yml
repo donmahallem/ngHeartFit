@@ -20,13 +20,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: npm install and setup
-      run: |
-        npm install |
-        cp ./src/environments/environment.example.ts ./src/environments/environment.ts |
-        cp ./src/environments/environment.example.ts ./src/environments/environment.prod.ts |
-        npm i puppeteer --no-save
-      env:
-        CI: true
+      run: npm install
+    - name: cpy config 1
+      run: cp ./src/environments/environment.example.ts ./src/environments/environment.ts
+    - name: cpy config 2
+      run: cp ./src/environments/environment.example.ts ./src/environments/environment.prod.ts
     - name: npm test ${{ matrix.test_suite }}
       run: npm run test:${{ matrix.test_suite }}
       env:
