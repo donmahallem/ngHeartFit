@@ -28,7 +28,6 @@ jobs:
       env:
         CI: true
     - name: npm test ${{ matrix.test_suite }}
-      run:
-        - npm run test:${{ matrix.test_suite }}
+      run: npm run test:${{ matrix.test_suite }}
       env:
         CI: true
