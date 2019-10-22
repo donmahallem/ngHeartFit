@@ -49,7 +49,7 @@
         "@types/gapi.auth2": "0.0.50",
         "@types/jasmine": "~3.4.4",
         "@types/jasminewd2": "~2.0.8",
-        "@types/node": "~12.11.1",
+        "@types/node": "~12.11.2",
         "@types/sinon": "~7.5.0",
         "apply-loader": "~2.0.0",
         "codelyzer": "~5.1.2",
