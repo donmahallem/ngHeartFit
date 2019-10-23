@@ -12,7 +12,10 @@
         "postinstall": "node ./ng-add-pug-loader.js",
         "test-headless": "ng test --watch=false --browsers=ChromeHeadless --code-coverage",
         "test:unit": "npm run test-headless",
-        "test:build": "ng build --prod --aot --base-href ./"
+        "test:build": "ng build --prod --aot --base-href ./",
+        "test:lint": "npm run lint",
+        "test:docs": "npm run compodoc",
+        "compodoc": "npx compodoc -p src/tsconfig.app.json -d ./docs"
     },
     "private": true,
     "dependencies": {
@@ -44,9 +47,10 @@
         "@angular/cli": "~8.3.13",
         "@angular/compiler-cli": "~8.2.6",
         "@angular/language-service": "~8.2.11",
+        "@compodoc/compodoc": "~1.1.11",
         "@types/d3": "~5.7.2",
         "@types/gapi": "~0.0.39",
-        "@types/gapi.auth2": "0.0.50",
+        "@types/gapi.auth2": "~0.0.50",
         "@types/jasmine": "~3.4.4",
         "@types/jasminewd2": "~2.0.8",
         "@types/node": "~12.11.5",
