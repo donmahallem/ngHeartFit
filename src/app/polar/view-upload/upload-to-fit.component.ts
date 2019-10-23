@@ -11,7 +11,7 @@ import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service
 import { IDataPoint } from './data-point';
 
 @Component({
-    selector: 'upload-to-fit-cmp',
+    selector: 'app-upload-to-fit',
     styleUrls: ['./upload-to-fit.component.scss'],
     templateUrl: './upload-to-fit.component.pug',
 })

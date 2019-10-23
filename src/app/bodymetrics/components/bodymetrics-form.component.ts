@@ -38,7 +38,7 @@ export interface IBodyMetricsFormData {
     time: string;
 }
 @Component({
-    selector: 'bodymetrics-form-cmp',
+    selector: 'app-bodymetrics-form',
     styleUrls: ['./bodymetrics-form.component.scss'],
     templateUrl: './bodymetrics-form.component.pug',
 })

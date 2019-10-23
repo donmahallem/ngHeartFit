@@ -127,7 +127,7 @@ describe('app/polar/upload/upload.component', () => {
                 validatorStub.returns(validatorRes);
                 from(testEvents)
                     .pipe(cmpInstance.createConvertUploadFileAndCheckValidity())
-                    .subscribe(nextSpy, done, () => {
+                    .subscribe(new Observer(nextSpy, done, () => {
                         expect(nextSpy.callCount).toEqual(3);
                         expect(nextSpy.getCall(0).args).toEqual([testEvents[0]]);
                         expect(nextSpy.getCall(1).args).toEqual([testEvents[1]]);
@@ -143,7 +143,7 @@ describe('app/polar/upload/upload.component', () => {
                             type: FileLoadEventType.RESULT,
                         });
                         done();
-                    });
+                    }));
             });
             it('should test that there is non conforming json', (done) => {
                 const validatorErrors: ValidationError[] = [

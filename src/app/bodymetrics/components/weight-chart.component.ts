@@ -19,7 +19,7 @@ import { FitApiDataSourceService, IFitDataSourceList } from 'src/app/service/fit
 import { WeightChartService } from '../services/weight-chart.service';
 
 @Component({
-    selector: 'weight-chart',
+    selector: 'app-weight-chart',
     styleUrls: ['./weight-chart.component.scss'],
     templateUrl: './weight-chart.component.pug',
 })

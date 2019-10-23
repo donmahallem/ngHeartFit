@@ -23,7 +23,7 @@ export class WeightChartService {
         const time: moment.Moment = moment();
         this.mEndTimeSubject = new BehaviorSubject(time);
         this.mStartTimeSubject = new BehaviorSubject(time.subtract(1, 'month'));
-        this.mCombinedObservable = combineLatest(this.mStartTimeSubject, this.mEndTimeSubject);
+        this.mCombinedObservable = combineLatest([this.mStartTimeSubject, this.mEndTimeSubject]);
         this.mStatusSubject = new BehaviorSubject(Status.INITIALIZING);
     }
 

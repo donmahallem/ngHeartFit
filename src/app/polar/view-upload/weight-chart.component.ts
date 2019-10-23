@@ -8,7 +8,7 @@ import { BehaviorSubject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { IDataPoint } from './data-point';
 @Component({
-    selector: 'weight-chart',
+    selector: 'app-weight-chart',
     styleUrls: ['./weight-chart.component.scss'],
     templateUrl: './weight-chart.component.pug',
 })
@@ -102,14 +102,14 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
                 .tickFormat(d3.timeFormat('%Y-%m-%d HH:MM')));
         this.yAxis = container.append('g')
             .call(d3.axisLeft(this.yScale));
-        const yAxisText = this.yAxis
+        /*const yAxisText = this.yAxis
             .append('text')
             .attr('fill', '#000')
             .attr('transform', 'rotate(-90)')
             .attr('y', 6)
             .attr('dy', '0.71em')
             .attr('text-anchor', 'end')
-            .text('Heartrate (BPM)');
+            .text('Heartrate (BPM)');*/
         this.chartDataSubject.asObservable().subscribe((data) => {
             if (data) {
                 this.zone.run(() => {

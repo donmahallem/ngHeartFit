@@ -11,7 +11,7 @@ import {
 import { MatButton } from '@angular/material';
 import { Subscription } from 'rxjs';
 @Component({
-    selector: 'profile-view',
+    selector: 'app-profile-view',
     styleUrls: ['./profile.component.scss'],
     templateUrl: './profile.component.pug',
 })

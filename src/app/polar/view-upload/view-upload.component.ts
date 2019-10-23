@@ -11,7 +11,7 @@ import { AnalyzeDataService, IPair } from '../services/analyze-data.service';
 import { IDataPoint } from './data-point';
 
 @Component({
-    selector: 'view-upload-cmp',
+    selector: 'app-view-upload',
     styleUrls: ['./view-upload.component.scss'],
     templateUrl: './view-upload.component.pug',
 })

@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { IFitSession } from 'src/app/service/fit-api-modals';
 @Component({
-    selector: 'session-detail',
+    selector: 'app-session-detail',
     styleUrls: ['./session-detail.component.scss'],
     templateUrl: './session-detail.component.pug',
 })

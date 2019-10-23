@@ -30,7 +30,7 @@ const ELEMENT_DATA: any[] = [
 ];
 
 @Component({
-    selector: 'datasource-detail',
+    selector: 'app-datasource-detail',
     styleUrls: ['./datasource-detail.component.scss'],
     templateUrl: './datasource-detail.component.pug',
 })

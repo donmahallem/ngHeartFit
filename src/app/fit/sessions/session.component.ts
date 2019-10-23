@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { IFitSession } from 'src/app/service/fit-api-modals';
 @Component({
-    selector: 'session-list-item',
+    selector: 'app-session-list-item',
     styleUrls: ['./session.component.scss'],
     templateUrl: './session.component.pug',
 })

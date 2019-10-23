@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { Subscriber, Subscription } from 'rxjs';
 import { GapiUserService } from 'src/app/service/gapi-user.service';
 @Component({
-    selector: 'login-google-cmp',
+    selector: 'app-login-google',
     styleUrls: ['./login-google.component.scss'],
     templateUrl: './login-google.component.pug',
 })

@@ -4,12 +4,11 @@
 
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { UploadDataService } from './upload-data.service';
 import { IUploadFile } from './upload-file.modal';
 
 @Injectable()
 export class UploadResolver implements Resolve<IUploadFile[]> {
-    constructor(private uploadService: UploadDataService) { }
+    constructor() { }
 
     public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): IUploadFile[] {
         const uploads: IUploadFile[] = [];

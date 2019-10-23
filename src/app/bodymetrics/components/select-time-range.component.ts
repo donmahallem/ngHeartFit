@@ -28,7 +28,7 @@ export const createCompareDateValidator: () => ValidatorFn = () =>
     };
 
 @Component({
-    selector: 'select-time-range-cmp',
+    selector: 'app-select-time-range',
     styleUrls: ['./select-time-range.component.scss'],
     templateUrl: './select-time-range.component.pug',
 })

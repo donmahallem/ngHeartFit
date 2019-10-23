@@ -20,7 +20,7 @@ class TestAnalyzeDataService {
 }
 
 @Component({
-    selector: 'weight-chart',
+    selector: 'app-weight-chart',
     styleUrls: [],
     template: '',
 })
@@ -30,7 +30,7 @@ class TestWeightChartComponent {
 }
 
 @Component({
-    selector: 'upload-to-fit-cmp',
+    selector: 'app-upload-to-fit',
     styleUrls: [],
     template: '',
 })

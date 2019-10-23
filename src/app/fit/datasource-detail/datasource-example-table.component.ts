@@ -17,7 +17,7 @@ import { FitApiDataSetService, FitDatasetPoints, IFitDatasetResponse } from 'src
 import { IFitDataSource } from 'src/app/service/fit-data-source.service';
 
 @Component({
-    selector: 'datasource-example-table',
+    selector: 'app-datasource-example-table',
     styleUrls: ['./datasource-example-table.component.scss'],
     templateUrl: './datasource-example-table.component.pug',
 })
