@@ -39,12 +39,12 @@ export class FitApiBaseService {
             });
         }
         return new HttpRequest<T>('GET', url, undefined, {
-            responseType: 'json',
             headers: new HttpHeaders({
                 Authorization: 'Bearer ' + this.gapiUser.getToken(),
             }),
-            reportProgress: false,
             params: paramObject,
+            reportProgress: false,
+            responseType: 'json',
         });
     }
 
@@ -178,26 +178,26 @@ export class FitApiBaseService {
             .pipe(flatMap((): Observable<HttpEvent<RESP_BODY>> => {
                 const request = new HttpRequest<REQ_BODY>('POST', url, body, {
                     headers: new HttpHeaders({
-                        'Content-Type': 'application/json',
                         'Authorization': 'Bearer ' + this.gapiUser.getToken(),
+                        'Content-Type': 'application/json',
                     }),
-                    responseType: 'json',
                     reportProgress: false,
+                    responseType: 'json',
                 });
                 return this.request(request);
             }));
     }
 
-    public patchRequest<REQ_BODY, RESP_BODY>(url: string, body: REQ_BODY, params: HttpParams | {
+    public patchRequest<REQ_BODY, RESP_BODY>(url: string, body: REQ_BODY, params?: HttpParams | {
         [param: string]: string | string[];
-    } = undefined): Observable<HttpEvent<RESP_BODY>> {
+    }): Observable<HttpEvent<RESP_BODY>> {
         const request = new HttpRequest<REQ_BODY>('PATCH', url, body, {
             headers: new HttpHeaders({
-                'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + this.gapiUser.getToken(),
+                'Content-Type': 'application/json',
             }),
-            responseType: 'json',
             reportProgress: false,
+            responseType: 'json',
         });
         return this.request(request);
     }

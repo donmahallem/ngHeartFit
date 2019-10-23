@@ -39,14 +39,11 @@ export class FitApiDataSourceService {
 
     public createDataSourceMetaData(dataType: IDataType, dataStreamName?: string): ICreateDataSourceRequest {
         return {
-            dataStreamName,
-            type: 'raw',
             application: {
                 detailsUrl: 'https://donmahallem.github.io/ngHeartFit',
                 name: 'HeartFit',
                 version: '1',
             },
-            dataType,
             device: {
                 manufacturer: navigator.appCodeName.replace(/[^\w]/gi, ''),
                 model: navigator.appName.replace(/[^\w]/gi, ''),
@@ -54,6 +51,9 @@ export class FitApiDataSourceService {
                 uid: navigator.userAgent.replace(/[^\w]/gi, ''),
                 version: navigator.appVersion.replace(/[^\w]/gi, ''),
             },
+            dataStreamName,
+            dataType,
+            type: 'raw',
         };
     }
 

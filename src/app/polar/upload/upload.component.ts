@@ -18,12 +18,12 @@ import { UploadDataService } from '../services/upload-data.service';
 import { FileUploadObserver } from './file-upload.observer';
 
 @Component({
-    selector: 'app-polar-upload',
-    templateUrl: './upload.component.pug',
-    styleUrls: ['./upload.component.scss'],
     providers: [
         UploadDataService,
     ],
+    selector: 'app-polar-upload',
+    styleUrls: ['./upload.component.scss'],
+    templateUrl: './upload.component.pug',
 })
 export class UploadComponent implements OnInit {
     constructor(private uploadDataService: UploadDataService,

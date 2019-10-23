@@ -6,7 +6,7 @@ import {
     Component,
     Input,
 } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 import { IDataPoint } from './data-point';
 
@@ -17,7 +17,6 @@ import { IDataPoint } from './data-point';
 })
 export class UploadToFitComponent {
     private dataPointsSubject: BehaviorSubject<IDataPoint[]> = new BehaviorSubject<IDataPoint[]>([]);
-    private subscriptions: Subscription[] = [];
     private mNumberOfItems = 0;
 
     constructor(private fitDataSourceService: FitApiDataSourceService) {

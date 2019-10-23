@@ -11,12 +11,12 @@ export class FileUploadObserver implements Observer<FileLoadEvents<TypedFiles>> 
                 private readonly sourceFile: File) { }
     public updateProgress(ev: IFileLoadProgressEvent): void {
         this.uploadDataService.updateFile({
-            status: UploadFileStatus.LOADING,
+            currentBytes: ev.loaded,
             filename: this.sourceFile.name,
             key: this.sourceFile.name,
-            currentBytes: ev.loaded,
-            totalBytes: ev.total,
             lengthComputable: ev.lengthComputable,
+            status: UploadFileStatus.LOADING,
+            totalBytes: ev.total,
         });
     }
     public updateResult(ev: IFileLoadResultEvent<TypedFiles>): void {
@@ -33,12 +33,12 @@ export class FileUploadObserver implements Observer<FileLoadEvents<TypedFiles>> 
                 break;
             case UploadFileType.SLEEP_DATA:
                 this.uploadDataService.updateFile({
-                    status: UploadFileStatus.LOADED,
-                    filename: this.sourceFile.name,
-                    key: this.sourceFile.name,
                     data: ev.result.data,
-                    type: UploadFileType.SLEEP_DATA,
+                    filename: this.sourceFile.name,
                     filesize: ev.filesize,
+                    key: this.sourceFile.name,
+                    status: UploadFileStatus.LOADED,
+                    type: UploadFileType.SLEEP_DATA,
                 });
                 break;
             default:
@@ -48,9 +48,9 @@ export class FileUploadObserver implements Observer<FileLoadEvents<TypedFiles>> 
 
     public updateInit(ev: IFileLoadStartEvent): void {
         this.uploadDataService.updateFile({
-            status: UploadFileStatus.INITIALIZING,
             filename: this.sourceFile.name,
             key: this.sourceFile.name,
+            status: UploadFileStatus.INITIALIZING,
         });
     }
     public updateError(ev: { type: FileLoadEventType.PROGRESS }): void {

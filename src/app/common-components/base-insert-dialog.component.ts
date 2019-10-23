@@ -30,7 +30,7 @@ export const forbiddenNameValidator: () => ValidatorFn = () =>
         groupErrors.oneValueRequired = 'Atleast one value is required';
         return groupErrors;
     };
-export interface BodyMetricsFormData {
+export interface IBodyMetricsFormData {
     bodyweight: number;
     bodyfat: number;
     bodyheight: number;
@@ -39,14 +39,14 @@ export interface BodyMetricsFormData {
     date: moment.Moment;
     time: string;
 }
-export interface DialogParameter {
-    selectableUnits?: SelectableUnit[];
+export interface IDialogParameter {
+    selectableUnits?: ISelectableUnit[];
     minValue?: number;
     maxValue?: number;
     title: string;
 }
 
-export interface SelectableUnit {
+export interface ISelectableUnit {
     key: string;
     value: string;
 }
@@ -55,11 +55,11 @@ export interface SelectableUnit {
     styleUrls: ['./base-insert-dialog.component.scss'],
 })
 export class BaseInsertDialogComponent {
-    public get selectableUnits(): SelectableUnit[] {
+    public get selectableUnits(): ISelectableUnit[] {
         return this.mSelectableUnits;
     }
 
-    public set selectableUnits(units: SelectableUnit[]) {
+    public set selectableUnits(units: ISelectableUnit[]) {
         if (Array.isArray(units)) {
             this.mSelectableUnits = units;
         }
@@ -76,9 +76,9 @@ export class BaseInsertDialogComponent {
     public static readonly STONE_TO_KILOGRAM: number = 6.35029;
     public metricsForm: FormGroup;
 
-    private mSelectableUnits: SelectableUnit[] = [];
+    private mSelectableUnits: ISelectableUnit[] = [];
     constructor(private fb: FormBuilder,
-                @Inject(MAT_DIALOG_DATA) public data: DialogParameter) {
+                @Inject(MAT_DIALOG_DATA) public data: IDialogParameter) {
         this.metricsForm = this.fb
             .group({
                 value: [0, [Validators.min(0), Validators.max(100)]],

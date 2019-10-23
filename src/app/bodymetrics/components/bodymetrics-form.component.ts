@@ -6,9 +6,7 @@ import {
     Component,
 } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators, ValidatorFn } from '@angular/forms';
-import { MatDialog } from '@angular/material';
 import * as moment from 'moment';
-import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 
 export function forbiddenNameValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | undefined => {
@@ -52,9 +50,7 @@ export class BodyMetricsFormComponent {
     public static readonly POUND_TO_KILOGRAM: number = 0.453592;
     public static readonly STONE_TO_KILOGRAM: number = 6.35029;
     public metricsForm: FormGroup;
-    constructor(private fitApi: FitApiDataSourceService,
-                private fb: FormBuilder,
-                private dialog: MatDialog) {
+    constructor(private fb: FormBuilder) {
         this.metricsForm = this.fb
             .group({
                 bodyweight: [0, Validators.min(0)],
@@ -86,8 +82,8 @@ export class BodyMetricsFormComponent {
             const timestamp: moment.Moment = this.metricsForm.get('date').value;
             const timeString: string = this.metricsForm.get('time').value;
             const timeSplit: string[] = timeString.split(':').map((val) => val.trim());
-            timestamp.hours(parseInt(timeSplit[0]));
-            timestamp.minutes(parseInt(timeSplit[1]));
+            timestamp.hours(parseInt(timeSplit[0], 10));
+            timestamp.minutes(parseInt(timeSplit[1], 10));
             const submitObject: any = {
                 timestamp: timestamp.unix(),
             };

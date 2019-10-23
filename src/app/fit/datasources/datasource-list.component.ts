@@ -9,8 +9,8 @@ import {
 import { IFitDataSource } from 'src/app/service/fit-data-source.service';
 @Component({
     selector: 'app-datasource-list',
-    templateUrl: './datasource-list.component.pug',
     styleUrls: ['./datasource-list.component.scss'],
+    templateUrl: './datasource-list.component.pug',
 })
 export class DatasourceListComponent {
     private mDataSources: IFitDataSource[] = [];

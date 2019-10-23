@@ -24,13 +24,13 @@ const routes: Routes = [
         loadChildren: './profile/profile.module#ProfileModule',
         path: 'profile',
     }, {
-        path: 'fit',
         data: {
             requiresLogin: true,
         },
         canActivate: [RouteGuardService],
         canActivateChild: [RouteGuardService],
         loadChildren: './fit/fit.module#FitModule',
+        path: 'fit',
         resolve: {
             gapi: NgGapiResolver,
         },
@@ -46,18 +46,18 @@ const routes: Routes = [
     }, {
         children: [
             {
-                path: 'google',
-                component: LoginGoogleComponent,
                 children: [
                     {
-                        path: 'callback',
                         children: [],
+                        path: 'callback',
                     },
                 ],
+                component: LoginGoogleComponent,
+                path: 'google',
             },
             {
-                path: 'polarflow',
                 children: [],
+                path: 'polarflow',
             },
         ],
         path: 'login',

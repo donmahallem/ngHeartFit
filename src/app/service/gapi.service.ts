@@ -14,7 +14,6 @@ export interface ISignInUrlResponse {
 
 export interface IExchangeCodeResponse { }
 export interface IUser {
-
 }
 
 export interface ISubmitBodyMetricsRequest {

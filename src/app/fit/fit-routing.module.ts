@@ -17,35 +17,35 @@ const routes: Routes = [
         redirectTo: 'dashboard',
     },
     {
-        path: 'dashboard',
         component: FitDashboardComponent,
+        path: 'dashboard',
     },
     {
-        path: 'datasources',
         component: DatasourcesComponent,
+        path: 'datasources',
     },
     {
-        path: 'datasource/:id',
         component: DatasourceDetailComponent,
+        path: 'datasource/:id',
         resolve: {
             dataSource: FitDataSourceDetailResolver,
         },
     },
     {
-        path: 'sessions',
         component: SessionsComponent,
+        path: 'sessions',
     },
     {
-        path: 'session/:id',
         component: SessionDetailComponent,
+        path: 'session/:id',
     },
 ];
 
 @NgModule({
+    exports: [RouterModule],
     imports: [
         RouterModule.forChild(routes),
     ],
-    exports: [RouterModule],
     providers: [
     ],
 })

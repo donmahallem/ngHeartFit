@@ -6,6 +6,7 @@ import { HttpEvent } from '@angular/common/http';
 import {
     Component,
     Input,
+    OnDestroy,
 } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import * as moment from 'moment';
@@ -20,7 +21,9 @@ import { IFitDataSource } from 'src/app/service/fit-data-source.service';
     templateUrl: './datasource-example-table.component.pug',
     styleUrls: ['./datasource-example-table.component.scss'],
 })
-export class DatasourceExampleTableComponent<T> extends LoadableComponent<IFitDatasetResponse<FitDatasetPoints>> {
+export class DatasourceExampleTableComponent<T>
+    extends LoadableComponent<IFitDatasetResponse<FitDatasetPoints>>
+    implements OnDestroy {
 
     displayedColumns: string[] = ['position', 'name', 'date'];
     dataSource2: any = [];

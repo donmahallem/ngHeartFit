@@ -5,7 +5,6 @@
 import { HttpEvent } from '@angular/common/http';
 import {
     Component,
-    NgZone,
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { LoadableListComponent } from 'src/app/common-components/sessions.component';
@@ -17,7 +16,7 @@ import { FitApiDataSourceService, IFitDataSource, IFitDataSourceList } from 'src
 })
 export class DatasourcesComponent extends LoadableListComponent<IFitDataSourceList> {
     private mDataSources: IFitDataSource[] = [];
-    constructor(private zone: NgZone, private nggapi: FitApiDataSourceService) {
+    constructor(private nggapi: FitApiDataSourceService) {
         super();
     }
 
@@ -25,7 +24,6 @@ export class DatasourcesComponent extends LoadableListComponent<IFitDataSourceLi
         return this.mDataSources;
     }
     public onResult(result: IFitDataSourceList) {
-        console.log('in zone', NgZone.isInAngularZone());
         this.mDataSources = result.dataSource;
     }
 

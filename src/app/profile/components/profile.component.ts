@@ -8,8 +8,8 @@ import {
 } from '@angular/core';
 @Component({
     selector: 'profile-page',
-    templateUrl: './profile.component.pug',
     styleUrls: ['./profile.component.scss'],
+    templateUrl: './profile.component.pug',
 })
 export class ProfileComponent implements OnInit {
     public user: any;

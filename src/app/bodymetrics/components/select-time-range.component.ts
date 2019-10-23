@@ -12,8 +12,8 @@ import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { Status, WeightChartService } from '../services/weight-chart.service';
 
-export function createCompareDateValidator(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | undefined => {
+export const createCompareDateValidator: () => ValidatorFn = () =>
+    (control: AbstractControl): { [key: string]: any } | undefined => {
         const group: FormGroup = control as any;
         const values: {
             startdate: moment.Moment,
@@ -26,12 +26,11 @@ export function createCompareDateValidator(): ValidatorFn {
             oneValueRequired: 'Atleast one value is required',
         };
     };
-}
 
 @Component({
     selector: 'select-time-range-cmp',
-    templateUrl: './select-time-range.component.pug',
     styleUrls: ['./select-time-range.component.scss'],
+    templateUrl: './select-time-range.component.pug',
 })
 export class SelectTimeRangeComponent implements AfterViewInit,
     OnDestroy {
