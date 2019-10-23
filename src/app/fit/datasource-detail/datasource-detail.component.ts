@@ -63,7 +63,10 @@ export class DatasourceDetailComponent implements OnDestroy, AfterViewInit, OnIn
         this.activatedRoute
             .paramMap
             .pipe(flatMap((value) =>
-                this.fitDataSetService.getDataSetData(value.get('id'), moment().subtract(30, 'day'), moment()))).subscribe(console.log, console.error);
+                this.fitDataSetService
+                    .getDataSetData(value.get('id'), moment().subtract(30, 'day'), moment())))
+            // tslint:disable-next-line:no-console
+            .subscribe(console.log, console.error);
     }
     public ngAfterViewInit() {
     }

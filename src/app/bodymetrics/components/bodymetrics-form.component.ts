@@ -8,8 +8,8 @@ import {
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators, ValidatorFn } from '@angular/forms';
 import * as moment from 'moment';
 
-export function forbiddenNameValidator(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | undefined => {
+export const forbiddenNameValidator: () => ValidatorFn = () =>
+    (control: AbstractControl): { [key: string]: any } | undefined => {
         const group: FormGroup = control as any;
         const weightControl: FormControl = group.get('bodyweight') as FormControl;
         const fatControl: FormControl = group.get('bodyfat') as FormControl;
@@ -28,7 +28,6 @@ export function forbiddenNameValidator(): ValidatorFn {
         groupErrors.oneValueRequired = 'Atleast one value is required';
         return groupErrors;
     };
-}
 export interface IBodyMetricsFormData {
     bodyweight: number;
     bodyfat: number;
@@ -40,8 +39,8 @@ export interface IBodyMetricsFormData {
 }
 @Component({
     selector: 'bodymetrics-form-cmp',
-    templateUrl: './bodymetrics-form.component.pug',
     styleUrls: ['./bodymetrics-form.component.scss'],
+    templateUrl: './bodymetrics-form.component.pug',
 })
 export class BodyMetricsFormComponent {
 
@@ -53,11 +52,11 @@ export class BodyMetricsFormComponent {
     constructor(private fb: FormBuilder) {
         this.metricsForm = this.fb
             .group({
-                bodyweight: [0, Validators.min(0)],
                 bodyfat: [0, [Validators.min(0), Validators.max(100)]],
                 bodyheight: [0, Validators.min(0)],
-                bodyweightunit: ['kilogram', Validators.required],
                 bodyheightunit: ['meter', Validators.required],
+                bodyweight: [0, Validators.min(0)],
+                bodyweightunit: ['kilogram', Validators.required],
                 date: [moment.utc().local(), Validators.required],
                 time: ['12:12', Validators.required],
             });

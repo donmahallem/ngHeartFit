@@ -18,8 +18,8 @@ import { IFitDataSource } from 'src/app/service/fit-data-source.service';
 
 @Component({
     selector: 'datasource-example-table',
-    templateUrl: './datasource-example-table.component.pug',
     styleUrls: ['./datasource-example-table.component.scss'],
+    templateUrl: './datasource-example-table.component.pug',
 })
 export class DatasourceExampleTableComponent<T>
     extends LoadableComponent<IFitDatasetResponse<FitDatasetPoints>>

@@ -71,6 +71,7 @@ export class UploadComponent implements OnInit {
     public clickImport(event: MouseEvent): void {
         this.importFiles().subscribe((result) => {
         }, (err: Error) => {
+            // tslint:disable-next-line:no-console
             console.error(err);
         }, () => {
             this.router.navigate(['polar', 'view']);
@@ -96,6 +97,7 @@ export class UploadComponent implements OnInit {
 
     public validateFiles(e: HTMLInputElement): void {
         this.uploadDataService.clear();
+        // tslint:disable-next-line:prefer-for-of
         for (let i = 0; i < e.files.length; i++) {
             const file: File = e.files[i];
             if (file) {

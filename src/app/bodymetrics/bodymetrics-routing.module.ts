@@ -9,18 +9,18 @@ import { WeightChartComponent } from './components/weight-chart.component';
 
 const routes: Routes = [
     {
-        path: 'insert',
         component: BodyMetricsFormComponent,
+        path: 'insert',
     },
     {
-        path: 'weight/chart',
         component: WeightChartComponent,
+        path: 'weight/chart',
     },
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
+    imports: [RouterModule.forChild(routes)],
     providers: [
     ],
 })

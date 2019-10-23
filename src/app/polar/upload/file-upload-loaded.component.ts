@@ -11,8 +11,8 @@ import { FileUploadBaseComponent } from './file-upload-base.component';
 
 @Component({
     selector: 'app-file-upload-loaded',
-    templateUrl: './file-upload-loaded.component.pug',
     styleUrls: ['./file-upload-loaded.component.scss'],
+    templateUrl: './file-upload-loaded.component.pug',
 })
 export class FileUploadLoadedComponent extends FileUploadBaseComponent<UploadFileResults> {
 

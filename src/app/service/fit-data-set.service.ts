@@ -28,9 +28,9 @@ export class FitApiDataSetService {
                       points: IInsertDataPoint[]): Observable<HttpEvent<any>> {
 
         const requestBody: any = {
-            minStartTimeNs: from.valueOf() * 1000000,
-            maxEndTimeNs: to.valueOf() * 1000000,
             dataSourceId,
+            maxEndTimeNs: to.valueOf() * 1000000,
+            minStartTimeNs: from.valueOf() * 1000000,
             point: points,
         };
         const url = FitApiBaseService.ENDPOINT + '/users/me/dataSources/'

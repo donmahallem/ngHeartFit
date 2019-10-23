@@ -10,8 +10,8 @@ import { FileUploadBaseComponent } from './file-upload-base.component';
 
 @Component({
     selector: 'app-file-upload-progress',
-    templateUrl: './file-upload-progress.component.pug',
     styleUrls: ['./file-upload-progress.component.scss'],
+    templateUrl: './file-upload-progress.component.pug',
 })
 export class FileUploadProgressComponent extends FileUploadBaseComponent<IUploadFileProgress | IUploadFileInitializing> {
 

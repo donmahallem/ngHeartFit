@@ -5,7 +5,6 @@
 import { HttpEvent } from '@angular/common/http';
 import {
     Component,
-    NgZone,
 } from '@angular/core';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
@@ -20,8 +19,7 @@ import { FitApiSessionService } from 'src/app/service/fit-session.service';
 })
 export class SessionsComponent extends LoadableListComponent<IListSessionsResponse> {
     private mSessions: IFitSession[] = [];
-    constructor(private zone: NgZone,
-                private sessionService: FitApiSessionService) {
+    constructor(private sessionService: FitApiSessionService) {
         super();
     }
 

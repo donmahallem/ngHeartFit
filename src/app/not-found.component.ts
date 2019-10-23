@@ -6,11 +6,10 @@ import { Component, OnInit } from '@angular/core';
 import { Route, Router } from '@angular/router';
 @Component({
     selector: 'app-not-found-cmp',
-    templateUrl: './not-found.component.pug',
     styleUrls: ['./not-found.component.scss'],
+    templateUrl: './not-found.component.pug',
 })
 export class NotFoundComponent implements OnInit {
-    private _title = 'app title';
 
     constructor(private router: Router) {
 
@@ -21,7 +20,7 @@ export class NotFoundComponent implements OnInit {
         this.printpath('JJJ', this.router.config);
     }
 
-    printpath(parent: String, routes: Route[]) {
+    printpath(parent: string, routes: Route[]) {
         const getFullPath = (path?: string) => {
             if (path) {
                 return parent + '/' + path;
@@ -30,11 +29,8 @@ export class NotFoundComponent implements OnInit {
             return parent;
         };
 
-        for (let i = 0; i < routes.length; i++) {
-            const route = routes[i];
+        for (const route of routes) {
             const fullPath = getFullPath(route.path);
-
-            console.log(parent + '/' + route.path, route.component);
 
             if (route.children /*&& route.children.length > 0*/) {
                 this.printpath(fullPath, route.children);

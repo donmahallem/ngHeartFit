@@ -7,7 +7,7 @@ import {
     Component,
     OnDestroy,
 } from '@angular/core';
-import { AnalyzeDataService, Pair } from '../services/analyze-data.service';
+import { AnalyzeDataService, IPair } from '../services/analyze-data.service';
 import { IDataPoint } from './data-point';
 
 @Component({
@@ -23,7 +23,7 @@ export class ViewUploadComponent implements
     constructor(private analyzeDataService: AnalyzeDataService) {
     }
 
-    public updateData(summary: Pair[]): void {
+    public updateData(summary: IPair[]): void {
         const lst: IDataPoint[] = [];
         for (const p of summary) {
             lst.push({

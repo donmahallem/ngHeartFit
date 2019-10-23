@@ -25,7 +25,7 @@ class TestAnalyzeDataService {
     template: '',
 })
 class TestWeightChartComponent {
-    @Input('chartData')
+    @Input()
     public chartData: IDataPoint[];
 }
 
@@ -35,28 +35,28 @@ class TestWeightChartComponent {
     template: '',
 })
 export class TestUploadToFitComponent {
-    public _dataPoints: IDataPoint[] = [];
+    public mDataPoints: IDataPoint[] = [];
     @Input('dataPoints')
     public set dataPoints(data: IDataPoint[]) {
-        this._dataPoints = data;
+        this.mDataPoints = data;
     }
 
     public get dataPoints(): IDataPoint[] {
-        return this._dataPoints;
+        return this.mDataPoints;
     }
 }
 let sandbox: sinon.SinonSandbox;
 describe('BodyMetricsComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [
-                RouterTestingModule,
-                MatButtonModule,
-            ],
             declarations: [
                 ViewUploadComponent,
                 TestWeightChartComponent,
                 TestUploadToFitComponent,
+            ],
+            imports: [
+                RouterTestingModule,
+                MatButtonModule,
             ],
             providers: [
                 { provide: AnalyzeDataService, useValue: new TestAnalyzeDataService() },

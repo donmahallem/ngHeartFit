@@ -51,8 +51,8 @@ export interface ISelectableUnit {
     value: string;
 }
 @Component({
-    templateUrl: './base-insert-dialog.component.pug',
     styleUrls: ['./base-insert-dialog.component.scss'],
+    templateUrl: './base-insert-dialog.component.pug',
 })
 export class BaseInsertDialogComponent {
     public get selectableUnits(): ISelectableUnit[] {
@@ -81,10 +81,10 @@ export class BaseInsertDialogComponent {
                 @Inject(MAT_DIALOG_DATA) public data: IDialogParameter) {
         this.metricsForm = this.fb
             .group({
-                value: [0, [Validators.min(0), Validators.max(100)]],
-                unit: [0, Validators.required],
                 date: [moment.utc().local(), Validators.required],
                 time: ['12:12', Validators.required],
+                unit: [0, Validators.required],
+                value: [0, [Validators.min(0), Validators.max(100)]],
             });
     }
 

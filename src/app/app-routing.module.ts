@@ -24,11 +24,11 @@ const routes: Routes = [
         loadChildren: './profile/profile.module#ProfileModule',
         path: 'profile',
     }, {
+        canActivate: [RouteGuardService],
+        canActivateChild: [RouteGuardService],
         data: {
             requiresLogin: true,
         },
-        canActivate: [RouteGuardService],
-        canActivateChild: [RouteGuardService],
         loadChildren: './fit/fit.module#FitModule',
         path: 'fit',
         resolve: {
@@ -68,11 +68,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
+    exports: [RouterModule],
     imports: [
         RouterModule
             .forRoot(routes, { enableTracing: false }),
         NotFoundModule,
     ],
-    exports: [RouterModule],
 })
 export class AppRoutingModule { }

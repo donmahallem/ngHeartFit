@@ -9,8 +9,8 @@ import {
 import { IFitSession } from 'src/app/service/fit-api-modals';
 @Component({
     selector: 'session-list-item',
-    templateUrl: './session.component.pug',
     styleUrls: ['./session.component.scss'],
+    templateUrl: './session.component.pug',
 })
 export class SessionComponent {
     private mSession: IFitSession;

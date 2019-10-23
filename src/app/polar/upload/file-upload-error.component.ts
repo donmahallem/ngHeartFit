@@ -11,8 +11,8 @@ import { FileUploadBaseComponent } from './file-upload-base.component';
 
 @Component({
     selector: 'app-file-upload-error',
-    templateUrl: './file-upload-error.component.pug',
     styleUrls: ['./file-upload-error.component.scss'],
+    templateUrl: './file-upload-error.component.pug',
 })
 export class FileUploadErrorComponent extends FileUploadBaseComponent<IUploadFileError> {
 

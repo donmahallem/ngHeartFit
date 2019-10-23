@@ -17,7 +17,6 @@ export class GoogleAuthCallbackGuard implements CanActivate, CanActivateChild, R
     constructor(private authService: GapiAuthService, private router: Router) { }
 
     public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-        const url: string = state.url;
 
         return this.authService
             .exchangeCode(route.queryParams.code)

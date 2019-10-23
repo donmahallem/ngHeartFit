@@ -29,9 +29,9 @@ export class FitApiBaseService {
                 }));
     }
 
-    public createGetRequest<T>(url: string, params: HttpParams | {
+    public createGetRequest<T>(url: string, params?: HttpParams | {
         [param: string]: string | string[];
-    } = undefined): HttpRequest<T> {
+    }): HttpRequest<T> {
         let paramObject: HttpParams;
         if (params) {
             paramObject = (params instanceof HttpParams) ? params : new HttpParams({
@@ -171,9 +171,9 @@ export class FitApiBaseService {
         return this.request(request);
     }
 
-    public postRequest<REQ_BODY, RESP_BODY>(url: string, body: REQ_BODY, params: HttpParams | {
+    public postRequest<REQ_BODY, RESP_BODY>(url: string, body: REQ_BODY, params?: HttpParams | {
         [param: string]: string | string[];
-    } = undefined): Observable<HttpEvent<RESP_BODY>> {
+    }): Observable<HttpEvent<RESP_BODY>> {
         return this.base()
             .pipe(flatMap((): Observable<HttpEvent<RESP_BODY>> => {
                 const request = new HttpRequest<REQ_BODY>('POST', url, body, {

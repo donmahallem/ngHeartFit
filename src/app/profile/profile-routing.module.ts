@@ -9,15 +9,15 @@ import { ProfileComponent } from './components';
 
 const routes: Routes = [
     {
-        path: '',
-        component: ProfileComponent,
         canActivate: [RouteGuardService],
+        component: ProfileComponent,
+        path: '',
     },
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
+    imports: [RouterModule.forChild(routes)],
     providers: [
         RouteGuardService,
     ],

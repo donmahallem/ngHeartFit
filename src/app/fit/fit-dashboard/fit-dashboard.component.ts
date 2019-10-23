@@ -17,8 +17,8 @@ import { FitApiDataSourceService, IFitDataSource } from 'src/app/service/fit-dat
 
 @Component({
     selector: 'app-fit-dashboard',
-    templateUrl: './fit-dashboard.component.pug',
     styleUrls: ['./fit-dashboard.component.scss'],
+    templateUrl: './fit-dashboard.component.pug',
 })
 export class FitDashboardComponent implements OnDestroy, AfterViewInit {
 
@@ -46,6 +46,7 @@ export class FitDashboardComponent implements OnDestroy, AfterViewInit {
             }, {
                 dataTypeName: 'com.google.hydration',
             }], moment().subtract(30, 'days'), moment(), 1000 * 3600 * 24)
+            // tslint:disable-next-line:no-console
             .subscribe(console.log, console.error);
     }
 
@@ -67,9 +68,9 @@ export class FitDashboardComponent implements OnDestroy, AfterViewInit {
                     for (let i = 0; i < 100; i++) {
                         const ts: number = endTimestamp - (windowSize * i);
                         ps.push({
-                            startTimeNanos: ts * 1000000,
-                            endTimeNanos: ts * 1000000,
                             dataTypeName: 'com.google.body.fat.percentage',
+                            endTimeNanos: ts * 1000000,
+                            startTimeNanos: ts * 1000000,
                             value: [{ fpVal: Math.random() * 100 }],
                         });
                     }
@@ -77,6 +78,7 @@ export class FitDashboardComponent implements OnDestroy, AfterViewInit {
 
                     return this.fitDataSetService.insertData(datasource.body.dataStreamId, start, end, ps);
                 }))
+            // tslint:disable-next-line:no-console
             .subscribe(console.log);
     }
 

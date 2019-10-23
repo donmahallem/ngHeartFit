@@ -10,11 +10,6 @@ import { DatasourceListComponent } from './datasource-list.component';
 import { DatasourcesComponent } from './datasources.component';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        MatProgressBarModule,
-        MatIconModule,
-    ],
     declarations: [
         DatasourcesComponent,
         DatasourceListItemComponent,
@@ -23,6 +18,11 @@ import { DatasourcesComponent } from './datasources.component';
         DatasourcesComponent,
         DatasourceListItemComponent,
         DatasourceListComponent,
+        CommonModule,
+        MatProgressBarModule,
+        MatIconModule,
+    ],
+    imports: [
         CommonModule,
         MatProgressBarModule,
         MatIconModule,

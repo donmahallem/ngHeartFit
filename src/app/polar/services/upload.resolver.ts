@@ -14,8 +14,6 @@ export class UploadResolver implements Resolve<IUploadFile[]> {
     public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): IUploadFile[] {
         const ids: string[] = (route.params.id as string).split(',');
         const uploads: IUploadFile[] = [];
-        for (const id of ids) {
-        }
         return uploads;
     }
 }

@@ -12,8 +12,8 @@ export interface IDataPoint {
 }
 @Component({
     selector: 'app-line-chart',
-    templateUrl: './line-chart.component.pug',
     styleUrls: ['./line-chart.component.scss'],
+    templateUrl: './line-chart.component.pug',
 })
 export class LineChartComponent implements OnInit, AfterViewInit {
     @Input('chartData')
@@ -81,7 +81,7 @@ export class LineChartComponent implements OnInit, AfterViewInit {
             height: this.elRef.nativeElement.offsetHeight,
             width: this.elRef.nativeElement.offsetWidth,
         });
-        const dataset = d3.range(0).map(function(d) { return { x: new Date(d), y: d3.randomUniform(1)() }; });
+        const dataset = d3.range(0).map((d) => ({ x: new Date(d), y: d3.randomUniform(1)() }));
         const container = d3.select(this.mySpan.nativeElement).append('g')
             .attr('transform',
                 'translate(' + this.margin.left + ',' + this.margin.top + ')',

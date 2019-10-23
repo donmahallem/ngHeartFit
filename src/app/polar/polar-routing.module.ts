@@ -11,13 +11,13 @@ import { ViewUploadComponent } from './view-upload/view-upload.component';
 
 const routes: Routes = [
     {
-        path: 'upload',
-        component: UploadComponent,
         canActivate: [RouteGuardService],
+        component: UploadComponent,
+        path: 'upload',
     },
     {
-        path: 'view',
         component: ViewUploadComponent,
+        path: 'view',
     },
     {
         path: '**',

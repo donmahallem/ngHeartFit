@@ -7,15 +7,15 @@ import { NgModule } from '@angular/core';
 import { NotFoundComponent } from './not-found.component';
 
 @NgModule({
-    imports: [
-        CommonModule,
-    ],
     declarations: [
         NotFoundComponent,
     ],
     exports: [
         CommonModule,
         NotFoundComponent,
+    ],
+    imports: [
+        CommonModule,
     ],
 })
 export class NotFoundModule { }

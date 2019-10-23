@@ -28,15 +28,15 @@ class TestRouteLoadingIndicator {
 describe('AppComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [
-                RouterTestingModule,
-                MatButtonModule,
-                MatToolbarModule,
-            ],
             declarations: [
                 AppComponent,
                 ProfileComponent,
                 TestRouteLoadingIndicator,
+            ],
+            imports: [
+                RouterTestingModule,
+                MatButtonModule,
+                MatToolbarModule,
             ],
             providers: [
             ],

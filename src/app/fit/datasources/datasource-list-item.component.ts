@@ -11,8 +11,8 @@ import { Router } from '@angular/router';
 import { IFitDataSource } from 'src/app/service/fit-data-source.service';
 @Component({
     selector: 'app-datasource-li',
-    templateUrl: './datasource-list-item.component.pug',
     styleUrls: ['./datasource-list-item.component.scss'],
+    templateUrl: './datasource-list-item.component.pug',
 })
 export class DatasourceListItemComponent {
     private mDataSource: IFitDataSource;

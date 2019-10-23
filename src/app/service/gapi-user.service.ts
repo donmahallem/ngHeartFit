@@ -22,7 +22,6 @@ export class GapiUserService {
         return this.signedInObservable;
     }
     public static SESSION_STORAGE_KEY = 'accessToken';
-    private user: gapi.auth2.GoogleUser;
     private signedInObservable: Observable<boolean>;
 
     constructor(private googleAuth: GoogleAuthService) {

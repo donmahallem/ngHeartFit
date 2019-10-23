@@ -11,8 +11,8 @@ import {
 import { IFitSession } from 'src/app/service/fit-api-modals';
 @Component({
     selector: 'session-detail',
-    templateUrl: './session-detail.component.pug',
     styleUrls: ['./session-detail.component.scss'],
+    templateUrl: './session-detail.component.pug',
 })
 export class SessionDetailComponent implements OnDestroy, AfterViewInit {
     private mSession: IFitSession;

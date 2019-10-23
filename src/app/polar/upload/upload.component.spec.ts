@@ -20,11 +20,11 @@ import { AnalyzeDataService } from '../services/analyze-data.service';
 
 @Injectable()
 class TestUploadDataService {
+    public update(): void {
+    }
 
     public get uploadedFiles(): IUploadFile[] {
         return [];
-    }
-    public update(): void {
     }
 
     public set uploadedFiles(files: IUploadFile[]) {

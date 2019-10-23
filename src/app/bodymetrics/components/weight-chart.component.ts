@@ -6,7 +6,6 @@ import { HttpEventType, HttpResponse } from '@angular/common/http';
 import {
     AfterViewInit,
     Component,
-    NgZone,
     OnDestroy,
     ViewChild,
 } from '@angular/core';
@@ -21,15 +20,14 @@ import { WeightChartService } from '../services/weight-chart.service';
 
 @Component({
     selector: 'weight-chart',
-    templateUrl: './weight-chart.component.pug',
     styleUrls: ['./weight-chart.component.scss'],
+    templateUrl: './weight-chart.component.pug',
 })
 export class WeightChartComponent implements AfterViewInit, OnDestroy {
     @ViewChild(LineChartComponent, { static: false })
     chart: LineChartComponent;
     private mSubscriptions: Subscription[] = [];
-    constructor(private zone: NgZone,
-                private fitApiDataSource: FitApiDataSourceService,
+    constructor(private fitApiDataSource: FitApiDataSourceService,
                 private fitApiAggregateService: FitApiAggregateService,
                 private chartService: WeightChartService) {
     }
@@ -71,6 +69,7 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
                                 }
                                 return this.fitApiAggregateService.getAggregateData(types, moments[0], moments[1], diff);
                             }))), delay(1000))
+            // tslint:disable-next-line:no-console
             .subscribe(this.updateData.bind(this), console.error));
     }
 

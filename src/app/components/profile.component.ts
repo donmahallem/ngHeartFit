@@ -4,7 +4,6 @@
 
 import {
     AfterViewInit,
-    ChangeDetectorRef,
     Component,
     OnDestroy,
     ViewChild,
@@ -22,7 +21,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     public btnSignIn: MatButton;
     private _isSignedIn = false;
     private signinSubscription: Subscription;
-    constructor(private cd: ChangeDetectorRef) { }
+    constructor() { }
     public ngAfterViewInit(): void {
         /*this.signinSubscription = this.gapiService.getUserObservable()
             .subscribe((res) => {

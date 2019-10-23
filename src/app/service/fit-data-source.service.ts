@@ -44,6 +44,8 @@ export class FitApiDataSourceService {
                 name: 'HeartFit',
                 version: '1',
             },
+            dataStreamName,
+            dataType,
             device: {
                 manufacturer: navigator.appCodeName.replace(/[^\w]/gi, ''),
                 model: navigator.appName.replace(/[^\w]/gi, ''),
@@ -51,8 +53,6 @@ export class FitApiDataSourceService {
                 uid: navigator.userAgent.replace(/[^\w]/gi, ''),
                 version: navigator.appVersion.replace(/[^\w]/gi, ''),
             },
-            dataStreamName,
-            dataType,
             type: 'raw',
         };
     }
@@ -90,7 +90,8 @@ export class FitApiDataSourceService {
             .pipe(flatMap((event: HttpEvent<IFitDataSourceList>): Observable<HttpEvent<IFitDataSource>> => {
                 if (event.type === HttpEventType.Response) {
                     for (const source of event.body.dataSource) {
-                        if (source.dataStreamName === FitApiDataSourceService.BODY_FAT_PERCENTAGE_NAME && source.device.uid === navigator.userAgent.replace(/[^\w]/gi, '')) {
+                        if (source.dataStreamName === FitApiDataSourceService.BODY_FAT_PERCENTAGE_NAME &&
+                            source.device.uid === navigator.userAgent.replace(/[^\w]/gi, '')) {
                             const modified: HttpResponse<IFitDataSource> = event.clone({
                                 body: source,
                             });

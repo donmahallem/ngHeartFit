@@ -55,25 +55,25 @@ describe('app/polar/upload/file-upload-error.component', () => {
         let fixture: ComponentFixture<FileUploadErrorComponent>;
         let cmpInstance: FileUploadErrorComponent;
         const testFiles: IUploadFileError[] = [{
-            key: 'testFile07.json',
-            filename: 'testFile07.json',
             error: new ValidationError('a random test error'),
+            filename: 'testFile07.json',
+            key: 'testFile07.json',
             status: UploadFileStatus.ERROR,
         }, {
-            key: 'testFile08.json',
-            filename: 'testFile08.json',
             error: new Error('a random test error'),
+            filename: 'testFile08.json',
+            key: 'testFile08.json',
             status: UploadFileStatus.ERROR,
         },
         ];
         beforeEach(async(() => {
             TestBed.configureTestingModule({
-                imports: [
-                ],
                 declarations: [
                     FileUploadErrorComponent,
                     TestParentComponent,
                     TestMatProgressBarComponent,
+                ],
+                imports: [
                 ],
                 providers: [
                     { provide: UploadDataService, useValue: new TestUploadDataService() },
@@ -119,7 +119,6 @@ describe('app/polar/upload/file-upload-error.component', () => {
                 it('should create the app', () => {
                     expect(cmpInstance).toBeTruthy();
                 });
-                let progressCmp: TestMatProgressBarComponent;
                 it('should set the correct value');
             });
             describe('inputs of FileUploadErrorComponent', () => {

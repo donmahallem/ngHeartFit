@@ -7,7 +7,7 @@ import { IActivityGraphData } from '@donmahallem/flow-api-types';
 import { from, Observable } from 'rxjs';
 import { AnalyzeDatabase } from './analyze-database';
 
-export interface Pair {
+export interface IPair {
     timestamp: number;
     bpm: number;
 }
@@ -20,20 +20,20 @@ export class AnalyzeDataService {
     }
 
     public insertActivityGraphData(data: IActivityGraphData): Observable<number> {
-        const lst: Pair[] = [];
+        const lst: IPair[] = [];
         for (const pair of data.heartRateTimelineSamples) {
             if (pair.value < 1) {
                 continue;
             }
             lst.push({
-                timestamp: pair.time,
                 bpm: pair.value,
+                timestamp: pair.time,
             });
         }
         return from(this.database.heartrate.bulkAdd(lst));
     }
 
-    public getHeartRate(): Observable<Pair[]> {
+    public getHeartRate(): Observable<IPair[]> {
         return from(this.database.heartrate.toArray());
     }
 
