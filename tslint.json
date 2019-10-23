@@ -1,8 +1,13 @@
 {
+  "extends": "tslint:recommended",
   "rulesDirectory": [
     "node_modules/codelyzer"
   ],
   "rules": {
+    "array-type": [
+      true,
+      "array"
+    ],
     "arrow-return-shorthand": true,
     "callable-types": true,
     "class-name": true,
@@ -73,8 +78,23 @@
     "no-trailing-whitespace": true,
     "no-unnecessary-initializer": true,
     "no-unused-expression": true,
-    "no-use-before-declare": true,
     "no-var-keyword": true,
+    "contextual-lifecycle": true,
+    "no-conflicting-lifecycle": true,
+    "no-consecutive-blank-lines": [
+      true,
+      1
+    ],
+    "no-output-native": true,
+    "template-banana-in-box": true,
+    "template-no-negated-async": true,
+    "use-lifecycle-interface": true,
+    "directive-selector": [
+      true,
+      "attribute",
+      "app",
+      "camelCase"
+    ],
     "object-literal-sort-keys": false,
     "one-line": [
       true,
@@ -108,7 +128,8 @@
       }
     ],
     "unified-signatures": true,
-    "variable-name": false,
+    "variable-name": true,
+    "max-classes-per-file": false,
     "whitespace": [
       true,
       "check-branch",
@@ -118,12 +139,11 @@
       "check-type"
     ],
     "no-output-on-prefix": true,
-    "use-input-property-decorator": true,
-    "use-output-property-decorator": true,
-    "use-host-property-decorator": true,
+    "no-inputs-metadata-property": true,
+    "no-outputs-metadata-property": true,
+    "no-host-metadata-property": true,
     "no-input-rename": true,
     "no-output-rename": true,
-    "use-life-cycle-interface": true,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
     "directive-class-suffix": true
