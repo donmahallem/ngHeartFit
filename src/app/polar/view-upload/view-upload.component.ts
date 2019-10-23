@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AnalyzeDataService, Pair } from '../services/analyze-data.service';
-import { DataPoint } from './data-point';
+import { IDataPoint } from './data-point';
 
 @Component({
     selector: 'view-upload-cmp',
@@ -20,13 +20,13 @@ export class ViewUploadComponent implements
     AfterViewInit,
     OnDestroy {
     public user: any;
-    public chartData: DataPoint[] = [];
+    public chartData: IDataPoint[] = [];
     private idSubscription: Subscription;
     constructor(private analyzeDataService: AnalyzeDataService) {
     }
 
     public updateData(summary: Pair[]): void {
-        const lst: DataPoint[] = [];
+        const lst: IDataPoint[] = [];
         for (const p of summary) {
             lst.push({
                 x: new Date(p.timestamp),

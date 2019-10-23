@@ -2,50 +2,49 @@
  * Source https://github.com/donmahallem/ngHeartFit
  */
 
-
-export interface FpVal {
+export interface IFpVal {
     fpVal: number;
 }
 
-export interface IntVal {
+export interface IIntVal {
     intVal: number;
 }
 
-export interface SubmitValue {
+export interface ISubmitValue {
     dataTypeName: string;
     endTimeNanos: number;
     startTimeNanos: number;
     originDataSourceId: string;
-    value: IntVal[] | FpVal[];
+    value: IIntVal[] | IFpVal[];
 }
 
-export interface SubmitToDatasetBody {
+export interface ISubmitToDatasetBody {
     dataSourceId: string;
     maxEndTimeNs: number | string;
     minStartTimeNs: number | string;
-    point: SubmitValue[];
+    point: ISubmitValue[];
 }
-export interface SubmitToDatasetResponse {
+export interface ISubmitToDatasetResponse {
     dataSourceId: string;
     maxEndTimeNs: string;
     minStartTimeNs: string;
-    point: SubmitValue[];
+    point: ISubmitValue[];
 }
-export interface BucketResponse {
-    bucket: Bucket[];
+export interface IBucketResponse {
+    bucket: IBucket[];
 }
-export interface Bucket {
+export interface IBucket {
     endTimeMillis: string;
     startTimeMillis: string;
-    dataset: Dataset[];
+    dataset: IDataset[];
 }
 
-export interface Dataset {
-    point: DatasetPoint[];
+export interface IDataset {
+    point: IDatasetPoint[];
     dataSourceId: string;
 }
 
-export interface DatasetPoint {
+export interface IDatasetPoint {
     dataTypeName: 'com.google.weight.summary' | string;
     endTimeNanos: string;
     originDataSourceId: string;
@@ -55,7 +54,7 @@ export interface DatasetPoint {
     }[];
 }
 
-export interface FitSession {
+export interface IFitSession {
     activityType: number;
     application: {
         packageName: string;
@@ -69,9 +68,9 @@ export interface FitSession {
     startTimeMillis: string;
 }
 
-export interface ListSessionsResponse {
-    session: FitSession[];
-    deletedSession?: FitSession[];
+export interface IListSessionsResponse {
+    session: IFitSession[];
+    deletedSession?: IFitSession[];
     nextPageToken?: string;
     hasMoreData?: boolean;
 }

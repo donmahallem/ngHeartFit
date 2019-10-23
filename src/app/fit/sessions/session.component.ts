@@ -6,23 +6,23 @@ import {
     Component,
     Input,
 } from '@angular/core';
-import { FitSession } from 'src/app/service/fit-api-modals';
+import { IFitSession } from 'src/app/service/fit-api-modals';
 @Component({
     selector: 'session-list-item',
     templateUrl: './session.component.pug',
     styleUrls: ['./session.component.scss'],
 })
 export class SessionComponent {
-    private mSession: FitSession;
+    private mSession: IFitSession;
     constructor() {
     }
 
     @Input('session')
-    public set session(session: FitSession) {
+    public set session(session: IFitSession) {
         this.mSession = session;
     }
 
-    public get session(): FitSession {
+    public get session(): IFitSession {
         return this.mSession;
     }
 }

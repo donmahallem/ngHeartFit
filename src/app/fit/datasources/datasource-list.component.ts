@@ -6,21 +6,21 @@ import {
     Component,
     Input,
 } from '@angular/core';
-import { FitDataSource } from 'src/app/service/fit-data-source.service';
+import { IFitDataSource } from 'src/app/service/fit-data-source.service';
 @Component({
     selector: 'app-datasource-list',
     templateUrl: './datasource-list.component.pug',
     styleUrls: ['./datasource-list.component.scss'],
 })
 export class DatasourceListComponent {
-    private mDataSources: FitDataSource[] = [];
+    private mDataSources: IFitDataSource[] = [];
 
-    public get dataSources(): FitDataSource[] {
+    public get dataSources(): IFitDataSource[] {
         return this.mDataSources;
     }
 
     @Input('dataSources')
-    public set dataSources(sources: FitDataSource[]) {
+    public set dataSources(sources: IFitDataSource[]) {
         this.mDataSources = sources;
     }
 }

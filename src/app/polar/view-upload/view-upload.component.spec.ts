@@ -10,7 +10,7 @@ import { ViewUploadComponent } from './view-upload.component';
 
 import * as sinon from 'sinon';
 import { AnalyzeDataService } from '../services/analyze-data.service';
-import { DataPoint } from './data-point';
+import { IDataPoint } from './data-point';
 
 @Injectable()
 class TestAnalyzeDataService {
@@ -26,7 +26,7 @@ class TestAnalyzeDataService {
 })
 class TestWeightChartComponent {
     @Input('chartData')
-    public chartData: DataPoint[];
+    public chartData: IDataPoint[];
 }
 
 @Component({
@@ -35,13 +35,13 @@ class TestWeightChartComponent {
     styleUrls: [],
 })
 export class TestUploadToFitComponent {
-    public _dataPoints: DataPoint[] = [];
+    public _dataPoints: IDataPoint[] = [];
     @Input('dataPoints')
-    public set dataPoints(data: DataPoint[]) {
+    public set dataPoints(data: IDataPoint[]) {
         this._dataPoints = data;
     }
 
-    public get dataPoints(): DataPoint[] {
+    public get dataPoints(): IDataPoint[] {
         return this._dataPoints;
     }
 }

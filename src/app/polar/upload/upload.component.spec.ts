@@ -15,7 +15,7 @@ import { FlowApiValidator } from '@donmahallem/flow-api-types';
 import { ValidationError, ValidatorResult } from 'jsonschema';
 import { map } from 'rxjs/operators';
 import * as sinon from 'sinon';
-import { FileLoadEvents, FileLoadEventType, FileLoadResultEvent, FileUtil } from 'src/app/util';
+import { FileLoadEvents, FileLoadEventType, FileUtil, IFileLoadResultEvent } from 'src/app/util';
 import { AnalyzeDataService } from '../services/analyze-data.service';
 
 @Injectable()
@@ -140,7 +140,7 @@ describe('app/polar/upload/upload.component', () => {
                                 type: UploadFileType.DAY_SUMMARY,
                                 data: (testEvents[2] as any).result,
                             },
-                            filesize: (testEvents[2] as FileLoadResultEvent<string>).filesize,
+                            filesize: (testEvents[2] as IFileLoadResultEvent<string>).filesize,
                         });
                         done();
                     });

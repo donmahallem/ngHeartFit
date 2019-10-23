@@ -13,19 +13,19 @@ import * as moment from 'moment';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 import { LoadableComponent } from 'src/app/common-components/loadable.component';
-import { FitApiDataSetService, FitDatasetPoints, FitDatasetResponse } from 'src/app/service/fit-data-set.service';
-import { FitDataSource } from 'src/app/service/fit-data-source.service';
+import { FitApiDataSetService, FitDatasetPoints, IFitDatasetResponse } from 'src/app/service/fit-data-set.service';
+import { IFitDataSource } from 'src/app/service/fit-data-source.service';
 
 @Component({
     selector: 'datasource-example-table',
     templateUrl: './datasource-example-table.component.pug',
     styleUrls: ['./datasource-example-table.component.scss'],
 })
-export class DatasourceExampleTableComponent<T> extends LoadableComponent<FitDatasetResponse<FitDatasetPoints>> {
+export class DatasourceExampleTableComponent<T> extends LoadableComponent<IFitDatasetResponse<FitDatasetPoints>> {
 
     displayedColumns: string[] = ['position', 'name', 'date'];
     dataSource2: any = [];
-    private mDataSourceSubject: BehaviorSubject<FitDataSource> = new BehaviorSubject(null);
+    private mDataSourceSubject: BehaviorSubject<IFitDataSource> = new BehaviorSubject(null);
     private mRouteDataSubscription: Subscription;
     constructor(private zone: NgZone,
                 private fitDataSetService: FitApiDataSetService,
@@ -43,15 +43,15 @@ export class DatasourceExampleTableComponent<T> extends LoadableComponent<FitDat
         });
     }
 
-    public get dataSource(): FitDataSource {
+    public get dataSource(): IFitDataSource {
         return this.mDataSourceSubject.value;
     }
 
     @Input('dataSource')
-    public set dataSource(source: FitDataSource) {
+    public set dataSource(source: IFitDataSource) {
         this.mDataSourceSubject.next(source);
     }
-    public onResult(result: FitDatasetResponse<FitDatasetPoints>) {
+    public onResult(result: IFitDatasetResponse<FitDatasetPoints>) {
         const res: any[] = [];
         for (const a of result.point) {
             res.push({
@@ -63,10 +63,10 @@ export class DatasourceExampleTableComponent<T> extends LoadableComponent<FitDat
         }
         this.dataSource2 = res;
     }
-    public createLoadObservable(): Observable<HttpEvent<FitDatasetResponse<FitDatasetPoints>>> {
+    public createLoadObservable(): Observable<HttpEvent<IFitDatasetResponse<FitDatasetPoints>>> {
         return this.activatedRoute
             .paramMap
-            .pipe(flatMap((value: ParamMap): Observable<HttpEvent<FitDatasetResponse<FitDatasetPoints>>> =>
+            .pipe(flatMap((value: ParamMap): Observable<HttpEvent<IFitDatasetResponse<FitDatasetPoints>>> =>
                 this.fitDataSetService.getDataSetData(value.get('id'), moment().subtract(30, 'day'), moment())));
     }
 

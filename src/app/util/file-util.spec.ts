@@ -2,7 +2,6 @@
  * Source https://github.com/donmahallem/ngHeartFit
  */
 
-
 import * as sinon from 'sinon';
 import { FileUtil } from './file-util';
 describe('/util/file-util', () => {

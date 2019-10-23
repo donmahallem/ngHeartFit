@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
-import { DataPoint } from './data-point';
+import { IDataPoint } from './data-point';
 
 @Component({
     selector: 'upload-to-fit-cmp',
@@ -16,7 +16,7 @@ import { DataPoint } from './data-point';
     styleUrls: ['./upload-to-fit.component.scss'],
 })
 export class UploadToFitComponent {
-    private dataPointsSubject: BehaviorSubject<DataPoint[]> = new BehaviorSubject<DataPoint[]>([]);
+    private dataPointsSubject: BehaviorSubject<IDataPoint[]> = new BehaviorSubject<IDataPoint[]>([]);
     private subscriptions: Subscription[] = [];
     private mNumberOfItems = 0;
 
@@ -24,7 +24,7 @@ export class UploadToFitComponent {
     }
 
     @Input('dataPoints')
-    public set dataPoints(data: DataPoint[]) {
+    public set dataPoints(data: IDataPoint[]) {
         if (Array.isArray(data)) {
             this.dataPointsSubject.next(data);
             this.mNumberOfItems = data.length;
@@ -38,7 +38,7 @@ export class UploadToFitComponent {
         return this.mNumberOfItems;
     }
 
-    public get dataPoints(): DataPoint[] {
+    public get dataPoints(): IDataPoint[] {
         return this.dataPointsSubject.value;
     }
 

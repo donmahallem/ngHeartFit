@@ -7,14 +7,14 @@ import { Injectable } from '@angular/core';
 import { of, throwError, Observable } from 'rxjs';
 import { delay, flatMap, retryWhen } from 'rxjs/operators';
 
-export interface SignInUrlResponse {
+export interface ISignInUrlResponse {
     url: string;
 }
 
-export interface ExchangeCodeResponse {
+export interface IExchangeCodeResponse {
     url: string;
 }
-export interface User {
+export interface IUser {
 
 }
 
@@ -27,21 +27,21 @@ export class GapiAuthService {
     constructor(private http: HttpClient) {
     }
 
-    public getMe(): Observable<User> {
+    public getMe(): Observable<IUser> {
         return this.http
-            .get<User>('/api/google/user/me');
+            .get<IUser>('/api/google/user/me');
     }
 
-    public getSigninUrl(): Observable<SignInUrlResponse> {
+    public getSigninUrl(): Observable<ISignInUrlResponse> {
         return this.http
-            .get<SignInUrlResponse>('/api/google/auth/url');
+            .get<ISignInUrlResponse>('/api/google/auth/url');
     }
 
-    public exchangeCode(code: string): Observable<ExchangeCodeResponse> {
+    public exchangeCode(code: string): Observable<IExchangeCodeResponse> {
         const body: any = {
             code,
         };
-        return this.http.post<ExchangeCodeResponse>('/api/google/auth/code', body);
+        return this.http.post<IExchangeCodeResponse>('/api/google/auth/code', body);
     }
     public refreshToken(): Observable<boolean> {
         this.a++;

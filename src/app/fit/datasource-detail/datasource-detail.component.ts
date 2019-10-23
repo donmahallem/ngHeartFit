@@ -14,7 +14,7 @@ import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 import { FitApiDataSetService } from 'src/app/service/fit-data-set.service';
-import { FitDataSource } from 'src/app/service/fit-data-source.service';
+import { IFitDataSource } from 'src/app/service/fit-data-source.service';
 
 const ELEMENT_DATA: any[] = [
     { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
@@ -38,14 +38,14 @@ export class DatasourceDetailComponent implements OnDestroy, AfterViewInit, OnIn
 
     displayedColumns: string[] = ['position', 'name'];
     dataSource2 = ELEMENT_DATA;
-    private mDataSource: FitDataSource = null;
+    private mDataSource: IFitDataSource = null;
     private mRouteDataSubscription: Subscription;
     constructor(private zone: NgZone,
                 private fitDataSetService: FitApiDataSetService,
                 private activatedRoute: ActivatedRoute) {
     }
 
-    public get dataSource(): FitDataSource {
+    public get dataSource(): IFitDataSource {
         return this.mDataSource;
     }
 
@@ -55,7 +55,7 @@ export class DatasourceDetailComponent implements OnDestroy, AfterViewInit, OnIn
 
     public ngOnInit() {
         this.mRouteDataSubscription = this.activatedRoute.data
-            .subscribe((data: { dataSource: FitDataSource }) => {
+            .subscribe((data: { dataSource: IFitDataSource }) => {
                 this.zone.run(() => {
                     this.mDataSource = data.dataSource;
                 });

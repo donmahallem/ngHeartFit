@@ -15,8 +15,8 @@ import { Subscription } from 'rxjs';
 import { debounceTime, delay, filter, flatMap } from 'rxjs/operators';
 import { LineChartComponent } from 'src/app/common-components/line-chart';
 import { AggregateByFilter, FitApiAggregateService } from 'src/app/service/fit-aggregate.service';
-import { BucketResponse } from 'src/app/service/fit-api-modals';
-import { FitApiDataSourceService, FitDataSourceList } from 'src/app/service/fit-data-source.service';
+import { IBucketResponse } from 'src/app/service/fit-api-modals';
+import { FitApiDataSourceService, IFitDataSourceList } from 'src/app/service/fit-data-source.service';
 import { WeightChartService } from '../services/weight-chart.service';
 
 @Component({
@@ -56,25 +56,25 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
                 flatMap((moments: [moment.Moment, moment.Moment]) =>
                     this.fitApiDataSource.getDataSources(['com.google.body.fat.percentage'])
                         .pipe(filter((event) =>
-                            event.type === HttpEventType.Response), flatMap((sources: HttpResponse<FitDataSourceList>) => {
-                            const diff: number = 24 * 3600 * 1000;
-                            const types: AggregateByFilter[] = [
-                                {
-                                    dataTypeName: 'com.google.weight',
-                                },
-                            ];
-                            for (const datasource of sources.body.dataSource) {
-                                types.push({
-                                    dataTypeName: 'com.google.body.fat.percentage',
-                                    dataSourceId: datasource.dataStreamId,
-                                });
-                            }
-                            return this.fitApiAggregateService.getAggregateData(types, moments[0], moments[1], diff);
-                        }))), delay(1000))
+                            event.type === HttpEventType.Response), flatMap((sources: HttpResponse<IFitDataSourceList>) => {
+                                const diff: number = 24 * 3600 * 1000;
+                                const types: AggregateByFilter[] = [
+                                    {
+                                        dataTypeName: 'com.google.weight',
+                                    },
+                                ];
+                                for (const datasource of sources.body.dataSource) {
+                                    types.push({
+                                        dataTypeName: 'com.google.body.fat.percentage',
+                                        dataSourceId: datasource.dataStreamId,
+                                    });
+                                }
+                                return this.fitApiAggregateService.getAggregateData(types, moments[0], moments[1], diff);
+                            }))), delay(1000))
             .subscribe(this.updateData.bind(this), console.error));
     }
 
-    public updateData(bucketResponse: BucketResponse): void {/*
+    public updateData(bucketResponse: IBucketResponse): void {/*
         const weightDatapoints: ChartPoint[] = [];
         const fatDatapoints: ChartPoint[] = [];
         for (const bucket of bucketResponse.bucket) {

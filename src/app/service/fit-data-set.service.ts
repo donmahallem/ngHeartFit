@@ -2,7 +2,6 @@
  * Source https://github.com/donmahallem/ngHeartFit
  */
 
-
 import { HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -15,12 +14,12 @@ export class FitApiDataSetService {
     constructor(private fitApiBaseService: FitApiBaseService) {
 
     }
-    public getDataSetData<T extends FitDatasetPoints>(dataSource: string, from: moment.Moment, to: moment.Moment): Observable<HttpEvent<FitDatasetResponse<T>>> {
+    public getDataSetData<T extends FitDatasetPoints>(dataSource: string, from: moment.Moment, to: moment.Moment): Observable<HttpEvent<IFitDatasetResponse<T>>> {
         const url = FitApiBaseService.ENDPOINT + '/users/me/dataSources/' + dataSource + '/datasets/' + from.valueOf() + '000000-' + to.valueOf() + '000000';
-        return this.fitApiBaseService.getRequest<FitDatasetResponse<T>>(url);
+        return this.fitApiBaseService.getRequest<IFitDatasetResponse<T>>(url);
     }
 
-    public insertData(dataSourceId: string, from: moment.Moment, to: moment.Moment, points: InsertDataPoint[]): Observable<HttpEvent<any>> {
+    public insertData(dataSourceId: string, from: moment.Moment, to: moment.Moment, points: IInsertDataPoint[]): Observable<HttpEvent<any>> {
 
         const requestBody: any = {
             minStartTimeNs: from.valueOf() * 1000000,
@@ -34,7 +33,7 @@ export class FitApiDataSetService {
     }
 }
 
-export interface InsertDataPoint {
+export interface IInsertDataPoint {
     'startTimeNanos': number;
     'endTimeNanos': number;
     'dataTypeName': string;
@@ -43,7 +42,7 @@ export interface InsertDataPoint {
     }[];
 }
 
-export interface FitDatasetResponse<T extends FitDatasetPoints> {
+export interface IFitDatasetResponse<T extends FitDatasetPoints> {
     dataSourceId: string;
     dataTypeName: string;
     modifiedTimeMillis: string;
@@ -51,16 +50,16 @@ export interface FitDatasetResponse<T extends FitDatasetPoints> {
     minStartTimeNs: string;
     point: T[];
 }
-export interface FitDatasetPointValue {
+export interface IFitDatasetPointValue {
 
 }
-export interface FitDatasetPointFloatValue {
+export interface IFitDatasetPointFloatValue {
     fpVal: number;
     mapVal: any[];
 }
 
-export type FitDatasetPointValues = FitDatasetPointFloatValue;
-export interface FitDatasetPoint {
+export type FitDatasetPointValues = IFitDatasetPointFloatValue;
+export interface IFitDatasetPoint {
     dataTypeName: string;
     endTimeNanos: string;
     modifiedTimeMillis: string;
@@ -69,12 +68,12 @@ export interface FitDatasetPoint {
     value: FitDatasetPointValues[];
 }
 
-export interface FitDatasetPointWeight extends FitDatasetPoint {
+export interface IFitDatasetPointWeight extends IFitDatasetPoint {
     dataTypeName: 'com.google.weight';
-    value: FitDatasetPointFloatValue[];
+    value: IFitDatasetPointFloatValue[];
 }
-export interface FitDatasetPointBodyFatPercentage extends FitDatasetPoint {
+export interface IFitDatasetPointBodyFatPercentage extends IFitDatasetPoint {
     dataTypeName: 'com.google.body.fat.percentage';
-    value: FitDatasetPointFloatValue[];
+    value: IFitDatasetPointFloatValue[];
 }
-export type FitDatasetPoints = FitDatasetPoint | FitDatasetPointWeight | FitDatasetPointBodyFatPercentage;
+export type FitDatasetPoints = IFitDatasetPoint | IFitDatasetPointWeight | IFitDatasetPointBodyFatPercentage;

@@ -10,7 +10,7 @@ import {
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { LoadableListComponent } from 'src/app/common-components/sessions.component';
-import { FitSession, ListSessionsResponse } from 'src/app/service/fit-api-modals';
+import { IFitSession, IListSessionsResponse } from 'src/app/service/fit-api-modals';
 import { FitApiSessionService } from 'src/app/service/fit-session.service';
 
 @Component({
@@ -18,25 +18,25 @@ import { FitApiSessionService } from 'src/app/service/fit-session.service';
     templateUrl: './sessions.component.pug',
     styleUrls: ['./sessions.component.scss'],
 })
-export class SessionsComponent extends LoadableListComponent<ListSessionsResponse> {
-    private mSessions: FitSession[] = [];
+export class SessionsComponent extends LoadableListComponent<IListSessionsResponse> {
+    private mSessions: IFitSession[] = [];
     constructor(private zone: NgZone,
                 private sessionService: FitApiSessionService) {
         super();
     }
 
-    public onResult(result: ListSessionsResponse) {
+    public onResult(result: IListSessionsResponse) {
         this.mSessions = result.session;
     }
 
-    public createLoadObservable(): Observable<HttpEvent<ListSessionsResponse>> {
+    public createLoadObservable(): Observable<HttpEvent<IListSessionsResponse>> {
         return this.sessionService.getSessions(moment().subtract(120, 'days').toISOString(), moment().toISOString());
     }
-    public get sessions(): FitSession[] {
+    public get sessions(): IFitSession[] {
         return this.mSessions;
     }
 
-    public set sessions(s: FitSession[]) {
+    public set sessions(s: IFitSession[]) {
         this.mSessions = s;
     }
 }

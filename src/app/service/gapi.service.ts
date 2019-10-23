@@ -8,18 +8,16 @@ import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { GapiAuthService } from './gapi-auth.service';
 
-export interface SignInUrlResponse {
+export interface ISignInUrlResponse {
     url: string;
 }
 
-export interface ExchangeCodeResponse {
+export interface IExchangeCodeResponse { }
+export interface IUser {
 
 }
-export interface User {
 
-}
-
-export interface SubmitBodyMetricsRequest {
+export interface ISubmitBodyMetricsRequest {
     timestamp: number;
     bodyweight?: number;
     bodyfat?: number;
@@ -33,16 +31,16 @@ export class GapiService {
     constructor(private http: HttpClient, private gapiAuth: GapiAuthService) {
     }
 
-    public getMe(): Observable<User> {
+    public getMe(): Observable<IUser> {
         return this.http
-            .get<User>('/api/google/user/me');
+            .get<IUser>('/api/google/user/me');
     }
 
     public getDataSources(): Observable<any> {
         return this.gapiAuth.authRequest(this.http.get<any>('/api/google/fit/datasources'));
     }
 
-    public submitBodyMetrics(data: SubmitBodyMetricsRequest): Observable<any> {
+    public submitBodyMetrics(data: ISubmitBodyMetricsRequest): Observable<any> {
         return this.gapiAuth.authRequest(this.http.post<any>('/api/google/fit/bodymetrics', data));
     }
 

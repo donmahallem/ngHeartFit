@@ -3,13 +3,13 @@
  */
 
 import { Observer } from 'rxjs';
-import { FileLoadEvents, FileLoadEventType, FileLoadProgressEvent, FileLoadResultEvent, FileLoadStartEvent } from 'src/app/util';
+import { FileLoadEvents, FileLoadEventType, IFileLoadProgressEvent, IFileLoadResultEvent, IFileLoadStartEvent } from 'src/app/util';
 import { TypedFiles, UploadDataService, UploadFileStatus, UploadFileType } from '../services';
 
 export class FileUploadObserver implements Observer<FileLoadEvents<TypedFiles>> {
     constructor(private readonly uploadDataService: UploadDataService,
                 private readonly sourceFile: File) { }
-    public updateProgress(ev: FileLoadProgressEvent): void {
+    public updateProgress(ev: IFileLoadProgressEvent): void {
         this.uploadDataService.updateFile({
             status: UploadFileStatus.LOADING,
             filename: this.sourceFile.name,
@@ -19,7 +19,7 @@ export class FileUploadObserver implements Observer<FileLoadEvents<TypedFiles>> 
             lengthComputable: ev.lengthComputable,
         });
     }
-    public updateResult(ev: FileLoadResultEvent<TypedFiles>): void {
+    public updateResult(ev: IFileLoadResultEvent<TypedFiles>): void {
         switch (ev.result.type) {
             case UploadFileType.DAY_SUMMARY:
                 this.uploadDataService.updateFile({
@@ -46,7 +46,7 @@ export class FileUploadObserver implements Observer<FileLoadEvents<TypedFiles>> 
         }
     }
 
-    public updateInit(ev: FileLoadStartEvent): void {
+    public updateInit(ev: IFileLoadStartEvent): void {
         this.uploadDataService.updateFile({
             status: UploadFileStatus.INITIALIZING,
             filename: this.sourceFile.name,

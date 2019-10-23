@@ -40,7 +40,7 @@ export class GapiUserService {
                         observer.next(signedIn);
                     });
                 })), catchError((err): Observable<boolean> =>
-                of(false)), shareReplay(1));
+                    of(false)), shareReplay(1));
 
     }
     public watchUserChanges(): void {
@@ -71,8 +71,8 @@ export class GapiUserService {
         return this.googleAuth.getAuth()
             .pipe(flatMap((auth: gapi.auth2.GoogleAuth) =>
                 auth.signIn()), tap((user: gapi.auth2.GoogleUser) => {
-                this.signInSuccessHandler(user);
-            }));
+                    this.signInSuccessHandler(user);
+                }));
     }
 
     private setAccessToken(token: string) {
@@ -83,7 +83,6 @@ export class GapiUserService {
 
     private signInSuccessHandler(res: gapi.auth2.GoogleUser) {
         this.user = res;
-        console.log('update tokens');
         sessionStorage.setItem(
             GapiUserService.SESSION_STORAGE_KEY, res.getAuthResponse().access_token,
         );

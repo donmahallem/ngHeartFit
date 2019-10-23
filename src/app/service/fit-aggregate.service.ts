@@ -2,7 +2,6 @@
  * Source https://github.com/donmahallem/ngHeartFit
  */
 
-
 import { HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -11,7 +10,7 @@ import * as moment from 'moment';
 import { flatMap } from 'rxjs/operators';
 import { FitApiBaseService } from './fit-api-base.service';
 import {
-    BucketResponse,
+    IBucketResponse,
 } from './fit-api-modals';
 
 @Injectable()
@@ -26,9 +25,9 @@ export class FitApiAggregateService {
     public getAggregateData(source: AggregateByFilter[],
                             from: moment.Moment,
                             to: moment.Moment,
-                            bucketWindowMillis: number): Observable<HttpEvent<BucketResponse>> {
+                            bucketWindowMillis: number): Observable<HttpEvent<IBucketResponse>> {
         return this.fitApiBaseService.base()
-            .pipe(flatMap((): Observable<HttpEvent<BucketResponse>> => {
+            .pipe(flatMap((): Observable<HttpEvent<IBucketResponse>> => {
                 const requestBody: any = {
                     startTimeMillis: from.utc().valueOf(),
                     endTimeMillis: to.utc().valueOf(),
@@ -38,7 +37,7 @@ export class FitApiAggregateService {
                     },
                 };
                 const url = FitApiBaseService.ENDPOINT + '/users/me/dataset:aggregate';
-                return this.fitApiBaseService.postRequest<any, BucketResponse>(url, requestBody);
+                return this.fitApiBaseService.postRequest<any, IBucketResponse>(url, requestBody);
             }));
     }
 

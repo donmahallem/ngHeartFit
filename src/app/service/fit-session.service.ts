@@ -2,15 +2,14 @@
  * Source https://github.com/donmahallem/ngHeartFit
  */
 
-
 import { HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { FitApiBaseService } from './fit-api-base.service';
 import {
-    FitSession,
-    ListSessionsResponse,
+    IFitSession,
+    IListSessionsResponse,
 } from './fit-api-modals';
 
 @Injectable()
@@ -23,13 +22,13 @@ export class FitApiSessionService {
 
     }
 
-    public getSession(id: string): Observable<HttpEvent<FitSession>> {
+    public getSession(id: string): Observable<HttpEvent<IFitSession>> {
         return this.fitApiBaseService.getRequest(FitApiBaseService.ENDPOINT + '/users/me/sessions/' + id);
     }
 
-    public getSessions(): Observable<HttpEvent<ListSessionsResponse>>;
-    public getSessions(startTime: string | null, endTime: string | null, includeDeleted?: boolean): Observable<HttpEvent<ListSessionsResponse>>;
-    public getSessions(startTime: string | null = undefined, endTime: string | null = undefined, includeDeleted: boolean = false, pageToken: string = undefined): Observable<HttpEvent<ListSessionsResponse>> {
+    public getSessions(): Observable<HttpEvent<IListSessionsResponse>>;
+    public getSessions(startTime: string | null, endTime: string | null, includeDeleted?: boolean): Observable<HttpEvent<IListSessionsResponse>>;
+    public getSessions(startTime: string | null = undefined, endTime: string | null = undefined, includeDeleted: boolean = false, pageToken: string = undefined): Observable<HttpEvent<IListSessionsResponse>> {
         const params: any = {};
         if (startTime) {
             params.startTime = startTime;

@@ -14,8 +14,8 @@ import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { filter, flatMap } from 'rxjs/operators';
 import { FitApiAggregateService } from 'src/app/service/fit-aggregate.service';
-import { FitApiDataSetService, InsertDataPoint } from 'src/app/service/fit-data-set.service';
-import { FitApiDataSourceService, FitDataSource } from 'src/app/service/fit-data-source.service';
+import { FitApiDataSetService, IInsertDataPoint } from 'src/app/service/fit-data-set.service';
+import { FitApiDataSourceService, IFitDataSource } from 'src/app/service/fit-data-source.service';
 
 @Component({
     selector: 'app-fit-dashboard',
@@ -24,7 +24,7 @@ import { FitApiDataSourceService, FitDataSource } from 'src/app/service/fit-data
 })
 export class FitDashboardComponent implements OnDestroy, AfterViewInit {
 
-    private mDataSource: FitDataSource = null;
+    private mDataSource: IFitDataSource = null;
     private mRouteDataSubscription: Subscription;
     constructor(private zone: NgZone,
                 private fitDataSetService: FitApiDataSetService,
@@ -33,7 +33,7 @@ export class FitDashboardComponent implements OnDestroy, AfterViewInit {
                 private activatedRoute: ActivatedRoute) {
     }
 
-    public get dataSource(): FitDataSource {
+    public get dataSource(): IFitDataSource {
         return this.mDataSource;
     }
 
@@ -47,7 +47,7 @@ export class FitDashboardComponent implements OnDestroy, AfterViewInit {
                 dataTypeName: 'com.google.weight',
             }, {
                 dataTypeName: 'com.google.body.fat.percentage',
-            },  {
+            }, {
                 dataTypeName: 'com.google.hydration',
             }], moment().subtract(30, 'days'), moment(), 1000 * 3600 * 24)
             .subscribe(console.log, console.error);
@@ -63,10 +63,10 @@ export class FitDashboardComponent implements OnDestroy, AfterViewInit {
             .pipe(
                 filter((val) =>
                     val.type === HttpEventType.Response),
-                flatMap((datasource: HttpResponse<FitDataSource>) => {
+                flatMap((datasource: HttpResponse<IFitDataSource>) => {
                     const end: moment.Moment = moment();
                     const endTimestamp: number = end.valueOf();
-                    const ps: InsertDataPoint[] = [];
+                    const ps: IInsertDataPoint[] = [];
                     const windowSize = 12345678;
                     for (let i = 0; i < 100; i++) {
                         const ts: number = endTimestamp - (windowSize * i);
