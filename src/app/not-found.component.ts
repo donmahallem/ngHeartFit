@@ -1,3 +1,7 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { Component } from '@angular/core';
 import { Route, Router } from '@angular/router';
 @Component({

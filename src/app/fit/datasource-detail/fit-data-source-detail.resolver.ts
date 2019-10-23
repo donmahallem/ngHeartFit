@@ -1,3 +1,7 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';

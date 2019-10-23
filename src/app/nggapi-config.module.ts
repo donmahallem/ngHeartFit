@@ -1,3 +1,7 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { ModuleWithProviders } from '@angular/compiler/src/core';
 import { NgModule } from '@angular/core';
 import {

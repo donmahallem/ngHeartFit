@@ -1,3 +1,7 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 
 import { HttpEvent, HttpEventType, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -36,14 +40,14 @@ export class FitApiDataSourceService {
 
     public createDataSourceMetaData(dataType: DataType, dataStreamName?: string): CreateDataSourceRequest {
         return {
-            dataStreamName: dataStreamName,
+            dataStreamName,
             type: 'raw',
             application: {
                 detailsUrl: 'https://donmahallem.github.io/ngHeartFit',
                 name: 'HeartFit',
                 version: '1',
             },
-            dataType: dataType,
+            dataType,
             device: {
                 manufacturer: navigator.appCodeName.replace(/[^\w]/gi, ''),
                 model: navigator.appName.replace(/[^\w]/gi, ''),

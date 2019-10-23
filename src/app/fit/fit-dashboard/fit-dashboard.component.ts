@@ -1,3 +1,7 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import {
     AfterViewInit,

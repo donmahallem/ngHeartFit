@@ -1,3 +1,7 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 
 import { HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -21,7 +25,7 @@ export class FitApiDataSetService {
         const requestBody: any = {
             minStartTimeNs: from.valueOf() * 1000000,
             maxEndTimeNs: to.valueOf() * 1000000,
-            dataSourceId: dataSourceId,
+            dataSourceId,
             point: points,
         };
         const url = FitApiBaseService.ENDPOINT + '/users/me/dataSources/' + dataSourceId + '/datasets/' + from.valueOf() + '000000-' + to.valueOf() + '000000';

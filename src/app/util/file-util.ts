@@ -1,3 +1,7 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { Observable, Subscriber } from 'rxjs';
 import { map } from 'rxjs/operators';
 export interface ReadFile {

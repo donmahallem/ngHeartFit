@@ -1,3 +1,7 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { combineLatest, BehaviorSubject, Observable } from 'rxjs';

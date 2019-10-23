@@ -1,3 +1,7 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 
 import * as sinon from 'sinon';
 import { FileUtil } from './file-util';
@@ -27,7 +31,7 @@ describe('/util/file-util', () => {
                 nextSpy = sinon.spy();
             });
             describe('reading the file fails', () => {
-                it('needs to be implemented',/*, (done) => {
+                it('needs to be implemented', /*, (done) => {
                     let testFile: File;
                     const testError: Error = new Error("test error");
                     FileUtil

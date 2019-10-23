@@ -1,3 +1,7 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { Injectable } from '@angular/core';
 import { GoogleApiService } from 'ng-gapi';
 import { BehaviorSubject, Observable } from 'rxjs';

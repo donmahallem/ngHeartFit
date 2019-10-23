@@ -1,3 +1,7 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { BaseEnvironment } from './environment.base';
 
 // This file can be replaced during build by using the `fileReplacements` array.

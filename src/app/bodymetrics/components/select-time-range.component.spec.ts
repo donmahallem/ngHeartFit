@@ -1,3 +1,7 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { async } from '@angular/core/testing';
 import * as sinon from 'sinon';
 

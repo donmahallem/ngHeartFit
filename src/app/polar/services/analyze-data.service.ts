@@ -1,3 +1,7 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { Injectable } from '@angular/core';
 import { IActivityGraphData } from '@donmahallem/flow-api-types';
 import { from, Observable } from 'rxjs';

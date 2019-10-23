@@ -1,3 +1,7 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { Observer } from 'rxjs';
 import { FileLoadEvents, FileLoadEventType, FileLoadProgressEvent, FileLoadResultEvent, FileLoadStartEvent } from 'src/app/util';
 import { TypedFiles, UploadDataService, UploadFileStatus, UploadFileType } from '../services';

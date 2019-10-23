@@ -1,3 +1,7 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { Injectable } from '@angular/core';
 import { GoogleAuthService } from 'ng-gapi';
 import { of, Observable, Observer } from 'rxjs';

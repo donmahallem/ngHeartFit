@@ -1,3 +1,7 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { IDaySummary, INightSleep } from '@donmahallem/flow-api-types';
 import { ValidationError } from 'jsonschema';
 export enum UploadFileType {

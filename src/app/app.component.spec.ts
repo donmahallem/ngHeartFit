@@ -1,3 +1,7 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { Component, Injectable } from '@angular/core';
 import { async, TestBed } from '@angular/core/testing';
 import { MatButtonModule, MatToolbarModule } from '@angular/material';

@@ -1,3 +1,7 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 
 import { HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';

@@ -1,3 +1,7 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import * as sinon from 'sinon';
 import { UploadDataService } from './upload-data.service';
 
