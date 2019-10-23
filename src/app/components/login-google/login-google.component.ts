@@ -1,21 +1,21 @@
 import {
     Component,
+    OnDestroy,
     OnInit,
-    OnDestroy
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { GapiUserService } from 'src/app/service/gapi-user.service';
-import { Router } from '@angular/router';
 @Component({
     selector: 'login-google-cmp',
     templateUrl: './login-google.component.pug',
-    styleUrls: ['./login-google.component.scss']
+    styleUrls: ['./login-google.component.scss'],
 })
 export class LoginGoogleComponent implements OnDestroy, OnInit {
     private mIsButtonDisabled = true;
     private subs: Subscription[] = [];
     constructor(private gapiUserService: GapiUserService,
-        private router: Router) {
+                private router: Router) {
     }
 
     public onClickSignin(event: MouseEvent) {

@@ -1,28 +1,21 @@
+import { HttpEvent } from '@angular/common/http';
 import {
     Component,
-    AfterViewInit,
-    OnDestroy,
+    Input,
     NgZone,
-    OnInit,
-    Input
 } from '@angular/core';
-import { Subscription, Observable, BehaviorSubject } from 'rxjs';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { flatMap, debounceTime } from 'rxjs/operators';
 import * as moment from 'moment';
-import { FitDataSource, FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
-import { FitApiDataSetService, FitDatasetResponse, FitDatasetPoints } from 'src/app/service/fit-data-set.service';
-import { HttpEvent, HttpEventType } from '@angular/common/http';
-import { MatProgressBar } from '@angular/material';
-import { LoadableListComponent } from 'src/app/common-components/sessions.component';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
 import { LoadableComponent } from 'src/app/common-components/loadable.component';
-
-
+import { FitApiDataSetService, FitDatasetPoints, FitDatasetResponse } from 'src/app/service/fit-data-set.service';
+import { FitDataSource } from 'src/app/service/fit-data-source.service';
 
 @Component({
     selector: 'datasource-example-table',
     templateUrl: './datasource-example-table.component.pug',
-    styleUrls: ['./datasource-example-table.component.scss']
+    styleUrls: ['./datasource-example-table.component.scss'],
 })
 export class DatasourceExampleTableComponent<T> extends LoadableComponent<FitDatasetResponse<FitDatasetPoints>> {
 
@@ -31,15 +24,14 @@ export class DatasourceExampleTableComponent<T> extends LoadableComponent<FitDat
     private mDataSourceSubject: BehaviorSubject<FitDataSource> = new BehaviorSubject(null);
     private mRouteDataSubscription: Subscription;
     constructor(private zone: NgZone,
-        private fitDataSetService: FitApiDataSetService,
-        private activatedRoute: ActivatedRoute) {
+                private fitDataSetService: FitApiDataSetService,
+                private activatedRoute: ActivatedRoute) {
         super();
         this.mDataSourceSubject.subscribe((val) => {
             if (val) {
                 const vals: string[] = ['startTime', 'endTime', 'modifiedTime'].concat(val.dataType.field
-                    .map((val) => {
-                        return val.name;
-                    }));
+                    .map((val) =>
+                        val.name));
                 this.displayedColumns = vals;
                 return;
             }
@@ -62,7 +54,7 @@ export class DatasourceExampleTableComponent<T> extends LoadableComponent<FitDat
                 startTime: moment.unix(parseInt(a.startTimeNanos.substr(0, a.startTimeNanos.length - 9), 10)),
                 endTime: moment.unix(parseInt(a.endTimeNanos.substr(0, a.endTimeNanos.length - 9), 10)),
                 modifiedTime: moment.unix(parseInt(a.modifiedTimeMillis.substr(0, a.modifiedTimeMillis.length - 3), 10)),
-                weight: a.value[0].fpVal
+                weight: a.value[0].fpVal,
             });
         }
         this.dataSource2 = res;
@@ -70,9 +62,8 @@ export class DatasourceExampleTableComponent<T> extends LoadableComponent<FitDat
     public createLoadObservable(): Observable<HttpEvent<FitDatasetResponse<FitDatasetPoints>>> {
         return this.activatedRoute
             .paramMap
-            .pipe(flatMap((value: ParamMap): Observable<HttpEvent<FitDatasetResponse<FitDatasetPoints>>> => {
-                return this.fitDataSetService.getDataSetData(value.get('id'), moment().subtract(30, 'day'), moment());
-            }));
+            .pipe(flatMap((value: ParamMap): Observable<HttpEvent<FitDatasetResponse<FitDatasetPoints>>> =>
+                this.fitDataSetService.getDataSetData(value.get('id'), moment().subtract(30, 'day'), moment())));
     }
 
     public get progressBarMode(): 'indeterminate' | 'query' {

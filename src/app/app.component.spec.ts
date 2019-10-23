@@ -1,10 +1,10 @@
-import { TestBed, async } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AppComponent } from './app.component';
+import { Component, Injectable } from '@angular/core';
+import { async, TestBed } from '@angular/core/testing';
 import { MatButtonModule, MatToolbarModule } from '@angular/material';
+import { RouterTestingModule } from '@angular/router/testing';
+import { from, Observable } from 'rxjs';
+import { AppComponent } from './app.component';
 import { ProfileComponent } from './components/profile.component';
-import { Observable, from } from 'rxjs';
-import { Injectable, Component } from '@angular/core';
 
 @Injectable()
 class GUserService {
@@ -15,7 +15,7 @@ class GUserService {
 
 @Component({
     selector: 'app-route-loading-indicator',
-    template: '<div></div>'
+    template: '<div></div>',
 })
 class TestRouteLoadingIndicator {
 
@@ -27,15 +27,15 @@ describe('AppComponent', () => {
             imports: [
                 RouterTestingModule,
                 MatButtonModule,
-                MatToolbarModule
+                MatToolbarModule,
             ],
             declarations: [
                 AppComponent,
                 ProfileComponent,
-                TestRouteLoadingIndicator
+                TestRouteLoadingIndicator,
             ],
             providers: [
-            ]
+            ],
         }).compileComponents();
     }));
 

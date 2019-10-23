@@ -1,5 +1,4 @@
-import { async, } from '@angular/core/testing';
-import { SelectTimeRangeComponent } from './select-time-range.component';
+import { async } from '@angular/core/testing';
 import * as sinon from 'sinon';
 
 let sandbox;

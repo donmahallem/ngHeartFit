@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { UploadComponent } from './upload/upload.component';
+import { RouterModule, Routes } from '@angular/router';
 import { RouteGuardService } from '../service/route-guard.service';
-import { ViewUploadComponent } from './view-upload/view-upload.component';
 import { UploadResolver } from './services/upload.resolver';
+import { UploadComponent } from './upload/upload.component';
+import { ViewUploadComponent } from './view-upload/view-upload.component';
 
 const routes: Routes = [
     {
         path: 'upload',
         component: UploadComponent,
-        canActivate: [RouteGuardService]
+        canActivate: [RouteGuardService],
     },
     {
         path: 'view',
@@ -17,8 +17,8 @@ const routes: Routes = [
     },
     {
         path: '**',
-        redirectTo: 'upload'
-    }
+        redirectTo: 'upload',
+    },
 ];
 
 @NgModule({
@@ -26,7 +26,7 @@ const routes: Routes = [
     exports: [RouterModule],
     providers: [
         RouteGuardService,
-        UploadResolver
-    ]
+        UploadResolver,
+    ],
 })
 export class PolarRoutingModule { }

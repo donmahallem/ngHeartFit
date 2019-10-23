@@ -1,17 +1,16 @@
 import {
-    Component,
-    OnInit,
-    ViewChild,
     AfterViewInit,
+    ChangeDetectorRef,
+    Component,
     OnDestroy,
-    ChangeDetectorRef
+    ViewChild,
 } from '@angular/core';
 import { MatButton } from '@angular/material';
 import { Subscription } from 'rxjs';
 @Component({
     selector: 'profile-view',
     templateUrl: './profile.component.pug',
-    styleUrls: ['./profile.component.scss']
+    styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements AfterViewInit, OnDestroy {
     public user: any;

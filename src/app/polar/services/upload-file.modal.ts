@@ -1,17 +1,16 @@
+import { IDaySummary, INightSleep } from '@donmahallem/flow-api-types';
 import { ValidationError } from 'jsonschema';
-import { INightSleep, IDayData, IDaySummary } from '@donmahallem/flow-api-types';
-import { FileLoadEventType } from 'src/app/util';
 export enum UploadFileType {
     UNKNOWN = 1,
     DAY_SUMMARY = 2,
-    SLEEP_DATA = 3
+    SLEEP_DATA = 3,
 }
 
 export enum UploadFileStatus {
     INITIALIZING = 1,
     LOADING = 2,
     LOADED = 3,
-    ERROR = 4
+    ERROR = 4,
 }
 export interface UploadFile {
     key: string;

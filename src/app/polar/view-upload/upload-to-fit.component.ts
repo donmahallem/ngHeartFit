@@ -1,17 +1,15 @@
 import {
     Component,
-    AfterViewInit,
-    OnDestroy,
-    Input
+    Input,
 } from '@angular/core';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { DataPoint } from './data-point';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
+import { DataPoint } from './data-point';
 
 @Component({
     selector: 'upload-to-fit-cmp',
     templateUrl: './upload-to-fit.component.pug',
-    styleUrls: ['./upload-to-fit.component.scss']
+    styleUrls: ['./upload-to-fit.component.scss'],
 })
 export class UploadToFitComponent {
     private dataPointsSubject: BehaviorSubject<DataPoint[]> = new BehaviorSubject<DataPoint[]>([]);

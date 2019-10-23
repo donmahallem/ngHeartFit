@@ -1,6 +1,6 @@
-import { Component, OnInit, NgZone, ElementRef, AfterViewInit, ViewChild, Input, DoCheck } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
+import { BehaviorSubject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 export interface DataPoint {
     x: Date;
@@ -9,13 +9,9 @@ export interface DataPoint {
 @Component({
     selector: 'app-line-chart',
     templateUrl: './line-chart.component.pug',
-    styleUrls: ['./line-chart.component.scss']
+    styleUrls: ['./line-chart.component.scss'],
 })
 export class LineChartComponent implements OnInit, AfterViewInit {
-    constructor(private zone: NgZone,
-        private elRef: ElementRef) {
-        this.init();
-    }
     @Input('chartData')
     public set chartData(data: DataPoint[]) {
         this.chartDataSubject.next(data);
@@ -27,20 +23,24 @@ export class LineChartComponent implements OnInit, AfterViewInit {
     public user: any;
     @ViewChild('chart', { static: false }) mySpan: ElementRef;
 
-    private chartDataSubject: BehaviorSubject<DataPoint[]> = new BehaviorSubject<DataPoint[]>(null);
-    private _chartData: DataPoint[];
-
-    private xScale: d3.ScaleTime<number, number>;
-    private yScale: d3.ScaleLinear<number, number>;
-    private line: d3.Line<DataPoint>;
-
     public readonly margin = { top: 20, right: 20, bottom: 30, left: 50 };
     public data: any[];
     public chartContainer: any;
     public chartPath: any;
     public xAxis: any;
     public yAxis: any;
+
+    private chartDataSubject: BehaviorSubject<DataPoint[]> = new BehaviorSubject<DataPoint[]>(null);
+    private _chartData: DataPoint[];
+
+    private xScale: d3.ScaleTime<number, number>;
+    private yScale: d3.ScaleLinear<number, number>;
+    private line: d3.Line<DataPoint>;
     private resizeSubject: BehaviorSubject<{ width: number, height: number }> = new BehaviorSubject<{ width: number, height: number }>({ width: 1, height: 1 });
+    constructor(private zone: NgZone,
+                private elRef: ElementRef) {
+        this.init();
+    }
     public init(): void {
         this.xScale = d3.scaleUtc()
             .domain([0, 125]) // input
@@ -77,10 +77,10 @@ export class LineChartComponent implements OnInit, AfterViewInit {
             height: this.elRef.nativeElement.offsetHeight,
             width: this.elRef.nativeElement.offsetWidth,
         });
-        const dataset = d3.range(0).map(function (d) { return { x: new Date(d), 'y': d3.randomUniform(1)() }; });
+        const dataset = d3.range(0).map(function(d) { return { x: new Date(d), y: d3.randomUniform(1)() }; });
         const container = d3.select(this.mySpan.nativeElement).append('g')
             .attr('transform',
-                'translate(' + this.margin.left + ',' + this.margin.top + ')'
+                'translate(' + this.margin.left + ',' + this.margin.top + ')',
             );
         this.chartContainer = container.append('g');
         this.chartPath = this.chartContainer

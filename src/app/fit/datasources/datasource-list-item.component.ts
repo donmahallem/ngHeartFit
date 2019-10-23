@@ -1,16 +1,14 @@
 import {
     Component,
-    AfterViewInit,
-    OnDestroy,
+    HostListener,
     Input,
-    HostListener
 } from '@angular/core';
-import { FitDataSource } from 'src/app/service/fit-data-source.service';
 import { Router } from '@angular/router';
+import { FitDataSource } from 'src/app/service/fit-data-source.service';
 @Component({
     selector: 'app-datasource-li',
     templateUrl: './datasource-list-item.component.pug',
-    styleUrls: ['./datasource-list-item.component.scss']
+    styleUrls: ['./datasource-list-item.component.scss'],
 })
 export class DatasourceListItemComponent {
     private mDataSource: FitDataSource;

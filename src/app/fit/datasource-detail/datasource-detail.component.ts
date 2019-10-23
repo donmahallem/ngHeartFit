@@ -1,19 +1,16 @@
 import {
-    Component,
     AfterViewInit,
-    OnDestroy,
+    Component,
     NgZone,
-    OnInit
+    OnDestroy,
+    OnInit,
 } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { flatMap, debounceTime } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
-import { FitDataSource, FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
+import { Subscription } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
 import { FitApiDataSetService } from 'src/app/service/fit-data-set.service';
-import { HttpEvent, HttpEventType } from '@angular/common/http';
-import { MatProgressBar } from '@angular/material';
-
+import { FitDataSource } from 'src/app/service/fit-data-source.service';
 
 const ELEMENT_DATA: any[] = [
     { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
@@ -31,7 +28,7 @@ const ELEMENT_DATA: any[] = [
 @Component({
     selector: 'datasource-detail',
     templateUrl: './datasource-detail.component.pug',
-    styleUrls: ['./datasource-detail.component.scss']
+    styleUrls: ['./datasource-detail.component.scss'],
 })
 export class DatasourceDetailComponent implements OnDestroy, AfterViewInit, OnInit {
 
@@ -40,8 +37,8 @@ export class DatasourceDetailComponent implements OnDestroy, AfterViewInit, OnIn
     private mDataSource: FitDataSource = null;
     private mRouteDataSubscription: Subscription;
     constructor(private zone: NgZone,
-        private fitDataSetService: FitApiDataSetService,
-        private activatedRoute: ActivatedRoute) {
+                private fitDataSetService: FitApiDataSetService,
+                private activatedRoute: ActivatedRoute) {
     }
 
     public get dataSource(): FitDataSource {
@@ -61,9 +58,8 @@ export class DatasourceDetailComponent implements OnDestroy, AfterViewInit, OnIn
             });
         this.activatedRoute
             .paramMap
-            .pipe(flatMap((value) => {
-                return this.fitDataSetService.getDataSetData(value.get('id'), moment().subtract(30, 'day'), moment());
-            })).subscribe(console.log, console.error);
+            .pipe(flatMap((value) =>
+                this.fitDataSetService.getDataSetData(value.get('id'), moment().subtract(30, 'day'), moment()))).subscribe(console.log, console.error);
     }
     public ngAfterViewInit() {
     }

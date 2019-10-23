@@ -1,9 +1,7 @@
-import { Dexie } from 'dexie';
 import { Injectable } from '@angular/core';
-import { UploadFile } from './upload-file.modal';
-import { BehaviorSubject, Observable, of, from } from 'rxjs';
-import { AnalyzeDatabase } from './analyze-database';
 import { IActivityGraphData } from '@donmahallem/flow-api-types';
+import { from, Observable } from 'rxjs';
+import { AnalyzeDatabase } from './analyze-database';
 
 export interface Pair {
     timestamp: number;
@@ -25,7 +23,7 @@ export class AnalyzeDataService {
             }
             lst.push({
                 timestamp: pair.time,
-                bpm: pair.value
+                bpm: pair.value,
             });
         }
         return from(this.database.heartrate.bulkAdd(lst));

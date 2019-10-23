@@ -1,48 +1,48 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { DatasourcesComponent } from './datasources/datasources.component';
-import { SessionsComponent } from './sessions/sessions.component';
-import { SessionDetailComponent } from './session-detail/session-detail.component';
+import { RouterModule, Routes } from '@angular/router';
 import { DatasourceDetailComponent } from './datasource-detail';
 import { FitDataSourceDetailResolver } from './datasource-detail/fit-data-source-detail.resolver';
+import { DatasourcesComponent } from './datasources/datasources.component';
 import { FitDashboardComponent } from './fit-dashboard';
+import { SessionDetailComponent } from './session-detail/session-detail.component';
+import { SessionsComponent } from './sessions/sessions.component';
 
 const routes: Routes = [
     {
         path: '',
-        redirectTo: 'dashboard'
+        redirectTo: 'dashboard',
     },
     {
         path: 'dashboard',
-        component: FitDashboardComponent
+        component: FitDashboardComponent,
     },
     {
         path: 'datasources',
-        component: DatasourcesComponent
+        component: DatasourcesComponent,
     },
     {
         path: 'datasource/:id',
         component: DatasourceDetailComponent,
         resolve: {
-            dataSource: FitDataSourceDetailResolver
-        }
+            dataSource: FitDataSourceDetailResolver,
+        },
     },
     {
         path: 'sessions',
-        component: SessionsComponent
+        component: SessionsComponent,
     },
     {
         path: 'session/:id',
-        component: SessionDetailComponent
-    }
+        component: SessionDetailComponent,
+    },
 ];
 
 @NgModule({
     imports: [
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
     ],
     exports: [RouterModule],
     providers: [
-    ]
+    ],
 })
 export class FitRoutingModule { }

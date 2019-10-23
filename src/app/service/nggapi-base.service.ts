@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { GoogleApiService } from 'ng-gapi';
-import { BehaviorSubject, Observable, Observer, Subscribable, Subscriber } from 'rxjs';
-
+import { BehaviorSubject, Observable } from 'rxjs';
 
 export enum GapiStatus {
     LOADING = 1,
     LOADED = 2,
-    FAILED = 3
+    FAILED = 3,
 }
 
 @Injectable()

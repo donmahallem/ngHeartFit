@@ -1,13 +1,13 @@
-import { Component, OnInit, NgZone, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
-    Router,
     Event,
-    NavigationStart,
-    NavigationEnd,
     NavigationCancel,
-    NavigationError
+    NavigationEnd,
+    NavigationError,
+    NavigationStart,
+    Router,
 } from '@angular/router';
-import { Subscription, Subscriber } from 'rxjs';
+import { Subscriber, Subscription } from 'rxjs';
 
 export class RouteLoadingSubscriber extends Subscriber<Event> {
 
@@ -31,12 +31,12 @@ export class RouteLoadingSubscriber extends Subscriber<Event> {
 @Component({
     selector: 'app-route-loading-indicator',
     templateUrl: './route-loading-indicator.component.pug',
-    styleUrls: ['./route-loading-indicator.component.scss']
+    styleUrls: ['./route-loading-indicator.component.scss'],
 })
 export class RouteLoadingIndicatorComponent implements OnInit, OnDestroy {
-    private subscription: Subscription;
 
     public loading = false;
+    private subscription: Subscription;
     constructor(private router: Router) {
 
     }

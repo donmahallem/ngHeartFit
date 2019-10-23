@@ -2,26 +2,24 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import {
     MatButtonModule,
+    MatExpansionModule,
     MatGridListModule,
     MatIconModule,
+    MatProgressBarModule,
     MatSlideToggleModule,
-    MatExpansionModule,
-    MatProgressBar,
-    MatProgressBarModule
 } from '@angular/material';
 
+import { HttpClientModule } from '@angular/common/http';
 import { PolarRoutingModule } from './polar-routing.module';
+import { AnalyzeDataService } from './services/analyze-data.service';
+import { FilePreviewComponent } from './upload/file-preview.component';
+import { FileUploadErrorComponent } from './upload/file-upload-error.component';
+import { FileUploadLoadedComponent } from './upload/file-upload-loaded.component';
+import { FileUploadProgressComponent } from './upload/file-upload-progress.component';
 import { UploadComponent } from './upload/upload.component';
-import { UploadDataService } from './services/upload-data.service';
+import { UploadToFitComponent } from './view-upload/upload-to-fit.component';
 import { ViewUploadComponent } from './view-upload/view-upload.component';
 import { WeightChartComponent } from './view-upload/weight-chart.component';
-import { UploadToFitComponent } from './view-upload/upload-to-fit.component';
-import { HttpClientModule } from '@angular/common/http';
-import { FilePreviewComponent } from './upload/file-preview.component';
-import { AnalyzeDataService } from './services/analyze-data.service';
-import { FileUploadErrorComponent } from './upload/file-upload-error.component';
-import { FileUploadProgressComponent } from './upload/file-upload-progress.component';
-import { FileUploadLoadedComponent } from './upload/file-upload-loaded.component';
 
 @NgModule({
     declarations: [
@@ -32,7 +30,7 @@ import { FileUploadLoadedComponent } from './upload/file-upload-loaded.component
         FilePreviewComponent,
         FileUploadErrorComponent,
         FileUploadProgressComponent,
-        FileUploadLoadedComponent
+        FileUploadLoadedComponent,
     ],
     imports: [
         CommonModule,
@@ -43,10 +41,10 @@ import { FileUploadLoadedComponent } from './upload/file-upload-loaded.component
         MatIconModule,
         MatSlideToggleModule,
         MatExpansionModule,
-        MatProgressBarModule
+        MatProgressBarModule,
     ],
     providers: [
-        AnalyzeDataService
-    ]
+        AnalyzeDataService,
+    ],
 })
 export class PolarModule { }

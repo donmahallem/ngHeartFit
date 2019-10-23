@@ -1,9 +1,9 @@
-import { Component, OnInit, NgZone } from '@angular/core';
-import { Router, Route } from '@angular/router';
+import { Component } from '@angular/core';
+import { Route, Router } from '@angular/router';
 @Component({
     selector: 'app-not-found-cmp',
     templateUrl: './not-found.component.pug',
-    styleUrls: ['./not-found.component.scss']
+    styleUrls: ['./not-found.component.scss'],
 })
 export class NotFoundComponent {
     private _title = 'app title';
@@ -37,7 +37,7 @@ export class NotFoundComponent {
             }
 
             if (route.loadChildren && route.loadChildren.length > 0) {
-                const routerConfig = <any>(<any>route)['_loadedConfig'];
+                const routerConfig = (route as any)._loadedConfig as any;
                 if (routerConfig) {
                     this.printpath(fullPath, routerConfig.routes);
                 }

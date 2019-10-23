@@ -1,7 +1,7 @@
-import { TestBed, async } from '@angular/core/testing';
+import { Component, Injectable, Input } from '@angular/core';
+import { async, TestBed } from '@angular/core/testing';
+import { MatButtonModule } from '@angular/material';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MatButtonModule, } from '@angular/material';
-import { Injectable, Component, Input } from '@angular/core';
 import { ViewUploadComponent } from './view-upload.component';
 
 import * as sinon from 'sinon';
@@ -15,11 +15,10 @@ class TestAnalyzeDataService {
     }
 }
 
-
 @Component({
     selector: 'weight-chart',
     template: '',
-    styleUrls: []
+    styleUrls: [],
 })
 class TestWeightChartComponent {
     @Input('chartData')
@@ -29,7 +28,7 @@ class TestWeightChartComponent {
 @Component({
     selector: 'upload-to-fit-cmp',
     template: '',
-    styleUrls: []
+    styleUrls: [],
 })
 export class TestUploadToFitComponent {
     public _dataPoints: DataPoint[] = [];
@@ -48,16 +47,16 @@ describe('BodyMetricsComponent', () => {
         TestBed.configureTestingModule({
             imports: [
                 RouterTestingModule,
-                MatButtonModule
+                MatButtonModule,
             ],
             declarations: [
                 ViewUploadComponent,
                 TestWeightChartComponent,
-                TestUploadToFitComponent
+                TestUploadToFitComponent,
             ],
             providers: [
-                { provide: AnalyzeDataService, useValue: new TestAnalyzeDataService() }
-            ]
+                { provide: AnalyzeDataService, useValue: new TestAnalyzeDataService() },
+            ],
         }).compileComponents();
     }));
 

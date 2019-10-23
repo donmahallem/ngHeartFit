@@ -8,10 +8,9 @@ export const environment: BaseEnvironment = {
     production: false,
     gapi: {
         client_id: 'your client id',
-        redirect_uri: 'https://your.redirect/url'
-    }
+        redirect_uri: 'https://your.redirect/url',
+    },
 };
-
 
 /*
  * For easier debugging in development mode, you can import the following file

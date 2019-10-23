@@ -1,11 +1,10 @@
 
+import { HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { HttpParams, HttpEvent } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import { FitApiBaseService } from './fit-api-base.service';
-import { map, flatMap } from 'rxjs/operators';
 import * as moment from 'moment';
+import { FitApiBaseService } from './fit-api-base.service';
 
 @Injectable()
 export class FitApiDataSetService {
@@ -20,10 +19,10 @@ export class FitApiDataSetService {
     public insertData(dataSourceId: string, from: moment.Moment, to: moment.Moment, points: InsertDataPoint[]): Observable<HttpEvent<any>> {
 
         const requestBody: any = {
-            'minStartTimeNs': from.valueOf() * 1000000,
-            'maxEndTimeNs': to.valueOf() * 1000000,
-            'dataSourceId': dataSourceId,
-            'point': points
+            minStartTimeNs: from.valueOf() * 1000000,
+            maxEndTimeNs: to.valueOf() * 1000000,
+            dataSourceId: dataSourceId,
+            point: points,
         };
         const url = FitApiBaseService.ENDPOINT + '/users/me/dataSources/' + dataSourceId + '/datasets/' + from.valueOf() + '000000-' + to.valueOf() + '000000';
 

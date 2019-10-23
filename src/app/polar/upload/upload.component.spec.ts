@@ -1,19 +1,18 @@
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { Component, Injectable, Input } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatButtonModule } from '@angular/material';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MatButtonModule, MatCheckboxModule, MatGridListModule } from '@angular/material';
-import { Observable, from, Subscriber } from 'rxjs';
-import { Injectable, Component, Input } from '@angular/core';
+import { from, Observable } from 'rxjs';
+import { TypedFiles, UploadDataService, UploadFile, UploadFileType } from '../services';
 import * as testObject from './upload.component';
-import { FilePreviewComponent } from './file-preview.component';
-import { UploadDataService, UploadFile, UploadFileType, TypedFiles } from '../services';
 
-import * as sinon from 'sinon';
-import { AnalyzeDataService } from '../services/analyze-data.service';
 import { Router } from '@angular/router';
-import { map } from 'rxjs/operators';
 import { FlowApiValidator } from '@donmahallem/flow-api-types';
-import { ValidatorResult, ValidationError } from 'jsonschema';
-import { FileUtil, FileLoadEvents, FileLoadEventType, FileLoadResultEvent } from 'src/app/util';
+import { ValidationError, ValidatorResult } from 'jsonschema';
+import { map } from 'rxjs/operators';
+import * as sinon from 'sinon';
+import { FileLoadEvents, FileLoadEventType, FileLoadResultEvent, FileUtil } from 'src/app/util';
+import { AnalyzeDataService } from '../services/analyze-data.service';
 
 @Injectable()
 class TestUploadDataService {
@@ -56,7 +55,7 @@ class TestRouter {
 }
 @Component({
     selector: 'app-file-preview',
-    template: '<p></p>'
+    template: '<p></p>',
 })
 export class TestFilePreviewComponent {
 
@@ -70,17 +69,17 @@ describe('app/polar/upload/upload.component', () => {
             TestBed.configureTestingModule({
                 imports: [
                     RouterTestingModule,
-                    MatButtonModule
+                    MatButtonModule,
                 ],
                 declarations: [
                     testObject.UploadComponent,
-                    TestFilePreviewComponent
+                    TestFilePreviewComponent,
                 ],
                 providers: [
                     { provide: UploadDataService, useValue: new TestUploadDataService() },
                     { provide: AnalyzeDataService, useValue: new TestAnalyzeDataService() },
-                    { provide: Router, useValue: new TestRouter() }
-                ]
+                    { provide: Router, useValue: new TestRouter() },
+                ],
             }).compileComponents();
         }));
 
@@ -100,27 +99,27 @@ describe('app/polar/upload/upload.component', () => {
             let validatorStub: sinon.SinonStub;
             const testEvents: FileLoadEvents<string>[] = [{
                 key: 'testkey',
-                type: FileLoadEventType.START
+                type: FileLoadEventType.START,
             }, {
                 key: 'testkey',
                 type: FileLoadEventType.PROGRESS,
                 lengthComputable: true,
                 loaded: 129,
-                total: 9219
+                total: 9219,
             }, {
                 result: 'jasdf;dsf',
                 key: 'testkey',
                 type: FileLoadEventType.RESULT,
-                filesize: 2392
+                filesize: 2392,
             }];
             beforeEach(() => {
                 validatorStub = sandbox.stub(FlowApiValidator, 'validateTimelineSummary');
             });
             it('should test successful for conforming json', (done) => {
                 const nextSpy: sinon.SinonSpy = sinon.spy();
-                const validatorRes: ValidatorResult = <any>{
-                    valid: true
-                };
+                const validatorRes: ValidatorResult = {
+                    valid: true,
+                } as any;
                 validatorStub.returns(validatorRes);
                 from(testEvents)
                     .pipe(cmpInstance.createConvertUploadFileAndCheckValidity())
@@ -135,25 +134,25 @@ describe('app/polar/upload/upload.component', () => {
                             key: testEvents[2].key,
                             result: {
                                 type: UploadFileType.DAY_SUMMARY,
-                                data: (<any>testEvents[2]).result
+                                data: (testEvents[2] as any).result,
                             },
-                            filesize: (<FileLoadResultEvent<string>>testEvents[2]).filesize
+                            filesize: (testEvents[2] as FileLoadResultEvent<string>).filesize,
                         });
                         done();
                     });
             });
             it('should test that there is non conforming json', (done) => {
                 const validatorErrors: ValidationError[] = [
-                    <any>{
-                        test: 1
-                    }, <any>{
-                        test: 2
-                    }
+                    {
+                        test: 1,
+                    } as any, {
+                        test: 2,
+                    } as any,
                 ];
-                const validatorRes: ValidatorResult = <any>{
+                const validatorRes: ValidatorResult = {
                     valid: false,
-                    errors: validatorErrors
-                };
+                    errors: validatorErrors,
+                } as any;
                 validatorStub.returns(validatorRes);
                 const nextSpy: sinon.SinonSpy = sinon.spy();
                 from(testEvents)
@@ -177,7 +176,7 @@ describe('app/polar/upload/upload.component', () => {
                     { test: 1 },
                     { test: 2 },
                     { test: 5 },
-                    { test: 3 }
+                    { test: 3 },
                 ];
                 beforeEach(() => {
                     upDataService = fixture.debugElement.injector.get(UploadDataService);
@@ -185,9 +184,8 @@ describe('app/polar/upload/upload.component', () => {
                 });
                 testValues.forEach((value: any) => {
                     it('should return the expected value from the service', () => {
-                        uploadedFilesStub.get(() => {
-                            return value;
-                        });
+                        uploadedFilesStub.get(() =>
+                            value);
                         expect(cmpInstance.uploadFiles).toEqual(value);
                     });
                 });
@@ -209,14 +207,12 @@ describe('app/polar/upload/upload.component', () => {
                 nextSpy = sandbox.spy();
                 convertValidityStub = sandbox.stub(cmpInstance, 'createConvertUploadFileAndCheckValidity');
                 convertValidityInnerStub = sandbox.stub();
-                convertValidityInnerStub.callsFake((inp) => {
-                    return {
-                        inp: inp
-                    };
-                });
-                convertValidityStub.callsFake(() => {
-                    return map(convertValidityInnerStub);
-                });
+                convertValidityInnerStub.callsFake((inp) =>
+                    ({
+                        inp,
+                    }));
+                convertValidityStub.callsFake(() =>
+                    map(convertValidityInnerStub));
             });
             it('should test fine');
         });

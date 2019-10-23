@@ -1,12 +1,12 @@
 import {
     Component,
-    Input
+    Input,
 } from '@angular/core';
 import { FitSession } from 'src/app/service/fit-api-modals';
 @Component({
     selector: 'session-list-item',
     templateUrl: './session.component.pug',
-    styleUrls: ['./session.component.scss']
+    styleUrls: ['./session.component.scss'],
 })
 export class SessionComponent {
     private mSession: FitSession;

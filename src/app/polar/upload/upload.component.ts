@@ -1,33 +1,32 @@
 import {
     Component,
+    NgZone,
     OnInit,
-    NgZone
 } from '@angular/core';
-import { UploadDataService } from '../services/upload-data.service';
-import { from, Observable, Observer, of, OperatorFunction, Subscriber } from 'rxjs';
-import { filter, flatMap, map, catchError, startWith, debounce, debounceTime } from 'rxjs/operators';
-import { UploadFile, UploadFileType, TypedFiles, UploadFileStatus, UploadFileError, UploadFiles, UploadFileResult, UploadFileResults, UploadFileDaySummaryResult } from '../services';
-import { AnalyzeDataService } from '../services/analyze-data.service';
 import { Router } from '@angular/router';
-import { FlowApiValidator, IDaySummary, IDayData } from '@donmahallem/flow-api-types';
+import { FlowApiValidator, IDayData, IDaySummary } from '@donmahallem/flow-api-types';
 import { ValidatorResult } from 'jsonschema';
-import { FileUtil, FileLoadEvent, FileLoadEvents, FileLoadEventType } from 'src/app/util';
+import { from, Observable, OperatorFunction } from 'rxjs';
+import { debounceTime, filter, flatMap, map } from 'rxjs/operators';
+import { FileLoadEvents, FileLoadEventType, FileUtil } from 'src/app/util';
+import { TypedFiles, UploadFile, UploadFileDaySummaryResult, UploadFileResults, UploadFileStatus, UploadFileType } from '../services';
+import { AnalyzeDataService } from '../services/analyze-data.service';
+import { UploadDataService } from '../services/upload-data.service';
 import { FileUploadObserver } from './file-upload.observer';
-
 
 @Component({
     selector: 'app-polar-upload',
     templateUrl: './upload.component.pug',
     styleUrls: ['./upload.component.scss'],
     providers: [
-        UploadDataService
-    ]
+        UploadDataService,
+    ],
 })
 export class UploadComponent implements OnInit {
     constructor(private uploadDataService: UploadDataService,
-        private zone: NgZone,
-        private analyzeDataService: AnalyzeDataService,
-        private router: Router) { }
+                private zone: NgZone,
+                private analyzeDataService: AnalyzeDataService,
+                private router: Router) { }
     public ngOnInit(): void {
     }
 
@@ -49,9 +48,9 @@ export class UploadComponent implements OnInit {
                         key: data.key,
                         result: {
                             type: UploadFileType.DAY_SUMMARY,
-                            data: data.result
+                            data: data.result,
                         },
-                        filesize: data.filesize
+                        filesize: data.filesize,
                     };
                 } else {
                     throw validatorResult.errors[0];
@@ -63,7 +62,7 @@ export class UploadComponent implements OnInit {
     }
 
     public onUpload(e: Event): void {
-        const target: HTMLInputElement = <HTMLInputElement>e.target;
+        const target: HTMLInputElement = e.target as HTMLInputElement;
         this.validateFiles(target);
     }
 
@@ -81,23 +80,18 @@ export class UploadComponent implements OnInit {
 
     public importFiles(): Observable<number> {
         return this.analyzeDataService.clear()
-            .pipe(flatMap((result) => {
-                return from(this.uploadFiles);
-            }), filter((upload: UploadFile): boolean => {
-                return upload.status === UploadFileStatus.LOADED;
-            }), filter((upload: UploadFileResults): boolean => {
-                return upload.type === UploadFileType.DAY_SUMMARY && upload.selected !== false;
-            }), map((upload: UploadFileDaySummaryResult): IDaySummary => {
-                return upload.data;
-            }), flatMap((summary: IDaySummary): Observable<IDayData> => {
+            .pipe(flatMap((result) =>
+                from(this.uploadFiles)), filter((upload: UploadFile): boolean =>
+                upload.status === UploadFileStatus.LOADED), filter((upload: UploadFileResults): boolean =>
+                upload.type === UploadFileType.DAY_SUMMARY && upload.selected), map((upload: UploadFileDaySummaryResult): IDaySummary =>
+                upload.data), flatMap((summary: IDaySummary): Observable<IDayData> => {
                 const summaries: IDayData[] = [];
                 for (const key of Object.keys(summary)) {
                     summaries.push(summary[key]);
                 }
                 return from(summaries);
-            }), flatMap((data: IDayData) => {
-                return this.analyzeDataService.insertActivityGraphData(data.activityGraphData);
-            }));
+            }), flatMap((data: IDayData) =>
+                this.analyzeDataService.insertActivityGraphData(data.activityGraphData)));
     }
 
     public validateFiles(e: HTMLInputElement): void {

@@ -1,21 +1,16 @@
 import {
-    Component,
     AfterViewInit,
+    Component,
     OnDestroy,
-    Input
 } from '@angular/core';
-import { UploadDataService } from '../services/upload-data.service';
-import { from, Observable, Observer, Subscription } from 'rxjs';
-import { filter, flatMap, map } from 'rxjs/operators';
-import { Router, Route, ActivatedRouteSnapshot, ActivatedRoute, Params } from '@angular/router';
-import { DataPoint } from './data-point';
+import { Subscription } from 'rxjs';
 import { AnalyzeDataService, Pair } from '../services/analyze-data.service';
-
+import { DataPoint } from './data-point';
 
 @Component({
     selector: 'view-upload-cmp',
     templateUrl: './view-upload.component.pug',
-    styleUrls: ['./view-upload.component.scss']
+    styleUrls: ['./view-upload.component.scss'],
 })
 export class ViewUploadComponent implements
     AfterViewInit,
@@ -31,7 +26,7 @@ export class ViewUploadComponent implements
         for (const p of summary) {
             lst.push({
                 x: new Date(p.timestamp),
-                y: p.bpm
+                y: p.bpm,
             });
         }
         this.chartData = lst;

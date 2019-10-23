@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { CanActivateChild, Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivate, Resolve } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Resolve, Router, RouterStateSnapshot } from '@angular/router';
+import { of, Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { GapiAuthService } from 'src/app/service/gapi-auth.service';
-import { Observable, of, EMPTY } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
 import { ExchangeCodeResponse, SignInUrlResponse } from 'src/app/service/gapi.service';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class GoogleAuthCallbackGuard implements CanActivate, CanActivateChild, R
         const url: string = state.url;
 
         return this.authService
-            .exchangeCode(route.queryParams['code'])
+            .exchangeCode(route.queryParams.code)
             .pipe(map((val: ExchangeCodeResponse): boolean => {
                 this.router.navigate(['']);
                 return false;
@@ -33,10 +33,8 @@ export class GoogleAuthCallbackGuard implements CanActivate, CanActivateChild, R
     public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<string> {
         return this.authService
             .getSigninUrl()
-            .pipe(map((response: SignInUrlResponse) => {
-                return response.url;
-            }), catchError((err: any): Observable<string> => {
-                return of();
-            }));
+            .pipe(map((response: SignInUrlResponse) =>
+                response.url), catchError((err: any): Observable<string> =>
+                of()));
     }
 }

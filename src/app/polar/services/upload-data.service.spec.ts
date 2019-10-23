@@ -1,5 +1,5 @@
-import { UploadDataService } from './upload-data.service';
 import * as sinon from 'sinon';
+import { UploadDataService } from './upload-data.service';
 
 describe('app/polar/services/upload-data.service', () => {
     let sand: sinon.SinonSandbox;
@@ -15,19 +15,19 @@ describe('app/polar/services/upload-data.service', () => {
         describe('uploadedFiles', () => {
             const testValues: any[] = [
                 {
-                    test: 1
+                    test: 1,
                 },
                 {
-                    test: 2
+                    test: 2,
                 },
                 {
-                    test: 3
-                }
+                    test: 3,
+                },
             ];
             describe('getter', () => {
                 testValues.forEach((testValue: any) => {
                     it('should return the value of the uploadFilesSubject', () => {
-                        sand.stub((<any>testInstance).uploadFilesSubject, 'value').get(() => testValue);
+                        sand.stub((testInstance as any).uploadFilesSubject, 'value').get(() => testValue);
                         expect(testInstance.uploadedFiles).toEqual(testValue);
                     });
                 });
@@ -35,7 +35,7 @@ describe('app/polar/services/upload-data.service', () => {
             describe('setter', () => {
                 testValues.forEach((testValue: any) => {
                     it('should return the value of the uploadFilesSubject', () => {
-                        const nextStub: sinon.SinonStub = sand.stub((<any>testInstance).uploadFilesSubject, 'next');
+                        const nextStub: sinon.SinonStub = sand.stub((testInstance as any).uploadFilesSubject, 'next');
                         testInstance.uploadedFiles = testValue;
                         expect(nextStub.callCount).toEqual(1);
                         expect(nextStub.getCall(0).args).toEqual([testValue]);

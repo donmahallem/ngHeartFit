@@ -1,35 +1,32 @@
+import { HttpEventType, HttpResponse } from '@angular/common/http';
 import {
-    Component,
     AfterViewInit,
-    OnDestroy,
+    Component,
     NgZone,
-    OnInit
+    OnDestroy,
 } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { flatMap, debounceTime, filter } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
-import { FitDataSource, FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
-import { FitApiDataSetService, InsertDataPoint } from 'src/app/service/fit-data-set.service';
-import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
-import { MatProgressBar } from '@angular/material';
+import { Subscription } from 'rxjs';
+import { filter, flatMap } from 'rxjs/operators';
 import { FitApiAggregateService } from 'src/app/service/fit-aggregate.service';
-
+import { FitApiDataSetService, InsertDataPoint } from 'src/app/service/fit-data-set.service';
+import { FitApiDataSourceService, FitDataSource } from 'src/app/service/fit-data-source.service';
 
 @Component({
     selector: 'app-fit-dashboard',
     templateUrl: './fit-dashboard.component.pug',
-    styleUrls: ['./fit-dashboard.component.scss']
+    styleUrls: ['./fit-dashboard.component.scss'],
 })
 export class FitDashboardComponent implements OnDestroy, AfterViewInit {
 
     private mDataSource: FitDataSource = null;
     private mRouteDataSubscription: Subscription;
     constructor(private zone: NgZone,
-        private fitDataSetService: FitApiDataSetService,
-        private fitAggregateService: FitApiAggregateService,
-        private datasourceService: FitApiDataSourceService,
-        private activatedRoute: ActivatedRoute) {
+                private fitDataSetService: FitApiDataSetService,
+                private fitAggregateService: FitApiAggregateService,
+                private datasourceService: FitApiDataSourceService,
+                private activatedRoute: ActivatedRoute) {
     }
 
     public get dataSource(): FitDataSource {
@@ -43,11 +40,11 @@ export class FitDashboardComponent implements OnDestroy, AfterViewInit {
     public ngAfterViewInit() {
         this.fitAggregateService
             .getAggregateData([{
-                dataTypeName: 'com.google.weight'
+                dataTypeName: 'com.google.weight',
             }, {
-                dataTypeName: 'com.google.body.fat.percentage'
+                dataTypeName: 'com.google.body.fat.percentage',
             },  {
-                dataTypeName: 'com.google.hydration'
+                dataTypeName: 'com.google.hydration',
             }], moment().subtract(30, 'days'), moment(), 1000 * 3600 * 24)
             .subscribe(console.log, console.error);
     }
@@ -60,9 +57,8 @@ export class FitDashboardComponent implements OnDestroy, AfterViewInit {
         this.datasourceService
             .getOrCreateBodyFatPercentageDataSource()
             .pipe(
-                filter((val) => {
-                    return val.type === HttpEventType.Response;
-                }),
+                filter((val) =>
+                    val.type === HttpEventType.Response),
                 flatMap((datasource: HttpResponse<FitDataSource>) => {
                     const end: moment.Moment = moment();
                     const endTimestamp: number = end.valueOf();
@@ -74,7 +70,7 @@ export class FitDashboardComponent implements OnDestroy, AfterViewInit {
                             startTimeNanos: ts * 1000000,
                             endTimeNanos: ts * 1000000,
                             dataTypeName: 'com.google.body.fat.percentage',
-                            value: [{ fpVal: Math.random() * 100 }]
+                            value: [{ fpVal: Math.random() * 100 }],
                         });
                     }
                     const start: moment.Moment = moment(endTimestamp - (windowSize * 99));

@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { Resolve, ActivatedRoute, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { delay } from 'rxjs/operators';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { UploadDataService } from './upload-data.service';
 import { UploadFile } from './upload-file.modal';
 
@@ -10,7 +8,7 @@ export class UploadResolver implements Resolve<UploadFile[]> {
     constructor(private uploadService: UploadDataService) { }
 
     public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): UploadFile[] {
-        const ids: string[] = (<string>route.params['id']).split(',');
+        const ids: string[] = (route.params.id as string).split(',');
         const uploads: UploadFile[] = [];
         for (const id of ids) {
         }

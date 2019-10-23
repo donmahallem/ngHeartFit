@@ -1,17 +1,15 @@
+import { HttpEvent } from '@angular/common/http';
 import {
     Component,
-    AfterViewInit,
-    OnDestroy,
-    NgZone
+    NgZone,
 } from '@angular/core';
-import { FitApiDataSourceService, FitDataSource, FitDataSourceList } from 'src/app/service/fit-data-source.service';
-import { HttpEvent } from '@angular/common/http';
-import { Subscriber, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { LoadableListComponent } from 'src/app/common-components/sessions.component';
+import { FitApiDataSourceService, FitDataSource, FitDataSourceList } from 'src/app/service/fit-data-source.service';
 @Component({
     selector: 'app-datasources',
     templateUrl: './datasources.component.pug',
-    styleUrls: ['./datasources.component.scss']
+    styleUrls: ['./datasources.component.scss'],
 })
 export class DatasourcesComponent extends LoadableListComponent<FitDataSourceList> {
     private mDataSources: FitDataSource[] = [];

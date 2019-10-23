@@ -1,19 +1,14 @@
 import {
     Component,
-    Input,
-    HostBinding,
-    Output,
-    ViewChild
 } from '@angular/core';
-import { UploadFile, UploadDataService, UploadFileStatus, UploadFiles, UploadFileResult, UploadFileResults, UploadFileProgress, UploadFileError, UploadFileType } from '../services';
-import { MatCheckboxChange, MatSlideToggle, MatSlideToggleChange } from '@angular/material';
+import { MatSlideToggleChange } from '@angular/material';
+import { UploadDataService, UploadFileResults, UploadFileType } from '../services';
 import { FileUploadBaseComponent } from './file-upload-base.component';
-import { ValidationError } from 'jsonschema';
 
 @Component({
     selector: 'app-file-upload-loaded',
     templateUrl: './file-upload-loaded.component.pug',
-    styleUrls: ['./file-upload-loaded.component.scss']
+    styleUrls: ['./file-upload-loaded.component.scss'],
 })
 export class FileUploadLoadedComponent extends FileUploadBaseComponent<UploadFileResults> {
 
@@ -36,7 +31,7 @@ export class FileUploadLoadedComponent extends FileUploadBaseComponent<UploadFil
 
     public get selected(): boolean {
         if (this.mUploadFile) {
-            return this.mUploadFile.selected !== false;
+            return this.mUploadFile.selected;
         }
         return false;
     }

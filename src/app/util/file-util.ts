@@ -8,7 +8,7 @@ export interface ReadFile {
 export enum FileLoadEventType {
     START = 1,
     PROGRESS = 2,
-    RESULT = 3
+    RESULT = 3,
 }
 export interface FileLoadEvent {
     type: FileLoadEventType;
@@ -50,7 +50,7 @@ export class FileUtil {
                     lengthComputable: progress.lengthComputable,
                     loaded: progress.loaded,
                     total: progress.total,
-                    key: key
+                    key,
                 });
             };
             reader.onabort = (ev: ProgressEvent) => {
@@ -60,20 +60,20 @@ export class FileUtil {
                 subscriber.next({
                     type: FileLoadEventType.RESULT,
                     result: loadEvent.target.result,
-                    key: key,
-                    filesize: loadEvent.target.result.length
+                    key,
+                    filesize: loadEvent.target.result.length,
                 });
                 subscriber.complete();
             };
             reader.onloadstart = () => {
                 subscriber.next({
                     type: FileLoadEventType.START,
-                    key: key
+                    key,
                 });
             };
-            reader.onerror = <any>((er: DOMError | DOMException): void => {
+            reader.onerror = (((er: DOMError | DOMException): void => {
                 subscriber.error(er);
-            });
+            }) as any);
             reader.readAsText(file);
         });
     }
@@ -85,7 +85,7 @@ export class FileUtil {
                         result: JSON.parse(event.result),
                         type: FileLoadEventType.RESULT,
                         key: event.key,
-                        filesize: event.filesize
+                        filesize: event.filesize,
                     };
                     return convEvent;
                 } else {

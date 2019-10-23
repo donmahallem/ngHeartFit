@@ -1,16 +1,15 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DatasourceListComponent } from './datasource-list.component';
+import { NgModule } from '@angular/core';
+import { MatIconModule, MatProgressBarModule } from '@angular/material';
 import { DatasourceListItemComponent } from './datasource-list-item.component';
+import { DatasourceListComponent } from './datasource-list.component';
 import { DatasourcesComponent } from './datasources.component';
-import { MatProgressBarModule, MatIconModule } from '@angular/material';
-
 
 @NgModule({
     imports: [
         CommonModule,
         MatProgressBarModule,
-        MatIconModule
+        MatIconModule,
     ],
     declarations: [
         DatasourcesComponent,
@@ -22,7 +21,7 @@ import { MatProgressBarModule, MatIconModule } from '@angular/material';
         DatasourceListComponent,
         CommonModule,
         MatProgressBarModule,
-        MatIconModule
-    ]
+        MatIconModule,
+    ],
 })
 export class DatasourcesModule { }

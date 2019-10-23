@@ -1,15 +1,10 @@
 import {
     Component,
-    Input,
-    HostBinding,
-    Output,
-    ViewChild
 } from '@angular/core';
-import { UploadFile, UploadDataService, UploadFileStatus, UploadFiles, UploadFileResult, UploadFileResults } from '../services';
-import { MatCheckboxChange, MatSlideToggle } from '@angular/material';
+import { UploadFiles, UploadFileStatus } from '../services';
+import { FileUploadBaseComponent } from './file-upload-base.component';
 import { FileUploadErrorComponent } from './file-upload-error.component';
 import { FileUploadProgressComponent } from './file-upload-progress.component';
-import { FileUploadBaseComponent } from './file-upload-base.component';
 
 @Component({
     selector: 'app-file-preview',
@@ -17,8 +12,8 @@ import { FileUploadBaseComponent } from './file-upload-base.component';
     styleUrls: ['./file-preview.component.scss'],
     viewProviders: [
         FileUploadErrorComponent,
-        FileUploadProgressComponent
-    ]
+        FileUploadProgressComponent,
+    ],
 })
 export class FilePreviewComponent extends FileUploadBaseComponent<UploadFiles> {
     constructor() {

@@ -1,29 +1,23 @@
+import { HttpEvent } from '@angular/common/http';
 import {
     Component,
-    OnInit,
-    ViewChild,
-    AfterViewInit,
-    OnDestroy,
-    ChangeDetectorRef,
-    NgZone
+    NgZone,
 } from '@angular/core';
-import { FitSession, ListSessionsResponse } from 'src/app/service/fit-api-modals';
 import * as moment from 'moment';
-import { FitApiSessionService } from 'src/app/service/fit-session.service';
-import { HttpEvent, HttpEventType } from '@angular/common/http';
-import { Subscriber, Subscription, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { LoadableListComponent } from 'src/app/common-components/sessions.component';
-
+import { FitSession, ListSessionsResponse } from 'src/app/service/fit-api-modals';
+import { FitApiSessionService } from 'src/app/service/fit-session.service';
 
 @Component({
     selector: 'app-sessions-list',
     templateUrl: './sessions.component.pug',
-    styleUrls: ['./sessions.component.scss']
+    styleUrls: ['./sessions.component.scss'],
 })
 export class SessionsComponent extends LoadableListComponent<ListSessionsResponse> {
     private mSessions: FitSession[] = [];
     constructor(private zone: NgZone,
-        private sessionService: FitApiSessionService) {
+                private sessionService: FitApiSessionService) {
         super();
     }
 

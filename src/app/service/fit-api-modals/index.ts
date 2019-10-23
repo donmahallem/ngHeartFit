@@ -47,10 +47,9 @@ export interface DatasetPoint {
     originDataSourceId: string;
     startTimeNanos: string;
     value: {
-        fpVal: number, mapVal: any[]
+        fpVal: number, mapVal: any[],
     }[];
 }
-
 
 export interface FitSession {
     activityType: number;

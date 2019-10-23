@@ -1,9 +1,7 @@
-import { Injectable, NgZone } from '@angular/core';
-import { environment } from '../../environments/environment';
-import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
-import { timer, Observable, Subscription, of, combineLatest, BehaviorSubject, throwError } from 'rxjs';
-import { catchError, map, tap, mergeMapTo, filter, mergeMap, retryWhen, flatMap, delay } from 'rxjs/operators';
-import * as moment from 'moment';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { of, throwError, Observable } from 'rxjs';
+import { delay, flatMap, retryWhen } from 'rxjs/operators';
 
 export interface SignInUrlResponse {
     url: string;
@@ -20,10 +18,10 @@ export interface User {
     providedIn: 'root',
 })
 export class GapiAuthService {
+    a = 0;
 
     constructor(private http: HttpClient) {
     }
-    a = 0;
 
     public getMe(): Observable<User> {
         return this.http
@@ -37,7 +35,7 @@ export class GapiAuthService {
 
     public exchangeCode(code: string): Observable<ExchangeCodeResponse> {
         const body: any = {
-            code: code
+            code,
         };
         return this.http.post<ExchangeCodeResponse>('/api/google/auth/code', body);
     }

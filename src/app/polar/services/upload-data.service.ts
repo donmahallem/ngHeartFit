@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { UploadFile, TypedFile, TypedFiles, UploadFileType, UploadFileStatus, UploadFiles } from './upload-file.modal';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { FileLoadEvents, FileLoadEventType } from 'src/app/util';
+import { UploadFile, UploadFiles, UploadFileStatus } from './upload-file.modal';
 
 @Injectable()
 export class UploadDataService {
@@ -27,7 +26,7 @@ export class UploadDataService {
 
     public setSelected(key: string, selected: boolean): void {
         if (this.mData[key] && this.mData[key].status === UploadFileStatus.LOADED) {
-            (<any>this.mData[key]).selected = selected;
+            (this.mData[key] as any).selected = selected;
             this.update();
         }
     }

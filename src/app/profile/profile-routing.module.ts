@@ -1,21 +1,21 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { ProfileComponent } from './components';
+import { RouterModule, Routes } from '@angular/router';
 import { RouteGuardService } from '../service/route-guard.service';
+import { ProfileComponent } from './components';
 
 const routes: Routes = [
     {
         path: '',
         component: ProfileComponent,
-        canActivate: [RouteGuardService]
-    }
+        canActivate: [RouteGuardService],
+    },
 ];
 
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
     providers: [
-        RouteGuardService
-    ]
+        RouteGuardService,
+    ],
 })
 export class ProfileRoutingModule { }

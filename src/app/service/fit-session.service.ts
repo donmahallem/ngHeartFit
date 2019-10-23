@@ -1,16 +1,13 @@
 
+import { HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { HttpParams, HttpRequest, HttpEvent } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 import { FitApiBaseService } from './fit-api-base.service';
-import { map, flatMap } from 'rxjs/operators';
-import { FitApiDataSetService } from './fit-data-set.service';
 import {
     FitSession,
-    ListSessionsResponse
+    ListSessionsResponse,
 } from './fit-api-modals';
-import * as moment from 'moment';
 
 @Injectable()
 export class FitApiSessionService {
@@ -36,7 +33,7 @@ export class FitApiSessionService {
         if (endTime) {
             params.endTime = endTime;
         }
-        params.includeDeleted = includeDeleted === true;
+        params.includeDeleted = includeDeleted;
         if (pageToken) {
             params.pageToken = pageToken;
         }

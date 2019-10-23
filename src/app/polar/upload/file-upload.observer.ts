@@ -1,10 +1,10 @@
 import { Observer } from 'rxjs';
-import { TypedFile, TypedFiles, UploadDataService, UploadFileStatus, UploadFileType } from '../services';
 import { FileLoadEvents, FileLoadEventType, FileLoadProgressEvent, FileLoadResultEvent, FileLoadStartEvent } from 'src/app/util';
+import { TypedFiles, UploadDataService, UploadFileStatus, UploadFileType } from '../services';
 
 export class FileUploadObserver implements Observer<FileLoadEvents<TypedFiles>> {
     constructor(private readonly uploadDataService: UploadDataService,
-        private readonly sourceFile: File) { }
+                private readonly sourceFile: File) { }
     public updateProgress(ev: FileLoadProgressEvent): void {
         this.uploadDataService.updateFile({
             status: UploadFileStatus.LOADING,
@@ -12,7 +12,7 @@ export class FileUploadObserver implements Observer<FileLoadEvents<TypedFiles>> 
             key: this.sourceFile.name,
             currentBytes: ev.loaded,
             totalBytes: ev.total,
-            lengthComputable: ev.lengthComputable
+            lengthComputable: ev.lengthComputable,
         });
     }
     public updateResult(ev: FileLoadResultEvent<TypedFiles>): void {
@@ -24,7 +24,7 @@ export class FileUploadObserver implements Observer<FileLoadEvents<TypedFiles>> 
                     key: this.sourceFile.name,
                     data: ev.result.data,
                     type: UploadFileType.DAY_SUMMARY,
-                    filesize: ev.filesize
+                    filesize: ev.filesize,
                 });
                 break;
             case UploadFileType.SLEEP_DATA:
@@ -34,7 +34,7 @@ export class FileUploadObserver implements Observer<FileLoadEvents<TypedFiles>> 
                     key: this.sourceFile.name,
                     data: ev.result.data,
                     type: UploadFileType.SLEEP_DATA,
-                    filesize: ev.filesize
+                    filesize: ev.filesize,
                 });
                 break;
             default:
@@ -46,7 +46,7 @@ export class FileUploadObserver implements Observer<FileLoadEvents<TypedFiles>> 
         this.uploadDataService.updateFile({
             status: UploadFileStatus.INITIALIZING,
             filename: this.sourceFile.name,
-            key: this.sourceFile.name
+            key: this.sourceFile.name,
         });
     }
     public updateError(ev: { type: FileLoadEventType.PROGRESS }): void {
@@ -73,7 +73,7 @@ export class FileUploadObserver implements Observer<FileLoadEvents<TypedFiles>> 
                 status: UploadFileStatus.ERROR,
                 error: err,
                 key: this.sourceFile.name,
-                filename: this.sourceFile.name
+                filename: this.sourceFile.name,
             });
     }
     public complete() {
