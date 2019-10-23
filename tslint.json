@@ -146,6 +146,15 @@
     "no-output-rename": true,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
-    "directive-class-suffix": true
+    "directive-class-suffix": true,
+    "file-header": [
+      true,
+      {
+        "match": "Source \\S+",
+        "allow-single-line-comments": true,
+        "default": "Source https://github.com/donmahallem/ngHeartFit",
+        "enforce-trailing-newline": false
+      }
+    ]
   }
 }
