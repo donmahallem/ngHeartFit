@@ -13,6 +13,8 @@
         "test-headless": "ng test --watch=false --browsers=ChromeHeadless --code-coverage",
         "test:unit": "npm run test-headless",
         "test:build": "ng build --prod --aot --base-href ./",
+        "test:lint": "npm run lint",
+        "test:docs": "npm run compodoc",
         "compodoc": "npx compodoc -p src/tsconfig.app.json -d ./docs"
     },
     "private": true,
