@@ -7,31 +7,29 @@ import {
     Inject,
 } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators, ValidatorFn } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material';
 import * as moment from 'moment';
-import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 
-export function forbiddenNameValidator(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
+export const forbiddenNameValidator: () => ValidatorFn = () =>
+    (control: AbstractControl): { [key: string]: any } | undefined => {
         const group: FormGroup = control as any;
         const weightControl: FormControl = group.get('bodyweight') as FormControl;
         const fatControl: FormControl = group.get('bodyfat') as FormControl;
         const heightControl: FormControl = group.get('bodyheight') as FormControl;
-        let groupErrors: ValidationErrors | null = group.errors;
+        let groupErrors: ValidationErrors | undefined = group.errors;
         let controlValue = false;
         controlValue = controlValue || weightControl.value > 0;
         controlValue = controlValue || fatControl.value > 0;
         controlValue = controlValue || heightControl.value > 0;
         if (controlValue) {
-            return null;
+            return undefined;
         }
-        if (groupErrors === null || groupErrors === undefined) {
+        if (groupErrors === undefined || groupErrors === undefined) {
             groupErrors = {};
         }
         groupErrors.oneValueRequired = 'Atleast one value is required';
         return groupErrors;
     };
-}
 export interface BodyMetricsFormData {
     bodyweight: number;
     bodyfat: number;
@@ -79,9 +77,7 @@ export class BaseInsertDialogComponent {
     public metricsForm: FormGroup;
 
     private mSelectableUnits: SelectableUnit[] = [];
-    constructor(private fitApi: FitApiDataSourceService,
-                private fb: FormBuilder,
-                private dialogRef: MatDialogRef<BaseInsertDialogComponent>,
+    constructor(private fb: FormBuilder,
                 @Inject(MAT_DIALOG_DATA) public data: DialogParameter) {
         this.metricsForm = this.fb
             .group({

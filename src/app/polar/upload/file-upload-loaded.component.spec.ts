@@ -13,8 +13,8 @@ import {
     TestBed,
 } from '@angular/core/testing';
 import {
+    IUploadFile,
     UploadDataService,
-    UploadFile,
     UploadFileResults,
     UploadFileStatus,
     UploadFileType,
@@ -36,7 +36,7 @@ class TestUploadDataService {
     template: '<app-file-upload-loaded [uploadFile]="testFile"></app-file-upload-loaded>',
 })
 class TestParentComponent {
-    public testFile: UploadFile;
+    public testFile: IUploadFile;
 }
 @Component({
     // tslint:disable-next-line
@@ -99,7 +99,7 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
                 filename: 'testFile06.json',
                 data: 'test data to do some stuff two' as any,
                 filesize: 8452,
-                type: null,
+                type: undefined,
                 selected: true,
                 status: UploadFileStatus.LOADED,
             },
@@ -142,7 +142,7 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
                     });
                     describe('mUploadFile is not set', () => {
                         it('should return 0', () => {
-                            (cmpInstance as any).mUploadFile = null;
+                            (cmpInstance as any).mUploadFile = undefined;
                             expect(cmpInstance.filesize).toEqual(0);
                         });
                     });
@@ -167,7 +167,7 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
                     });
                     describe('mUploadFile is not set', () => {
                         it('should return UploadFileType.UNKNOWN', () => {
-                            (cmpInstance as any).mUploadFile = null;
+                            (cmpInstance as any).mUploadFile = undefined;
                             expect(cmpInstance.type).toEqual(UploadFileType.UNKNOWN);
                         });
                     });
@@ -185,7 +185,7 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
                     });
                     describe('mUploadFile is not set', () => {
                         it('should return false', () => {
-                            (cmpInstance as any).mUploadFile = null;
+                            (cmpInstance as any).mUploadFile = undefined;
                             expect(cmpInstance.selected).toEqual(false);
                         });
                     });
@@ -215,7 +215,7 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
                     });
                     describe('mUploadFile is not set', () => {
                         it('should return false', () => {
-                            (cmpInstance as any).mUploadFile = null;
+                            (cmpInstance as any).mUploadFile = undefined;
                             expect(cmpInstance.typeIcon).toEqual('help_outline');
                         });
                     });
@@ -240,7 +240,7 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
                 });
                 describe('mUploadFile is not set', () => {
                     it('should return false', () => {
-                        (cmpInstance as any).mUploadFile = null;
+                        (cmpInstance as any).mUploadFile = undefined;
                         cmpInstance.onCheckChange({ checked: true } as any);
                         expect(setSelectedStub.callCount).toEqual(0);
                     });
@@ -256,7 +256,6 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
                 it('should create the app', () => {
                     expect(cmpInstance).toBeTruthy();
                 });
-                let progressCmp: TestMatSlideToggleComponent;
                 it('should set the correct value');
             });
             describe('inputs of FileUploadLoadedComponent', () => {

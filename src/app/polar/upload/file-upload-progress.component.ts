@@ -5,7 +5,7 @@
 import {
     Component,
 } from '@angular/core';
-import { UploadFileInitializing, UploadFileProgress, UploadFileStatus } from '../services';
+import { IUploadFileInitializing, IUploadFileProgress, UploadFileStatus } from '../services';
 import { FileUploadBaseComponent } from './file-upload-base.component';
 
 @Component({
@@ -13,7 +13,7 @@ import { FileUploadBaseComponent } from './file-upload-base.component';
     templateUrl: './file-upload-progress.component.pug',
     styleUrls: ['./file-upload-progress.component.scss'],
 })
-export class FileUploadProgressComponent extends FileUploadBaseComponent<UploadFileProgress | UploadFileInitializing> {
+export class FileUploadProgressComponent extends FileUploadBaseComponent<IUploadFileProgress | IUploadFileInitializing> {
 
     public get currentProgress(): number {
         if (this.mUploadFile &&

@@ -13,7 +13,7 @@ import { ValidatorResult } from 'jsonschema';
 import { from, Observable, OperatorFunction } from 'rxjs';
 import { debounceTime, filter, flatMap, map } from 'rxjs/operators';
 import { FileLoadEvents, FileLoadEventType, FileUtil } from 'src/app/util';
-import { TypedFiles, UploadFile, UploadFileDaySummaryResult, UploadFileResults, UploadFileStatus, UploadFileType } from '../services';
+import { IUploadFile, IUploadFileDaySummaryResult, TypedFiles, UploadFileResults, UploadFileStatus, UploadFileType } from '../services';
 import { AnalyzeDataService } from '../services/analyze-data.service';
 import { UploadDataService } from '../services/upload-data.service';
 import { FileUploadObserver } from './file-upload.observer';
@@ -28,13 +28,13 @@ import { FileUploadObserver } from './file-upload.observer';
 })
 export class UploadComponent implements OnInit {
     constructor(private uploadDataService: UploadDataService,
-                private zone: NgZone,
-                private analyzeDataService: AnalyzeDataService,
-                private router: Router) { }
+        private zone: NgZone,
+        private analyzeDataService: AnalyzeDataService,
+        private router: Router) { }
     public ngOnInit(): void {
     }
 
-    public get uploadFiles(): UploadFile[] {
+    public get uploadFiles(): IUploadFile[] {
         return this.uploadDataService.uploadedFiles;
     }
 
@@ -48,13 +48,13 @@ export class UploadComponent implements OnInit {
                 const validatorResult: ValidatorResult = FlowApiValidator.validateTimelineSummary(data.result);
                 if (validatorResult.valid) {
                     return {
-                        type: FileLoadEventType.RESULT,
+                        filesize: data.filesize,
                         key: data.key,
                         result: {
-                            type: UploadFileType.DAY_SUMMARY,
                             data: data.result,
+                            type: UploadFileType.DAY_SUMMARY,
                         },
-                        filesize: data.filesize,
+                        type: FileLoadEventType.RESULT,
                     };
                 } else {
                     throw validatorResult.errors[0];
@@ -72,11 +72,9 @@ export class UploadComponent implements OnInit {
 
     public clickImport(event: MouseEvent): void {
         this.importFiles().subscribe((result) => {
-            console.log('res', result);
         }, (err: Error) => {
             console.error(err);
         }, () => {
-            console.log('Complete');
             this.router.navigate(['polar', 'view']);
         });
 
@@ -85,17 +83,17 @@ export class UploadComponent implements OnInit {
     public importFiles(): Observable<number> {
         return this.analyzeDataService.clear()
             .pipe(flatMap((result) =>
-                from(this.uploadFiles)), filter((upload: UploadFile): boolean =>
-                upload.status === UploadFileStatus.LOADED), filter((upload: UploadFileResults): boolean =>
-                upload.type === UploadFileType.DAY_SUMMARY && upload.selected), map((upload: UploadFileDaySummaryResult): IDaySummary =>
-                upload.data), flatMap((summary: IDaySummary): Observable<IDayData> => {
-                const summaries: IDayData[] = [];
-                for (const key of Object.keys(summary)) {
-                    summaries.push(summary[key]);
-                }
-                return from(summaries);
-            }), flatMap((data: IDayData) =>
-                this.analyzeDataService.insertActivityGraphData(data.activityGraphData)));
+                from(this.uploadFiles)), filter((upload: IUploadFile): boolean =>
+                    upload.status === UploadFileStatus.LOADED), filter((upload: UploadFileResults): boolean =>
+                        upload.type === UploadFileType.DAY_SUMMARY && upload.selected), map((upload: IUploadFileDaySummaryResult): IDaySummary =>
+                            upload.data), flatMap((summary: IDaySummary): Observable<IDayData> => {
+                                const summaries: IDayData[] = [];
+                                for (const key of Object.keys(summary)) {
+                                    summaries.push(summary[key]);
+                                }
+                                return from(summaries);
+                            }), flatMap((data: IDayData) =>
+                                this.analyzeDataService.insertActivityGraphData(data.activityGraphData)));
     }
 
     public validateFiles(e: HTMLInputElement): void {

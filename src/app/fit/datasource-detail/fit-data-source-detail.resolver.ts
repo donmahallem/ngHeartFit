@@ -24,7 +24,7 @@ export class FitDataSourceDetailResolver implements Resolve<IFitDataSource> {
                 take(1),
                 catchError((err: any): Observable<IFitDataSource> => {
                     this.router.navigate(['/fit/datasources']);
-                    return of(null);
+                    return of(undefined);
                 }));
     }
 }

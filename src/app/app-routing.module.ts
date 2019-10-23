@@ -12,17 +12,17 @@ import { RouteGuardService } from './service/route-guard.service';
 
 const routes: Routes = [
     {
-        path: 'polar',
         data: {
             requiresLogin: true,
         },
         loadChildren: './polar/polar.module#PolarModule',
+        path: 'polar',
     }, {
-        path: 'profile',
         data: {
             requiresLogin: true,
         },
         loadChildren: './profile/profile.module#ProfileModule',
+        path: 'profile',
     }, {
         path: 'fit',
         data: {
@@ -35,16 +35,15 @@ const routes: Routes = [
             gapi: NgGapiResolver,
         },
     }, {
-        path: 'bodymetrics',
+        canActivate: [RouteGuardService],
+        canActivateChild: [RouteGuardService],
         data: {
             requiresLogin: true,
         },
         // canLoad: [RouteGuardService],
-        canActivate: [RouteGuardService],
-        canActivateChild: [RouteGuardService],
         loadChildren: './bodymetrics/bodymetrics.module#BodyMetricsModule',
+        path: 'bodymetrics',
     }, {
-        path: 'login',
         children: [
             {
                 path: 'google',
@@ -61,9 +60,10 @@ const routes: Routes = [
                 children: [],
             },
         ],
+        path: 'login',
     }, {
-        path: '**',
         component: NotFoundComponent,
+        path: '**',
     },
 ];
 

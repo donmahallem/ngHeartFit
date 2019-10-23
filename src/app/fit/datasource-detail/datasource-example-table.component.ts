@@ -6,7 +6,6 @@ import { HttpEvent } from '@angular/common/http';
 import {
     Component,
     Input,
-    NgZone,
 } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import * as moment from 'moment';
@@ -25,10 +24,9 @@ export class DatasourceExampleTableComponent<T> extends LoadableComponent<IFitDa
 
     displayedColumns: string[] = ['position', 'name', 'date'];
     dataSource2: any = [];
-    private mDataSourceSubject: BehaviorSubject<IFitDataSource> = new BehaviorSubject(null);
+    private mDataSourceSubject: BehaviorSubject<IFitDataSource> = new BehaviorSubject(undefined);
     private mRouteDataSubscription: Subscription;
-    constructor(private zone: NgZone,
-                private fitDataSetService: FitApiDataSetService,
+    constructor(private fitDataSetService: FitApiDataSetService,
                 private activatedRoute: ActivatedRoute) {
         super();
         this.mDataSourceSubject.subscribe((val) => {

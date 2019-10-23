@@ -14,7 +14,7 @@ import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { debounceTime, delay, filter, flatMap } from 'rxjs/operators';
 import { LineChartComponent } from 'src/app/common-components/line-chart';
-import { AggregateByFilter, FitApiAggregateService } from 'src/app/service/fit-aggregate.service';
+import { FitApiAggregateService, IAggregateByFilter } from 'src/app/service/fit-aggregate.service';
 import { IBucketResponse } from 'src/app/service/fit-api-modals';
 import { FitApiDataSourceService, IFitDataSourceList } from 'src/app/service/fit-data-source.service';
 import { WeightChartService } from '../services/weight-chart.service';
@@ -58,15 +58,15 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
                         .pipe(filter((event) =>
                             event.type === HttpEventType.Response), flatMap((sources: HttpResponse<IFitDataSourceList>) => {
                                 const diff: number = 24 * 3600 * 1000;
-                                const types: AggregateByFilter[] = [
+                                const types: IAggregateByFilter[] = [
                                     {
                                         dataTypeName: 'com.google.weight',
                                     },
                                 ];
                                 for (const datasource of sources.body.dataSource) {
                                     types.push({
-                                        dataTypeName: 'com.google.body.fat.percentage',
                                         dataSourceId: datasource.dataStreamId,
+                                        dataTypeName: 'com.google.body.fat.percentage',
                                     });
                                 }
                                 return this.fitApiAggregateService.getAggregateData(types, moments[0], moments[1], diff);

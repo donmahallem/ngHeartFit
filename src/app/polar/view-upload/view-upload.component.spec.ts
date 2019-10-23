@@ -21,8 +21,8 @@ class TestAnalyzeDataService {
 
 @Component({
     selector: 'weight-chart',
-    template: '',
     styleUrls: [],
+    template: '',
 })
 class TestWeightChartComponent {
     @Input('chartData')
@@ -31,8 +31,8 @@ class TestWeightChartComponent {
 
 @Component({
     selector: 'upload-to-fit-cmp',
-    template: '',
     styleUrls: [],
+    template: '',
 })
 export class TestUploadToFitComponent {
     public _dataPoints: IDataPoint[] = [];

@@ -12,8 +12,8 @@ import { Subscription } from 'rxjs';
 import { GapiUserService } from 'src/app/service/gapi-user.service';
 @Component({
     selector: 'login-google-cmp',
-    templateUrl: './login-google.component.pug',
     styleUrls: ['./login-google.component.scss'],
+    templateUrl: './login-google.component.pug',
 })
 export class LoginGoogleComponent implements OnDestroy, OnInit {
     private mIsButtonDisabled = true;

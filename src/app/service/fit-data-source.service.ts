@@ -20,7 +20,7 @@ export class FitApiDataSourceService {
     }
 
     public submitBodyMetrics(a: any): Observable<any> {
-        return null;
+        return undefined;
     }
 
     public getDataSources(dataTypeName?: string[] | string): Observable<HttpEvent<IFitDataSourceList>> {
@@ -111,7 +111,8 @@ export class FitApiDataSourceService {
             .pipe(flatMap((event: HttpEvent<IFitDataSourceList>): Observable<HttpEvent<IFitDataSource>> => {
                 if (event.type === HttpEventType.Response) {
                     for (const source of event.body.dataSource) {
-                        if (source.dataStreamName === FitApiDataSourceService.WEIGHT_NAME && source.device.uid === navigator.userAgent.replace(/[^\w]/gi, '')) {
+                        if (source.dataStreamName === FitApiDataSourceService.WEIGHT_NAME &&
+                            source.device.uid === navigator.userAgent.replace(/[^\w]/gi, '')) {
                             const modified: HttpResponse<IFitDataSource> = event.clone({
                                 body: source,
                             });
@@ -137,7 +138,7 @@ export class FitApiDataSourceService {
     }
 
     public getOrCreateDataSource(dataType: DataTypes, streamName: string) {
-        return null;
+        return undefined;
     }
 }
 export enum DataTypes {

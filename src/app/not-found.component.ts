@@ -2,14 +2,14 @@
  * Source https://github.com/donmahallem/ngHeartFit
  */
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Route, Router } from '@angular/router';
 @Component({
     selector: 'app-not-found-cmp',
     templateUrl: './not-found.component.pug',
     styleUrls: ['./not-found.component.scss'],
 })
-export class NotFoundComponent {
+export class NotFoundComponent implements OnInit {
     private _title = 'app title';
 
     constructor(private router: Router) {

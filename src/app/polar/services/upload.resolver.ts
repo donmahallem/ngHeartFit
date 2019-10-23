@@ -5,15 +5,15 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { UploadDataService } from './upload-data.service';
-import { UploadFile } from './upload-file.modal';
+import { IUploadFile } from './upload-file.modal';
 
 @Injectable()
-export class UploadResolver implements Resolve<UploadFile[]> {
+export class UploadResolver implements Resolve<IUploadFile[]> {
     constructor(private uploadService: UploadDataService) { }
 
-    public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): UploadFile[] {
+    public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): IUploadFile[] {
         const ids: string[] = (route.params.id as string).split(',');
-        const uploads: UploadFile[] = [];
+        const uploads: IUploadFile[] = [];
         for (const id of ids) {
         }
         return uploads;

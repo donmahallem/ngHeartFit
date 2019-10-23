@@ -27,8 +27,13 @@ export class FitApiSessionService {
     }
 
     public getSessions(): Observable<HttpEvent<IListSessionsResponse>>;
-    public getSessions(startTime: string | null, endTime: string | null, includeDeleted?: boolean): Observable<HttpEvent<IListSessionsResponse>>;
-    public getSessions(startTime: string | null = undefined, endTime: string | null = undefined, includeDeleted: boolean = false, pageToken: string = undefined): Observable<HttpEvent<IListSessionsResponse>> {
+    public getSessions(startTime: string | undefined,
+                       endTime: string | undefined,
+                       includeDeleted?: boolean): Observable<HttpEvent<IListSessionsResponse>>;
+    public getSessions(startTime?: string | undefined,
+                       endTime?: string | undefined,
+                       includeDeleted: boolean = false,
+                       pageToken?: string): Observable<HttpEvent<IListSessionsResponse>> {
         const params: any = {};
         if (startTime) {
             params.startTime = startTime;

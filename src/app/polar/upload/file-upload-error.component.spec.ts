@@ -13,9 +13,9 @@ import {
     TestBed,
 } from '@angular/core/testing';
 import {
+    IUploadFile,
+    IUploadFileError,
     UploadDataService,
-    UploadFile,
-    UploadFileError,
     UploadFileStatus,
 } from '../services';
 
@@ -35,7 +35,7 @@ class TestUploadDataService {
     template: '<app-file-upload-error [uploadFile]="testFile"></app-file-upload-error>',
 })
 class TestParentComponent {
-    public testFile: UploadFile;
+    public testFile: IUploadFile;
 }
 @Component({
     // tslint:disable-next-line
@@ -54,7 +54,7 @@ describe('app/polar/upload/file-upload-error.component', () => {
     describe('FileUploadErrorComponent', () => {
         let fixture: ComponentFixture<FileUploadErrorComponent>;
         let cmpInstance: FileUploadErrorComponent;
-        const testFiles: UploadFileError[] = [{
+        const testFiles: IUploadFileError[] = [{
             key: 'testFile07.json',
             filename: 'testFile07.json',
             error: new ValidationError('a random test error'),
@@ -103,7 +103,7 @@ describe('app/polar/upload/file-upload-error.component', () => {
                     });
                     describe('mUploadFile is not set', () => {
                         it('should return buffer', () => {
-                            (cmpInstance as any).mUploadFile = null;
+                            (cmpInstance as any).mUploadFile = undefined;
                             expect(cmpInstance.isValidationError).toBeFalsy();
                         });
                     });

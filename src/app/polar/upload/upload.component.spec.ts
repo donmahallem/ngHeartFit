@@ -7,7 +7,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material';
 import { RouterTestingModule } from '@angular/router/testing';
 import { from, Observable } from 'rxjs';
-import { TypedFiles, UploadDataService, UploadFile, UploadFileType } from '../services';
+import { IUploadFile, TypedFiles, UploadDataService, UploadFileType } from '../services';
 import * as testObject from './upload.component';
 
 import { Router } from '@angular/router';
@@ -21,24 +21,24 @@ import { AnalyzeDataService } from '../services/analyze-data.service';
 @Injectable()
 class TestUploadDataService {
 
-    public get uploadedFiles(): UploadFile[] {
+    public get uploadedFiles(): IUploadFile[] {
         return [];
     }
     public update(): void {
     }
 
-    public set uploadedFiles(files: UploadFile[]) {
+    public set uploadedFiles(files: IUploadFile[]) {
     }
 
-    public get uploadedFilesObservable(): Observable<UploadFile[]> {
-        return null;
+    public get uploadedFilesObservable(): Observable<IUploadFile[]> {
+        return undefined;
     }
 
     public get uploadableFilesObservable(): Observable<boolean> {
-        return null;
+        return undefined;
     }
 
-    public addUploadFile(f: UploadFile): void {
+    public addUploadFile(f: IUploadFile): void {
     }
 
     public clear(): void {
@@ -47,7 +47,7 @@ class TestUploadDataService {
 @Injectable()
 class TestAnalyzeDataService {
     clear(): Observable<void> {
-        return null;
+        return undefined;
     }
 
 }
@@ -64,20 +64,20 @@ class TestRouter {
 export class TestFilePreviewComponent {
 
     @Input('uploadFile')
-    public file: UploadFile;
+    public file: IUploadFile;
 }
 let sandbox: sinon.SinonSandbox;
 describe('app/polar/upload/upload.component', () => {
     describe('UploadComponent', () => {
         beforeEach(async(() => {
             TestBed.configureTestingModule({
-                imports: [
-                    RouterTestingModule,
-                    MatButtonModule,
-                ],
                 declarations: [
                     testObject.UploadComponent,
                     TestFilePreviewComponent,
+                ],
+                imports: [
+                    RouterTestingModule,
+                    MatButtonModule,
                 ],
                 providers: [
                     { provide: UploadDataService, useValue: new TestUploadDataService() },
@@ -106,15 +106,15 @@ describe('app/polar/upload/upload.component', () => {
                 type: FileLoadEventType.START,
             }, {
                 key: 'testkey',
-                type: FileLoadEventType.PROGRESS,
                 lengthComputable: true,
                 loaded: 129,
                 total: 9219,
+                type: FileLoadEventType.PROGRESS,
             }, {
-                result: 'jasdf;dsf',
-                key: 'testkey',
-                type: FileLoadEventType.RESULT,
                 filesize: 2392,
+                key: 'testkey',
+                result: 'jasdf;dsf',
+                type: FileLoadEventType.RESULT,
             }];
             beforeEach(() => {
                 validatorStub = sandbox.stub(FlowApiValidator, 'validateTimelineSummary');
@@ -134,13 +134,13 @@ describe('app/polar/upload/upload.component', () => {
                         expect(validatorStub.callCount).toEqual(1, 'Should be called once');
                         const parsedFile: FileLoadEvents<TypedFiles> = nextSpy.getCall(2).args[0];
                         expect(parsedFile).toEqual({
-                            type: FileLoadEventType.RESULT,
+                            filesize: (testEvents[2] as IFileLoadResultEvent<string>).filesize,
                             key: testEvents[2].key,
                             result: {
-                                type: UploadFileType.DAY_SUMMARY,
                                 data: (testEvents[2] as any).result,
+                                type: UploadFileType.DAY_SUMMARY,
                             },
-                            filesize: (testEvents[2] as IFileLoadResultEvent<string>).filesize,
+                            type: FileLoadEventType.RESULT,
                         });
                         done();
                     });

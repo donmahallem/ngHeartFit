@@ -50,11 +50,11 @@ export class FileUtil {
             const reader: FileReader = FileUtil.createFileReader();
             reader.onprogress = (progress: ProgressEvent) => {
                 subscriber.next({
-                    type: FileLoadEventType.PROGRESS,
+                    key,
                     lengthComputable: progress.lengthComputable,
                     loaded: progress.loaded,
                     total: progress.total,
-                    key,
+                    type: FileLoadEventType.PROGRESS,
                 });
             };
             reader.onabort = (ev: ProgressEvent) => {
@@ -64,8 +64,8 @@ export class FileUtil {
                 subscriber.next({
                     filesize: loadEvent.target.result.length,
                     key,
-                    type: FileLoadEventType.RESULT,
                     result: loadEvent.target.result,
+                    type: FileLoadEventType.RESULT,
                 });
                 subscriber.complete();
             };

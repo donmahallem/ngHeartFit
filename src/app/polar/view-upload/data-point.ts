@@ -23,7 +23,10 @@ export class MinMaxDataPoint implements IDataPoint {
             val.y).reduce((prev: number, cur: number, curIdx, arr: number[]): number =>
                 prev + cur);
         this.mDataPoints.map((val: IDataPoint, index: number, arr: IDataPoint[]): { min: Date, max: Date } =>
-            ({ min: val.x, max: val.x })).reduce((prev: { min: Date, max: Date }, cur: { min: Date, max: Date }, curIdx, arr: { min: Date, max: Date }[]): { min: Date, max: Date } => {
+            ({ min: val.x, max: val.x }))
+            .reduce((prev: { min: Date, max: Date },
+                cur: { min: Date, max: Date },
+                curIdx, arr: { min: Date, max: Date }[]): { min: Date, max: Date } => {
                 if (prev) {
                     return {
                         min: (prev.min >= cur.min) ? cur.min : prev.min,
@@ -32,7 +35,7 @@ export class MinMaxDataPoint implements IDataPoint {
                 } else {
                     return cur;
                 }
-            }, null);
+            }, undefined);
     }
 
     public get x(): Date {

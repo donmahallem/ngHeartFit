@@ -31,14 +31,14 @@ const ELEMENT_DATA: any[] = [
 
 @Component({
     selector: 'datasource-detail',
-    templateUrl: './datasource-detail.component.pug',
     styleUrls: ['./datasource-detail.component.scss'],
+    templateUrl: './datasource-detail.component.pug',
 })
 export class DatasourceDetailComponent implements OnDestroy, AfterViewInit, OnInit {
 
     displayedColumns: string[] = ['position', 'name'];
     dataSource2 = ELEMENT_DATA;
-    private mDataSource: IFitDataSource = null;
+    private mDataSource: IFitDataSource = undefined;
     private mRouteDataSubscription: Subscription;
     constructor(private zone: NgZone,
                 private fitDataSetService: FitApiDataSetService,

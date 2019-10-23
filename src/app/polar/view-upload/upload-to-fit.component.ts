@@ -47,7 +47,7 @@ export class UploadToFitComponent {
             .subscribe(console.log, console.error);
     }
     public createDatasource(): void {
-        this.fitDataSourceService.createDataSource(null)
+        this.fitDataSourceService.createDataSource(undefined)
             .subscribe(console.log, console.error);
     }
     public sendData(): void {

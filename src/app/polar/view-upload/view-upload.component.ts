@@ -13,8 +13,8 @@ import { IDataPoint } from './data-point';
 
 @Component({
     selector: 'view-upload-cmp',
-    templateUrl: './view-upload.component.pug',
     styleUrls: ['./view-upload.component.scss'],
+    templateUrl: './view-upload.component.pug',
 })
 export class ViewUploadComponent implements
     AfterViewInit,

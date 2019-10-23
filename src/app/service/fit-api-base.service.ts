@@ -13,8 +13,8 @@ import { GapiStatus, NgGapiService } from './nggapi-base.service';
 export class FitApiBaseService {
     public static readonly ENDPOINT: string = 'https://www.googleapis.com/fitness/v1';
     constructor(private httpService: HttpClient,
-                private nggapi: NgGapiService,
-                private gapiUser: GapiUserService) {
+        private nggapi: NgGapiService,
+        private gapiUser: GapiUserService) {
 
     }
 
@@ -22,23 +22,23 @@ export class FitApiBaseService {
         return this.nggapi.statusObservable
             .pipe(filter((status) =>
                 status !== GapiStatus.LOADING), map((status: GapiStatus) => {
-                if (status === GapiStatus.FAILED) {
-                    throw new Error();
-                }
-                return;
-            }));
+                    if (status === GapiStatus.FAILED) {
+                        throw new Error();
+                    }
+                    return;
+                }));
     }
 
     public createGetRequest<T>(url: string, params: HttpParams | {
         [param: string]: string | string[];
-    } = null): HttpRequest<T> {
-        let paramObject: HttpParams = null;
+    } = undefined): HttpRequest<T> {
+        let paramObject: HttpParams;
         if (params) {
             paramObject = (params instanceof HttpParams) ? params : new HttpParams({
                 fromObject: params,
             });
         }
-        return new HttpRequest<T>('GET', url, null, {
+        return new HttpRequest<T>('GET', url, undefined, {
             responseType: 'json',
             headers: new HttpHeaders({
                 Authorization: 'Bearer ' + this.gapiUser.getToken(),
@@ -48,15 +48,17 @@ export class FitApiBaseService {
         });
     }
 
-    public executeBatchRequest<T extends { [req: string]: HttpRequest<any> }, RESPBODY extends { [K in keyof T]: HttpResponse<any> }>(requests: T): Observable<HttpResponse<RESPBODY>> {
+    public executeBatchRequest<T extends { [req: string]: HttpRequest<any> },
+        RESPBODY extends { [K in keyof T]: HttpResponse<any> }>(requests: T): Observable<HttpResponse<RESPBODY>> {
         const request: HttpRequest<string> = this.createBatchRequest(requests);
         return this.httpService.request(request)
             .pipe(filter((resp: HttpEvent<string>): boolean =>
                 (resp.type === HttpEventType.Response)), map((res: HttpEvent<string>): HttpResponse<any> =>
-                this.parseBatchResponse(res as HttpResponse<string>) as any));
+                    this.parseBatchResponse(res as HttpResponse<string>) as any));
     }
 
-    public createBatchRequest<REQBODY, T extends { [req: string]: HttpRequest<REQBODY> }, K extends keyof T>(requests: T): HttpRequest<string> {
+    public createBatchRequest<REQBODY, T extends { [req: string]: HttpRequest<REQBODY> },
+        K extends keyof T>(requests: T): HttpRequest<string> {
         const boundary: string = 'batch' + new Date().valueOf();
         let body: string = '--' + boundary + '\n';
         let reqIdx = 0;
@@ -72,9 +74,9 @@ export class FitApiBaseService {
         body += '--';
         return new HttpRequest<string>('POST', 'https://www.googleapis.com/batch/fitness/v1', body, {
             headers: new HttpHeaders({
-                'Content-Type': 'multipart/mixed; boundary=' + boundary,
                 'Authorization': 'Bearer ' + this.gapiUser.getToken(),
                 'Content-Length': '' + body.length,
+                'Content-Type': 'multipart/mixed; boundary=' + boundary,
             }),
             responseType: 'text',
             reportProgress: false,
@@ -101,7 +103,7 @@ export class FitApiBaseService {
             const lineBreakRegex: RegExp = /(\r\n|(\r|\n){2,2}){2,}[^(\r|\n)]/gm;
             const breakPoints: number[] = [];
             let regArray: RegExpExecArray;
-            while ((regArray = lineBreakRegex.exec(content)) !== null) {
+            while ((regArray = lineBreakRegex.exec(content)) !== undefined) {
                 breakPoints.push(regArray.index);
             }
             const firstHeader: string = content.substr(0, breakPoints[0]).trim();
@@ -144,10 +146,10 @@ export class FitApiBaseService {
         return body;
     }
 
-    public getRequest<RESP_BODY>(url: string, params: HttpParams | {
+    public getRequest<RESP_BODY>(url: string, params?: HttpParams | {
         [param: string]: string | string[];
-    } = null): Observable<HttpEvent<RESP_BODY>> {
-        let convertedParams: HttpParams = null;
+    }): Observable<HttpEvent<RESP_BODY>> {
+        let convertedParams: HttpParams;
         if (params) {
             if (params instanceof HttpParams) {
                 convertedParams = params;
@@ -159,19 +161,19 @@ export class FitApiBaseService {
         }
         const request = new HttpRequest('GET', url, {
             headers: new HttpHeaders({
-                'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + this.gapiUser.getToken(),
+                'Content-Type': 'application/json',
             }),
-            responseType: 'json',
-            reportProgress: false,
             params: convertedParams,
+            reportProgress: false,
+            responseType: 'json',
         });
         return this.request(request);
     }
 
     public postRequest<REQ_BODY, RESP_BODY>(url: string, body: REQ_BODY, params: HttpParams | {
         [param: string]: string | string[];
-    } = null): Observable<HttpEvent<RESP_BODY>> {
+    } = undefined): Observable<HttpEvent<RESP_BODY>> {
         return this.base()
             .pipe(flatMap((): Observable<HttpEvent<RESP_BODY>> => {
                 const request = new HttpRequest<REQ_BODY>('POST', url, body, {
@@ -188,7 +190,7 @@ export class FitApiBaseService {
 
     public patchRequest<REQ_BODY, RESP_BODY>(url: string, body: REQ_BODY, params: HttpParams | {
         [param: string]: string | string[];
-    } = null): Observable<HttpEvent<RESP_BODY>> {
+    } = undefined): Observable<HttpEvent<RESP_BODY>> {
         const request = new HttpRequest<REQ_BODY>('PATCH', url, body, {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',

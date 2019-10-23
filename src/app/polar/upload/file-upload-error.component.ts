@@ -6,7 +6,7 @@ import {
     Component,
 } from '@angular/core';
 import { ValidationError } from 'jsonschema';
-import { UploadFileError } from '../services';
+import { IUploadFileError } from '../services';
 import { FileUploadBaseComponent } from './file-upload-base.component';
 
 @Component({
@@ -14,7 +14,7 @@ import { FileUploadBaseComponent } from './file-upload-base.component';
     templateUrl: './file-upload-error.component.pug',
     styleUrls: ['./file-upload-error.component.scss'],
 })
-export class FileUploadErrorComponent extends FileUploadBaseComponent<UploadFileError> {
+export class FileUploadErrorComponent extends FileUploadBaseComponent<IUploadFileError> {
 
     public get isValidationError(): boolean {
         return (this.mUploadFile && this.mUploadFile.error instanceof ValidationError);

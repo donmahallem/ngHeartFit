@@ -11,27 +11,27 @@ import * as moment from 'moment';
 import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 
 export function forbiddenNameValidator(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
+    return (control: AbstractControl): { [key: string]: any } | undefined => {
         const group: FormGroup = control as any;
         const weightControl: FormControl = group.get('bodyweight') as FormControl;
         const fatControl: FormControl = group.get('bodyfat') as FormControl;
         const heightControl: FormControl = group.get('bodyheight') as FormControl;
-        let groupErrors: ValidationErrors | null = group.errors;
+        let groupErrors: ValidationErrors | undefined = group.errors;
         let controlValue = false;
         controlValue = controlValue || weightControl.value > 0;
         controlValue = controlValue || fatControl.value > 0;
         controlValue = controlValue || heightControl.value > 0;
         if (controlValue) {
-            return null;
+            return undefined;
         }
-        if (groupErrors === null || groupErrors === undefined) {
+        if (groupErrors === undefined || groupErrors === undefined) {
             groupErrors = {};
         }
         groupErrors.oneValueRequired = 'Atleast one value is required';
         return groupErrors;
     };
 }
-export interface BodyMetricsFormData {
+export interface IBodyMetricsFormData {
     bodyweight: number;
     bodyfat: number;
     bodyheight: number;

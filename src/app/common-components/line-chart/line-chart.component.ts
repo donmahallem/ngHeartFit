@@ -6,7 +6,7 @@ import { AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, ViewChild 
 import * as d3 from 'd3';
 import { BehaviorSubject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-export interface DataPoint {
+export interface IDataPoint {
     x: Date;
     y: number;
 }
@@ -17,11 +17,11 @@ export interface DataPoint {
 })
 export class LineChartComponent implements OnInit, AfterViewInit {
     @Input('chartData')
-    public set chartData(data: DataPoint[]) {
+    public set chartData(data: IDataPoint[]) {
         this.chartDataSubject.next(data);
     }
 
-    public get chartData(): DataPoint[] {
+    public get chartData(): IDataPoint[] {
         return this.chartDataSubject.getValue();
     }
     public user: any;
@@ -34,12 +34,12 @@ export class LineChartComponent implements OnInit, AfterViewInit {
     public xAxis: any;
     public yAxis: any;
 
-    private chartDataSubject: BehaviorSubject<DataPoint[]> = new BehaviorSubject<DataPoint[]>(null);
-    private _chartData: DataPoint[];
+    private chartDataSubject: BehaviorSubject<IDataPoint[]> = new BehaviorSubject<IDataPoint[]>(undefined);
+    private _chartData: IDataPoint[];
 
     private xScale: d3.ScaleTime<number, number>;
     private yScale: d3.ScaleLinear<number, number>;
-    private line: d3.Line<DataPoint>;
+    private line: d3.Line<IDataPoint>;
     private resizeSubject: BehaviorSubject<{ width: number, height: number }> = new BehaviorSubject<{ width: number, height: number }>({ width: 1, height: 1 });
     constructor(private zone: NgZone,
                 private elRef: ElementRef) {
@@ -56,7 +56,7 @@ export class LineChartComponent implements OnInit, AfterViewInit {
             .range([300 - this.margin.top - this.margin.bottom, 0]); // output
 
         // 7. d3's line generator
-        this.line = d3.line<DataPoint>()
+        this.line = d3.line<IDataPoint>()
             .x((d, i) => this.xScale(d.x)) // set the x values for the line generator
             .y((d) => this.yScale(d.y)) // set the y values for the line generator
             .curve(d3.curveMonotoneX);

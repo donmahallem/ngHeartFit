@@ -5,9 +5,9 @@
 import {
     Input,
 } from '@angular/core';
-import { UploadFile } from '../services';
+import { IUploadFile } from '../services';
 
-export class FileUploadBaseComponent<T extends UploadFile> {
+export class FileUploadBaseComponent<T extends IUploadFile> {
 
     @Input('uploadFile')
     public set uploadFile(upload: T) {

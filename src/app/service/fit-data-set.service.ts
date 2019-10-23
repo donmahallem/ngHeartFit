@@ -14,12 +14,18 @@ export class FitApiDataSetService {
     constructor(private fitApiBaseService: FitApiBaseService) {
 
     }
-    public getDataSetData<T extends FitDatasetPoints>(dataSource: string, from: moment.Moment, to: moment.Moment): Observable<HttpEvent<IFitDatasetResponse<T>>> {
-        const url = FitApiBaseService.ENDPOINT + '/users/me/dataSources/' + dataSource + '/datasets/' + from.valueOf() + '000000-' + to.valueOf() + '000000';
+    public getDataSetData<T extends FitDatasetPoints>(dataSource: string,
+                                                      from: moment.Moment,
+                                                      to: moment.Moment): Observable<HttpEvent<IFitDatasetResponse<T>>> {
+        const url = FitApiBaseService.ENDPOINT + '/users/me/dataSources/'
+            + dataSource + '/datasets/' + from.valueOf() + '000000-' + to.valueOf() + '000000';
         return this.fitApiBaseService.getRequest<IFitDatasetResponse<T>>(url);
     }
 
-    public insertData(dataSourceId: string, from: moment.Moment, to: moment.Moment, points: IInsertDataPoint[]): Observable<HttpEvent<any>> {
+    public insertData(dataSourceId: string,
+                      from: moment.Moment,
+                      to: moment.Moment,
+                      points: IInsertDataPoint[]): Observable<HttpEvent<any>> {
 
         const requestBody: any = {
             minStartTimeNs: from.valueOf() * 1000000,
@@ -27,7 +33,9 @@ export class FitApiDataSetService {
             dataSourceId,
             point: points,
         };
-        const url = FitApiBaseService.ENDPOINT + '/users/me/dataSources/' + dataSourceId + '/datasets/' + from.valueOf() + '000000-' + to.valueOf() + '000000';
+        const url = FitApiBaseService.ENDPOINT + '/users/me/dataSources/'
+            + dataSourceId + '/datasets/' + from.valueOf() + '000000-'
+            + to.valueOf() + '000000';
 
         return this.fitApiBaseService.patchRequest(url, requestBody);
     }

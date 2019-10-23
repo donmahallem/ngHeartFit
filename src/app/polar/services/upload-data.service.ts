@@ -4,11 +4,11 @@
 
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { UploadFile, UploadFiles, UploadFileStatus } from './upload-file.modal';
+import { IUploadFile, UploadFiles, UploadFileStatus } from './upload-file.modal';
 
 @Injectable()
 export class UploadDataService {
-    private uploadFilesSubject: BehaviorSubject<UploadFile[]> = new BehaviorSubject([]);
+    private uploadFilesSubject: BehaviorSubject<IUploadFile[]> = new BehaviorSubject([]);
     private filesSelectedSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
     private mData: { [key: string]: UploadFiles } = {};
     public update(): void {
@@ -35,15 +35,15 @@ export class UploadDataService {
         }
     }
 
-    public set uploadedFiles(files: UploadFile[]) {
+    public set uploadedFiles(files: IUploadFile[]) {
         this.uploadFilesSubject.next(files);
     }
 
-    public get uploadedFiles(): UploadFile[] {
+    public get uploadedFiles(): IUploadFile[] {
         return this.uploadFilesSubject.value;
     }
 
-    public get uploadedFilesObservable(): Observable<UploadFile[]> {
+    public get uploadedFilesObservable(): Observable<IUploadFile[]> {
         return this.uploadFilesSubject.asObservable();
     }
 
@@ -55,8 +55,8 @@ export class UploadDataService {
         return this.filesSelectedSubject.value;
     }
 
-    public addUploadFile(f: UploadFile): void {
-        const lst: UploadFile[] = this.uploadFilesSubject.value;
+    public addUploadFile(f: IUploadFile): void {
+        const lst: IUploadFile[] = this.uploadFilesSubject.value;
         lst.push(f);
         this.uploadFilesSubject.next(lst);
     }

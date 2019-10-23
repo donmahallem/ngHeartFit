@@ -9,8 +9,8 @@ import { debounceTime } from 'rxjs/operators';
 import { IDataPoint } from './data-point';
 @Component({
     selector: 'weight-chart',
-    templateUrl: './weight-chart.component.pug',
     styleUrls: ['./weight-chart.component.scss'],
+    templateUrl: './weight-chart.component.pug',
 })
 export class WeightChartComponent implements OnInit, AfterViewInit {
     @Input('chartData')
@@ -31,15 +31,15 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
     public xAxis: any;
     public yAxis: any;
 
-    private chartDataSubject: BehaviorSubject<IDataPoint[]> = new BehaviorSubject<IDataPoint[]>(null);
-    private _chartData: IDataPoint[];
+    private chartDataSubject: BehaviorSubject<IDataPoint[]> = new BehaviorSubject<IDataPoint[]>(undefined);
 
     private xScale: d3.ScaleTime<number, number>;
     private yScale: d3.ScaleLinear<number, number>;
     private line: d3.Line<IDataPoint>;
-    private resizeSubject: BehaviorSubject<{ width: number, height: number }> = new BehaviorSubject<{ width: number, height: number }>({ width: 1, height: 1 });
+    private resizeSubject: BehaviorSubject<{ width: number, height: number }> =
+        new BehaviorSubject<{ width: number, height: number }>({ width: 1, height: 1 });
     constructor(private zone: NgZone,
-                private elRef: ElementRef) {
+        private elRef: ElementRef) {
         this.init();
     }
     public init(): void {
@@ -78,7 +78,7 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
             height: this.elRef.nativeElement.offsetHeight,
             width: this.elRef.nativeElement.offsetWidth,
         });
-        const dataset = d3.range(0).map(function(d) { return { x: new Date(d), y: d3.randomUniform(1)() }; });
+        const dataset = d3.range(0).map(function (d) { return { x: new Date(d), y: d3.randomUniform(1)() }; });
         const container = d3.select(this.mySpan.nativeElement).append('g')
             .attr('transform',
                 'translate(' + this.margin.left + ',' + this.margin.top + ')',

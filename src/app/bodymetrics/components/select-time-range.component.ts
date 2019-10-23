@@ -13,14 +13,14 @@ import { Subscription } from 'rxjs';
 import { Status, WeightChartService } from '../services/weight-chart.service';
 
 export function createCompareDateValidator(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
+    return (control: AbstractControl): { [key: string]: any } | undefined => {
         const group: FormGroup = control as any;
         const values: {
             startdate: moment.Moment,
             enddate: moment.Moment,
         } = group.value;
         if (values.startdate.isBefore(values.enddate)) {
-            return null;
+            return undefined;
         }
         return {
             oneValueRequired: 'Atleast one value is required',

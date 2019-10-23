@@ -22,7 +22,7 @@ export class FitApiAggregateService {
     constructor(private fitApiBaseService: FitApiBaseService) {
 
     }
-    public getAggregateData(source: AggregateByFilter[],
+    public getAggregateData(source: IAggregateByFilter[],
                             from: moment.Moment,
                             to: moment.Moment,
                             bucketWindowMillis: number): Observable<HttpEvent<IBucketResponse>> {
@@ -43,7 +43,7 @@ export class FitApiAggregateService {
 
 }
 
-export interface AggregateByFilter {
+export interface IAggregateByFilter {
     dataTypeName?: string;
     dataSourceId?: string;
 }

@@ -17,15 +17,15 @@ export class NgGapiResolver implements Resolve<boolean> {
         return this.nggapi.statusObservable
             .pipe(filter((status: GapiStatus): boolean =>
                 status !== GapiStatus.LOADING), map((status: GapiStatus): true => {
-                if (status === GapiStatus.FAILED) {
-                    throw new Error();
-                }
-                return true;
-            }),
+                    if (status === GapiStatus.FAILED) {
+                        throw new Error();
+                    }
+                    return true;
+                }),
                 take(1),
-                catchError((err: any): Observable<null> => {
+                catchError((err: any): Observable<undefined> => {
                     this.router.navigate(['/error']);
-                    return of(null);
+                    return of(undefined);
                 }));
     }
 

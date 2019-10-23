@@ -12,8 +12,8 @@ import { LoadableListComponent } from 'src/app/common-components/sessions.compon
 import { FitApiDataSourceService, IFitDataSource, IFitDataSourceList } from 'src/app/service/fit-data-source.service';
 @Component({
     selector: 'app-datasources',
-    templateUrl: './datasources.component.pug',
     styleUrls: ['./datasources.component.scss'],
+    templateUrl: './datasources.component.pug',
 })
 export class DatasourcesComponent extends LoadableListComponent<IFitDataSourceList> {
     private mDataSources: IFitDataSource[] = [];

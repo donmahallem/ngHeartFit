@@ -17,6 +17,7 @@ import { RouteLoadingIndicatorComponent } from './route-loading-indicator.compon
 import { RouteGuardService } from './service/route-guard.service';
 
 @NgModule({
+    bootstrap: [AppComponent],
     declarations: [
         AppComponent,
         ProfileComponent,
@@ -39,6 +40,5 @@ import { RouteGuardService } from './service/route-guard.service';
     providers: [
         RouteGuardService,
     ],
-    bootstrap: [AppComponent],
 })
 export class AppModule { }

@@ -9,7 +9,11 @@ import { LineChartModule } from 'src/app/common-components/line-chart';
 import { FitDashboardComponent } from './fit-dashboard.component';
 
 @NgModule({
-    imports: [
+    declarations: [
+        FitDashboardComponent,
+    ],
+    exports: [
+        FitDashboardComponent,
         CommonModule,
         MatProgressBarModule,
         MatTableModule,
@@ -17,11 +21,7 @@ import { FitDashboardComponent } from './fit-dashboard.component';
         MatToolbarModule,
         LineChartModule,
     ],
-    declarations: [
-        FitDashboardComponent,
-    ],
-    exports: [
-        FitDashboardComponent,
+    imports: [
         CommonModule,
         MatProgressBarModule,
         MatTableModule,

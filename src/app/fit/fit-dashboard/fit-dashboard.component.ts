@@ -6,10 +6,8 @@ import { HttpEventType, HttpResponse } from '@angular/common/http';
 import {
     AfterViewInit,
     Component,
-    NgZone,
     OnDestroy,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { filter, flatMap } from 'rxjs/operators';
@@ -24,13 +22,11 @@ import { FitApiDataSourceService, IFitDataSource } from 'src/app/service/fit-dat
 })
 export class FitDashboardComponent implements OnDestroy, AfterViewInit {
 
-    private mDataSource: IFitDataSource = null;
+    private mDataSource: IFitDataSource = undefined;
     private mRouteDataSubscription: Subscription;
-    constructor(private zone: NgZone,
-                private fitDataSetService: FitApiDataSetService,
+    constructor(private fitDataSetService: FitApiDataSetService,
                 private fitAggregateService: FitApiAggregateService,
-                private datasourceService: FitApiDataSourceService,
-                private activatedRoute: ActivatedRoute) {
+                private datasourceService: FitApiDataSourceService) {
     }
 
     public get dataSource(): IFitDataSource {
