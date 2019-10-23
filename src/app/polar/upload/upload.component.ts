@@ -83,16 +83,21 @@ export class UploadComponent implements OnInit {
         return this.analyzeDataService.clear()
             .pipe(flatMap((result) =>
                 from(this.uploadFiles)), filter((upload: IUploadFile): boolean =>
-                    upload.status === UploadFileStatus.LOADED), filter((upload: UploadFileResults): boolean =>
-                        upload.type === UploadFileType.DAY_SUMMARY && upload.selected), map((upload: IUploadFileDaySummaryResult): IDaySummary =>
-                            upload.data), flatMap((summary: IDaySummary): Observable<IDayData> => {
-                                const summaries: IDayData[] = [];
-                                for (const key of Object.keys(summary)) {
-                                    summaries.push(summary[key]);
-                                }
-                                return from(summaries);
-                            }), flatMap((data: IDayData) =>
-                                this.analyzeDataService.insertActivityGraphData(data.activityGraphData)));
+                    upload.status === UploadFileStatus.LOADED),
+                filter((upload: UploadFileResults): boolean =>
+                    upload.type === UploadFileType.DAY_SUMMARY &&
+                    upload.selected),
+                map((upload: IUploadFileDaySummaryResult): IDaySummary =>
+                    upload.data),
+                flatMap((summary: IDaySummary): Observable<IDayData> => {
+                    const summaries: IDayData[] = [];
+                    for (const key of Object.keys(summary)) {
+                        summaries.push(summary[key]);
+                    }
+                    return from(summaries);
+                }), flatMap((data: IDayData) =>
+                    this.analyzeDataService
+                        .insertActivityGraphData(data.activityGraphData)));
     }
 
     public validateFiles(e: HTMLInputElement): void {

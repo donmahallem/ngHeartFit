@@ -12,8 +12,8 @@ import { FileUploadProgressComponent } from './file-upload-progress.component';
 
 @Component({
     selector: 'app-file-preview',
-    templateUrl: './file-preview.component.pug',
     styleUrls: ['./file-preview.component.scss'],
+    templateUrl: './file-preview.component.pug',
     viewProviders: [
         FileUploadErrorComponent,
         FileUploadProgressComponent,

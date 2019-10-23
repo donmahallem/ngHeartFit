@@ -30,11 +30,11 @@ const gapiClientConfig: NgGapiClientConfig = {
 };
 
 @NgModule({
+    exports: [GoogleApiModule],
     imports: [GoogleApiModule.forRoot({
         provide: NG_GAPI_CONFIG,
         useValue: gapiClientConfig,
     })],
-    exports: [GoogleApiModule],
 })
 export class NgGapiConfigModule {
     static forRoot(): ModuleWithProviders {

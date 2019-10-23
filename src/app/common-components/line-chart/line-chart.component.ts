@@ -34,13 +34,15 @@ export class LineChartComponent implements OnInit, AfterViewInit {
     public xAxis: any;
     public yAxis: any;
 
-    private chartDataSubject: BehaviorSubject<IDataPoint[]> = new BehaviorSubject<IDataPoint[]>(undefined);
-    private _chartData: IDataPoint[];
+    private chartDataSubject: BehaviorSubject<IDataPoint[]>
+        = new BehaviorSubject<IDataPoint[]>(undefined);
+    private mChartData: IDataPoint[];
 
     private xScale: d3.ScaleTime<number, number>;
     private yScale: d3.ScaleLinear<number, number>;
     private line: d3.Line<IDataPoint>;
-    private resizeSubject: BehaviorSubject<{ width: number, height: number }> = new BehaviorSubject<{ width: number, height: number }>({ width: 1, height: 1 });
+    private resizeSubject: BehaviorSubject<{ width: number, height: number }>
+        = new BehaviorSubject<{ width: number, height: number }>({ width: 1, height: 1 });
     constructor(private zone: NgZone,
                 private elRef: ElementRef) {
         this.init();

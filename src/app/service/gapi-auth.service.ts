@@ -14,6 +14,7 @@ export interface ISignInUrlResponse {
 export interface IExchangeCodeResponse {
     url: string;
 }
+// tslint:disable-next-line:no-empty-interface
 export interface IUser {
 
 }

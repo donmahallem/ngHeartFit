@@ -24,6 +24,9 @@ export class GapiUserService {
     public static SESSION_STORAGE_KEY = 'accessToken';
     private signedInObservable: Observable<boolean>;
 
+    // tslint:disable-next-line:no-unused-variable
+    private user: gapi.auth2.GoogleUser;
+
     constructor(private googleAuth: GoogleAuthService) {
         this.watchUserChanges();
         this.signedInObservable = this.createSignedInObservable();
@@ -33,7 +36,7 @@ export class GapiUserService {
         return this.googleAuth
             .getAuth()
             .pipe(flatMap((googleAuthClient: gapi.auth2.GoogleAuth): Observable<boolean> =>
-                Observable.create((observer: Observer<boolean>) => {
+                new Observable((observer: Observer<boolean>) => {
                     observer.next(googleAuthClient.isSignedIn.get());
                     googleAuthClient.isSignedIn.listen((signedIn: boolean) => {
                         observer.next(signedIn);
@@ -46,7 +49,7 @@ export class GapiUserService {
         this.googleAuth
             .getAuth()
             .pipe(flatMap((googleAuthClient: gapi.auth2.GoogleAuth): Observable<string> =>
-                Observable.create((observer: Observer<string>) => {
+                new Observable((observer: Observer<string>) => {
                     if (googleAuthClient.currentUser.get()) {
                         observer.next(googleAuthClient.currentUser.get().getAuthResponse().access_token);
                     }
@@ -79,7 +82,6 @@ export class GapiUserService {
             GapiUserService.SESSION_STORAGE_KEY, token,
         );
     }
-
     private signInSuccessHandler(res: gapi.auth2.GoogleUser) {
         this.user = res;
         sessionStorage.setItem(

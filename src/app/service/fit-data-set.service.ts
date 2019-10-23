@@ -58,6 +58,7 @@ export interface IFitDatasetResponse<T extends FitDatasetPoints> {
     minStartTimeNs: string;
     point: T[];
 }
+// tslint:disable-next-line:no-empty-interface
 export interface IFitDatasetPointValue {
 
 }

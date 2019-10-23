@@ -10,7 +10,7 @@ import {
     ViewChild,
 } from '@angular/core';
 import * as moment from 'moment';
-import { Subscription } from 'rxjs';
+import { Subscriber, Subscription } from 'rxjs';
 import { debounceTime, delay, filter, flatMap } from 'rxjs/operators';
 import { LineChartComponent } from 'src/app/common-components/line-chart';
 import { FitApiAggregateService, IAggregateByFilter } from 'src/app/service/fit-aggregate.service';
@@ -70,7 +70,7 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
                                 return this.fitApiAggregateService.getAggregateData(types, moments[0], moments[1], diff);
                             }))), delay(1000))
             // tslint:disable-next-line:no-console
-            .subscribe(this.updateData.bind(this), console.error));
+            .subscribe(new Subscriber(this.updateData.bind(this), console.error)));
     }
 
     public updateData(bucketResponse: IBucketResponse): void {/*
@@ -79,17 +79,20 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
         for (const bucket of bucketResponse.bucket) {
             for (const dataset of bucket.dataset) {
                 if (dataset.point.length > 0) {
-                    if (dataset.dataSourceId === 'derived:com.google.weight.summary:com.google.android.gms:aggregated') {
+                    if (dataset.dataSourceId ===
+                        'derived:com.google.weight.summary:com.google.android.gms:aggregated') {
                         for (const p of dataset.point) {
                             const chartP: ChartPoint = {
-                                x: new Date(parseInt(p.startTimeNanos.substr(0, p.startTimeNanos.length - 6), 10)),
+                                x: new Date(parseInt(p.startTimeNanos
+                                    .substr(0, p.startTimeNanos.length - 6), 10)),
                                 y: p.value[0].fpVal
                             };
                             chartP['ymax'] = p.value[1].fpVal;
                             chartP['ymin'] = p.value[2].fpVal;
                             weightDatapoints.push(chartP);
                         }
-                    } else if (dataset.dataSourceId === 'derived:com.google.body.fat.percentage.summary:com.google.android.gms:aggregated') {
+                    } else if (dataset.dataSourceId ===
+                        'derived:com.google.body.fat.percentage.summary:com.google.android.gms:aggregated') {
                         for (const p of dataset.point) {
                             const chartP: ChartPoint = {
                                 x: new Date(parseInt(p.startTimeNanos.substr(0, p.startTimeNanos.length - 6), 10)),

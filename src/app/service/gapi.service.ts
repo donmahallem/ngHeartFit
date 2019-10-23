@@ -12,7 +12,9 @@ export interface ISignInUrlResponse {
     url: string;
 }
 
+// tslint:disable-next-line:no-empty-interface
 export interface IExchangeCodeResponse { }
+// tslint:disable-next-line:no-empty-interface
 export interface IUser {
 }
 

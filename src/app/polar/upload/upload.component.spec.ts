@@ -6,7 +6,7 @@ import { Component, Injectable, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material';
 import { RouterTestingModule } from '@angular/router/testing';
-import { from, Observable } from 'rxjs';
+import { from, Observable, Subscriber } from 'rxjs';
 import { IUploadFile, TypedFiles, UploadDataService, UploadFileType } from '../services';
 import * as testObject from './upload.component';
 
@@ -63,8 +63,8 @@ class TestRouter {
 })
 export class TestFilePreviewComponent {
 
-    @Input('uploadFile')
-    public file: IUploadFile;
+    @Input()
+    public uploadFile: IUploadFile;
 }
 let sandbox: sinon.SinonSandbox;
 describe('app/polar/upload/upload.component', () => {
@@ -161,14 +161,14 @@ describe('app/polar/upload/upload.component', () => {
                 const nextSpy: sinon.SinonSpy = sinon.spy();
                 from(testEvents)
                     .pipe(cmpInstance.createConvertUploadFileAndCheckValidity())
-                    .subscribe(nextSpy, (err) => {
+                    .subscribe(new Subscriber(nextSpy, (err) => {
                         expect(nextSpy.callCount).toEqual(2);
                         expect(nextSpy.getCall(0).args).toEqual([testEvents[0]]);
                         expect(nextSpy.getCall(1).args).toEqual([testEvents[1]]);
                         expect(validatorStub.callCount).toEqual(1, 'Should be called once');
                         expect(err).toEqual(validatorErrors[0]);
                         done();
-                    }, done);
+                    }, done));
             });
         });
 

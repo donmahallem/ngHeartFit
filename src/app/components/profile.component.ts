@@ -12,14 +12,14 @@ import { MatButton } from '@angular/material';
 import { Subscription } from 'rxjs';
 @Component({
     selector: 'profile-view',
-    templateUrl: './profile.component.pug',
     styleUrls: ['./profile.component.scss'],
+    templateUrl: './profile.component.pug',
 })
 export class ProfileComponent implements AfterViewInit, OnDestroy {
     public user: any;
     @ViewChild('btnSignin', { static: false })
     public btnSignIn: MatButton;
-    private _isSignedIn = false;
+    private mIsSignedIn = false;
     private signinSubscription: Subscription;
     constructor() { }
     public ngAfterViewInit(): void {
@@ -45,7 +45,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     }
 
     public get isSignedIn(): boolean {
-        return this._isSignedIn;
+        return this.mIsSignedIn;
     }
 
     public signin(event: MouseEvent): void {

@@ -7,14 +7,14 @@ import { NgModule } from '@angular/core';
 import { LineChartComponent } from './line-chart.component';
 
 @NgModule({
-    imports: [
-        CommonModule,
-    ],
     declarations: [
         LineChartComponent,
     ],
     exports: [
         LineChartComponent,
+    ],
+    imports: [
+        CommonModule,
     ],
     providers: [
     ],

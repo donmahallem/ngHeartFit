@@ -35,8 +35,8 @@ export class DatasourceExampleTableComponent<T>
         this.mDataSourceSubject.subscribe((val) => {
             if (val) {
                 const vals: string[] = ['startTime', 'endTime', 'modifiedTime'].concat(val.dataType.field
-                    .map((val) =>
-                        val.name));
+                    .map((innerVal) =>
+                        innerVal.name));
                 this.displayedColumns = vals;
                 return;
             }
@@ -56,9 +56,9 @@ export class DatasourceExampleTableComponent<T>
         const res: any[] = [];
         for (const a of result.point) {
             res.push({
-                startTime: moment.unix(parseInt(a.startTimeNanos.substr(0, a.startTimeNanos.length - 9), 10)),
                 endTime: moment.unix(parseInt(a.endTimeNanos.substr(0, a.endTimeNanos.length - 9), 10)),
                 modifiedTime: moment.unix(parseInt(a.modifiedTimeMillis.substr(0, a.modifiedTimeMillis.length - 3), 10)),
+                startTime: moment.unix(parseInt(a.startTimeNanos.substr(0, a.startTimeNanos.length - 9), 10)),
                 weight: a.value[0].fpVal,
             });
         }

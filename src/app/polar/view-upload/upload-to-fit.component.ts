@@ -22,6 +22,10 @@ export class UploadToFitComponent {
     constructor(private fitDataSourceService: FitApiDataSourceService) {
     }
 
+    public get dataPoints(): IDataPoint[] {
+        return this.dataPointsSubject.value;
+    }
+
     @Input('dataPoints')
     public set dataPoints(data: IDataPoint[]) {
         if (Array.isArray(data)) {
@@ -35,10 +39,6 @@ export class UploadToFitComponent {
 
     public get numberOfItems(): number {
         return this.mNumberOfItems;
-    }
-
-    public get dataPoints(): IDataPoint[] {
-        return this.dataPointsSubject.value;
     }
 
     public uploadData(): void {

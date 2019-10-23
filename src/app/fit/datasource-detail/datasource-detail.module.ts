@@ -10,13 +10,6 @@ import { DatasourceExampleTableComponent } from './datasource-example-table.comp
 import { FitDataSourceDetailResolver } from './fit-data-source-detail.resolver';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        MatProgressBarModule,
-        MatTableModule,
-        MatIconModule,
-        MatToolbarModule,
-    ],
     declarations: [
         DatasourceDetailComponent,
         DatasourceExampleTableComponent,
@@ -24,6 +17,13 @@ import { FitDataSourceDetailResolver } from './fit-data-source-detail.resolver';
     exports: [
         DatasourceDetailComponent,
         DatasourceExampleTableComponent,
+        CommonModule,
+        MatProgressBarModule,
+        MatTableModule,
+        MatIconModule,
+        MatToolbarModule,
+    ],
+    imports: [
         CommonModule,
         MatProgressBarModule,
         MatTableModule,

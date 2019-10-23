@@ -62,7 +62,7 @@ export class FitApiBaseService {
         const boundary: string = 'batch' + new Date().valueOf();
         let body: string = '--' + boundary + '\n';
         let reqIdx = 0;
-        for (const req in requests) {
+        for (const req of Object.keys(requests)) {
             if (reqIdx > 0) {
                 body += '\n';
             }
@@ -103,6 +103,7 @@ export class FitApiBaseService {
             const lineBreakRegex: RegExp = /(\r\n|(\r|\n){2,2}){2,}[^(\r|\n)]/gm;
             const breakPoints: number[] = [];
             let regArray: RegExpExecArray;
+            // tslint:disable-next-line:no-conditional-assignment
             while ((regArray = lineBreakRegex.exec(content)) !== undefined) {
                 breakPoints.push(regArray.index);
             }

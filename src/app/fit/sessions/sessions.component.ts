@@ -14,8 +14,8 @@ import { FitApiSessionService } from 'src/app/service/fit-session.service';
 
 @Component({
     selector: 'app-sessions-list',
-    templateUrl: './sessions.component.pug',
     styleUrls: ['./sessions.component.scss'],
+    templateUrl: './sessions.component.pug',
 })
 export class SessionsComponent extends LoadableListComponent<IListSessionsResponse> {
     private mSessions: IFitSession[] = [];
