@@ -106,13 +106,13 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
         ];
         beforeEach(async(() => {
             TestBed.configureTestingModule({
-                imports: [
-                ],
                 declarations: [
                     FileUploadLoadedComponent,
                     TestParentComponent,
                     TestMatSlideToggleComponent,
                     TestMatIconComponent,
+                ],
+                imports: [
                 ],
                 providers: [
                     { provide: UploadDataService, useValue: new TestUploadDataService() },

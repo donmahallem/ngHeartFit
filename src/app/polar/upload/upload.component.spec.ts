@@ -154,8 +154,8 @@ describe('app/polar/upload/upload.component', () => {
                     } as any,
                 ];
                 const validatorRes: ValidatorResult = {
-                    valid: false,
                     errors: validatorErrors,
+                    valid: false,
                 } as any;
                 validatorStub.returns(validatorRes);
                 const nextSpy: sinon.SinonSpy = sinon.spy();

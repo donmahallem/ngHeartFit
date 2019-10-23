@@ -23,12 +23,12 @@ export class FileUploadObserver implements Observer<FileLoadEvents<TypedFiles>> 
         switch (ev.result.type) {
             case UploadFileType.DAY_SUMMARY:
                 this.uploadDataService.updateFile({
-                    status: UploadFileStatus.LOADED,
-                    filename: this.sourceFile.name,
-                    key: this.sourceFile.name,
                     data: ev.result.data,
-                    type: UploadFileType.DAY_SUMMARY,
+                    filename: this.sourceFile.name,
                     filesize: ev.filesize,
+                    key: this.sourceFile.name,
+                    status: UploadFileStatus.LOADED,
+                    type: UploadFileType.DAY_SUMMARY,
                 });
                 break;
             case UploadFileType.SLEEP_DATA:
@@ -74,10 +74,10 @@ export class FileUploadObserver implements Observer<FileLoadEvents<TypedFiles>> 
     public error(err: any) {
         this.uploadDataService
             .updateFile({
-                status: UploadFileStatus.ERROR,
                 error: err,
-                key: this.sourceFile.name,
                 filename: this.sourceFile.name,
+                key: this.sourceFile.name,
+                status: UploadFileStatus.ERROR,
             });
     }
     public complete() {

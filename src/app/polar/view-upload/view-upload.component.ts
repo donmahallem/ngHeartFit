@@ -7,7 +7,6 @@ import {
     Component,
     OnDestroy,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { AnalyzeDataService, Pair } from '../services/analyze-data.service';
 import { IDataPoint } from './data-point';
 
@@ -21,7 +20,6 @@ export class ViewUploadComponent implements
     OnDestroy {
     public user: any;
     public chartData: IDataPoint[] = [];
-    private idSubscription: Subscription;
     constructor(private analyzeDataService: AnalyzeDataService) {
     }
 

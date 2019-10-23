@@ -4,7 +4,6 @@
 
 import {
     Component,
-    NgZone,
     OnInit,
 } from '@angular/core';
 import { Router } from '@angular/router';
@@ -28,9 +27,8 @@ import { FileUploadObserver } from './file-upload.observer';
 })
 export class UploadComponent implements OnInit {
     constructor(private uploadDataService: UploadDataService,
-        private zone: NgZone,
-        private analyzeDataService: AnalyzeDataService,
-        private router: Router) { }
+                private analyzeDataService: AnalyzeDataService,
+                private router: Router) { }
     public ngOnInit(): void {
     }
 

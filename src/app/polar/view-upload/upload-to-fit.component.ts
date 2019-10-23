@@ -12,8 +12,8 @@ import { IDataPoint } from './data-point';
 
 @Component({
     selector: 'upload-to-fit-cmp',
-    templateUrl: './upload-to-fit.component.pug',
     styleUrls: ['./upload-to-fit.component.scss'],
+    templateUrl: './upload-to-fit.component.pug',
 })
 export class UploadToFitComponent {
     private dataPointsSubject: BehaviorSubject<IDataPoint[]> = new BehaviorSubject<IDataPoint[]>([]);
@@ -44,10 +44,12 @@ export class UploadToFitComponent {
 
     public uploadData(): void {
         this.fitDataSourceService.getDataSources()
+            // tslint:disable-next-line:no-console
             .subscribe(console.log, console.error);
     }
     public createDatasource(): void {
         this.fitDataSourceService.createDataSource(undefined)
+            // tslint:disable-next-line:no-console
             .subscribe(console.log, console.error);
     }
     public sendData(): void {

@@ -61,8 +61,8 @@ export class FitApiDataSourceService {
         return this.createDataSource(this.createDataSourceMetaData({
             field: [
                 {
-                    name: 'weight',
                     format: 'floatPoint',
+                    name: 'weight',
                 },
             ],
             name: FitApiDataSourceService.DATA_TYPE_WEIGHT,
@@ -73,8 +73,8 @@ export class FitApiDataSourceService {
         return this.createDataSource(this.createDataSourceMetaData({
             field: [
                 {
-                    name: 'percentage',
                     format: 'floatPoint',
+                    name: 'percentage',
                 },
             ],
             name: FitApiDataSourceService.DATA_TYPE_BODY_FAT_PERCENTAGE,

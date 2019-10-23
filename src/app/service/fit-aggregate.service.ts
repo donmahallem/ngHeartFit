@@ -29,12 +29,12 @@ export class FitApiAggregateService {
         return this.fitApiBaseService.base()
             .pipe(flatMap((): Observable<HttpEvent<IBucketResponse>> => {
                 const requestBody: any = {
-                    startTimeMillis: from.utc().valueOf(),
-                    endTimeMillis: to.utc().valueOf(),
                     aggregateBy: source,
                     bucketByTime: {
                         durationMillis: bucketWindowMillis,
                     },
+                    endTimeMillis: to.utc().valueOf(),
+                    startTimeMillis: from.utc().valueOf(),
                 };
                 const url = FitApiBaseService.ENDPOINT + '/users/me/dataset:aggregate';
                 return this.fitApiBaseService.postRequest<any, IBucketResponse>(url, requestBody);

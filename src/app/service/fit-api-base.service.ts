@@ -13,8 +13,8 @@ import { GapiStatus, NgGapiService } from './nggapi-base.service';
 export class FitApiBaseService {
     public static readonly ENDPOINT: string = 'https://www.googleapis.com/fitness/v1';
     constructor(private httpService: HttpClient,
-        private nggapi: NgGapiService,
-        private gapiUser: GapiUserService) {
+                private nggapi: NgGapiService,
+                private gapiUser: GapiUserService) {
 
     }
 
@@ -78,8 +78,8 @@ export class FitApiBaseService {
                 'Content-Length': '' + body.length,
                 'Content-Type': 'multipart/mixed; boundary=' + boundary,
             }),
-            responseType: 'text',
             reportProgress: false,
+            responseType: 'text',
         });
     }
 
@@ -206,17 +206,17 @@ export class FitApiBaseService {
     }
 }
 
-export interface PostBatchRequest extends BatchRequest {
+export interface IPostBatchRequest extends IBatchRequest {
     body: any;
 }
 
-export interface BatchRequest {
+export interface IBatchRequest {
     content_id: string;
     method: 'get' | 'post' | 'put' | 'patch';
     path: string;
 }
 
-export class ApiRequest<T> {
+export class IApiRequest<T> {
     private mClient: HttpClient;
     private mRequest: HttpRequest<T>;
     constructor(client: HttpClient, request: HttpRequest<T>) {
