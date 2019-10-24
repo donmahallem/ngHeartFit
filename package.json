@@ -30,7 +30,7 @@
         "@angular/material-moment-adapter": "~8.2.0",
         "@angular/platform-browser": "~8.2.6",
         "@angular/platform-browser-dynamic": "~8.2.6",
-        "@angular/router": "~8.2.6",
+        "@angular/router": "~8.2.12",
         "@donmahallem/flow-api-types": "~2.3.0",
         "core-js": "~3.3.3",
         "d3": "~5.12.0",
