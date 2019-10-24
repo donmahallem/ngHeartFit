@@ -127,7 +127,7 @@ describe('app/polar/upload/upload.component', () => {
                 validatorStub.returns(validatorRes);
                 from(testEvents)
                     .pipe(cmpInstance.createConvertUploadFileAndCheckValidity())
-                    .subscribe(new Observer(nextSpy, done, () => {
+                    .subscribe(new Subscriber(nextSpy, done, () => {
                         expect(nextSpy.callCount).toEqual(3);
                         expect(nextSpy.getCall(0).args).toEqual([testEvents[0]]);
                         expect(nextSpy.getCall(1).args).toEqual([testEvents[1]]);
