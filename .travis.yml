@@ -3,10 +3,11 @@ addons:
   chrome: stable
 env:
   matrix:
-    - TEST_SUITE=build
-    - TEST_SUITE=unit
+  - TEST_SUITE=lint
+  - TEST_SUITE=build
+  - TEST_SUITE=unit
+  - TEST_SUITE=docs
 node_js:
-  - 10
   - stable
 cache:
   directories:
@@ -19,13 +20,19 @@ after_install:
 script:
 - npm run test:$TEST_SUITE
 after_success:
-- ng build --prod --aot --base-href /ngHeartFit/
-- cp ./dist/fitclient/index.html ./dist/fitclient/404.html
 - npm install coveralls && cat ./coverage/lcov.info | coveralls
-deploy:
-  provider: pages
-  skip_cleanup: true
-  github_token: "$GITHUB_TOKEN"
-  local_dir: dist/fitclient
-  on:
-    branch: master
+jobs:
+  include:
+  - stage: Publish docs on github
+    node_js: stable
+    script:
+    - npm run compodoc
+    if: branch = master
+    deploy:
+      provider: pages
+      skip-cleanup: true
+      local-dir: docs
+      github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+      keep-history: true
+      on:
+        branch: master
