@@ -1,26 +1,30 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import {
-    Component,
     AfterViewInit,
+    Component,
+    Input,
     OnDestroy,
-    Input
 } from '@angular/core';
-import { FitSession } from 'src/app/service/fit-api-modals';
+import { IFitSession } from 'src/app/service/fit-api-modals';
 @Component({
-    selector: 'session-detail',
+    selector: 'app-session-detail',
+    styleUrls: ['./session-detail.component.scss'],
     templateUrl: './session-detail.component.pug',
-    styleUrls: ['./session-detail.component.scss']
 })
 export class SessionDetailComponent implements OnDestroy, AfterViewInit {
-    private mSession: FitSession;
+    private mSession: IFitSession;
     constructor() {
     }
 
     @Input('session')
-    public set session(session: FitSession) {
+    public set session(session: IFitSession) {
         this.mSession = session;
     }
 
-    public get session(): FitSession {
+    public get session(): IFitSession {
         return this.mSession;
     }
 

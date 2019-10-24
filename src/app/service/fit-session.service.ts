@@ -1,16 +1,16 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
 
+import { HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { HttpParams, HttpRequest, HttpEvent } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 import { FitApiBaseService } from './fit-api-base.service';
-import { map, flatMap } from 'rxjs/operators';
-import { FitApiDataSetService } from './fit-data-set.service';
 import {
-    FitSession,
-    ListSessionsResponse
+    IFitSession,
+    IListSessionsResponse,
 } from './fit-api-modals';
-import * as moment from 'moment';
 
 @Injectable()
 export class FitApiSessionService {
@@ -22,13 +22,18 @@ export class FitApiSessionService {
 
     }
 
-    public getSession(id: string): Observable<HttpEvent<FitSession>> {
+    public getSession(id: string): Observable<HttpEvent<IFitSession>> {
         return this.fitApiBaseService.getRequest(FitApiBaseService.ENDPOINT + '/users/me/sessions/' + id);
     }
 
-    public getSessions(): Observable<HttpEvent<ListSessionsResponse>>;
-    public getSessions(startTime: string | null, endTime: string | null, includeDeleted?: boolean): Observable<HttpEvent<ListSessionsResponse>>;
-    public getSessions(startTime: string | null = undefined, endTime: string | null = undefined, includeDeleted: boolean = false, pageToken: string = undefined): Observable<HttpEvent<ListSessionsResponse>> {
+    public getSessions(): Observable<HttpEvent<IListSessionsResponse>>;
+    public getSessions(startTime: string | undefined,
+                       endTime: string | undefined,
+                       includeDeleted?: boolean): Observable<HttpEvent<IListSessionsResponse>>;
+    public getSessions(startTime?: string | undefined,
+                       endTime?: string | undefined,
+                       includeDeleted: boolean = false,
+                       pageToken?: string): Observable<HttpEvent<IListSessionsResponse>> {
         const params: any = {};
         if (startTime) {
             params.startTime = startTime;
@@ -36,7 +41,7 @@ export class FitApiSessionService {
         if (endTime) {
             params.endTime = endTime;
         }
-        params.includeDeleted = includeDeleted === true;
+        params.includeDeleted = includeDeleted;
         if (pageToken) {
             params.pageToken = pageToken;
         }

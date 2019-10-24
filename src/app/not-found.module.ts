@@ -1,18 +1,21 @@
-import { NgModule } from '@angular/core';
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { NotFoundComponent } from './not-found.component';
 
-
 @NgModule({
-    imports: [
-        CommonModule
-    ],
     declarations: [
-        NotFoundComponent
+        NotFoundComponent,
     ],
     exports: [
         CommonModule,
-        NotFoundComponent
-    ]
+        NotFoundComponent,
+    ],
+    imports: [
+        CommonModule,
+    ],
 })
 export class NotFoundModule { }

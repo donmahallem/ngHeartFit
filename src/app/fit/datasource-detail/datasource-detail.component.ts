@@ -1,19 +1,20 @@
-import {
-    Component,
-    AfterViewInit,
-    OnDestroy,
-    NgZone,
-    OnInit
-} from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { flatMap, debounceTime } from 'rxjs/operators';
-import * as moment from 'moment';
-import { FitDataSource, FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
-import { FitApiDataSetService } from 'src/app/service/fit-data-set.service';
-import { HttpEvent, HttpEventType } from '@angular/common/http';
-import { MatProgressBar } from '@angular/material';
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
 
+import {
+    AfterViewInit,
+    Component,
+    NgZone,
+    OnDestroy,
+    OnInit,
+} from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import * as moment from 'moment';
+import { Subscription } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
+import { FitApiDataSetService } from 'src/app/service/fit-data-set.service';
+import { IFitDataSource } from 'src/app/service/fit-data-source.service';
 
 const ELEMENT_DATA: any[] = [
     { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
@@ -29,22 +30,22 @@ const ELEMENT_DATA: any[] = [
 ];
 
 @Component({
-    selector: 'datasource-detail',
+    selector: 'app-datasource-detail',
+    styleUrls: ['./datasource-detail.component.scss'],
     templateUrl: './datasource-detail.component.pug',
-    styleUrls: ['./datasource-detail.component.scss']
 })
 export class DatasourceDetailComponent implements OnDestroy, AfterViewInit, OnInit {
 
     displayedColumns: string[] = ['position', 'name'];
     dataSource2 = ELEMENT_DATA;
-    private mDataSource: FitDataSource = null;
+    private mDataSource: IFitDataSource = undefined;
     private mRouteDataSubscription: Subscription;
     constructor(private zone: NgZone,
-        private fitDataSetService: FitApiDataSetService,
-        private activatedRoute: ActivatedRoute) {
+                private fitDataSetService: FitApiDataSetService,
+                private activatedRoute: ActivatedRoute) {
     }
 
-    public get dataSource(): FitDataSource {
+    public get dataSource(): IFitDataSource {
         return this.mDataSource;
     }
 
@@ -54,16 +55,18 @@ export class DatasourceDetailComponent implements OnDestroy, AfterViewInit, OnIn
 
     public ngOnInit() {
         this.mRouteDataSubscription = this.activatedRoute.data
-            .subscribe((data: { dataSource: FitDataSource }) => {
+            .subscribe((data: { dataSource: IFitDataSource }) => {
                 this.zone.run(() => {
                     this.mDataSource = data.dataSource;
                 });
             });
         this.activatedRoute
             .paramMap
-            .pipe(flatMap((value) => {
-                return this.fitDataSetService.getDataSetData(value.get('id'), moment().subtract(30, 'day'), moment());
-            })).subscribe(console.log, console.error);
+            .pipe(flatMap((value) =>
+                this.fitDataSetService
+                    .getDataSetData(value.get('id'), moment().subtract(30, 'day'), moment())))
+            // tslint:disable-next-line:no-console
+            .subscribe(console.log, console.error);
     }
     public ngAfterViewInit() {
     }

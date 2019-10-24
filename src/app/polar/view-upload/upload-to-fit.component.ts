@@ -1,28 +1,33 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import {
     Component,
-    AfterViewInit,
-    OnDestroy,
-    Input
+    Input,
 } from '@angular/core';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { DataPoint } from './data-point';
+import { BehaviorSubject } from 'rxjs';
 import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
+import { IDataPoint } from './data-point';
 
 @Component({
-    selector: 'upload-to-fit-cmp',
+    selector: 'app-upload-to-fit',
+    styleUrls: ['./upload-to-fit.component.scss'],
     templateUrl: './upload-to-fit.component.pug',
-    styleUrls: ['./upload-to-fit.component.scss']
 })
 export class UploadToFitComponent {
-    private dataPointsSubject: BehaviorSubject<DataPoint[]> = new BehaviorSubject<DataPoint[]>([]);
-    private subscriptions: Subscription[] = [];
+    private dataPointsSubject: BehaviorSubject<IDataPoint[]> = new BehaviorSubject<IDataPoint[]>([]);
     private mNumberOfItems = 0;
 
     constructor(private fitDataSourceService: FitApiDataSourceService) {
     }
 
+    public get dataPoints(): IDataPoint[] {
+        return this.dataPointsSubject.value;
+    }
+
     @Input('dataPoints')
-    public set dataPoints(data: DataPoint[]) {
+    public set dataPoints(data: IDataPoint[]) {
         if (Array.isArray(data)) {
             this.dataPointsSubject.next(data);
             this.mNumberOfItems = data.length;
@@ -36,16 +41,14 @@ export class UploadToFitComponent {
         return this.mNumberOfItems;
     }
 
-    public get dataPoints(): DataPoint[] {
-        return this.dataPointsSubject.value;
-    }
-
     public uploadData(): void {
         this.fitDataSourceService.getDataSources()
+            // tslint:disable-next-line:no-console
             .subscribe(console.log, console.error);
     }
     public createDatasource(): void {
-        this.fitDataSourceService.createDataSource(null)
+        this.fitDataSourceService.createDataSource(undefined)
+            // tslint:disable-next-line:no-console
             .subscribe(console.log, console.error);
     }
     public sendData(): void {

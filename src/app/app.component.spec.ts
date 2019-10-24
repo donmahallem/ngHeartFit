@@ -1,41 +1,37 @@
-import { TestBed, async } from '@angular/core/testing';
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
+import { Component } from '@angular/core';
+import { async, TestBed } from '@angular/core/testing';
+import { MatButtonModule, MatToolbarModule } from '@angular/material';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
-import { MatButtonModule, MatToolbarModule } from '@angular/material';
 import { ProfileComponent } from './components/profile.component';
-import { Observable, from } from 'rxjs';
-import { Injectable, Component } from '@angular/core';
-
-@Injectable()
-class GUserService {
-    public isSignedInObservable(): Observable<boolean> {
-        return from([true, false, true]);
-    }
-}
 
 @Component({
     selector: 'app-route-loading-indicator',
-    template: '<div></div>'
+    template: '<div></div>',
 })
-class TestRouteLoadingIndicator {
+class TestRouteLoadingIndicatorComponent {
 
 }
 
 describe('AppComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [
-                RouterTestingModule,
-                MatButtonModule,
-                MatToolbarModule
-            ],
             declarations: [
                 AppComponent,
                 ProfileComponent,
-                TestRouteLoadingIndicator
+                TestRouteLoadingIndicatorComponent,
+            ],
+            imports: [
+                RouterTestingModule,
+                MatButtonModule,
+                MatToolbarModule,
             ],
             providers: [
-            ]
+            ],
         }).compileComponents();
     }));
 

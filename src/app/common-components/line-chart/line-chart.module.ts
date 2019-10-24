@@ -1,19 +1,22 @@
-import { NgModule } from '@angular/core';
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { LineChartComponent } from './line-chart.component';
 
-
 @NgModule({
-    imports: [
-        CommonModule
-    ],
     declarations: [
-        LineChartComponent
+        LineChartComponent,
     ],
     exports: [
-        LineChartComponent
+        LineChartComponent,
+    ],
+    imports: [
+        CommonModule,
     ],
     providers: [
-    ]
+    ],
 })
 export class LineChartModule { }

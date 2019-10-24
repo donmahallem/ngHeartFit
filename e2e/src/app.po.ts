@@ -1,3 +1,7 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { browser, by, element } from 'protractor';
 
 export class AppPage {

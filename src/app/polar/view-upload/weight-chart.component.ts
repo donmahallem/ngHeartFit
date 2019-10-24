@@ -1,35 +1,28 @@
-import { Component, OnInit, NgZone, ElementRef, AfterViewInit, ViewChild, Input, DoCheck } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { DataPoint } from './data-point';
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
+import { AfterViewInit, Component, ElementRef, Input, NgZone, OnInit, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
-import { debounce, debounceTime } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { IDataPoint } from './data-point';
 @Component({
-    selector: 'weight-chart',
+    selector: 'app-weight-chart',
+    styleUrls: ['./weight-chart.component.scss'],
     templateUrl: './weight-chart.component.pug',
-    styleUrls: ['./weight-chart.component.scss']
 })
 export class WeightChartComponent implements OnInit, AfterViewInit {
-    constructor(private zone: NgZone,
-        private elRef: ElementRef) {
-        this.init();
-    }
     @Input('chartData')
-    public set chartData(data: DataPoint[]) {
+    public set chartData(data: IDataPoint[]) {
         this.chartDataSubject.next(data);
     }
 
-    public get chartData(): DataPoint[] {
+    public get chartData(): IDataPoint[] {
         return this.chartDataSubject.getValue();
     }
     public user: any;
     @ViewChild('chart', { static: false }) mySpan: ElementRef;
-
-    private chartDataSubject: BehaviorSubject<DataPoint[]> = new BehaviorSubject<DataPoint[]>(null);
-    private _chartData: DataPoint[];
-
-    private xScale: d3.ScaleTime<number, number>;
-    private yScale: d3.ScaleLinear<number, number>;
-    private line: d3.Line<DataPoint>;
 
     public readonly margin = { top: 20, right: 20, bottom: 30, left: 50 };
     public data: any[];
@@ -37,7 +30,18 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
     public chartPath: any;
     public xAxis: any;
     public yAxis: any;
-    private resizeSubject: BehaviorSubject<{ width: number, height: number }> = new BehaviorSubject<{ width: number, height: number }>({ width: 1, height: 1 });
+
+    private chartDataSubject: BehaviorSubject<IDataPoint[]> = new BehaviorSubject<IDataPoint[]>(undefined);
+
+    private xScale: d3.ScaleTime<number, number>;
+    private yScale: d3.ScaleLinear<number, number>;
+    private line: d3.Line<IDataPoint>;
+    private resizeSubject: BehaviorSubject<{ width: number, height: number }> =
+        new BehaviorSubject<{ width: number, height: number }>({ width: 1, height: 1 });
+    constructor(private zone: NgZone,
+                private elRef: ElementRef) {
+        this.init();
+    }
     public init(): void {
         this.xScale = d3.scaleUtc()
             .domain([0, 125]) // input
@@ -49,7 +53,7 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
             .range([300 - this.margin.top - this.margin.bottom, 0]); // output
 
         // 7. d3's line generator
-        this.line = d3.line<DataPoint>()
+        this.line = d3.line<IDataPoint>()
             .x((d, i) => this.xScale(d.x)) // set the x values for the line generator
             .y((d) => this.yScale(d.y)) // set the y values for the line generator
             .curve(d3.curveMonotoneX);
@@ -74,10 +78,10 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
             height: this.elRef.nativeElement.offsetHeight,
             width: this.elRef.nativeElement.offsetWidth,
         });
-        const dataset = d3.range(0).map(function (d) { return { x: new Date(d), 'y': d3.randomUniform(1)() }; });
+        const dataset = d3.range(0).map((d) => ({ x: new Date(d), y: d3.randomUniform(1)() }));
         const container = d3.select(this.mySpan.nativeElement).append('g')
             .attr('transform',
-                'translate(' + this.margin.left + ',' + this.margin.top + ')'
+                'translate(' + this.margin.left + ',' + this.margin.top + ')',
             );
         this.chartContainer = container.append('g');
         this.chartPath = this.chartContainer
@@ -98,14 +102,14 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
                 .tickFormat(d3.timeFormat('%Y-%m-%d HH:MM')));
         this.yAxis = container.append('g')
             .call(d3.axisLeft(this.yScale));
-        const yAxisText = this.yAxis
+        /*const yAxisText = this.yAxis
             .append('text')
             .attr('fill', '#000')
             .attr('transform', 'rotate(-90)')
             .attr('y', 6)
             .attr('dy', '0.71em')
             .attr('text-anchor', 'end')
-            .text('Heartrate (BPM)');
+            .text('Heartrate (BPM)');*/
         this.chartDataSubject.asObservable().subscribe((data) => {
             if (data) {
                 this.zone.run(() => {

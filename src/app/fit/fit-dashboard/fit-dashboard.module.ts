@@ -1,21 +1,16 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatProgressBarModule, MatTableModule, MatIconModule, MatToolbarModule } from '@angular/material';
-import { FitDashboardComponent } from './fit-dashboard.component';
-import { LineChartModule } from 'src/app/common-components/line-chart';
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
 
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { MatIconModule, MatProgressBarModule, MatTableModule, MatToolbarModule } from '@angular/material';
+import { LineChartModule } from 'src/app/common-components/line-chart';
+import { FitDashboardComponent } from './fit-dashboard.component';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        MatProgressBarModule,
-        MatTableModule,
-        MatIconModule,
-        MatToolbarModule,
-        LineChartModule
-    ],
     declarations: [
-        FitDashboardComponent
+        FitDashboardComponent,
     ],
     exports: [
         FitDashboardComponent,
@@ -24,9 +19,17 @@ import { LineChartModule } from 'src/app/common-components/line-chart';
         MatTableModule,
         MatIconModule,
         MatToolbarModule,
-        LineChartModule
+        LineChartModule,
+    ],
+    imports: [
+        CommonModule,
+        MatProgressBarModule,
+        MatTableModule,
+        MatIconModule,
+        MatToolbarModule,
+        LineChartModule,
     ],
     providers: [
-    ]
+    ],
 })
 export class FitDashboardModule { }

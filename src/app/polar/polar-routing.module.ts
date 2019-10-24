@@ -1,32 +1,36 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { UploadComponent } from './upload/upload.component';
+import { RouterModule, Routes } from '@angular/router';
 import { RouteGuardService } from '../service/route-guard.service';
-import { ViewUploadComponent } from './view-upload/view-upload.component';
 import { UploadResolver } from './services/upload.resolver';
+import { UploadComponent } from './upload/upload.component';
+import { ViewUploadComponent } from './view-upload/view-upload.component';
 
 const routes: Routes = [
     {
-        path: 'upload',
+        canActivate: [RouteGuardService],
         component: UploadComponent,
-        canActivate: [RouteGuardService]
+        path: 'upload',
     },
     {
-        path: 'view',
         component: ViewUploadComponent,
+        path: 'view',
     },
     {
         path: '**',
-        redirectTo: 'upload'
-    }
+        redirectTo: 'upload',
+    },
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
+    imports: [RouterModule.forChild(routes)],
     providers: [
         RouteGuardService,
-        UploadResolver
-    ]
+        UploadResolver,
+    ],
 })
 export class PolarRoutingModule { }

@@ -1,12 +1,15 @@
-import { Component, OnInit, NgZone } from '@angular/core';
-import { Router, Route } from '@angular/router';
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
+import { Component, OnInit } from '@angular/core';
+import { Route, Router } from '@angular/router';
 @Component({
     selector: 'app-not-found-cmp',
+    styleUrls: ['./not-found.component.scss'],
     templateUrl: './not-found.component.pug',
-    styleUrls: ['./not-found.component.scss']
 })
-export class NotFoundComponent {
-    private _title = 'app title';
+export class NotFoundComponent implements OnInit {
 
     constructor(private router: Router) {
 
@@ -17,7 +20,7 @@ export class NotFoundComponent {
         this.printpath('JJJ', this.router.config);
     }
 
-    printpath(parent: String, routes: Route[]) {
+    printpath(parent: string, routes: Route[]) {
         const getFullPath = (path?: string) => {
             if (path) {
                 return parent + '/' + path;
@@ -26,18 +29,15 @@ export class NotFoundComponent {
             return parent;
         };
 
-        for (let i = 0; i < routes.length; i++) {
-            const route = routes[i];
+        for (const route of routes) {
             const fullPath = getFullPath(route.path);
-
-            console.log(parent + '/' + route.path, route.component);
 
             if (route.children /*&& route.children.length > 0*/) {
                 this.printpath(fullPath, route.children);
             }
 
             if (route.loadChildren && route.loadChildren.length > 0) {
-                const routerConfig = <any>(<any>route)['_loadedConfig'];
+                const routerConfig = (route as any)._loadedConfig as any;
                 if (routerConfig) {
                     this.printpath(fullPath, routerConfig.routes);
                 }

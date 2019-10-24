@@ -1,6 +1,10 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { Observable, Subscriber } from 'rxjs';
 import { map } from 'rxjs/operators';
-export interface ReadFile {
+export interface IReadFile {
     raw: string;
     source: File;
 }
@@ -8,31 +12,31 @@ export interface ReadFile {
 export enum FileLoadEventType {
     START = 1,
     PROGRESS = 2,
-    RESULT = 3
+    RESULT = 3,
 }
-export interface FileLoadEvent {
+export interface IFileLoadEvent {
     type: FileLoadEventType;
     key: string | number;
 }
 
-export interface FileLoadStartEvent extends FileLoadEvent {
+export interface IFileLoadStartEvent extends IFileLoadEvent {
     type: FileLoadEventType.START;
 }
 
-export interface FileLoadProgressEvent extends FileLoadEvent {
+export interface IFileLoadProgressEvent extends IFileLoadEvent {
     type: FileLoadEventType.PROGRESS;
     loaded: number;
     total: number;
     lengthComputable: boolean;
 }
 
-export interface FileLoadResultEvent<T> extends FileLoadEvent {
+export interface IFileLoadResultEvent<T> extends IFileLoadEvent {
     type: FileLoadEventType.RESULT;
     result: T;
     filesize: number;
 }
 
-export type FileLoadEvents<T> = FileLoadProgressEvent | FileLoadResultEvent<T> | FileLoadStartEvent;
+export type FileLoadEvents<T> = IFileLoadProgressEvent | IFileLoadResultEvent<T> | IFileLoadStartEvent;
 export class FileUtil {
 
     /**
@@ -46,11 +50,11 @@ export class FileUtil {
             const reader: FileReader = FileUtil.createFileReader();
             reader.onprogress = (progress: ProgressEvent) => {
                 subscriber.next({
-                    type: FileLoadEventType.PROGRESS,
+                    key,
                     lengthComputable: progress.lengthComputable,
                     loaded: progress.loaded,
                     total: progress.total,
-                    key: key
+                    type: FileLoadEventType.PROGRESS,
                 });
             };
             reader.onabort = (ev: ProgressEvent) => {
@@ -58,22 +62,22 @@ export class FileUtil {
             };
             reader.onload = (loadEvent: any) => {
                 subscriber.next({
-                    type: FileLoadEventType.RESULT,
+                    filesize: loadEvent.target.result.length,
+                    key,
                     result: loadEvent.target.result,
-                    key: key,
-                    filesize: loadEvent.target.result.length
+                    type: FileLoadEventType.RESULT,
                 });
                 subscriber.complete();
             };
             reader.onloadstart = () => {
                 subscriber.next({
+                    key,
                     type: FileLoadEventType.START,
-                    key: key
                 });
             };
-            reader.onerror = <any>((er: DOMError | DOMException): void => {
+            reader.onerror = (((er: DOMError | DOMException): void => {
                 subscriber.error(er);
-            });
+            }) as any);
             reader.readAsText(file);
         });
     }
@@ -81,11 +85,11 @@ export class FileUtil {
         return FileUtil.readFileAsText(file, key)
             .pipe(map((event: FileLoadEvents<string>): FileLoadEvents<T> => {
                 if (event.type === FileLoadEventType.RESULT) {
-                    const convEvent: FileLoadResultEvent<T> = {
+                    const convEvent: IFileLoadResultEvent<T> = {
+                        filesize: event.filesize,
+                        key: event.key,
                         result: JSON.parse(event.result),
                         type: FileLoadEventType.RESULT,
-                        key: event.key,
-                        filesize: event.filesize
                     };
                     return convEvent;
                 } else {

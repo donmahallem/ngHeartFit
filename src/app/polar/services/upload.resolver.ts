@@ -1,19 +1,17 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { Resolve, ActivatedRoute, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { delay } from 'rxjs/operators';
-import { UploadDataService } from './upload-data.service';
-import { UploadFile } from './upload-file.modal';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { IUploadFile } from './upload-file.modal';
 
 @Injectable()
-export class UploadResolver implements Resolve<UploadFile[]> {
-    constructor(private uploadService: UploadDataService) { }
+export class UploadResolver implements Resolve<IUploadFile[]> {
+    constructor() { }
 
-    public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): UploadFile[] {
-        const ids: string[] = (<string>route.params['id']).split(',');
-        const uploads: UploadFile[] = [];
-        for (const id of ids) {
-        }
+    public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): IUploadFile[] {
+        const uploads: IUploadFile[] = [];
         return uploads;
     }
 }
