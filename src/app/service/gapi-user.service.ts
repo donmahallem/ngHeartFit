@@ -4,7 +4,7 @@
 
 import { Injectable } from '@angular/core';
 import { GoogleAuthService } from 'ng-gapi';
-import { of, Observable, Observer } from 'rxjs';
+import { of, BehaviorSubject, Observable, Observer } from 'rxjs';
 import { catchError, flatMap, shareReplay, tap } from 'rxjs/operators';
 
 @Injectable()
@@ -18,15 +18,17 @@ export class GapiUserService {
         return false;
     }
 
+    public get user(): gapi.auth2.GoogleUser {
+        return this.mUserSubject.value;
+    }
     public get isSignedInObservable(): Observable<boolean> {
         return this.signedInObservable;
     }
     public static SESSION_STORAGE_KEY = 'accessToken';
+    public readonly userObservable: Observable<gapi.auth2.GoogleUser> = this.mUserSubject.asObservable();
+
+    private mUserSubject: BehaviorSubject<gapi.auth2.GoogleUser> = new BehaviorSubject(undefined);
     private signedInObservable: Observable<boolean>;
-
-    // tslint:disable-next-line:no-unused-variable
-    private user: gapi.auth2.GoogleUser;
-
     constructor(private googleAuth: GoogleAuthService) {
         this.watchUserChanges();
         this.signedInObservable = this.createSignedInObservable();
@@ -83,7 +85,7 @@ export class GapiUserService {
         );
     }
     private signInSuccessHandler(res: gapi.auth2.GoogleUser) {
-        this.user = res;
+        this.mUserSubject.next(res);
         sessionStorage.setItem(
             GapiUserService.SESSION_STORAGE_KEY, res.getAuthResponse().access_token,
         );

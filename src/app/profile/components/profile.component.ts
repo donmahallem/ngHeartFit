@@ -4,32 +4,43 @@
 
 import {
     Component,
+    OnDestroy,
     OnInit,
 } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { GapiUserService } from 'src/app/service/gapi-user.service';
 @Component({
     selector: 'app-profile-page',
     styleUrls: ['./profile.component.scss'],
     templateUrl: './profile.component.pug',
 })
-export class ProfileComponent implements OnInit {
-    public user: any;
-    constructor() { }
+export class ProfileComponent implements OnInit, OnDestroy {
+    public user: gapi.auth2.GoogleUser;
+    private subscription: Subscription;
+    constructor(private gapi: GapiUserService) { }
     public ngOnInit(): void {
+        this.subscription = this.gapi.userObservable
+            .subscribe((val) => {
+                this.user = val;
+            });
     }
 
-    public onUpload(e: Event): void {
-        const target: HTMLInputElement = e.target as HTMLInputElement;
-        const file: File = target.files[0];
-        if (!file) {
-            return;
+    public get name(): string {
+        if (this.user) {
+            return this.user.getBasicProfile().getName();
         }
-        const reader: FileReader = new FileReader();
-        reader.onload = (loadEvent: any) => {
-
-        };
-        reader.readAsText(file);
+        return '---';
     }
 
-    public onClickMe(event: MouseEvent): void {
+    public get profileImgUrl(): string {
+        if (this.user) {
+            return this.user.getBasicProfile().getImageUrl();
+        }
+        return '---';
     }
+
+    public ngOnDestroy(): void {
+        this.subscription.unsubscribe();
+    }
+
 }
