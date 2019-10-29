@@ -1,0 +1,5 @@
+ul(*ngFor="let day of sleeps")
+    li(*ngFor="let sleepWakeState of day.sleepWakeStates")
+        h1 {{sleepWakeState.sleepWakeState}}
+
+app-file-upload((fileUpload)="onFileUpload($event)")

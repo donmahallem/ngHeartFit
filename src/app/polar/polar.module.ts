@@ -14,8 +14,12 @@ import {
 } from '@angular/material';
 
 import { HttpClientModule } from '@angular/common/http';
+import { FileUploadModule } from '../modules';
 import { PolarRoutingModule } from './polar-routing.module';
 import { AnalyzeDataService } from './services/analyze-data.service';
+import { SleepComponent } from './sleep/sleep.component';
+import { SleepReportResolver } from './sleep/sleep.resolver';
+import { ViewSleepComponent } from './sleep/view-sleep.component';
 import { FilePreviewComponent } from './upload/file-preview.component';
 import { FileUploadErrorComponent } from './upload/file-upload-error.component';
 import { FileUploadLoadedComponent } from './upload/file-upload-loaded.component';
@@ -35,6 +39,8 @@ import { WeightChartComponent } from './view-upload/weight-chart.component';
         FileUploadErrorComponent,
         FileUploadProgressComponent,
         FileUploadLoadedComponent,
+        SleepComponent,
+        ViewSleepComponent,
     ],
     imports: [
         CommonModule,
@@ -46,9 +52,11 @@ import { WeightChartComponent } from './view-upload/weight-chart.component';
         MatSlideToggleModule,
         MatExpansionModule,
         MatProgressBarModule,
+        FileUploadModule,
     ],
     providers: [
         AnalyzeDataService,
+        SleepReportResolver,
     ],
 })
 export class PolarModule { }

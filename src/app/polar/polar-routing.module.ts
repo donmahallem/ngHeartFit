@@ -6,6 +6,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RouteGuardService } from '../service/route-guard.service';
 import { UploadResolver } from './services/upload.resolver';
+import { SleepComponent } from './sleep/sleep.component';
+import { SleepReportResolver } from './sleep/sleep.resolver';
+import { ViewSleepComponent } from './sleep/view-sleep.component';
 import { UploadComponent } from './upload/upload.component';
 import { ViewUploadComponent } from './view-upload/view-upload.component';
 
@@ -18,6 +21,19 @@ const routes: Routes = [
     {
         component: ViewUploadComponent,
         path: 'view',
+    },
+    {
+        component: SleepComponent,
+        path: 'sleep',
+        children: [
+            {
+                component: ViewSleepComponent,
+                path: ':id',
+                resolve: {
+                    sleepReports: SleepReportResolver,
+                },
+            },
+        ],
     },
     {
         path: '**',

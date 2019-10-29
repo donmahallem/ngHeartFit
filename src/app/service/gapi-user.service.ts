@@ -25,13 +25,15 @@ export class GapiUserService {
         return this.signedInObservable;
     }
     public static SESSION_STORAGE_KEY = 'accessToken';
-    public readonly userObservable: Observable<gapi.auth2.GoogleUser> = this.mUserSubject.asObservable();
-
     private mUserSubject: BehaviorSubject<gapi.auth2.GoogleUser> = new BehaviorSubject(undefined);
     private signedInObservable: Observable<boolean>;
     constructor(private googleAuth: GoogleAuthService) {
         this.watchUserChanges();
         this.signedInObservable = this.createSignedInObservable();
+    }
+
+    public get userObservable(): Observable<gapi.auth2.GoogleUser> {
+        return this.mUserSubject.asObservable();
     }
 
     public createSignedInObservable(): Observable<boolean> {
