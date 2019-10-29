@@ -1,12 +1,16 @@
-import { Injectable, NgZone } from '@angular/core';
-import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
+import { Injectable } from '@angular/core';
 import * as moment from 'moment';
+import { combineLatest, BehaviorSubject, Observable } from 'rxjs';
 
 export enum Status {
     INITIALIZING = 0,
     LOADING = 1,
     LOADED = 2,
-    ERROR = 3
+    ERROR = 3,
 }
 
 @Injectable()
@@ -19,7 +23,7 @@ export class WeightChartService {
         const time: moment.Moment = moment();
         this.mEndTimeSubject = new BehaviorSubject(time);
         this.mStartTimeSubject = new BehaviorSubject(time.subtract(1, 'month'));
-        this.mCombinedObservable = combineLatest(this.mStartTimeSubject, this.mEndTimeSubject);
+        this.mCombinedObservable = combineLatest([this.mStartTimeSubject, this.mEndTimeSubject]);
         this.mStatusSubject = new BehaviorSubject(Status.INITIALIZING);
     }
 

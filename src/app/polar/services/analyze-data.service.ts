@@ -1,11 +1,13 @@
-import { Dexie } from 'dexie';
-import { Injectable } from '@angular/core';
-import { UploadFile } from './upload-file.modal';
-import { BehaviorSubject, Observable, of, from } from 'rxjs';
-import { AnalyzeDatabase } from './analyze-database';
-import { IActivityGraphData } from '@donmahallem/flow-api-types';
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
 
-export interface Pair {
+import { Injectable } from '@angular/core';
+import { IActivityGraphData } from '@donmahallem/flow-api-types';
+import { from, Observable } from 'rxjs';
+import { AnalyzeDatabase } from './analyze-database';
+
+export interface IPair {
     timestamp: number;
     bpm: number;
 }
@@ -18,20 +20,20 @@ export class AnalyzeDataService {
     }
 
     public insertActivityGraphData(data: IActivityGraphData): Observable<number> {
-        const lst: Pair[] = [];
+        const lst: IPair[] = [];
         for (const pair of data.heartRateTimelineSamples) {
             if (pair.value < 1) {
                 continue;
             }
             lst.push({
+                bpm: pair.value,
                 timestamp: pair.time,
-                bpm: pair.value
             });
         }
         return from(this.database.heartrate.bulkAdd(lst));
     }
 
-    public getHeartRate(): Observable<Pair[]> {
+    public getHeartRate(): Observable<IPair[]> {
         return from(this.database.heartrate.toArray());
     }
 

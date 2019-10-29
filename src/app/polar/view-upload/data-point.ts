@@ -1,38 +1,41 @@
-export interface DataPoint {
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
+export interface IDataPoint {
     x: Date;
     y: number;
 }
 
-export class MinMaxDataPoint implements DataPoint {
-
+export class MinMaxDataPoint implements IDataPoint {
 
     private mY = 0;
     private mX: Date = new Date();
-    private mDataPoints: DataPoint[] = [];
+    private mDataPoints: IDataPoint[] = [];
 
-    public add(point: DataPoint): void {
+    public add(point: IDataPoint): void {
         this.mDataPoints.push(point);
         this.recalculate();
     }
 
     public recalculate(): void {
-        this.mY = this.mDataPoints.map((val: DataPoint, index: number, arr: DataPoint[]): number => {
-            return val.y;
-        }).reduce((prev: number, cur: number, curIdx, arr: number[]): number => {
-            return prev + cur;
-        });
-        this.mDataPoints.map((val: DataPoint, index: number, arr: DataPoint[]): { min: Date, max: Date } => {
-            return { min: val.x, max: val.x };
-        }).reduce((prev: { min: Date, max: Date }, cur: { min: Date, max: Date }, curIdx, arr: { min: Date, max: Date }[]): { min: Date, max: Date } => {
-            if (prev) {
-                return {
-                    min: (prev.min >= cur.min) ? cur.min : prev.min,
-                    max: (prev.max <= cur.max) ? cur.max : prev.max
-                };
-            } else {
-                return cur;
-            }
-        }, null);
+        this.mY = this.mDataPoints.map((val: IDataPoint, index: number, arr: IDataPoint[]): number =>
+            val.y).reduce((prev: number, cur: number, curIdx, arr: number[]): number =>
+                prev + cur);
+        this.mDataPoints.map((val: IDataPoint, index: number, arr: IDataPoint[]): { min: Date, max: Date } =>
+            ({ min: val.x, max: val.x }))
+            .reduce((prev: { min: Date, max: Date },
+                     cur: { min: Date, max: Date },
+                     curIdx, arr: { min: Date, max: Date }[]): { min: Date, max: Date } => {
+                if (prev) {
+                    return {
+                        max: (prev.max <= cur.max) ? cur.max : prev.max,
+                        min: (prev.min >= cur.min) ? cur.min : prev.min,
+                    };
+                } else {
+                    return cur;
+                }
+            }, undefined);
     }
 
     public get x(): Date {

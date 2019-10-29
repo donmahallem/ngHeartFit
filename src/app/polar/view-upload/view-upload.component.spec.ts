@@ -1,12 +1,16 @@
-import { TestBed, async } from '@angular/core/testing';
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
+import { Component, Injectable, Input } from '@angular/core';
+import { async, TestBed } from '@angular/core/testing';
+import { MatButtonModule } from '@angular/material';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MatButtonModule, } from '@angular/material';
-import { Injectable, Component, Input } from '@angular/core';
 import { ViewUploadComponent } from './view-upload.component';
 
 import * as sinon from 'sinon';
 import { AnalyzeDataService } from '../services/analyze-data.service';
-import { DataPoint } from './data-point';
+import { IDataPoint } from './data-point';
 
 @Injectable()
 class TestAnalyzeDataService {
@@ -15,49 +19,48 @@ class TestAnalyzeDataService {
     }
 }
 
-
 @Component({
-    selector: 'weight-chart',
+    selector: 'app-weight-chart',
+    styleUrls: [],
     template: '',
-    styleUrls: []
 })
 class TestWeightChartComponent {
-    @Input('chartData')
-    public chartData: DataPoint[];
+    @Input()
+    public chartData: IDataPoint[];
 }
 
 @Component({
-    selector: 'upload-to-fit-cmp',
+    selector: 'app-upload-to-fit',
+    styleUrls: [],
     template: '',
-    styleUrls: []
 })
 export class TestUploadToFitComponent {
-    public _dataPoints: DataPoint[] = [];
+    public mDataPoints: IDataPoint[] = [];
     @Input('dataPoints')
-    public set dataPoints(data: DataPoint[]) {
-        this._dataPoints = data;
+    public set dataPoints(data: IDataPoint[]) {
+        this.mDataPoints = data;
     }
 
-    public get dataPoints(): DataPoint[] {
-        return this._dataPoints;
+    public get dataPoints(): IDataPoint[] {
+        return this.mDataPoints;
     }
 }
 let sandbox: sinon.SinonSandbox;
 describe('BodyMetricsComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            imports: [
-                RouterTestingModule,
-                MatButtonModule
-            ],
             declarations: [
                 ViewUploadComponent,
                 TestWeightChartComponent,
-                TestUploadToFitComponent
+                TestUploadToFitComponent,
+            ],
+            imports: [
+                RouterTestingModule,
+                MatButtonModule,
             ],
             providers: [
-                { provide: AnalyzeDataService, useValue: new TestAnalyzeDataService() }
-            ]
+                { provide: AnalyzeDataService, useValue: new TestAnalyzeDataService() },
+            ],
         }).compileComponents();
     }));
 

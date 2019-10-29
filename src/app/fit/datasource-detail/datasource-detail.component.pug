@@ -8,7 +8,7 @@ ng-container(*ngIf="hasDataSource")
         li(*ngFor="let field of dataSource.dataType.field") {{field.name}} - {{field.format}}
     p Type: {{dataSource.type}}
     p Device: {{dataSource.device | json}}
-    datasource-example-table([dataSource]="dataSource")
+    app-datasource-example-table([dataSource]="dataSource")
 ng-container(*ngIf="!hasDataSource")
     p Loading
     mat-progress-bar([mode]="progressBarMode")

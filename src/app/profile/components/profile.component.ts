@@ -1,11 +1,15 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import {
     Component,
-    OnInit
+    OnInit,
 } from '@angular/core';
 @Component({
-    selector: 'profile-page',
+    selector: 'app-profile-page',
+    styleUrls: ['./profile.component.scss'],
     templateUrl: './profile.component.pug',
-    styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
     public user: any;
@@ -14,14 +18,14 @@ export class ProfileComponent implements OnInit {
     }
 
     public onUpload(e: Event): void {
-        const target: HTMLInputElement = <HTMLInputElement>e.target;
+        const target: HTMLInputElement = e.target as HTMLInputElement;
         const file: File = target.files[0];
         if (!file) {
             return;
         }
         const reader: FileReader = new FileReader();
-        reader.onload = function (loadEvent: any) {
-            const contents = e.returnValue;
+        reader.onload = (loadEvent: any) => {
+
         };
         reader.readAsText(file);
     }

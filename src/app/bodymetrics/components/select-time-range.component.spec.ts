@@ -1,5 +1,8 @@
-import { async, } from '@angular/core/testing';
-import { SelectTimeRangeComponent } from './select-time-range.component';
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
+import { async } from '@angular/core/testing';
 import * as sinon from 'sinon';
 
 let sandbox;

@@ -1,18 +1,13 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
+import { HttpEvent, HttpEventType } from '@angular/common/http';
 import {
-    Component,
-    OnInit,
-    ViewChild,
     AfterViewInit,
     OnDestroy,
-    ChangeDetectorRef,
-    NgZone
 } from '@angular/core';
-import { FitSession, ListSessionsResponse } from 'src/app/service/fit-api-modals';
-import * as moment from 'moment';
-import { FitApiSessionService } from 'src/app/service/fit-session.service';
-import { HttpEvent, HttpEventType } from '@angular/common/http';
-import { Subscriber, Subscription, Observable } from 'rxjs';
-import { MatProgressBar } from '@angular/material';
+import { Observable, Subscriber, Subscription } from 'rxjs';
 
 export class LoadableListSubscriber<T> extends Subscriber<HttpEvent<T>> {
 
@@ -41,7 +36,7 @@ export enum LoadingStatus {
     LOADING = 1,
     LOADED = 2,
     ERROR = 3,
-    INITIALIZING = 4
+    INITIALIZING = 4,
 }
 
 export abstract class LoadableListComponent<T> implements OnDestroy, AfterViewInit {

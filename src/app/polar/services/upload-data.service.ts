@@ -1,16 +1,18 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { Injectable } from '@angular/core';
-import { UploadFile, TypedFile, TypedFiles, UploadFileType, UploadFileStatus, UploadFiles } from './upload-file.modal';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { FileLoadEvents, FileLoadEventType } from 'src/app/util';
+import { IUploadFile, UploadFiles, UploadFileStatus } from './upload-file.modal';
 
 @Injectable()
 export class UploadDataService {
-    private uploadFilesSubject: BehaviorSubject<UploadFile[]> = new BehaviorSubject([]);
+    private uploadFilesSubject: BehaviorSubject<IUploadFile[]> = new BehaviorSubject([]);
     private filesSelectedSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
     private mData: { [key: string]: UploadFiles } = {};
     public update(): void {
         const lst: UploadFiles[] = [];
-        const filesSelected = false;
         for (const key in this.mData) {
             if (key) {
                 lst.push(this.mData[key]);
@@ -27,20 +29,20 @@ export class UploadDataService {
 
     public setSelected(key: string, selected: boolean): void {
         if (this.mData[key] && this.mData[key].status === UploadFileStatus.LOADED) {
-            (<any>this.mData[key]).selected = selected;
+            (this.mData[key] as any).selected = selected;
             this.update();
         }
     }
 
-    public set uploadedFiles(files: UploadFile[]) {
+    public set uploadedFiles(files: IUploadFile[]) {
         this.uploadFilesSubject.next(files);
     }
 
-    public get uploadedFiles(): UploadFile[] {
+    public get uploadedFiles(): IUploadFile[] {
         return this.uploadFilesSubject.value;
     }
 
-    public get uploadedFilesObservable(): Observable<UploadFile[]> {
+    public get uploadedFilesObservable(): Observable<IUploadFile[]> {
         return this.uploadFilesSubject.asObservable();
     }
 
@@ -52,8 +54,8 @@ export class UploadDataService {
         return this.filesSelectedSubject.value;
     }
 
-    public addUploadFile(f: UploadFile): void {
-        const lst: UploadFile[] = this.uploadFilesSubject.value;
+    public addUploadFile(f: IUploadFile): void {
+        const lst: IUploadFile[] = this.uploadFilesSubject.value;
         lst.push(f);
         this.uploadFilesSubject.next(lst);
     }
