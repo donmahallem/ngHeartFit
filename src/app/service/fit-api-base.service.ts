@@ -202,6 +202,21 @@ export class FitApiBaseService {
         });
         return this.request(request);
     }
+
+    public putRequest<REQ_BODY, RESP_BODY>(url: string, body: REQ_BODY, params?: HttpParams | {
+        [param: string]: string | string[];
+    }): Observable<HttpEvent<RESP_BODY>> {
+        const request = new HttpRequest<REQ_BODY>('PUT', url, body, {
+            headers: new HttpHeaders({
+                'Authorization': 'Bearer ' + this.gapiUser.getToken(),
+                'Content-Type': 'application/json',
+            }),
+            reportProgress: false,
+            responseType: 'json',
+        });
+        return this.request(request);
+    }
+
     public request<REQ_BODY, RESP_BODY>(req: HttpRequest<REQ_BODY>): Observable<HttpEvent<RESP_BODY>> {
         return this.httpService.request(req);
     }

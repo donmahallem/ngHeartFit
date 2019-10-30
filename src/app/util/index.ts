@@ -3,3 +3,4 @@
  */
 
 export * from './file-util';
+export * from './momentary';

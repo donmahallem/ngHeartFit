@@ -17,6 +17,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FileUploadModule } from '../modules';
 import { PolarRoutingModule } from './polar-routing.module';
 import { AnalyzeDataService } from './services/analyze-data.service';
+import { SleepDayComponent } from './sleep/sleep-day.component';
 import { SleepComponent } from './sleep/sleep.component';
 import { SleepReportResolver } from './sleep/sleep.resolver';
 import { ViewSleepComponent } from './sleep/view-sleep.component';
@@ -41,6 +42,7 @@ import { WeightChartComponent } from './view-upload/weight-chart.component';
         FileUploadLoadedComponent,
         SleepComponent,
         ViewSleepComponent,
+        SleepDayComponent,
     ],
     imports: [
         CommonModule,

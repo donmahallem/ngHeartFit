@@ -6,6 +6,8 @@ import { HttpEvent, HttpEventType, HttpParams, HttpRequest, HttpResponse } from 
 import { Injectable } from '@angular/core';
 import { of, Observable } from 'rxjs';
 
+import { FitDataTypeName } from '@donmahallem/google-fit-api-types';
+import * as moment from 'moment';
 import { filter, flatMap } from 'rxjs/operators';
 import { FitApiBaseService } from './fit-api-base.service';
 
@@ -68,6 +70,16 @@ export class FitApiDataSourceService {
             name: FitApiDataSourceService.DATA_TYPE_WEIGHT,
         }, FitApiDataSourceService.WEIGHT_NAME));
     }
+    public getSessionData(dSourceId: string, from: moment.Moment, to: moment.Moment) {
+        return this.fitApiBaseService.getRequest(FitApiBaseService.ENDPOINT +
+            '/users/me/dataSources/' + dSourceId + '/datasets/' + from.valueOf() + '000000-' + to.valueOf() + '000000');
+    }
+
+    public getSessions(from: moment.Moment, to: moment.Moment) {
+        return this.fitApiBaseService
+            .getRequest(FitApiBaseService.ENDPOINT + '/users/me/sessions/?startTime=' +
+                from.toISOString() + '&to=' + to.toISOString());
+    }
 
     public createBodyFatPercentageDatasource(): Observable<HttpEvent<any>> {
         return this.createDataSource(this.createDataSourceMetaData({
@@ -79,6 +91,25 @@ export class FitApiDataSourceService {
             ],
             name: FitApiDataSourceService.DATA_TYPE_BODY_FAT_PERCENTAGE,
         }, FitApiDataSourceService.BODY_FAT_PERCENTAGE_NAME));
+    }
+
+    public createSleepActivityDatasource(): Observable<HttpEvent<any>> {
+        return this.createDataSource(this.createDataSourceMetaData({
+            field: [
+                {
+                    format: 'integer',
+                    name: 'activity',
+                },
+            ],
+            name: 'com.google.activity.segment',
+        }, 'sleepdata.from.polar'));
+    }
+    public submitUserSleepSession(dataSourceId: string, data) {
+        return this.fitApiBaseService.putRequest(FitApiBaseService.ENDPOINT + '/users/me/sessions/' + data.id, data);
+    }
+    public submitUserSleep(dataSourceId: string, from: moment.Moment, to: moment.Moment, data) {
+        return this.fitApiBaseService.patchRequest(FitApiBaseService.ENDPOINT + '/users/me/dataSources/' +
+            dataSourceId + '/datasets/' + from.valueOf() + '000000-' + to.valueOf() + '000000', data);
     }
 
     public createDataSource(datasource: ICreateDataSourceRequest): Observable<HttpEvent<any>> {
@@ -138,13 +169,9 @@ export class FitApiDataSourceService {
             }) as any;
     }
 
-    public getOrCreateDataSource(dataType: DataTypes, streamName: string) {
+    public getOrCreateDataSource(dataType: FitDataTypeName, streamName: string) {
         return undefined;
     }
-}
-export enum DataTypes {
-    WEIGHT = 'com.google.weight',
-    BODY_FAT_PERCENTAGE = 'com.google.body.fat.percentage',
 }
 export interface IFitDataSourceList {
     dataSource: IFitDataSource[];

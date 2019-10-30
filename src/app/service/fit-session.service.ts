@@ -6,6 +6,7 @@ import { HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import * as  moment from 'moment';
 import { FitApiBaseService } from './fit-api-base.service';
 import {
     IFitSession,
@@ -27,19 +28,19 @@ export class FitApiSessionService {
     }
 
     public getSessions(): Observable<HttpEvent<IListSessionsResponse>>;
-    public getSessions(startTime: string | undefined,
-                       endTime: string | undefined,
+    public getSessions(startTime: moment.Moment | undefined,
+                       endTime: moment.Moment | undefined,
                        includeDeleted?: boolean): Observable<HttpEvent<IListSessionsResponse>>;
-    public getSessions(startTime?: string | undefined,
-                       endTime?: string | undefined,
+    public getSessions(startTime?: moment.Moment | undefined,
+                       endTime?: moment.Moment | undefined,
                        includeDeleted: boolean = false,
                        pageToken?: string): Observable<HttpEvent<IListSessionsResponse>> {
         const params: any = {};
         if (startTime) {
-            params.startTime = startTime;
+            params.startTime = startTime.toISOString();
         }
         if (endTime) {
-            params.endTime = endTime;
+            params.endTime = endTime.toISOString();
         }
         params.includeDeleted = includeDeleted;
         if (pageToken) {

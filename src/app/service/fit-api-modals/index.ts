@@ -53,24 +53,3 @@ export interface IDatasetPoint {
         fpVal: number, mapVal: any[],
     }[];
 }
-
-export interface IFitSession {
-    activityType: number;
-    application: {
-        packageName: string;
-    };
-    packageName: string;
-    description: string;
-    endTimeMillis: string;
-    id: string;
-    modifiedTimeMillis: string;
-    name: string;
-    startTimeMillis: string;
-}
-
-export interface IListSessionsResponse {
-    session: IFitSession[];
-    deletedSession?: IFitSession[];
-    nextPageToken?: string;
-    hasMoreData?: boolean;
-}

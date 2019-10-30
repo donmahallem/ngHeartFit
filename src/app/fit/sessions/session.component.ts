@@ -6,7 +6,7 @@ import {
     Component,
     Input,
 } from '@angular/core';
-import { IFitSession } from 'src/app/service/fit-api-modals';
+import { IFitSession } from '@donmahallem/google-fit-api-types';
 @Component({
     selector: 'app-session-list-item',
     styleUrls: ['./session.component.scss'],
