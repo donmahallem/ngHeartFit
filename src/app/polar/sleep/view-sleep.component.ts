@@ -28,6 +28,7 @@ export class ViewSleepComponent implements OnInit, OnDestroy {
         this.sub = this.snape.data.pipe(map((data) =>
             data.sleepReports))
             .subscribe((val) => {
+                // tslint:disable-next-line:no-console
                 console.log(val);
             });
     }

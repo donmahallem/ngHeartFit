@@ -7,7 +7,6 @@ import {
     OnDestroy,
     OnInit,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-sleep',
@@ -15,7 +14,7 @@ import { ActivatedRoute } from '@angular/router';
     templateUrl: './sleep.component.pug',
 })
 export class SleepComponent implements OnInit, OnDestroy {
-    constructor(private snape: ActivatedRoute) {
+    constructor() {
     }
     public ngOnInit(): void {
     }
@@ -24,6 +23,5 @@ export class SleepComponent implements OnInit, OnDestroy {
     }
 
     public onFileUpload(files: FileList): void {
-        console.log(files);
     }
 }

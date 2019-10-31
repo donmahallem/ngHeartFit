@@ -7,14 +7,14 @@ import { NgModule } from '@angular/core';
 import { FileUploadComponent } from './components/file-upload.component';
 
 @NgModule({
-    imports: [
-        CommonModule,
-    ],
     declarations: [
         FileUploadComponent,
     ],
     exports: [
         FileUploadComponent,
+    ],
+    imports: [
+        CommonModule,
     ],
 })
 export class FileUploadModule { }

@@ -23,8 +23,6 @@ const routes: Routes = [
         path: 'view',
     },
     {
-        component: SleepComponent,
-        path: 'sleep',
         children: [
             {
                 component: ViewSleepComponent,
@@ -34,6 +32,8 @@ const routes: Routes = [
                 },
             },
         ],
+        component: SleepComponent,
+        path: 'sleep',
     },
     {
         path: '**',
