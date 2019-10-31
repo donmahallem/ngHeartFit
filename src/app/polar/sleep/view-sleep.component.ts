@@ -14,8 +14,8 @@ import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-view-sleep',
-    styleUrls: ['./sleep.component.scss'],
-    templateUrl: './sleep.component.pug',
+    styleUrls: ['./view-sleep.component.scss'],
+    templateUrl: './view-sleep.component.pug',
 })
 export class ViewSleepComponent implements OnInit, OnDestroy {
     public sleeps: ISleepReport[];
