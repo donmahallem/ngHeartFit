@@ -21,7 +21,7 @@ import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service
 import { FileLoadEventType, FileUtil, IFileLoadResultEvent } from 'src/app/util';
 import { SleepService } from './sleep.service';
 
-@Component({,
+@Component({
     providers: [
         SleepService,
     ],
