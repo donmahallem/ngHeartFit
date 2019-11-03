@@ -9,12 +9,12 @@ import {
     OnDestroy,
     ViewChild,
 } from '@angular/core';
+import { IBucketResponse } from '@donmahallem/google-fit-api-types';
 import * as moment from 'moment';
 import { Subscriber, Subscription } from 'rxjs';
 import { debounceTime, delay, filter, flatMap } from 'rxjs/operators';
 import { LineChartComponent } from 'src/app/common-components/line-chart';
 import { FitApiAggregateService, IAggregateByFilter } from 'src/app/service/fit-aggregate.service';
-import { IBucketResponse } from 'src/app/service/fit-api-modals';
 import { FitApiDataSourceService, IFitDataSourceList } from 'src/app/service/fit-data-source.service';
 import { WeightChartService } from '../services/weight-chart.service';
 

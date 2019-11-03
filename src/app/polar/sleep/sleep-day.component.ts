@@ -10,7 +10,6 @@ import {
     OnDestroy,
     OnInit,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { ISleepReport, ISleepWakeState, SleepWakeStateType } from '@donmahallem/flow-api-types';
 import { ActivityTypes, IFitSession } from '@donmahallem/google-fit-api-types';
 import * as d3 from 'd3';
@@ -62,7 +61,7 @@ export class SleepDayComponent implements OnInit, OnDestroy, AfterContentInit {
         return this.mSleepData;
     }
     constructor(private el: ElementRef,
-        private fitDataSourceService: FitApiDataSourceService) {
+                private fitDataSourceService: FitApiDataSourceService) {
     }
     public aaa(dataSourceId: string, sleepReport: ISleepReport): any {
         const data = {
@@ -138,7 +137,7 @@ export class SleepDayComponent implements OnInit, OnDestroy, AfterContentInit {
             name: 'Sleep ' + sleepReport.date,
             startTimeMillis: moment(sleepReport.sleepStartTime).valueOf(),
             version: 1,
-        }
+        };
     }
     public uploadSessions(): void {
         const datas: IFitSession[] = this.mSleepData

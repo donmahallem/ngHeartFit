@@ -6,12 +6,12 @@ import { HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import {
+    IBucketResponse,
+} from '@donmahallem/google-fit-api-types';
 import * as moment from 'moment';
 import { flatMap } from 'rxjs/operators';
 import { FitApiBaseService } from './fit-api-base.service';
-import {
-    IBucketResponse,
-} from './fit-api-modals';
 
 @Injectable()
 export class FitApiAggregateService {

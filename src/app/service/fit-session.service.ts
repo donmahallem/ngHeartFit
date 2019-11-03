@@ -6,12 +6,12 @@ import { HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import * as  moment from 'moment';
-import { FitApiBaseService } from './fit-api-base.service';
 import {
     IFitSession,
     IListSessionsResponse,
-} from './fit-api-modals';
+} from '@donmahallem/google-fit-api-types';
+import * as  moment from 'moment';
+import { FitApiBaseService } from './fit-api-base.service';
 
 @Injectable()
 export class FitApiSessionService {
