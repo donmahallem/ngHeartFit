@@ -6,7 +6,7 @@ import { HttpEvent, HttpEventType, HttpParams, HttpRequest, HttpResponse } from 
 import { Injectable } from '@angular/core';
 import { of, Observable } from 'rxjs';
 
-import { FitDataTypeName } from '@donmahallem/google-fit-api-types';
+import { FitDataTypeName, IFitCreateDataSourceRequest, IFitDataSource, IFitDataType } from '@donmahallem/google-fit-api-types';
 import * as moment from 'moment';
 import { filter, flatMap } from 'rxjs/operators';
 import { FitApiBaseService } from './fit-api-base.service';
@@ -39,7 +39,7 @@ export class FitApiDataSourceService {
         return this.fitApiBaseService.getRequest(FitApiBaseService.ENDPOINT + '/users/me/dataSources/' + encodeURI(id.replace(' ', '\ ')));
     }
 
-    public createDataSourceMetaData(dataType: IDataType, dataStreamName?: string): ICreateDataSourceRequest {
+    public createDataSourceMetaData(dataType: IFitDataType, dataStreamName?: string): Partial<IFitCreateDataSourceRequest> {
         return {
             application: {
                 detailsUrl: 'https://donmahallem.github.io/ngHeartFit',
@@ -65,6 +65,7 @@ export class FitApiDataSourceService {
                 {
                     format: 'floatPoint',
                     name: 'weight',
+                    optional: false,
                 },
             ],
             name: FitApiDataSourceService.DATA_TYPE_WEIGHT,
@@ -87,6 +88,7 @@ export class FitApiDataSourceService {
                 {
                     format: 'floatPoint',
                     name: 'percentage',
+                    optional: false,
                 },
             ],
             name: FitApiDataSourceService.DATA_TYPE_BODY_FAT_PERCENTAGE,
@@ -99,6 +101,7 @@ export class FitApiDataSourceService {
                 {
                     format: 'integer',
                     name: 'activity',
+                    optional: false,
                 },
             ],
             name: 'com.google.activity.segment',
@@ -112,7 +115,7 @@ export class FitApiDataSourceService {
             dataSourceId + '/datasets/' + from.valueOf() + '000000-' + to.valueOf() + '000000', data);
     }
 
-    public createDataSource(datasource: ICreateDataSourceRequest): Observable<HttpEvent<any>> {
+    public createDataSource(datasource: Partial<IFitCreateDataSourceRequest>): Observable<HttpEvent<any>> {
         return this.fitApiBaseService.postRequest(FitApiBaseService.ENDPOINT + '/users/me/dataSources', datasource);
     }
 
@@ -175,57 +178,4 @@ export class FitApiDataSourceService {
 }
 export interface IFitDataSourceList {
     dataSource: IFitDataSource[];
-}
-
-export interface IFitDataSource {
-    application: {
-        version: string,
-        detailsUrl: string,
-        name: string,
-    };
-    dataQualityStandard: [];
-    dataStreamId: string;
-    dataStreamName: string;
-    dataType: {
-        name: string,
-        field: {
-            name: string;
-            format: 'blob' | 'floatList' | 'floatPoint' | 'integer' | 'integerList' | 'map' | 'string';
-            optional?: boolean;
-        }[],
-    };
-    device: {
-        uid: string,
-        type: 'chestStrap' | 'headMounted' | 'phone' | 'scale' | 'tablet' | 'unknown' | 'watch',
-        version: string,
-        model: string,
-        manufacturer: string,
-    };
-    type: 'derived' | 'raw';
-}
-
-export interface IDataType {
-    'name': string;
-    'field': {
-        'name': string;
-        'format': 'blob' | 'floatList' | 'floatPoint' | 'integer' | 'integerList' | 'map' | 'string';
-        'optional'?: boolean;
-    }[];
-}
-export interface ICreateDataSourceRequest {
-    'dataStreamName'?: string;
-    'type': 'raw' | 'derived';
-    'application'?: {
-        'detailsUrl': string;
-        'name': string;
-        'version': string;
-    };
-    'dataType': IDataType;
-    'device': {
-        'manufacturer': string;
-        'model': string;
-        'type': 'chestStrap' | 'headMounted' | 'phone' | 'scale' | 'tablet' | 'unknown' | 'watch';
-        'uid': string;
-        'version': string;
-    };
 }

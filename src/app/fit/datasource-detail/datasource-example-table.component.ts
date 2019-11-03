@@ -9,12 +9,12 @@ import {
     OnDestroy,
 } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { IFitDataSource } from '@donmahallem/google-fit-api-types';
 import * as moment from 'moment';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 import { LoadableComponent } from 'src/app/common-components/loadable.component';
 import { FitApiDataSetService, FitDatasetPoints, IFitDatasetResponse } from 'src/app/service/fit-data-set.service';
-import { IFitDataSource } from 'src/app/service/fit-data-source.service';
 
 @Component({
     selector: 'app-datasource-example-table',

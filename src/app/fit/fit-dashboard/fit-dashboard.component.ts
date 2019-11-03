@@ -8,12 +8,13 @@ import {
     Component,
     OnDestroy,
 } from '@angular/core';
+import { IFitDataSource } from '@donmahallem/google-fit-api-types';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { filter, flatMap } from 'rxjs/operators';
 import { FitApiAggregateService } from 'src/app/service/fit-aggregate.service';
 import { FitApiDataSetService, IInsertDataPoint } from 'src/app/service/fit-data-set.service';
-import { FitApiDataSourceService, IFitDataSource } from 'src/app/service/fit-data-source.service';
+import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 
 @Component({
     selector: 'app-fit-dashboard',

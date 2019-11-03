@@ -8,7 +8,7 @@ import {
     Input,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { IFitDataSource } from 'src/app/service/fit-data-source.service';
+import { IFitDataSource } from '@donmahallem/google-fit-api-types';
 @Component({
     selector: 'app-datasource-li',
     styleUrls: ['./datasource-list-item.component.scss'],
