@@ -133,10 +133,8 @@ export class SleepDayComponent implements OnInit, OnDestroy, AfterContentInit {
             description: 'sleep date',
             endTimeMillis: moment(sleepReport.sleepEndTime).valueOf(),
             id: 'sleep_' + sleepReport.date,
-            lastModifiedToken: 'exampleToken',
             name: 'Sleep ' + sleepReport.date,
             startTimeMillis: moment(sleepReport.sleepStartTime).valueOf(),
-            version: 1,
         };
     }
     public uploadSessions(): void {
