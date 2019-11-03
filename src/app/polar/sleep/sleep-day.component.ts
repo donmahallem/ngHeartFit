@@ -11,7 +11,7 @@ import {
     OnInit,
 } from '@angular/core';
 import { ISleepReport, ISleepWakeState, SleepWakeStateType } from '@donmahallem/flow-api-types';
-import { ActivityTypes, IFitSession } from '@donmahallem/google-fit-api-types';
+import { FitActivityTypes, IFitSession } from '@donmahallem/google-fit-api-types';
 import * as d3 from 'd3';
 import * as moment from 'moment';
 import { from, throwError } from 'rxjs';
@@ -73,19 +73,20 @@ export class SleepDayComponent implements OnInit, OnDestroy, AfterContentInit {
                 const endTime: moment.Moment = (idx < sleeps.length - 1) ?
                     moment(sleepReport.sleepStartTime).add(sleeps[idx + 1].offsetFromStart, 's') :
                     moment(sleepReport.sleepEndTime);
-                let sleepLevel: number = ActivityTypes.Sleeping;
+                let sleepLevel: number = FitActivityTypes.AWAKE;
                 switch (val.sleepWakeState) {
                     case SleepWakeStateType.DEEP_SLEEP:
-                        sleepLevel = ActivityTypes.Deep_Sleep;
+                        sleepLevel = FitActivityTypes.DEEP_SLEEP;
                         break;
                     case SleepWakeStateType.REM:
-                        sleepLevel = ActivityTypes.REM_Sleep;
+                        sleepLevel = FitActivityTypes.REM_SLEEP;
                         break;
                     case SleepWakeStateType.LIGHT_SLEEP:
-                        sleepLevel = ActivityTypes.Light_Sleep;
+                        sleepLevel = FitActivityTypes.LIGHT_SLEEP;
                         break;
                     case SleepWakeStateType.INTERUPTIONS:
-                        sleepLevel = ActivityTypes.Awake;
+                    default:
+                        sleepLevel = FitActivityTypes.AWAKE;
                         break;
                 }
                 return {
@@ -124,7 +125,7 @@ export class SleepDayComponent implements OnInit, OnDestroy, AfterContentInit {
     }
     public convertSleepReport(sleepReport: ISleepReport): IFitSession {
         return {
-            activityType: ActivityTypes.Sleeping,
+            activityType: FitActivityTypes.SLEEPING,
             application: {
                 detailsUrl: 'http://example.com',
                 name: 'Foo Example App',

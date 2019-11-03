@@ -7,7 +7,7 @@ import {
     Component, OnDestroy, OnInit,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IFitSession, IListSessionsResponse } from '@donmahallem/google-fit-api-types';
+import { IFitSession, IFitSessionListResponse } from '@donmahallem/google-fit-api-types';
 import * as moment from 'moment';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -37,11 +37,11 @@ export class SessionsComponent implements OnInit, OnDestroy {
                             Momentary.convert(session));
                 });
     }
-    public onResult(result: IListSessionsResponse) {
+    public onResult(result: IFitSessionListResponse) {
         this.mSessions = result.session;
     }
 
-    public createLoadObservable(): Observable<HttpEvent<IListSessionsResponse>> {
+    public createLoadObservable(): Observable<HttpEvent<IFitSessionListResponse>> {
         return this.sessionService.getSessions(moment().subtract(120, 'days'), moment());
     }
     public get sessions(): IFitSession[] {

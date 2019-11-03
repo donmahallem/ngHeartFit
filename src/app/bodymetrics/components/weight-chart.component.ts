@@ -9,7 +9,7 @@ import {
     OnDestroy,
     ViewChild,
 } from '@angular/core';
-import { IBucketResponse } from '@donmahallem/google-fit-api-types';
+import { IFitBucketResponse } from '@donmahallem/google-fit-api-types';
 import * as moment from 'moment';
 import { Subscriber, Subscription } from 'rxjs';
 import { debounceTime, delay, filter, flatMap } from 'rxjs/operators';
@@ -73,7 +73,7 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
             .subscribe(new Subscriber(this.updateData.bind(this), console.error)));
     }
 
-    public updateData(bucketResponse: IBucketResponse): void {/*
+    public updateData(bucketResponse: IFitBucketResponse): void {/*
         const weightDatapoints: ChartPoint[] = [];
         const fatDatapoints: ChartPoint[] = [];
         for (const bucket of bucketResponse.bucket) {

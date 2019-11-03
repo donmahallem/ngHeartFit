@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import {
-    IBucketResponse,
+    IFitBucketResponse,
 } from '@donmahallem/google-fit-api-types';
 import * as moment from 'moment';
 import { flatMap } from 'rxjs/operators';
@@ -25,9 +25,9 @@ export class FitApiAggregateService {
     public getAggregateData(source: IAggregateByFilter[],
                             from: moment.Moment,
                             to: moment.Moment,
-                            bucketWindowMillis: number): Observable<HttpEvent<IBucketResponse>> {
+                            bucketWindowMillis: number): Observable<HttpEvent<IFitBucketResponse>> {
         return this.fitApiBaseService.base()
-            .pipe(flatMap((): Observable<HttpEvent<IBucketResponse>> => {
+            .pipe(flatMap((): Observable<HttpEvent<IFitBucketResponse>> => {
                 const requestBody: any = {
                     aggregateBy: source,
                     bucketByTime: {
@@ -37,7 +37,7 @@ export class FitApiAggregateService {
                     startTimeMillis: from.utc().valueOf(),
                 };
                 const url = FitApiBaseService.ENDPOINT + '/users/me/dataset:aggregate';
-                return this.fitApiBaseService.postRequest<any, IBucketResponse>(url, requestBody);
+                return this.fitApiBaseService.postRequest<any, IFitBucketResponse>(url, requestBody);
             }));
     }
 
