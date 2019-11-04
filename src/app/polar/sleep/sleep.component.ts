@@ -35,7 +35,6 @@ export class SleepComponent implements OnInit, OnDestroy {
             .pipe(filter((val) =>
                 val.type === FileLoadEventType.RESULT))
             .subscribe((data: IFileLoadResultEvent<any>) => {
-                console.log(data);
                 this.sleeps = data.result;
             });
     }

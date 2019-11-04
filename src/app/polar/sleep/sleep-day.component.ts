@@ -121,6 +121,7 @@ export class SleepDayComponent implements OnInit, OnDestroy, AfterContentInit {
                 }
                 return throwError(err);
             }))
+            // tslint:disable-next-line:no-console
             .subscribe(console.log, console.error);
     }
     public convertSleepReport(sleepReport: ISleepReport): IFitSession {
@@ -157,10 +158,12 @@ export class SleepDayComponent implements OnInit, OnDestroy, AfterContentInit {
         const dSourceId = 'raw:com.google.activity.segment:265564637760:Mozilla:Netscape:Mozilla50WindowsNT100Win64x64AppleWebKit53736KHTMLlikeGeckoChrome7703865120Safari53736:sleepdata.from.polar';
 
         this.fitDataSourceService.getSessionData(dSourceId, moment().subtract(1, 'month'), moment().add(1, 'week'))
+            // tslint:disable-next-line:no-console
             .subscribe(console.log, console.error);
     }
     public getDatasets(): void {
         this.fitDataSourceService.getSessions(moment().subtract(1, 'month'), moment().add(1, 'week'))
+            // tslint:disable-next-line:no-console
             .subscribe(console.log, console.error);
     }
     public ngOnInit(): void {
@@ -188,9 +191,9 @@ export class SleepDayComponent implements OnInit, OnDestroy, AfterContentInit {
             .pipe(filter((val) =>
                 val.type === FileLoadEventType.RESULT))
             .subscribe((data: IFileLoadResultEvent<any>) => {
+                // tslint:disable-next-line:no-console
                 console.log(data);
                 this.sleeps = data.result;
             });
-        console.log(files);
     }
 }
