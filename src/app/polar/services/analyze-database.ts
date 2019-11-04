@@ -1,3 +1,7 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import Dexie from 'dexie';
 
 export interface IHeartRate {

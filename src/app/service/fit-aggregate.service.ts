@@ -1,17 +1,17 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
 
+import { HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { HttpParams, HttpRequest, HttpEvent } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import { FitApiBaseService } from './fit-api-base.service';
-import { map, flatMap } from 'rxjs/operators';
-import { FitApiDataSetService } from './fit-data-set.service';
 import {
-    FitSession,
-    ListSessionsResponse,
-    BucketResponse
-} from './fit-api-modals';
+    IFitBucketResponse,
+} from '@donmahallem/google-fit-api-types';
 import * as moment from 'moment';
+import { flatMap } from 'rxjs/operators';
+import { FitApiBaseService } from './fit-api-base.service';
 
 @Injectable()
 export class FitApiAggregateService {
@@ -22,28 +22,29 @@ export class FitApiAggregateService {
     constructor(private fitApiBaseService: FitApiBaseService) {
 
     }
-    public getAggregateData(source: AggregateByFilter[],
-        from: moment.Moment,
-        to: moment.Moment,
-        bucketWindowMillis: number): Observable<HttpEvent<BucketResponse>> {
+    public getAggregateData(source: IAggregateByFilter[],
+                            from: moment.Moment,
+                            to: moment.Moment,
+                            bucketWindowMillis: number): Observable<HttpEvent<IFitBucketResponse>> {
         return this.fitApiBaseService.base()
-            .pipe(flatMap((): Observable<HttpEvent<BucketResponse>> => {
+            .pipe(flatMap((): Observable<HttpEvent<IFitBucketResponse>> => {
                 const requestBody: any = {
-                    'startTimeMillis': from.utc().valueOf(),
-                    'endTimeMillis': to.utc().valueOf(),
-                    'aggregateBy': source,
-                    'bucketByTime': {
-                        'durationMillis': bucketWindowMillis
-                    }
+                    aggregateBy: source,
+                    bucketByTime: {
+                        durationMillis: bucketWindowMillis,
+                    },
+                    endTimeMillis: to.utc().valueOf(),
+                    startTimeMillis: from.utc().valueOf(),
                 };
                 const url = FitApiBaseService.ENDPOINT + '/users/me/dataset:aggregate';
-                return this.fitApiBaseService.postRequest<any, BucketResponse>(url, requestBody);
+                return this.fitApiBaseService.postRequest<any, IFitBucketResponse>(url, requestBody);
             }));
     }
 
 }
 
-export interface AggregateByFilter {
+// TODO: REMOVE
+export interface IAggregateByFilter {
     dataTypeName?: string;
     dataSourceId?: string;
 }

@@ -1,25 +1,27 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import {
-    Component,
-    OnInit,
-    ViewChild,
     AfterViewInit,
+    Component,
     OnDestroy,
-    ChangeDetectorRef
+    ViewChild,
 } from '@angular/core';
 import { MatButton } from '@angular/material';
 import { Subscription } from 'rxjs';
 @Component({
-    selector: 'profile-view',
+    selector: 'app-profile-view',
+    styleUrls: ['./profile.component.scss'],
     templateUrl: './profile.component.pug',
-    styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements AfterViewInit, OnDestroy {
     public user: any;
     @ViewChild('btnSignin', { static: false })
     public btnSignIn: MatButton;
-    private _isSignedIn = false;
+    private mIsSignedIn = false;
     private signinSubscription: Subscription;
-    constructor(private cd: ChangeDetectorRef) { }
+    constructor() { }
     public ngAfterViewInit(): void {
         /*this.signinSubscription = this.gapiService.getUserObservable()
             .subscribe((res) => {
@@ -43,7 +45,7 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     }
 
     public get isSignedIn(): boolean {
-        return this._isSignedIn;
+        return this.mIsSignedIn;
     }
 
     public signin(event: MouseEvent): void {

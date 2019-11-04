@@ -1,29 +1,26 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import {
     Component,
-    AfterViewInit,
-    OnDestroy,
-    NgZone,
-    Input
+    Input,
 } from '@angular/core';
-import { FitApiDataSourceService, FitDataSource, FitDataSourceList } from 'src/app/service/fit-data-source.service';
-import { HttpEvent } from '@angular/common/http';
-import { Subscriber, Observable } from 'rxjs';
-import { LoadableListComponent } from 'src/app/common-components/sessions.component';
+import { IFitDataSource } from '@donmahallem/google-fit-api-types';
 @Component({
     selector: 'app-datasource-list',
+    styleUrls: ['./datasource-list.component.scss'],
     templateUrl: './datasource-list.component.pug',
-    styleUrls: ['./datasource-list.component.scss']
 })
 export class DatasourceListComponent {
-    private mDataSources: FitDataSource[] = [];
+    private mDataSources: IFitDataSource[] = [];
 
-
-    public get dataSources(): FitDataSource[] {
+    public get dataSources(): IFitDataSource[] {
         return this.mDataSources;
     }
 
     @Input('dataSources')
-    public set dataSources(sources: FitDataSource[]) {
+    public set dataSources(sources: IFitDataSource[]) {
         this.mDataSources = sources;
     }
 }

@@ -1,23 +1,24 @@
-import { Injectable, NgZone } from '@angular/core';
-import { environment } from '../../environments/environment';
-import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
-import { timer, Observable, Subscription, of, combineLatest, BehaviorSubject } from 'rxjs';
-import { catchError, map, tap, mergeMapTo, filter, mergeMap, retryWhen, flatMap } from 'rxjs/operators';
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import * as moment from 'moment';
+import { Observable } from 'rxjs';
 import { GapiAuthService } from './gapi-auth.service';
 
-export interface SignInUrlResponse {
+export interface ISignInUrlResponse {
     url: string;
 }
 
-export interface ExchangeCodeResponse {
-
+// tslint:disable-next-line:no-empty-interface
+export interface IExchangeCodeResponse { }
+// tslint:disable-next-line:no-empty-interface
+export interface IUser {
 }
-export interface User {
 
-}
-
-export interface SubmitBodyMetricsRequest {
+export interface ISubmitBodyMetricsRequest {
     timestamp: number;
     bodyweight?: number;
     bodyfat?: number;
@@ -31,16 +32,16 @@ export class GapiService {
     constructor(private http: HttpClient, private gapiAuth: GapiAuthService) {
     }
 
-    public getMe(): Observable<User> {
+    public getMe(): Observable<IUser> {
         return this.http
-            .get<User>('/api/google/user/me');
+            .get<IUser>('/api/google/user/me');
     }
 
     public getDataSources(): Observable<any> {
         return this.gapiAuth.authRequest(this.http.get<any>('/api/google/fit/datasources'));
     }
 
-    public submitBodyMetrics(data: SubmitBodyMetricsRequest): Observable<any> {
+    public submitBodyMetrics(data: ISubmitBodyMetricsRequest): Observable<any> {
         return this.gapiAuth.authRequest(this.http.post<any>('/api/google/fit/bodymetrics', data));
     }
 
@@ -54,7 +55,7 @@ export class GapiService {
         reqParams.set('from', from.unix().toString());
         reqParams.set('to', to.unix().toString());
         return this.gapiAuth.authRequest(this.http.get<any>('/api/google/fit/weight', {
-            params: reqParams
+            params: reqParams,
         }));
     }
     /**
@@ -69,7 +70,7 @@ export class GapiService {
         reqParams.set('to', to.unix().toString());
         reqParams.set('bucketsize', bucketsize.toString());
         return this.gapiAuth.authRequest(this.http.get<any>('/api/google/fit/weight', {
-            params: reqParams
+            params: reqParams,
         }));
     }
 }

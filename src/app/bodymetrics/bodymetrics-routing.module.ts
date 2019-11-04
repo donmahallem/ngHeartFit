@@ -1,23 +1,27 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { BodyMetricsFormComponent } from './components/bodymetrics-form.component';
 import { WeightChartComponent } from './components/weight-chart.component';
 
 const routes: Routes = [
     {
+        component: BodyMetricsFormComponent,
         path: 'insert',
-        component: BodyMetricsFormComponent
     },
     {
+        component: WeightChartComponent,
         path: 'weight/chart',
-        component: WeightChartComponent
-    }
+    },
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
+    imports: [RouterModule.forChild(routes)],
     providers: [
-    ]
+    ],
 })
 export class BodyMetricsRoutingModule { }

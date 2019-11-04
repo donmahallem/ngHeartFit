@@ -1,23 +1,25 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
+import { ModuleWithProviders } from '@angular/compiler/src/core';
+import { NgModule } from '@angular/core';
 import {
     GoogleApiModule,
-    GoogleApiService,
-    GoogleAuthService,
     NgGapiClientConfig,
     NG_GAPI_CONFIG,
-    GoogleApiConfig
 } from 'ng-gapi';
-import { RouterModule } from '@angular/router';
-import { NgModule } from '@angular/core';
-import { GapiUserService } from './service/gapi-user.service';
 import { environment } from 'src/environments/environment';
-import { NgGapiService } from './service/nggapi-base.service';
-import { ModuleWithProviders } from '@angular/compiler/src/core';
-import { FitApiBaseService } from './service/fit-api-base.service';
-import { FitApiDataSetService } from './service/fit-data-set.service';
-import { FitApiDataSourceService } from './service/fit-data-source.service';
-import { FitApiSessionService } from './service/fit-session.service';
-import { FitApiAggregateService } from './service/fit-aggregate.service';
 import { NgGapiResolver } from './gapi.resolver';
+import {
+    FitApiAggregateService,
+    FitApiBaseService,
+    FitApiDataSetService,
+    FitApiDataSourceService,
+    FitApiSessionService,
+    GapiUserService,
+    NgGapiService,
+} from './service';
 
 const gapiClientConfig: NgGapiClientConfig = {
     client_id: environment.gapi.client_id,
@@ -25,16 +27,16 @@ const gapiClientConfig: NgGapiClientConfig = {
     scope: [
         'https://www.googleapis.com/auth/fitness.body.write',
         'https://www.googleapis.com/auth/fitness.nutrition.read',
-        'https://www.googleapis.com/auth/fitness.activity.write'
-    ].join(' ')
+        'https://www.googleapis.com/auth/fitness.activity.write',
+    ].join(' '),
 };
 
 @NgModule({
+    exports: [GoogleApiModule],
     imports: [GoogleApiModule.forRoot({
         provide: NG_GAPI_CONFIG,
-        useValue: gapiClientConfig
+        useValue: gapiClientConfig,
     })],
-    exports: [GoogleApiModule]
 })
 export class NgGapiConfigModule {
     static forRoot(): ModuleWithProviders {
@@ -48,8 +50,8 @@ export class NgGapiConfigModule {
                 FitApiDataSourceService,
                 FitApiAggregateService,
                 FitApiSessionService,
-                NgGapiResolver
-            ]
+                NgGapiResolver,
+            ],
         };
     }
 }

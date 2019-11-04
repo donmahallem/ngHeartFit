@@ -1,26 +1,27 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import {
-    TestBed,
-    async,
-    ComponentFixture
-} from '@angular/core/testing';
-import {
-    Injectable,
     Component,
-    Input
+    Injectable,
+    Input,
 } from '@angular/core';
 import {
+    async,
+    ComponentFixture,
+    TestBed,
+} from '@angular/core/testing';
+import {
+    IUploadFile,
     UploadDataService,
-    UploadFile,
-    UploadFiles,
-    UploadFileStatus,
-    UploadFileError,
     UploadFileResults,
-    UploadFileType
+    UploadFileStatus,
+    UploadFileType,
 } from '../services';
 
-import * as sinon from 'sinon';
 import { By } from '@angular/platform-browser';
-import { ValidationError } from 'jsonschema';
+import * as sinon from 'sinon';
 import { FileUploadLoadedComponent } from './file-upload-loaded.component';
 @Injectable()
 class TestUploadDataService {
@@ -30,18 +31,17 @@ class TestUploadDataService {
     }
 }
 
-
 @Component({
     selector: 'app-test-parent',
-    template: '<app-file-upload-loaded [uploadFile]="testFile"></app-file-upload-loaded>'
+    template: '<app-file-upload-loaded [uploadFile]="testFile"></app-file-upload-loaded>',
 })
 class TestParentComponent {
-    public testFile: UploadFile;
+    public testFile: IUploadFile;
 }
 @Component({
     // tslint:disable-next-line
     selector: 'mat-slide-toggle',
-    template: '<div></div>'
+    template: '<div></div>',
 })
 class TestMatSlideToggleComponent {
     @Input()
@@ -50,7 +50,7 @@ class TestMatSlideToggleComponent {
 @Component({
     // tslint:disable-next-line
     selector: 'mat-icon',
-    template: '<div></div>'
+    template: '<div></div>',
 })
 class TestMatIconComponent {
 }
@@ -63,60 +63,60 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
         let uploadDataService: UploadDataService;
         const testFiles: UploadFileResults[] = [
             {
-                key: 'testFile05.json',
+                data: 'test data to do some stuff' as any,
                 filename: 'testFile05.json',
-                data: <any>'test data to do some stuff',
                 filesize: 30303,
-                type: UploadFileType.DAY_SUMMARY,
-                selected: false,
-                status: UploadFileStatus.LOADED
-            }, {
-                key: 'testFile06.json',
-                filename: 'testFile06.json',
-                data: <any>'test data to do some stuff two',
-                filesize: 51356,
-                type: UploadFileType.DAY_SUMMARY,
-                selected: true,
-                status: UploadFileStatus.LOADED
-            }, {
                 key: 'testFile05.json',
-                filename: 'testFile05.json',
-                data: <any>'test data to do some stuff',
-                filesize: 4325,
-                type: UploadFileType.SLEEP_DATA,
                 selected: false,
-                status: UploadFileStatus.LOADED
+                status: UploadFileStatus.LOADED,
+                type: UploadFileType.DAY_SUMMARY,
             }, {
-                key: 'testFile06.json',
+                data: 'test data to do some stuff two' as any,
                 filename: 'testFile06.json',
-                data: <any>'test data to do some stuff two',
-                filesize: 8452,
+                filesize: 51356,
+                key: 'testFile06.json',
+                selected: true,
+                status: UploadFileStatus.LOADED,
+                type: UploadFileType.DAY_SUMMARY,
+            }, {
+                data: 'test data to do some stuff' as any,
+                filename: 'testFile05.json',
+                filesize: 4325,
+                key: 'testFile05.json',
+                selected: false,
+                status: UploadFileStatus.LOADED,
                 type: UploadFileType.SLEEP_DATA,
-                selected: true,
-                status: UploadFileStatus.LOADED
             }, {
-                key: 'testFile06.json',
+                data: 'test data to do some stuff two' as any,
                 filename: 'testFile06.json',
-                data: <any>'test data to do some stuff two',
                 filesize: 8452,
-                type: null,
+                key: 'testFile06.json',
                 selected: true,
-                status: UploadFileStatus.LOADED
-            }
+                status: UploadFileStatus.LOADED,
+                type: UploadFileType.SLEEP_DATA,
+            }, {
+                data: 'test data to do some stuff two' as any,
+                filename: 'testFile06.json',
+                filesize: 8452,
+                key: 'testFile06.json',
+                selected: true,
+                status: UploadFileStatus.LOADED,
+                type: undefined,
+            },
         ];
         beforeEach(async(() => {
             TestBed.configureTestingModule({
-                imports: [
-                ],
                 declarations: [
                     FileUploadLoadedComponent,
                     TestParentComponent,
                     TestMatSlideToggleComponent,
-                    TestMatIconComponent
+                    TestMatIconComponent,
+                ],
+                imports: [
                 ],
                 providers: [
-                    { provide: UploadDataService, useValue: new TestUploadDataService() }
-                ]
+                    { provide: UploadDataService, useValue: new TestUploadDataService() },
+                ],
             }).compileComponents();
         }));
         beforeAll(() => { sandbox = sinon.createSandbox(); });
@@ -135,14 +135,14 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
                     describe('mUploadFile is set', () => {
                         testFiles.forEach((testFile) => {
                             it('should return ' + testFile.filesize, () => {
-                                (<any>cmpInstance).mUploadFile = testFile;
+                                (cmpInstance as any).mUploadFile = testFile;
                                 expect(cmpInstance.filesize).toEqual(testFile.filesize);
                             });
                         });
                     });
                     describe('mUploadFile is not set', () => {
                         it('should return 0', () => {
-                            (<any>cmpInstance).mUploadFile = null;
+                            (cmpInstance as any).mUploadFile = undefined;
                             expect(cmpInstance.filesize).toEqual(0);
                         });
                     });
@@ -154,12 +154,12 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
                         testFiles.forEach((testFile) => {
                             if (testFile.type) {
                                 it('should return ' + testFile.type, () => {
-                                    (<any>cmpInstance).mUploadFile = testFile;
+                                    (cmpInstance as any).mUploadFile = testFile;
                                     expect(cmpInstance.type).toEqual(testFile.type);
                                 });
                             } else {
                                 it('should return UploadFileType.UNKNOWN', () => {
-                                    (<any>cmpInstance).mUploadFile = testFile;
+                                    (cmpInstance as any).mUploadFile = testFile;
                                     expect(cmpInstance.type).toEqual(UploadFileType.UNKNOWN);
                                 });
                             }
@@ -167,7 +167,7 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
                     });
                     describe('mUploadFile is not set', () => {
                         it('should return UploadFileType.UNKNOWN', () => {
-                            (<any>cmpInstance).mUploadFile = null;
+                            (cmpInstance as any).mUploadFile = undefined;
                             expect(cmpInstance.type).toEqual(UploadFileType.UNKNOWN);
                         });
                     });
@@ -177,15 +177,15 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
                 describe('getter', () => {
                     describe('mUploadFile is set', () => {
                         testFiles.forEach((testFile) => {
-                            it('should return ' + (testFile.selected !== false), () => {
-                                (<any>cmpInstance).mUploadFile = testFile;
+                            it('should return ' + (testFile.selected), () => {
+                                (cmpInstance as any).mUploadFile = testFile;
                                 expect(cmpInstance.selected).toEqual(testFile.selected);
                             });
                         });
                     });
                     describe('mUploadFile is not set', () => {
                         it('should return false', () => {
-                            (<any>cmpInstance).mUploadFile = null;
+                            (cmpInstance as any).mUploadFile = undefined;
                             expect(cmpInstance.selected).toEqual(false);
                         });
                     });
@@ -197,17 +197,17 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
                         testFiles.forEach((testFile) => {
                             if (testFile.type === UploadFileType.DAY_SUMMARY) {
                                 it('should return "favorite_border"', () => {
-                                    (<any>cmpInstance).mUploadFile = testFile;
+                                    (cmpInstance as any).mUploadFile = testFile;
                                     expect(cmpInstance.typeIcon).toEqual('favorite_border');
                                 });
                             } else if (testFile.type === UploadFileType.SLEEP_DATA) {
                                 it('should return "brightness_2"', () => {
-                                    (<any>cmpInstance).mUploadFile = testFile;
+                                    (cmpInstance as any).mUploadFile = testFile;
                                     expect(cmpInstance.typeIcon).toEqual('brightness_2');
                                 });
                             } else {
                                 it('should return "help_outline"', () => {
-                                    (<any>cmpInstance).mUploadFile = testFile;
+                                    (cmpInstance as any).mUploadFile = testFile;
                                     expect(cmpInstance.typeIcon).toEqual('help_outline');
                                 });
                             }
@@ -215,7 +215,7 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
                     });
                     describe('mUploadFile is not set', () => {
                         it('should return false', () => {
-                            (<any>cmpInstance).mUploadFile = null;
+                            (cmpInstance as any).mUploadFile = undefined;
                             expect(cmpInstance.typeIcon).toEqual('help_outline');
                         });
                     });
@@ -230,8 +230,8 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
                     testFiles.forEach((testFile) => {
                         [true, false].forEach((testCheck) => {
                             it('should call setSelected("' + testFile.key + '",' + testCheck + ')', () => {
-                                (<any>cmpInstance).mUploadFile = testFile;
-                                cmpInstance.onCheckChange(<any>{ checked: testCheck });
+                                (cmpInstance as any).mUploadFile = testFile;
+                                cmpInstance.onCheckChange({ checked: testCheck } as any);
                                 expect(setSelectedStub.callCount).toEqual(1);
                                 expect(setSelectedStub.getCall(0).args).toEqual([testFile.key, testCheck]);
                             });
@@ -240,8 +240,8 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
                 });
                 describe('mUploadFile is not set', () => {
                     it('should return false', () => {
-                        (<any>cmpInstance).mUploadFile = null;
-                        cmpInstance.onCheckChange(<any>{ checked: true });
+                        (cmpInstance as any).mUploadFile = undefined;
+                        cmpInstance.onCheckChange({ checked: true } as any);
                         expect(setSelectedStub.callCount).toEqual(0);
                     });
                 });
@@ -256,7 +256,6 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
                 it('should create the app', () => {
                     expect(cmpInstance).toBeTruthy();
                 });
-                let progressCmp: TestMatSlideToggleComponent;
                 it('should set the correct value');
             });
             describe('inputs of FileUploadLoadedComponent', () => {
@@ -277,7 +276,7 @@ describe('app/polar/upload/file-upload-loaded.component', () => {
                         it('should set the correct mode', () => {
                             parentCmpInstance.testFile = testFile;
                             parentFixture.detectChanges();
-                            expect((<any>cmpInstance).mUploadFile).toEqual(testFile);
+                            expect((cmpInstance as any).mUploadFile).toEqual(testFile);
                         });
                     });
                 });

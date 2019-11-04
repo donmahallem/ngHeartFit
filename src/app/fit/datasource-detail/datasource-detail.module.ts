@@ -1,22 +1,18 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatProgressBarModule, MatTableModule, MatIconModule, MatToolbarModule } from '@angular/material';
-import { DatasourceDetailComponent } from './datasource-detail.component';
-import { FitDataSourceDetailResolver } from './fit-data-source-detail.resolver';
-import { DatasourceExampleTableComponent } from './datasource-example-table.component';
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
 
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { MatIconModule, MatProgressBarModule, MatTableModule, MatToolbarModule } from '@angular/material';
+import { DatasourceDetailComponent } from './datasource-detail.component';
+import { DatasourceExampleTableComponent } from './datasource-example-table.component';
+import { FitDataSourceDetailResolver } from './fit-data-source-detail.resolver';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        MatProgressBarModule,
-        MatTableModule,
-        MatIconModule,
-        MatToolbarModule
-    ],
     declarations: [
         DatasourceDetailComponent,
-        DatasourceExampleTableComponent
+        DatasourceExampleTableComponent,
     ],
     exports: [
         DatasourceDetailComponent,
@@ -25,10 +21,17 @@ import { DatasourceExampleTableComponent } from './datasource-example-table.comp
         MatProgressBarModule,
         MatTableModule,
         MatIconModule,
-        MatToolbarModule
+        MatToolbarModule,
+    ],
+    imports: [
+        CommonModule,
+        MatProgressBarModule,
+        MatTableModule,
+        MatIconModule,
+        MatToolbarModule,
     ],
     providers: [
-        FitDataSourceDetailResolver
-    ]
+        FitDataSourceDetailResolver,
+    ],
 })
 export class DatasourceDetailModule { }

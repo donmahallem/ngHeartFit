@@ -1,28 +1,31 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
+import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { Resolve, ActivatedRoute, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { delay, debounceTime, catchError, filter, map, tap, take } from 'rxjs/operators';
-import { FitDataSource, FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
-import { HttpResponse, HttpEvent, HttpEventType } from '@angular/common/http';
+import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
+import { IFitDataSource } from '@donmahallem/google-fit-api-types';
+import { of, Observable } from 'rxjs';
+import { catchError, filter, map, take } from 'rxjs/operators';
+import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 
 @Injectable()
-export class FitDataSourceDetailResolver implements Resolve<FitDataSource> {
+export class FitDataSourceDetailResolver implements Resolve<IFitDataSource> {
     constructor(private fitDataSourceService: FitApiDataSourceService,
-        private router: Router) { }
+                private router: Router) { }
 
-    public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<FitDataSource> {
-        const ids: string = route.params['id'];
+    public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IFitDataSource> {
+        const ids: string = route.params.id;
         return this.fitDataSourceService.getDataSource(ids)
-            .pipe(filter((event: HttpEvent<FitDataSource>): boolean => {
-                return (event.type === HttpEventType.Response);
-            }),
-                map((val: HttpResponse<FitDataSource>): FitDataSource => {
-                    return val.body;
-                }),
+            .pipe(filter((event: HttpEvent<IFitDataSource>): boolean =>
+                (event.type === HttpEventType.Response)),
+                map((val: HttpResponse<IFitDataSource>): IFitDataSource =>
+                    val.body),
                 take(1),
-                catchError((err: any): Observable<FitDataSource> => {
+                catchError((err: any): Observable<IFitDataSource> => {
                     this.router.navigate(['/fit/datasources']);
-                    return of(null);
+                    return of(undefined);
                 }));
     }
 }

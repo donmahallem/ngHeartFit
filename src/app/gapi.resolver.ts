@@ -1,28 +1,31 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { catchError, filter, map, take, delay } from 'rxjs/operators';
-import { NgGapiService, GapiStatus } from './service/nggapi-base.service';
+import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
+import { of, Observable } from 'rxjs';
+import { catchError, filter, map, take } from 'rxjs/operators';
+import { GapiStatus, NgGapiService } from './service/nggapi-base.service';
 
 @Injectable()
 export class NgGapiResolver implements Resolve<boolean> {
     constructor(private nggapi: NgGapiService,
-        private router: Router) { }
+                private router: Router) { }
 
     public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
         return this.nggapi.statusObservable
-            .pipe(filter((status: GapiStatus): boolean => {
-                return status !== GapiStatus.LOADING;
-            }), map((status: GapiStatus): true => {
-                if (status === GapiStatus.FAILED) {
-                    throw new Error();
-                }
-                return true;
-            }),
+            .pipe(filter((status: GapiStatus): boolean =>
+                status !== GapiStatus.LOADING), map((status: GapiStatus): true => {
+                    if (status === GapiStatus.FAILED) {
+                        throw new Error();
+                    }
+                    return true;
+                }),
                 take(1),
-                catchError((err: any): Observable<null> => {
+                catchError((err: any): Observable<undefined> => {
                     this.router.navigate(['/error']);
-                    return of(null);
+                    return of(undefined);
                 }));
     }
 

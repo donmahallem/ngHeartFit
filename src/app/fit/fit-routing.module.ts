@@ -1,48 +1,56 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { DatasourcesComponent } from './datasources/datasources.component';
-import { SessionsComponent } from './sessions/sessions.component';
-import { SessionDetailComponent } from './session-detail/session-detail.component';
+import { RouterModule, Routes } from '@angular/router';
 import { DatasourceDetailComponent } from './datasource-detail';
 import { FitDataSourceDetailResolver } from './datasource-detail/fit-data-source-detail.resolver';
+import { DatasourcesComponent } from './datasources/datasources.component';
 import { FitDashboardComponent } from './fit-dashboard';
+import { SessionDetailComponent } from './session-detail/session-detail.component';
+import { SessionsComponent } from './sessions/sessions.component';
+import { SessionsResolver } from './sessions/sessions.resolver';
 
 const routes: Routes = [
     {
         path: '',
-        redirectTo: 'dashboard'
+        redirectTo: 'dashboard',
     },
     {
+        component: FitDashboardComponent,
         path: 'dashboard',
-        component: FitDashboardComponent
     },
     {
+        component: DatasourcesComponent,
         path: 'datasources',
-        component: DatasourcesComponent
     },
     {
-        path: 'datasource/:id',
         component: DatasourceDetailComponent,
+        path: 'datasource/:id',
         resolve: {
-            dataSource: FitDataSourceDetailResolver
-        }
+            dataSource: FitDataSourceDetailResolver,
+        },
     },
     {
+        component: SessionsComponent,
         path: 'sessions',
-        component: SessionsComponent
+        resolve: {
+            sessions: SessionsResolver,
+        },
     },
     {
+        component: SessionDetailComponent,
         path: 'session/:id',
-        component: SessionDetailComponent
-    }
+    },
 ];
 
 @NgModule({
-    imports: [
-        RouterModule.forChild(routes)
-    ],
     exports: [RouterModule],
+    imports: [
+        RouterModule.forChild(routes),
+    ],
     providers: [
-    ]
+    ],
 })
 export class FitRoutingModule { }

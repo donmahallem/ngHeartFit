@@ -1,10 +1,13 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
+import { Component } from '@angular/core';
 @Component({
     selector: 'app-root',
+    styleUrls: ['./app.component.scss'],
     templateUrl: './app.component.pug',
-    styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    private _title = 'app title';
 
 }

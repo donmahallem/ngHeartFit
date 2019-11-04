@@ -1,36 +1,40 @@
+/*!
+ * Source https://github.com/donmahallem/ngHeartFit
+ */
+
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import {
     MatButtonModule,
     MatCheckboxModule,
+    MatFormFieldModule,
     MatGridListModule,
     MatIconModule,
-    MatFormFieldModule,
     MatInputModule,
+    MatProgressBarModule,
     MatSelectModule,
     MatTableModule,
-    MatProgressBarModule
 } from '@angular/material';
-import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { MomentDateAdapter, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
 import { NgGapiConfigModule } from '../nggapi-config.module';
-import { FitRoutingModule } from './fit-routing.module';
-import { SessionsComponent } from './sessions/sessions.component';
-import { SessionComponent } from './sessions/session.component';
-import { SessionDetailComponent } from './session-detail/session-detail.component';
-import { DatasourcesModule } from './datasources/datasources.module';
 import { DatasourceDetailModule } from './datasource-detail';
-import { NotFoundComponent } from '../not-found.component';
-import { FitDashboardComponent, FitDashboardModule } from './fit-dashboard';
+import { DatasourcesModule } from './datasources/datasources.module';
+import { FitDashboardModule } from './fit-dashboard';
+import { FitRoutingModule } from './fit-routing.module';
+import { SessionDetailComponent } from './session-detail/session-detail.component';
+import { SessionComponent } from './sessions/session.component';
+import { SessionsComponent } from './sessions/sessions.component';
+import { SessionsResolver } from './sessions/sessions.resolver';
 
 @NgModule({
     declarations: [
         SessionsComponent,
         SessionComponent,
-        SessionDetailComponent
+        SessionDetailComponent,
     ],
     imports: [
         CommonModule,
@@ -50,11 +54,12 @@ import { FitDashboardComponent, FitDashboardModule } from './fit-dashboard';
         MatProgressBarModule,
         DatasourcesModule,
         DatasourceDetailModule,
-        FitDashboardModule
+        FitDashboardModule,
     ],
     providers: [
         { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
-        { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS }
-    ]
+        { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+        SessionsResolver,
+    ],
 })
 export class FitModule { }
