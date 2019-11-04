@@ -12,9 +12,11 @@ import { IFitDatasetPoint, IFitDataSource } from '@donmahallem/google-fit-api-ty
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { filter, flatMap } from 'rxjs/operators';
-import { FitApiAggregateService } from 'src/app/service/fit-aggregate.service';
-import { FitApiDataSetService } from 'src/app/service/fit-data-set.service';
-import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
+import {
+    FitApiAggregateService,
+    FitApiDataSetService,
+    FitApiDataSourceService,
+} from 'src/app/service';
 
 @Component({
     selector: 'app-fit-dashboard',

@@ -176,6 +176,4 @@ export class FitApiDataSourceService {
         return undefined;
     }
 }
-export interface IFitDataSourceList {
-    dataSource: IFitDataSource[];
-}
+

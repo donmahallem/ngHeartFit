@@ -43,6 +43,7 @@ export class FitApiAggregateService {
 
 }
 
+// TODO: REMOVE
 export interface IAggregateByFilter {
     dataTypeName?: string;
     dataSourceId?: string;
