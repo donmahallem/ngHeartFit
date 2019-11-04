@@ -9,12 +9,13 @@ import {
     OnDestroy,
 } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { IFitDataSource } from '@donmahallem/google-fit-api-types';
+import { IFitDataset, IFitDataSource, IFitFpVal } from '@donmahallem/google-fit-api-types';
 import * as moment from 'moment';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 import { LoadableComponent } from 'src/app/common-components/loadable.component';
-import { FitApiDataSetService, FitDatasetPoints, IFitDatasetResponse } from 'src/app/service/fit-data-set.service';
+import { FitApiDataSetService } from 'src/app/service/fit-data-set.service';
+import { Momentary } from 'src/app/util';
 
 @Component({
     selector: 'app-datasource-example-table',
@@ -22,7 +23,7 @@ import { FitApiDataSetService, FitDatasetPoints, IFitDatasetResponse } from 'src
     templateUrl: './datasource-example-table.component.pug',
 })
 export class DatasourceExampleTableComponent<T>
-    extends LoadableComponent<IFitDatasetResponse<FitDatasetPoints>>
+    extends LoadableComponent<IFitDataset>
     implements OnDestroy {
 
     displayedColumns: string[] = ['position', 'name', 'date'];
@@ -52,22 +53,22 @@ export class DatasourceExampleTableComponent<T>
     public set dataSource(source: IFitDataSource) {
         this.mDataSourceSubject.next(source);
     }
-    public onResult(result: IFitDatasetResponse<FitDatasetPoints>) {
+    public onResult(result: IFitDataset) {
         const res: any[] = [];
         for (const a of result.point) {
             res.push({
-                endTime: moment.unix(parseInt(a.endTimeNanos.substr(0, a.endTimeNanos.length - 9), 10)),
-                modifiedTime: moment.unix(parseInt(a.modifiedTimeMillis.substr(0, a.modifiedTimeMillis.length - 3), 10)),
-                startTime: moment.unix(parseInt(a.startTimeNanos.substr(0, a.startTimeNanos.length - 9), 10)),
-                weight: a.value[0].fpVal,
+                endTime: Momentary.convertNanosToMoment(a.endTimeNanos),
+                modifiedTime: Momentary.convertNanosToMoment(a.modifiedTimeMillis),
+                startTime: Momentary.convertMillisToMoment(a.startTimeNanos),
+                weight: (a.value[0] as IFitFpVal).fpVal,
             });
         }
         this.dataSource2 = res;
     }
-    public createLoadObservable(): Observable<HttpEvent<IFitDatasetResponse<FitDatasetPoints>>> {
+    public createLoadObservable(): Observable<HttpEvent<IFitDataset>> {
         return this.activatedRoute
             .paramMap
-            .pipe(flatMap((value: ParamMap): Observable<HttpEvent<IFitDatasetResponse<FitDatasetPoints>>> =>
+            .pipe(flatMap((value: ParamMap): Observable<HttpEvent<IFitDataset>> =>
                 this.fitDataSetService.getDataSetData(value.get('id'), moment().subtract(30, 'day'), moment())));
     }
 

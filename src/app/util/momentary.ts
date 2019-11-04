@@ -3,6 +3,7 @@
  */
 
 import { IFitSession } from '@donmahallem/google-fit-api-types';
+import { Long } from '@donmahallem/google-fit-api-types/dist/long';
 import * as moment from 'moment';
 
 type TimeMillisKeys = 'startTimeMillis' | 'endTimeMillis' | 'modifiedTimeMillis';
@@ -17,5 +18,18 @@ export class Momentary {
             }
         }
         return convObj;
+    }
+
+    public static convertNanosToMoment(timestamp: Long) {
+        if (typeof timestamp === 'string') {
+            return moment(timestamp.substr(0, timestamp.length - 6), 'x');
+        }
+        return moment(timestamp / 1000000);
+    }
+    public static convertMillisToMoment(timestamp: Long) {
+        if (typeof timestamp === 'string') {
+            return moment(parseInt(timestamp, 10), 'x');
+        }
+        return moment(timestamp);
     }
 }

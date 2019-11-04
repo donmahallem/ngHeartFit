@@ -8,12 +8,12 @@ import {
     Component,
     OnDestroy,
 } from '@angular/core';
-import { IFitDataSource } from '@donmahallem/google-fit-api-types';
+import { IFitDatasetPoint, IFitDataSource } from '@donmahallem/google-fit-api-types';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { filter, flatMap } from 'rxjs/operators';
 import { FitApiAggregateService } from 'src/app/service/fit-aggregate.service';
-import { FitApiDataSetService, IInsertDataPoint } from 'src/app/service/fit-data-set.service';
+import { FitApiDataSetService } from 'src/app/service/fit-data-set.service';
 import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 
 @Component({
@@ -64,14 +64,14 @@ export class FitDashboardComponent implements OnDestroy, AfterViewInit {
                 flatMap((datasource: HttpResponse<IFitDataSource>) => {
                     const end: moment.Moment = moment();
                     const endTimestamp: number = end.valueOf();
-                    const ps: IInsertDataPoint[] = [];
+                    const ps: IFitDatasetPoint[] = [];
                     const windowSize = 12345678;
                     for (let i = 0; i < 100; i++) {
                         const ts: number = endTimestamp - (windowSize * i);
                         ps.push({
                             dataTypeName: 'com.google.body.fat.percentage',
-                            endTimeNanos: ts * 1000000,
-                            startTimeNanos: ts * 1000000,
+                            endTimeNanos: ts + '000000',
+                            startTimeNanos: ts + '000000',
                             value: [{ fpVal: Math.random() * 100 }],
                         });
                     }
