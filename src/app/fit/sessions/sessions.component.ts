@@ -20,7 +20,7 @@ import { IMomentFit, Momentary } from 'src/app/util';
     templateUrl: './sessions.component.pug',
 })
 export class SessionsComponent implements OnInit, OnDestroy {
-    private mSessions: IFitSession[] = [];
+    private mSessions: IMomentFit<IFitSession>[] = [];
     private mDataSubscription: Subscription;
     constructor(private sessionService: FitApiSessionService,
                 private activatedRoute: ActivatedRoute) {
@@ -37,18 +37,14 @@ export class SessionsComponent implements OnInit, OnDestroy {
                             Momentary.convert(session));
                 });
     }
-    public onResult(result: IFitSessionListResponse) {
-        this.mSessions = result.session;
-    }
-
     public createLoadObservable(): Observable<HttpEvent<IFitSessionListResponse>> {
         return this.sessionService.getSessions(moment().subtract(120, 'days'), moment());
     }
-    public get sessions(): IFitSession[] {
+    public get sessions(): IMomentFit<IFitSession>[] {
         return this.mSessions;
     }
 
-    public set sessions(s: IFitSession[]) {
+    public set sessions(s: IMomentFit<IFitSession>[]) {
         this.mSessions = s;
     }
 }
