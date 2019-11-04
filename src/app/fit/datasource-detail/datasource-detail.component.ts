@@ -10,11 +10,11 @@ import {
     OnInit,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { IFitDataSource } from '@donmahallem/google-fit-api-types';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 import { FitApiDataSetService } from 'src/app/service/fit-data-set.service';
-import { IFitDataSource } from 'src/app/service/fit-data-source.service';
 
 const ELEMENT_DATA: any[] = [
     { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },

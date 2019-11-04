@@ -1,2 +1,4 @@
+mat-icon single_bed
 h4 {{session.id}}
 h5 {{session.name}}
+h6 {{session?.startTimeMillis.local().format("L LT")}} - {{session?.endTimeMillis.local().format("L LT")}}

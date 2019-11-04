@@ -6,7 +6,7 @@ import {
     Component,
     Input,
 } from '@angular/core';
-import { IFitDataSource } from 'src/app/service/fit-data-source.service';
+import { IFitDataSource } from '@donmahallem/google-fit-api-types';
 @Component({
     selector: 'app-datasource-list',
     styleUrls: ['./datasource-list.component.scss'],

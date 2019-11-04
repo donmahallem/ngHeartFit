@@ -8,7 +8,7 @@ import {
     Input,
     OnDestroy,
 } from '@angular/core';
-import { IFitSession } from 'src/app/service/fit-api-modals';
+import { IFitSession } from '@donmahallem/google-fit-api-types';
 @Component({
     selector: 'app-session-detail',
     styleUrls: ['./session-detail.component.scss'],

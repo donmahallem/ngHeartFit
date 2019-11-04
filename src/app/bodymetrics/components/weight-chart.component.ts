@@ -9,13 +9,13 @@ import {
     OnDestroy,
     ViewChild,
 } from '@angular/core';
+import { IFitBucketResponse, IFitDataSourceList } from '@donmahallem/google-fit-api-types';
 import * as moment from 'moment';
 import { Subscriber, Subscription } from 'rxjs';
 import { debounceTime, delay, filter, flatMap } from 'rxjs/operators';
 import { LineChartComponent } from 'src/app/common-components/line-chart';
-import { FitApiAggregateService, IAggregateByFilter } from 'src/app/service/fit-aggregate.service';
-import { IBucketResponse } from 'src/app/service/fit-api-modals';
-import { FitApiDataSourceService, IFitDataSourceList } from 'src/app/service/fit-data-source.service';
+import { FitApiAggregateService, FitApiDataSourceService } from 'src/app/service';
+import { IAggregateByFilter } from 'src/app/service/fit-aggregate.service';
 import { WeightChartService } from '../services/weight-chart.service';
 
 @Component({
@@ -73,7 +73,7 @@ export class WeightChartComponent implements AfterViewInit, OnDestroy {
             .subscribe(new Subscriber(this.updateData.bind(this), console.error)));
     }
 
-    public updateData(bucketResponse: IBucketResponse): void {/*
+    public updateData(bucketResponse: IFitBucketResponse): void {/*
         const weightDatapoints: ChartPoint[] = [];
         const fatDatapoints: ChartPoint[] = [];
         for (const bucket of bucketResponse.bucket) {

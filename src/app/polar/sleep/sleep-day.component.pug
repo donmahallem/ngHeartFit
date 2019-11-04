@@ -1,0 +1,6 @@
+button(*ngIf="sleeps.length > 0",(click)="uploadToFit()") Upload
+button(*ngIf="sleeps.length > 0",(click)="getSessionData()") Session
+div.sleep-box(*ngFor="let day of sleeps")
+    h4 {{day.date}}
+    div.sleep-day()
+        p(*ngFor="let sleepWakeState of day.sleepWakeStates") {{sleepWakeState.sleepWakeState}}

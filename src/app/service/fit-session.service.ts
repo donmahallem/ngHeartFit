@@ -6,11 +6,12 @@ import { HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { FitApiBaseService } from './fit-api-base.service';
 import {
     IFitSession,
-    IListSessionsResponse,
-} from './fit-api-modals';
+    IFitSessionListResponse,
+} from '@donmahallem/google-fit-api-types';
+import * as  moment from 'moment';
+import { FitApiBaseService } from './fit-api-base.service';
 
 @Injectable()
 export class FitApiSessionService {
@@ -26,20 +27,20 @@ export class FitApiSessionService {
         return this.fitApiBaseService.getRequest(FitApiBaseService.ENDPOINT + '/users/me/sessions/' + id);
     }
 
-    public getSessions(): Observable<HttpEvent<IListSessionsResponse>>;
-    public getSessions(startTime: string | undefined,
-                       endTime: string | undefined,
-                       includeDeleted?: boolean): Observable<HttpEvent<IListSessionsResponse>>;
-    public getSessions(startTime?: string | undefined,
-                       endTime?: string | undefined,
+    public getSessions(): Observable<HttpEvent<IFitSessionListResponse>>;
+    public getSessions(startTime: moment.Moment | undefined,
+                       endTime: moment.Moment | undefined,
+                       includeDeleted?: boolean): Observable<HttpEvent<IFitSessionListResponse>>;
+    public getSessions(startTime?: moment.Moment | undefined,
+                       endTime?: moment.Moment | undefined,
                        includeDeleted: boolean = false,
-                       pageToken?: string): Observable<HttpEvent<IListSessionsResponse>> {
+                       pageToken?: string): Observable<HttpEvent<IFitSessionListResponse>> {
         const params: any = {};
         if (startTime) {
-            params.startTime = startTime;
+            params.startTime = startTime.toISOString();
         }
         if (endTime) {
-            params.endTime = endTime;
+            params.endTime = endTime.toISOString();
         }
         params.includeDeleted = includeDeleted;
         if (pageToken) {

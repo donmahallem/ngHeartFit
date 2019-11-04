@@ -6,12 +6,12 @@ import { HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import {
+    IFitBucketResponse,
+} from '@donmahallem/google-fit-api-types';
 import * as moment from 'moment';
 import { flatMap } from 'rxjs/operators';
 import { FitApiBaseService } from './fit-api-base.service';
-import {
-    IBucketResponse,
-} from './fit-api-modals';
 
 @Injectable()
 export class FitApiAggregateService {
@@ -25,9 +25,9 @@ export class FitApiAggregateService {
     public getAggregateData(source: IAggregateByFilter[],
                             from: moment.Moment,
                             to: moment.Moment,
-                            bucketWindowMillis: number): Observable<HttpEvent<IBucketResponse>> {
+                            bucketWindowMillis: number): Observable<HttpEvent<IFitBucketResponse>> {
         return this.fitApiBaseService.base()
-            .pipe(flatMap((): Observable<HttpEvent<IBucketResponse>> => {
+            .pipe(flatMap((): Observable<HttpEvent<IFitBucketResponse>> => {
                 const requestBody: any = {
                     aggregateBy: source,
                     bucketByTime: {
@@ -37,12 +37,13 @@ export class FitApiAggregateService {
                     startTimeMillis: from.utc().valueOf(),
                 };
                 const url = FitApiBaseService.ENDPOINT + '/users/me/dataset:aggregate';
-                return this.fitApiBaseService.postRequest<any, IBucketResponse>(url, requestBody);
+                return this.fitApiBaseService.postRequest<any, IFitBucketResponse>(url, requestBody);
             }));
     }
 
 }
 
+// TODO: REMOVE
 export interface IAggregateByFilter {
     dataTypeName?: string;
     dataSourceId?: string;

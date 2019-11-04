@@ -5,9 +5,10 @@
 import { HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
+import { IFitDataSource } from '@donmahallem/google-fit-api-types';
 import { of, Observable } from 'rxjs';
 import { catchError, filter, map, take } from 'rxjs/operators';
-import { FitApiDataSourceService, IFitDataSource } from 'src/app/service/fit-data-source.service';
+import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 
 @Injectable()
 export class FitDataSourceDetailResolver implements Resolve<IFitDataSource> {

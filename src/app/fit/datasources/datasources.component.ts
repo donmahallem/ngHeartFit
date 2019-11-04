@@ -6,9 +6,10 @@ import { HttpEvent } from '@angular/common/http';
 import {
     Component,
 } from '@angular/core';
+import { IFitDataSource, IFitDataSourceList } from '@donmahallem/google-fit-api-types';
 import { Observable } from 'rxjs';
 import { LoadableListComponent } from 'src/app/common-components/sessions.component';
-import { FitApiDataSourceService, IFitDataSource, IFitDataSourceList } from 'src/app/service/fit-data-source.service';
+import { FitApiDataSourceService } from 'src/app/service/fit-data-source.service';
 @Component({
     selector: 'app-datasources',
     styleUrls: ['./datasources.component.scss'],
