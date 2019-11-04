@@ -14,7 +14,7 @@ import * as moment from 'moment';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 import { LoadableComponent } from 'src/app/common-components/loadable.component';
-import { FitApiDataSetService } from 'src/app/service/fit-data-set.service';
+import { FitApiDataSetService } from 'src/app/service';
 import { Momentary } from 'src/app/util';
 
 @Component({

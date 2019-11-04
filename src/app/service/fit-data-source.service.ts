@@ -6,7 +6,7 @@ import { HttpEvent, HttpEventType, HttpParams, HttpRequest, HttpResponse } from 
 import { Injectable } from '@angular/core';
 import { of, Observable } from 'rxjs';
 
-import { FitDataTypeName, IFitCreateDataSourceRequest, IFitDataSource, IFitDataType } from '@donmahallem/google-fit-api-types';
+import { FitDataTypeName, IFitCreateDataSourceRequest, IFitDataSource, IFitDataSourceList, IFitDataType } from '@donmahallem/google-fit-api-types';
 import * as moment from 'moment';
 import { filter, flatMap } from 'rxjs/operators';
 import { FitApiBaseService } from './fit-api-base.service';
@@ -176,4 +176,3 @@ export class FitApiDataSourceService {
         return undefined;
     }
 }
-

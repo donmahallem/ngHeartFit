@@ -11,13 +11,15 @@ import {
 } from 'ng-gapi';
 import { environment } from 'src/environments/environment';
 import { NgGapiResolver } from './gapi.resolver';
-import { FitApiAggregateService } from './service/fit-aggregate.service';
-import { FitApiBaseService } from './service/fit-api-base.service';
-import { FitApiDataSetService } from './service/fit-data-set.service';
-import { FitApiDataSourceService } from './service/fit-data-source.service';
-import { FitApiSessionService } from './service/fit-session.service';
-import { GapiUserService } from './service/gapi-user.service';
-import { NgGapiService } from './service/nggapi-base.service';
+import {
+    FitApiAggregateService,
+    FitApiBaseService,
+    FitApiDataSetService,
+    FitApiDataSourceService,
+    FitApiSessionService,
+    GapiUserService,
+    NgGapiService,
+} from './service';
 
 const gapiClientConfig: NgGapiClientConfig = {
     client_id: environment.gapi.client_id,
