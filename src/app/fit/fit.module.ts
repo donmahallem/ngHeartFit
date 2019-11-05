@@ -27,6 +27,7 @@ import { FitDashboardModule } from './fit-dashboard';
 import { FitRoutingModule } from './fit-routing.module';
 import { SessionDetailComponent } from './session-detail/session-detail.component';
 import { SessionComponent } from './sessions/session.component';
+import { SessionResolver } from './sessions/session.resolver';
 import { SessionsComponent } from './sessions/sessions.component';
 import { SessionsResolver } from './sessions/sessions.resolver';
 
@@ -60,6 +61,7 @@ import { SessionsResolver } from './sessions/sessions.resolver';
         { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
         { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
         SessionsResolver,
+        SessionResolver,
     ],
 })
 export class FitModule { }
