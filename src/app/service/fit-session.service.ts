@@ -2,7 +2,7 @@
  * Source https://github.com/donmahallem/ngHeartFit
  */
 
-import { HttpEvent } from '@angular/common/http';
+import { HttpEvent, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -35,16 +35,16 @@ export class FitApiSessionService {
                        endTime?: moment.Moment | undefined,
                        includeDeleted: boolean = false,
                        pageToken?: string): Observable<HttpEvent<IFitSessionListResponse>> {
-        const params: any = {};
+        const params: HttpParams = new HttpParams();
         if (startTime) {
-            params.startTime = startTime.toISOString();
+            params.set('startTime', startTime.toISOString());
         }
         if (endTime) {
-            params.endTime = endTime.toISOString();
+            params.set('endTime', endTime.toISOString());
         }
-        params.includeDeleted = includeDeleted;
+        params.set('includeDeleted', includeDeleted ? 'true' : 'false');
         if (pageToken) {
-            params.pageToken = pageToken;
+            params.set('pageToken', pageToken);
         }
         return this.fitApiBaseService.getRequest(FitApiBaseService.ENDPOINT + '/users/me/sessions/', params);
     }
