@@ -52,7 +52,7 @@
         "@types/d3": "~5.7.2",
         "@types/gapi": "~0.0.39",
         "@types/gapi.auth2": "~0.0.50",
-        "@types/jasmine": "~3.4.5",
+        "@types/jasmine": "~3.4.6",
         "@types/jasminewd2": "~2.0.8",
         "@types/node": "~12.12.5",
         "@types/sinon": "~7.5.0",
