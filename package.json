@@ -32,7 +32,7 @@
         "@angular/platform-browser-dynamic": "~8.2.6",
         "@angular/router": "~8.2.6",
         "@donmahallem/flow-api-types": "~2.5.0",
-        "@donmahallem/google-fit-api-types": "~1.2.1",
+        "@donmahallem/google-fit-api-types": "~1.2.2",
         "core-js": "~3.4.3",
         "d3": "~5.14.2",
         "dexie": "~2.0.4",
