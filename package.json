@@ -40,7 +40,7 @@
         "moment": "~2.24.0",
         "ng-cli-pug-loader": "~0.2.2",
         "ng-gapi": "~0.0.73",
-        "rxjs": "~6.5.2",
+        "rxjs": "~6.5.4",
         "zone.js": "~0.9.1"
     },
     "devDependencies": {
