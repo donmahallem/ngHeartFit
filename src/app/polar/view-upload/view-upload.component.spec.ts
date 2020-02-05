@@ -45,8 +45,9 @@ export class TestUploadToFitComponent {
         return this.mDataPoints;
     }
 }
-let sandbox: sinon.SinonSandbox;
 describe('BodyMetricsComponent', () => {
+
+    let sandbox: sinon.SinonSandbox;
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [
@@ -73,6 +74,6 @@ describe('BodyMetricsComponent', () => {
         const app = fixture.debugElement.componentInstance;
         expect(app).toBeTruthy();
     });
-    beforeAll(() => { sandbox = sinon.sandbox.create(); });
+    beforeAll(() => { sandbox = sinon.createSandbox(); });
     afterEach(() => { sandbox.restore(); });
 });
