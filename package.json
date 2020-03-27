@@ -57,7 +57,7 @@
         "@types/node": "~13.9.4",
         "@types/sinon": "~7.5.2",
         "apply-loader": "~2.0.0",
-        "codelyzer": "~5.2.1",
+        "codelyzer": "~5.2.2",
         "jasmine-core": "~3.5.0",
         "jasmine-spec-reporter": "~4.2.1",
         "karma": "~4.4.1",
