@@ -5,7 +5,7 @@
 import {
     Component,
 } from '@angular/core';
-import { MatSlideToggleChange } from '@angular/material';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { UploadDataService, UploadFileResults, UploadFileType } from '../services';
 import { FileUploadBaseComponent } from './file-upload-base.component';
 

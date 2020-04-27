@@ -4,7 +4,7 @@
 
 import { Component, Injectable, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
 import { RouterTestingModule } from '@angular/router/testing';
 import { from, Observable, Subscriber } from 'rxjs';
 import { IUploadFile, TypedFiles, UploadDataService, UploadFileType } from '../services';

@@ -4,7 +4,8 @@
 
 import { Component } from '@angular/core';
 import { async, TestBed } from '@angular/core/testing';
-import { MatButtonModule, MatToolbarModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { ProfileComponent } from './components/profile.component';
