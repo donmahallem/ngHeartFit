@@ -16,14 +16,6 @@ export interface IDataPoint {
     templateUrl: './line-chart.component.pug',
 })
 export class LineChartComponent implements OnInit, AfterViewInit {
-    @Input('chartData')
-    public set chartData(data: IDataPoint[]) {
-        this.chartDataSubject.next(data);
-    }
-
-    public get chartData(): IDataPoint[] {
-        return this.chartDataSubject.getValue();
-    }
     public user: any;
     @ViewChild('chart', { static: false }) mySpan: ElementRef;
 
@@ -47,6 +39,14 @@ export class LineChartComponent implements OnInit, AfterViewInit {
     constructor(private zone: NgZone,
                 private elRef: ElementRef) {
         this.init();
+    }
+    @Input('chartData')
+    public set chartData(data: IDataPoint[]) {
+        this.chartDataSubject.next(data);
+    }
+
+    public get chartData(): IDataPoint[] {
+        return this.chartDataSubject.getValue();
     }
     public init(): void {
         this.xScale = d3.scaleUtc()

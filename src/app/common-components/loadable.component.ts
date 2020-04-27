@@ -54,6 +54,13 @@ export abstract class LoadableComponent<T> implements OnDestroy, AfterViewInit {
         this.mLoadingStatus = status;
     }
 
+    public get progressBarMode(): 'determinate' | 'indeterminate' | 'buffer' | 'query' {
+        if (this.loadingStatus === LoadingStatus.INITIALIZING) {
+            return 'query';
+        }
+        return 'indeterminate';
+    }
+
     public abstract onResult(result: T);
     public abstract createLoadObservable(): Observable<HttpEvent<T>>;
 
@@ -67,13 +74,6 @@ export abstract class LoadableComponent<T> implements OnDestroy, AfterViewInit {
         }
         this.mLoadingSubscription = this.createLoadObservable()
             .subscribe(new LoadableSubscriber(this));
-    }
-
-    public get progressBarMode(): 'determinate' | 'indeterminate' | 'buffer' | 'query' {
-        if (this.loadingStatus === LoadingStatus.INITIALIZING) {
-            return 'query';
-        }
-        return 'indeterminate';
     }
 
     public ngOnDestroy() {

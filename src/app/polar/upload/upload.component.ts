@@ -29,8 +29,6 @@ export class UploadComponent implements OnInit {
     constructor(private uploadDataService: UploadDataService,
                 private analyzeDataService: AnalyzeDataService,
                 private router: Router) { }
-    public ngOnInit(): void {
-    }
 
     public get uploadFiles(): IUploadFile[] {
         return this.uploadDataService.uploadedFiles;
@@ -38,6 +36,8 @@ export class UploadComponent implements OnInit {
 
     public get hasSelectedFiles(): boolean {
         return this.uploadDataService.hasSelectedFiles;
+    }
+    public ngOnInit(): void {
     }
 
     public createConvertUploadFileAndCheckValidity(): OperatorFunction<FileLoadEvents<any>, FileLoadEvents<TypedFiles>> {

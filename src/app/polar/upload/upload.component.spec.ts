@@ -20,8 +20,6 @@ import { AnalyzeDataService } from '../services/analyze-data.service';
 
 @Injectable()
 class TestUploadDataService {
-    public update(): void {
-    }
 
     public get uploadedFiles(): IUploadFile[] {
         return [];
@@ -36,6 +34,8 @@ class TestUploadDataService {
 
     public get uploadableFilesObservable(): Observable<boolean> {
         return undefined;
+    }
+    public update(): void {
     }
 
     public addUploadFile(f: IUploadFile): void {

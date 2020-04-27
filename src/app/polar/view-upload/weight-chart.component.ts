@@ -13,14 +13,6 @@ import { IDataPoint } from './data-point';
     templateUrl: './weight-chart.component.pug',
 })
 export class WeightChartComponent implements OnInit, AfterViewInit {
-    @Input('chartData')
-    public set chartData(data: IDataPoint[]) {
-        this.chartDataSubject.next(data);
-    }
-
-    public get chartData(): IDataPoint[] {
-        return this.chartDataSubject.getValue();
-    }
     public user: any;
     @ViewChild('chart', { static: false }) mySpan: ElementRef;
 
@@ -41,6 +33,14 @@ export class WeightChartComponent implements OnInit, AfterViewInit {
     constructor(private zone: NgZone,
                 private elRef: ElementRef) {
         this.init();
+    }
+    @Input('chartData')
+    public set chartData(data: IDataPoint[]) {
+        this.chartDataSubject.next(data);
+    }
+
+    public get chartData(): IDataPoint[] {
+        return this.chartDataSubject.getValue();
     }
     public init(): void {
         this.xScale = d3.scaleUtc()

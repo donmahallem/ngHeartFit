@@ -21,6 +21,9 @@ export class LoginGoogleComponent implements OnDestroy, OnInit {
     constructor(private gapiUserService: GapiUserService,
                 private router: Router) {
     }
+    public get isButtonDisabled(): boolean {
+        return this.mIsButtonDisabled;
+    }
 
     public onClickSignin(event: MouseEvent) {
         this.mIsButtonDisabled = true;
@@ -34,9 +37,6 @@ export class LoginGoogleComponent implements OnDestroy, OnInit {
     }
 
     public testLoad() {
-    }
-    public get isButtonDisabled(): boolean {
-        return this.mIsButtonDisabled;
     }
 
     public ngOnInit() {

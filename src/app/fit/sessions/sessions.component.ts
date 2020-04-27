@@ -25,6 +25,13 @@ export class SessionsComponent implements OnInit, OnDestroy {
     constructor(private sessionService: FitApiSessionService,
                 private activatedRoute: ActivatedRoute) {
     }
+    public get sessions(): IMomentFit<IFitSession>[] {
+        return this.mSessions;
+    }
+
+    public set sessions(s: IMomentFit<IFitSession>[]) {
+        this.mSessions = s;
+    }
     public ngOnDestroy(): void {
         this.mDataSubscription.unsubscribe();
     }
@@ -39,12 +46,5 @@ export class SessionsComponent implements OnInit, OnDestroy {
     }
     public createLoadObservable(): Observable<HttpEvent<IFitSessionListResponse>> {
         return this.sessionService.getSessions(moment().subtract(120, 'days'), moment());
-    }
-    public get sessions(): IMomentFit<IFitSession>[] {
-        return this.mSessions;
-    }
-
-    public set sessions(s: IMomentFit<IFitSession>[]) {
-        this.mSessions = s;
     }
 }
