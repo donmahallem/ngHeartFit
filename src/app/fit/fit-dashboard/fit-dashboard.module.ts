@@ -4,9 +4,12 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatIconModule, MatProgressBarModule, MatTableModule, MatToolbarModule } from '@angular/material';
 import { LineChartModule } from 'src/app/common-components/line-chart';
 import { FitDashboardComponent } from './fit-dashboard.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
     declarations: [

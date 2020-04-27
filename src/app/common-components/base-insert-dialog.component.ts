@@ -7,7 +7,7 @@ import {
     Inject,
 } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators, ValidatorFn } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as moment from 'moment';
 
 export const forbiddenNameValidator: () => ValidatorFn = () =>
@@ -78,7 +78,7 @@ export class BaseInsertDialogComponent {
 
     private mSelectableUnits: ISelectableUnit[] = [];
     constructor(private fb: FormBuilder,
-                @Inject(MAT_DIALOG_DATA) public data: IDialogParameter) {
+        @Inject(MAT_DIALOG_DATA) public data: IDialogParameter) {
         this.metricsForm = this.fb
             .group({
                 date: [moment.utc().local(), Validators.required],

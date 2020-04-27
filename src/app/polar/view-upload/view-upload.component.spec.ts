@@ -4,7 +4,7 @@
 
 import { Component, Injectable, Input } from '@angular/core';
 import { async, TestBed } from '@angular/core/testing';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ViewUploadComponent } from './view-upload.component';
 

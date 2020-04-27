@@ -4,14 +4,12 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import {
-    MatButtonModule,
-    MatExpansionModule,
-    MatGridListModule,
-    MatIconModule,
-    MatProgressBarModule,
-    MatSlideToggleModule,
-} from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { HttpClientModule } from '@angular/common/http';
 import { FileUploadModule } from '../modules';

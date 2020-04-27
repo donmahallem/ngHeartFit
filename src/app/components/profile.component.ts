@@ -8,7 +8,7 @@ import {
     OnDestroy,
     ViewChild,
 } from '@angular/core';
-import { MatButton } from '@angular/material';
+import { MatButton } from '@angular/material/button';
 import { Subscription } from 'rxjs';
 @Component({
     selector: 'app-profile-view',
