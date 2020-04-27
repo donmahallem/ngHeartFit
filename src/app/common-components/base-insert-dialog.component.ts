@@ -78,7 +78,7 @@ export class BaseInsertDialogComponent {
 
     private mSelectableUnits: ISelectableUnit[] = [];
     constructor(private fb: FormBuilder,
-        @Inject(MAT_DIALOG_DATA) public data: IDialogParameter) {
+                @Inject(MAT_DIALOG_DATA) public data: IDialogParameter) {
         this.metricsForm = this.fb
             .group({
                 date: [moment.utc().local(), Validators.required],
