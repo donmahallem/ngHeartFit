@@ -55,20 +55,6 @@ export interface ISelectableUnit {
     templateUrl: './base-insert-dialog.component.pug',
 })
 export class BaseInsertDialogComponent {
-    public get selectableUnits(): ISelectableUnit[] {
-        return this.mSelectableUnits;
-    }
-
-    public set selectableUnits(units: ISelectableUnit[]) {
-        if (Array.isArray(units)) {
-            this.mSelectableUnits = units;
-        }
-        this.mSelectableUnits = [];
-    }
-
-    public get hasSelectableUnits(): boolean {
-        return this.mSelectableUnits.length > 0;
-    }
 
     public static readonly FOOT_TO_METER: number = 0.3048;
     public static readonly INCH_TO_METER: number = 0.0254;
@@ -86,6 +72,20 @@ export class BaseInsertDialogComponent {
                 unit: [0, Validators.required],
                 value: [0, [Validators.min(0), Validators.max(100)]],
             });
+    }
+    public get selectableUnits(): ISelectableUnit[] {
+        return this.mSelectableUnits;
+    }
+
+    public set selectableUnits(units: ISelectableUnit[]) {
+        if (Array.isArray(units)) {
+            this.mSelectableUnits = units;
+        }
+        this.mSelectableUnits = [];
+    }
+
+    public get hasSelectableUnits(): boolean {
+        return this.mSelectableUnits.length > 0;
     }
 
 }

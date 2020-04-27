@@ -13,6 +13,14 @@ export class MinMaxDataPoint implements IDataPoint {
     private mX: Date = new Date();
     private mDataPoints: IDataPoint[] = [];
 
+    public get x(): Date {
+        return this.mX;
+    }
+
+    public get y(): number {
+        return this.mY;
+    }
+
     public add(point: IDataPoint): void {
         this.mDataPoints.push(point);
         this.recalculate();
@@ -36,13 +44,5 @@ export class MinMaxDataPoint implements IDataPoint {
                     return cur;
                 }
             }, undefined);
-    }
-
-    public get x(): Date {
-        return this.mX;
-    }
-
-    public get y(): number {
-        return this.mY;
     }
 }

@@ -53,6 +53,10 @@ export class DatasourceDetailComponent implements OnDestroy, AfterViewInit, OnIn
         return (typeof this.mDataSource !== 'undefined');
     }
 
+    public get progressBarMode(): 'indeterminate' | 'query' {
+        return 'query';
+    }
+
     public ngOnInit() {
         this.mRouteDataSubscription = this.activatedRoute.data
             .subscribe((data: { dataSource: IFitDataSource }) => {
@@ -69,10 +73,6 @@ export class DatasourceDetailComponent implements OnDestroy, AfterViewInit, OnIn
             .subscribe(console.log, console.error);
     }
     public ngAfterViewInit() {
-    }
-
-    public get progressBarMode(): 'indeterminate' | 'query' {
-        return 'query';
     }
 
     public ngOnDestroy() {

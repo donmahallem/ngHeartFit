@@ -22,6 +22,10 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
     private mIsSignedIn = false;
     private signinSubscription: Subscription;
     constructor() { }
+
+    public get isSignedIn(): boolean {
+        return this.mIsSignedIn;
+    }
     public ngAfterViewInit(): void {
         /*this.signinSubscription = this.gapiService.getUserObservable()
             .subscribe((res) => {
@@ -42,10 +46,6 @@ export class ProfileComponent implements AfterViewInit, OnDestroy {
         if (this.signinSubscription) {
             this.signinSubscription.unsubscribe();
         }
-    }
-
-    public get isSignedIn(): boolean {
-        return this.mIsSignedIn;
     }
 
     public signin(event: MouseEvent): void {

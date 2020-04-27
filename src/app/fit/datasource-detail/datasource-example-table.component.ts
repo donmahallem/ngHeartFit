@@ -53,6 +53,10 @@ export class DatasourceExampleTableComponent<T>
     public set dataSource(source: IFitDataSource) {
         this.mDataSourceSubject.next(source);
     }
+
+    public get progressBarMode(): 'indeterminate' | 'query' {
+        return 'query';
+    }
     public onResult(result: IFitDataset) {
         const res: any[] = [];
         for (const a of result.point) {
@@ -70,10 +74,6 @@ export class DatasourceExampleTableComponent<T>
             .paramMap
             .pipe(flatMap((value: ParamMap): Observable<HttpEvent<IFitDataset>> =>
                 this.fitDataSetService.getDataSetData(value.get('id'), moment().subtract(30, 'day'), moment())));
-    }
-
-    public get progressBarMode(): 'indeterminate' | 'query' {
-        return 'query';
     }
 
     public ngOnDestroy() {
