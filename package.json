@@ -38,7 +38,7 @@
         "d3": "~5.16.0",
         "dexie": "~2.0.4",
         "material-design-icons": "~3.0.1",
-        "moment": "~2.24.0",
+        "moment": "~2.25.0",
         "ng-cli-pug-loader": "~0.2.2",
         "ng-gapi": "~0.0.73",
         "rxjs": "~6.5.5",
