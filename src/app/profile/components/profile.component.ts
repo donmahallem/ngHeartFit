@@ -18,12 +18,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     public user: gapi.auth2.GoogleUser;
     private subscription: Subscription;
     constructor(private gapi: GapiUserService) { }
-    public ngOnInit(): void {
-        this.subscription = this.gapi.userObservable
-            .subscribe((val) => {
-                this.user = val;
-            });
-    }
 
     public get name(): string {
         if (this.user) {
@@ -37,6 +31,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
             return this.user.getBasicProfile().getImageUrl();
         }
         return '---';
+    }
+    public ngOnInit(): void {
+        this.subscription = this.gapi.userObservable
+            .subscribe((val) => {
+                this.user = val;
+            });
     }
 
     public ngOnDestroy(): void {

@@ -40,6 +40,10 @@ export class FitDashboardComponent implements OnDestroy, AfterViewInit {
         return (typeof this.mDataSource !== 'undefined');
     }
 
+    public get progressBarMode(): 'indeterminate' | 'query' {
+        return 'query';
+    }
+
     public ngAfterViewInit() {
         this.fitAggregateService
             .getAggregateData([{
@@ -51,10 +55,6 @@ export class FitDashboardComponent implements OnDestroy, AfterViewInit {
             }], moment().subtract(30, 'days'), moment(), 1000 * 3600 * 24)
             // tslint:disable-next-line:no-console
             .subscribe(console.log, console.error);
-    }
-
-    public get progressBarMode(): 'indeterminate' | 'query' {
-        return 'query';
     }
 
     public insertBodyFat(): void {

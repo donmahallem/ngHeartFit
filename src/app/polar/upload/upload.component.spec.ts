@@ -4,7 +4,7 @@
 
 import { Component, Injectable, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
 import { RouterTestingModule } from '@angular/router/testing';
 import { from, Observable, Subscriber } from 'rxjs';
 import { IUploadFile, TypedFiles, UploadDataService, UploadFileType } from '../services';
@@ -20,8 +20,6 @@ import { AnalyzeDataService } from '../services/analyze-data.service';
 
 @Injectable()
 class TestUploadDataService {
-    public update(): void {
-    }
 
     public get uploadedFiles(): IUploadFile[] {
         return [];
@@ -36,6 +34,8 @@ class TestUploadDataService {
 
     public get uploadableFilesObservable(): Observable<boolean> {
         return undefined;
+    }
+    public update(): void {
     }
 
     public addUploadFile(f: IUploadFile): void {

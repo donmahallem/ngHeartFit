@@ -4,7 +4,7 @@
 
 import { Component, Injectable, Input } from '@angular/core';
 import { async, TestBed } from '@angular/core/testing';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ViewUploadComponent } from './view-upload.component';
 
@@ -45,8 +45,9 @@ export class TestUploadToFitComponent {
         return this.mDataPoints;
     }
 }
-let sandbox: sinon.SinonSandbox;
 describe('BodyMetricsComponent', () => {
+
+    let sandbox: sinon.SinonSandbox;
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [
@@ -73,6 +74,6 @@ describe('BodyMetricsComponent', () => {
         const app = fixture.debugElement.componentInstance;
         expect(app).toBeTruthy();
     });
-    beforeAll(() => { sandbox = sinon.sandbox.create(); });
+    beforeAll(() => { sandbox = sinon.createSandbox(); });
     afterEach(() => { sandbox.restore(); });
 });

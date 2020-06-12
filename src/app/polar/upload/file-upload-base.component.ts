@@ -8,6 +8,8 @@ import {
 import { IUploadFile } from '../services';
 
 export class FileUploadBaseComponent<T extends IUploadFile> {
+    protected mUploadFile: T;
+    constructor() { }
 
     @Input('uploadFile')
     public set uploadFile(upload: T) {
@@ -17,6 +19,4 @@ export class FileUploadBaseComponent<T extends IUploadFile> {
     public get uploadFile(): T {
         return this.mUploadFile;
     }
-    protected mUploadFile: T;
-    constructor() { }
 }

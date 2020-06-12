@@ -30,6 +30,9 @@ import { SleepService } from './sleep.service';
 })
 export class SleepDayComponent implements OnInit, OnDestroy, AfterContentInit {
     private mSleepData: ISleepReport[] = [];
+    constructor(private el: ElementRef,
+                private fitDataSourceService: FitApiDataSourceService) {
+    }
     @Input()
     public set sleeps(data: ISleepReport[]) {
         if (data === undefined) {
@@ -59,9 +62,6 @@ export class SleepDayComponent implements OnInit, OnDestroy, AfterContentInit {
     }
     public get sleeps(): ISleepReport[] {
         return this.mSleepData;
-    }
-    constructor(private el: ElementRef,
-                private fitDataSourceService: FitApiDataSourceService) {
     }
     public aaa(dataSourceId: string, sleepReport: ISleepReport): any {
         const data = {

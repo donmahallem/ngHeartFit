@@ -9,6 +9,13 @@ import { catchError, flatMap, shareReplay, tap } from 'rxjs/operators';
 
 @Injectable()
 export class GapiUserService {
+    public static SESSION_STORAGE_KEY = 'accessToken';
+    private mUserSubject: BehaviorSubject<gapi.auth2.GoogleUser> = new BehaviorSubject(undefined);
+    private signedInObservable: Observable<boolean>;
+    constructor(private googleAuth: GoogleAuthService) {
+        this.watchUserChanges();
+        this.signedInObservable = this.createSignedInObservable();
+    }
 
     public get isSignedIn(): boolean {
         const inst: gapi.auth2.GoogleAuth = (this.googleAuth as any).GoogleAuth;
@@ -23,13 +30,6 @@ export class GapiUserService {
     }
     public get isSignedInObservable(): Observable<boolean> {
         return this.signedInObservable;
-    }
-    public static SESSION_STORAGE_KEY = 'accessToken';
-    private mUserSubject: BehaviorSubject<gapi.auth2.GoogleUser> = new BehaviorSubject(undefined);
-    private signedInObservable: Observable<boolean>;
-    constructor(private googleAuth: GoogleAuthService) {
-        this.watchUserChanges();
-        this.signedInObservable = this.createSignedInObservable();
     }
 
     public get userObservable(): Observable<gapi.auth2.GoogleUser> {
