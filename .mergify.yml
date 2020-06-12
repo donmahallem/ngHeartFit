@@ -1,0 +1,16 @@
+pull_request_rules:
+  - name: automatic merge dependabot PRs into dev
+    conditions:
+      - author~=^dependabot(|-preview)\[bot\]$
+      - status-success=Travis CI - Pull Request
+      - base=dev
+    actions:
+      merge:
+        method: squash
+  - name: delete head branch on merged pull requests
+    conditions:
+      - merged
+      - -head~=^(master|dev)$
+      - -author~=^dependabot(|-preview)\[bot\]$
+    actions:
+      delete_head_branch:
