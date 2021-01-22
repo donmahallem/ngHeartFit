@@ -40,7 +40,7 @@
         "material-design-icons": "3.0.1",
         "moment": "2.29.1",
         "ng-cli-pug-loader": "0.2.2",
-        "ng-gapi": "0.0.73",
+        "ng-gapi": "0.0.94",
         "rxjs": "6.6.3",
         "zone.js": "0.11.3"
     },
