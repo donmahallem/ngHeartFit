@@ -1,0 +1,31 @@
+name: Node CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        node-version: [ 12.x]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        test_suite: [build, unit]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Test on node ${{ matrix.node_version }} and ${{ matrix.os }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: npm install and setup
+      run: npm install
+    - name: cpy config 1
+      run: cp ./src/environments/environment.example.ts ./src/environments/environment.ts
+    - name: cpy config 2
+      run: cp ./src/environments/environment.example.ts ./src/environments/environment.prod.ts
+    - name: npm test ${{ matrix.test_suite }}
+      run: npm run test:${{ matrix.test_suite }}
+      env:
+        CI: true
