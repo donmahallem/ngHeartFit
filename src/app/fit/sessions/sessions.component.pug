@@ -1,2 +1,2 @@
 h3 Sessions
-app-session-list-item(*ngFor="let session of sessions",[session]="session",[routerLink]="['/fit/session',session.id]")
+app-session-list-item(*ngFor="let session of sessions",[session]="session",[routerLink]="['/fit/session',session.id,session.startTimeMillis.toISOString(),session.endTimeMillis.toISOString()]")

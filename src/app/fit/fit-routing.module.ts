@@ -9,6 +9,7 @@ import { FitDataSourceDetailResolver } from './datasource-detail/fit-data-source
 import { DatasourcesComponent } from './datasources/datasources.component';
 import { FitDashboardComponent } from './fit-dashboard';
 import { SessionDetailComponent } from './session-detail/session-detail.component';
+import { SessionResolver } from './sessions/session.resolver';
 import { SessionsComponent } from './sessions/sessions.component';
 import { SessionsResolver } from './sessions/sessions.resolver';
 
@@ -41,7 +42,10 @@ const routes: Routes = [
     },
     {
         component: SessionDetailComponent,
-        path: 'session/:id',
+        path: 'session/:id/:from/:to',
+        resolve: {
+            session: SessionResolver,
+        },
     },
 ];
 
