@@ -49,7 +49,7 @@
         "@angular/cli": "13.1.2",
         "@angular/compiler-cli": "13.1.1",
         "@angular/language-service": "13.1.1",
-        "@compodoc/compodoc": "1.1.17",
+        "@compodoc/compodoc": "1.1.18",
         "@types/d3": "7.1.0",
         "@types/gapi": "0.0.41",
         "@types/gapi.auth2": "0.0.55",
