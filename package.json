@@ -36,7 +36,7 @@
         "@donmahallem/google-fit-api-types": "1.2.3",
         "core-js": "3.21.0",
         "d3": "7.3.0",
-        "dexie": "3.2.0",
+        "dexie": "3.2.1",
         "material-design-icons": "3.0.1",
         "moment": "2.29.1",
         "ng-cli-pug-loader": "0.2.2",
