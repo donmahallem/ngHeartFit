@@ -37,12 +37,14 @@ export class SessionsComponent implements OnInit, OnDestroy {
     }
     public ngOnInit(): void {
         this.mDataSubscription = this.activatedRoute.data
-            .pipe(map((val) =>
-                val.sessions)).subscribe((resp) => {
-                    this.mSessions = resp.session
-                        .map((session: IFitSession): IMomentFit<IFitSession> =>
-                            Momentary.convert(session));
-                });
+            .pipe(map((val: { sessions: IFitSessionListResponse }) => val.sessions))
+            .subscribe((resp: IFitSessionListResponse) => {
+                this.mSessions = resp.session
+                    .map((session: IFitSession): IMomentFit<IFitSession> =>
+                        Momentary.convert(session))
+                    .sort((a, b) =>
+                        b.startTimeMillis.valueOf() - a.startTimeMillis.valueOf());
+            });
     }
     public createLoadObservable(): Observable<HttpEvent<IFitSessionListResponse>> {
         return this.sessionService.getSessions(moment().subtract(120, 'days'), moment());

@@ -35,14 +35,14 @@ export class FitApiSessionService {
                        endTime?: moment.Moment | undefined,
                        includeDeleted: boolean = false,
                        pageToken?: string): Observable<HttpEvent<IFitSessionListResponse>> {
-        const params: any = {};
+        const params: { [param: string]: string } = {};
         if (startTime) {
             params.startTime = startTime.toISOString();
         }
         if (endTime) {
             params.endTime = endTime.toISOString();
         }
-        params.includeDeleted = includeDeleted;
+        params.includeDeleted = '' + includeDeleted;
         if (pageToken) {
             params.pageToken = pageToken;
         }
