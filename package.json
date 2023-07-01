@@ -55,7 +55,7 @@
         "@types/gapi.auth2": "0.0.57",
         "@types/jasmine": "4.3.5",
         "@types/jasminewd2": "2.0.10",
-        "@types/node": "18.16.18",
+        "@types/node": "18.16.19",
         "@types/sinon": "10.0.15",
         "apply-loader": "2.0.0",
         "codelyzer": "6.0.2",
