@@ -45,8 +45,8 @@
         "zone.js": "0.13.1"
     },
     "devDependencies": {
-        "@angular-devkit/build-angular": "16.1.4",
-        "@angular/cli": "16.1.4",
+        "@angular-devkit/build-angular": "16.2.16",
+        "@angular/cli": "16.2.16",
         "@angular/compiler-cli": "16.1.5",
         "@angular/language-service": "16.1.5",
         "@compodoc/compodoc": "1.1.21",
